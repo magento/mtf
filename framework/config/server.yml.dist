@@ -1,7 +1,7 @@
 selenium:
     browser: 'Mozilla Firefox'
     browserName: 'firefox'
-    host: '10.224.52.13'
+    host: 'localhost'
     port: 4444
     seleniumServerRequestsTimeout: 90
     sessionStrategy: shared
