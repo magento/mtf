@@ -1,0 +1,17 @@
+# Generator running options, in case "generate_specified_modules" is set to "yes" then specified file is used
+generate_specified_modules: no
+specified_modules: dev\tests\mtf\utils\config\ee_modules.yml.dist
+
+# Fallback path configurations
+tests_fallback:
+    1:
+        path: tests/design
+        namespace: Magento\Plush
+    2:
+        path: tests/app
+
+# Handler priority configuration
+handler_fallback:
+    1: Direct
+    2: Curl
+    3: Ui

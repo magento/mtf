@@ -1,0 +1,9 @@
+selenium:
+    browser: 'Mozilla Firefox'
+    browserName: 'firefox'
+    host: '10.224.52.13'
+    port: 4444
+    seleniumServerRequestsTimeout: 90
+    sessionStrategy: shared
+    desiredCapabilities:
+        platform: ANY

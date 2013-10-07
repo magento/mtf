@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/3.7/phpunit.xsd"
+         bootstrap="bootstrap.php"
+         backupGlobals="false"
+         verbose="true">
+    <testsuites>
+        <testsuite name="PHPUnit">
+            <directory suffix=".php">testsuites/Mtf/TestSuite</directory>
+        </testsuite>
+    </testsuites>
+
+    <listeners>
+        <listener class="Mtf\System\Browser\Listener" />
+        <listener class="Mtf\System\Isolation\Listener">
+            <arguments>
+                <object class="Mtf\System\Isolation\Driver\Base"/>
+            </arguments>
+        </listener>
+    </listeners>
+
+    <php>
+        <env name="app_frontend_url" value="http://localhost/index.php/"/>
+        <env name="app_backend_url" value="http://localhost/index.php/backend/"/>
+        <env name="app_config_path" value="vendor/mtf/framework/config/application.yml.dist"/>
+        <env name="server_config_path" value="vendor/mtf/framework/config/server.yml.dist"/>
+        <env name="isolation_config_path" value="vendor/mtf/framework/config/isolation.yml.dist"/>
+        <env name="handlers_config_path" value="vendor/mtf/framework/config/handler.yml.dist"/>
+    </php>
+
+</phpunit>
