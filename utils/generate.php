@@ -1,6 +1,6 @@
 <?php
 
-$appRoot = dirname(dirname(dirname(dirname(__DIR__))));
+$appRoot = dirname(dirname(dirname(dirname(dirname(dirname(__DIR__))))));
 $mtfRoot = dirname(dirname(__FILE__));
 require_once $mtfRoot . DIRECTORY_SEPARATOR . 'bootstrap.php';
 
@@ -9,7 +9,7 @@ $generatorConfig = new \Mtf\System\Config($generatorConfigFile);
 $params = $generatorConfig->getConfigParam();
 
 $params['mtf_app_root'] = $appRoot;
-$params['mtf_mtf_root'] = $mtfRoot;
+$params['mtf_mtf_root'] = realpath($mtfRoot . '/../../');
 
 $params = array_merge($params, $_REQUEST);
 
