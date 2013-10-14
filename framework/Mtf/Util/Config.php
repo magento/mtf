@@ -15,7 +15,7 @@ namespace Mtf\Util;
 /**
  * Class Config
  */
-class Config extends \Mage_Core_Model_Config_Primary
+class Config extends \Magento\Core\Model\Config\Primary
 {
     //
 }
