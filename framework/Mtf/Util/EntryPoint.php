@@ -22,7 +22,7 @@ use Mtf\Util\Generate\HandlerFactory;
 /**
  * Class EntryPoint
  */
-class EntryPoint extends \Magento_Core_Model_EntryPointAbstract
+class EntryPoint extends \Mage_Core_Model_EntryPointAbstract
 {
     /**
      * Start to generate all classes

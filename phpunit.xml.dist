@@ -22,10 +22,10 @@
     <php>
         <env name="app_frontend_url" value="http://localhost/index.php/"/>
         <env name="app_backend_url" value="http://localhost/index.php/backend/"/>
-        <env name="app_config_path" value="vendor/mtf/framework/config/application.yml.dist"/>
-        <env name="server_config_path" value="vendor/mtf/framework/config/server.yml.dist"/>
-        <env name="isolation_config_path" value="vendor/mtf/framework/config/isolation.yml.dist"/>
-        <env name="handlers_config_path" value="vendor/mtf/framework/config/handler.yml.dist"/>
+        <env name="app_config_path" value="framework/config/application.yml.dist"/>
+        <env name="server_config_path" value="framework/config/server.yml.dist"/>
+        <env name="isolation_config_path" value="framework/config/isolation.yml.dist"/>
+        <env name="handlers_config_path" value="framework/config/handler.yml.dist"/>
     </php>
 
 </phpunit>

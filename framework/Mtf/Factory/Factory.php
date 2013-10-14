@@ -159,11 +159,6 @@ class Factory implements FactoryInterface
         return self::$_clientBrowser;
     }
 
-    public static function toggleClientBrowser($browser)
-    {
-        self::$_clientBrowser = $browser;
-    }
-
     /**
      * Get Page factory
      *
