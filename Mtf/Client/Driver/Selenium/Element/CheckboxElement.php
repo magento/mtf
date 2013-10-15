@@ -9,7 +9,7 @@
  * @license     {license_link}
  */
 
-namespace Mtf\Client\Driver\Selenium;
+namespace Mtf\Client\Driver\Selenium\Element;
 
 use Mtf\Client\Driver\Selenium\Element;
 use Mtf\Client\Element\Locator;

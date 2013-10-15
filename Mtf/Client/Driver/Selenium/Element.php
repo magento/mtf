@@ -25,14 +25,6 @@ use Mtf\Client\Driver\Selenium\SelectElement;
  */
 class Element implements ElementInterface
 {
-    /**#@+
-     * Typified classes for initialization of Element in find method
-     */
-    const TYPIFIED_ELEMENT_SELECT = 'select';
-    const TYPIFIED_ELEMENT_MULTISELECT = 'multiselect';
-    const TYPIFIED_ELEMENT_CHECKBOX = 'checkbox';
-    /**#@-*/
-
     /**
      * PHPUnit Selenium test case
      *
@@ -215,25 +207,22 @@ class Element implements ElementInterface
      *
      * @param string $selector
      * @param string $strategy [optional]
-     * @param string $typifiedElement = select|multiselect|null
+     * @param string $typifiedElement = select|multiselect|checkbox|null
      * @return mixed
      */
     public function find($selector, $strategy = Locator::SELECTOR_CSS, $typifiedElement = null)
     {
         $locator = new Locator($selector, $strategy);
-        switch($typifiedElement) {
-            case self::TYPIFIED_ELEMENT_SELECT:
-                return new SelectElement($this->_driver, $locator, $this);
-                break;
-            case self::TYPIFIED_ELEMENT_MULTISELECT:
-                return new MultiSelectElement($this->_driver, $locator, $this);
-                break;
-            case self::TYPIFIED_ELEMENT_CHECKBOX:
-                return new CheckboxElement($this->_driver, $locator, $this);
-                break;
-            default:
-                return new Element($this->_driver, $locator, $this);
+        $className = '\Mtf\Client\Driver\Selenium\Element';
+
+        if (isset($typifiedElement)) {
+            $typifiedElement = ucfirst(strtolower($typifiedElement));
+            if (class_exists($className . '\\' . $typifiedElement)) {
+                $className .= '\\' . $typifiedElement;
+            }
         }
+
+        return new $className($this->_driver, $locator, $this);
     }
 
     /**
