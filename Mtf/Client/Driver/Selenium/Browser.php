@@ -174,8 +174,8 @@ final class Browser implements \Mtf\Client\Browser
 
         if (null !== $typifiedElement) {
             $typifiedElement = ucfirst(strtolower($typifiedElement));
-            if (class_exists($className . '\\' . $typifiedElement)) {
-                $className .= '\\' . $typifiedElement;
+            if (class_exists($className . '\\' . $typifiedElement . 'Element')) {
+                $className .= '\\' . $typifiedElement . 'Element';
             }
         }
 
