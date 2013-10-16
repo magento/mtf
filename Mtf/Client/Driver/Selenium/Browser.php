@@ -179,7 +179,7 @@ final class Browser implements \Mtf\Client\Browser
             }
         }
 
-        return new $className($this->_driver, $locator, $this);
+        return new $className($this->_driver, $locator);
     }
 
     /**
