@@ -215,7 +215,7 @@ class Element implements ElementInterface
         $locator = new Locator($selector, $strategy);
         $className = '\Mtf\Client\Driver\Selenium\Element';
 
-        if (isset($typifiedElement)) {
+        if (null !== $typifiedElement) {
             $typifiedElement = ucfirst(strtolower($typifiedElement));
             if (class_exists($className . '\\' . $typifiedElement)) {
                 $className .= '\\' . $typifiedElement;
