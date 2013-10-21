@@ -63,6 +63,13 @@ class Factory implements FactoryInterface
     protected static $_fixtureFactory;
 
     /**
+     * Fixture Factory
+     *
+     * @var Mtf\Fixture\RepositoryFactory
+     */
+    protected static $_repositoryFactory;
+
+    /**
      * Init configuration
      */
     public static function initConfig()
@@ -117,6 +124,15 @@ class Factory implements FactoryInterface
     {
         $config = self::getConfig();
         self::$_fixtureFactory = new Mtf\Fixture\FixtureFactory($config);
+    }
+
+    /**
+     * Init repository factory
+     */
+    public static function initRepositoryFactory()
+    {
+        $config = self::getConfig();
+        self::$_repositoryFactory = new Mtf\Repository\RepositoryFactory($config);
     }
 
     /**
@@ -199,5 +215,19 @@ class Factory implements FactoryInterface
             self::initFixtureFactory();
         }
         return self::$_fixtureFactory;
+    }
+
+    /**
+     * Get repository factory
+     *
+     * @api
+     * @return Mtf\Repository\RepositoryFactory
+     */
+    public static function getRepositoryFactory()
+    {
+        if (!self::$_repositoryFactory) {
+            self::initRepositoryFactory();
+        }
+        return self::$_repositoryFactory;
     }
 }

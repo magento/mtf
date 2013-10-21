@@ -12,6 +12,7 @@
 namespace Mtf\Fixture;
 
 use Mtf\Fixture;
+use Mtf\Repository\AbstractRepository;
 use Mtf\System\Config;
 
 /**
@@ -59,11 +60,11 @@ abstract class DataFixture implements Fixture
     protected $_configuration;
 
     /**
-     * Fixture repository
+     * Fixture Repository
      *
-     * @var array
+     * @var AbstractRepository
      */
-    protected $_repository = array();
+    protected $_repository;
 
     /**
      * Constructor
@@ -201,61 +202,45 @@ abstract class DataFixture implements Fixture
                 $replacePairs['%' . $pattern . '%'] = $replacement;
             }
             $callback = function (&$value) use ($replacePairs) {
-                $v = reset($replacePairs);
-                $keys = array_keys($replacePairs);
-                if (is_callable($v)) {
-                    foreach ($keys as $key) {
-                        if (strpos($value, $key) !== false) {
-                            $value = $v();
+                foreach ($replacePairs as $key => $v) {
+                    if (strpos($value, $key) !== false) {
+                        if (is_callable($v)) {
+                            $param = trim($key, '%');
+                            $value = $v($param);
+                        } else {
+                            $value = str_replace($key, $v, $value);
                         }
                     }
-                } else {
-                    $value = strtr($value, $replacePairs);
                 }
             };
             array_walk_recursive($data, $callback);
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * Get DataFixture repository
-     *
-     * @return array
-     */
-    public function getRepository()
-    {
-        return $this->_repository;
-    }
-
-    /**
-     * Set data to data to current data set
-     *
-     * @param array $data
-     * @param array $dataConfig
-     */
-    public function setData(array $data, array $dataConfig = array())
-    {
-        $this->_data = $data;
-        $this->_dataConfig = array_merge($this->_defaultConfig, $dataConfig);
-
-        $this->_applyPlaceholders($this->_data, array('isolation' => mt_rand()));
-        $this->_applyPlaceholders($this->_data, $this->_placeholders);
-        $this->_placeholders = array();
-    }
-
     /**
      * Switch current data set.
      *
      * @param $name
-     * @return $this
+     * @return bool
      */
     public function switchData($name)
     {
-        $config = isset($this->_repository[$name]['config']) ? $this->_repository[$name]['config'] : array();
-        $this->setData($this->_repository[$name]['data'], $config);
+        if (!isset($this->_repository)) {
+            return false;
+        }
 
-        return $this;
+        $dataSet = $this->_repository->get($name);
+        if (empty($dataSet)) {
+            return true;
+        }
+
+        $this->_data = isset($dataSet['data']) ? $dataSet['data'] : array();
+        $this->_dataConfig = isset($dataSet['config']) ? $dataSet['config'] : array();
+
+        $this->_applyPlaceholders($this->_data, array('isolation' => mt_rand()));
+        $this->_applyPlaceholders($this->_data, $this->_placeholders);
+        $this->_placeholders = array();
+
+        return true;
     }
 }

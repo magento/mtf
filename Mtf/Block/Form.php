@@ -41,19 +41,21 @@ class Form extends Block
     {
         $mapping = array();
         foreach ($fields as $key => $field) {
-            $mapping[$key]['selector'] = isset($this->_mapping[$key])
-                ? (isset($this->_mapping[$key]['selector']) ? $this->_mapping[$key]['selector'] : $this->_mapping[$key])
-                : (isset($field['selector']) ? $field['selector'] : '#' . $key);
+            if (isset($field['value'])) {
+                $mapping[$key]['selector'] = isset($this->_mapping[$key])
+                    ? (isset($this->_mapping[$key]['selector']) ? $this->_mapping[$key]['selector'] : $this->_mapping[$key])
+                    : (isset($field['selector']) ? $field['selector'] : '#' . $key);
 
-            $mapping[$key]['strategy'] = isset($this->_mapping[$key]['strategy'])
-                ? $this->_mapping[$key]['selector']
-                : (isset($field['selector']) ? $field['selector'] : Locator::SELECTOR_CSS);
+                $mapping[$key]['strategy'] = isset($this->_mapping[$key]['strategy'])
+                    ? $this->_mapping[$key]['selector']
+                    : (isset($field['selector']) ? $field['selector'] : Locator::SELECTOR_CSS);
 
-            $mapping[$key]['input'] = isset($this->_mapping[$key]['input'])
-                ? $this->_mapping[$key]['input']
-                : (isset($field['input']) ? $field['input'] : null);
+                $mapping[$key]['input'] = isset($this->_mapping[$key]['input'])
+                    ? $this->_mapping[$key]['input']
+                    : (isset($field['input']) ? $field['input'] : null);
 
-            $mapping[$key]['value'] = $field['value'];
+                $mapping[$key]['value'] = $field['value'];
+            }
         }
 
         return $mapping;
@@ -69,7 +71,9 @@ class Form extends Block
     {
         $context = ($element === null) ? $this->_rootElement : $element;
         foreach ($fields as $field) {
-            $context->find($field['selector'], $field['strategy'], $field['input'])->setValue($field['value']);
+            if (isset($field['value'])) {
+                $context->find($field['selector'], $field['strategy'], $field['input'])->setValue($field['value']);
+            }
         }
     }
 
@@ -97,9 +101,11 @@ class Form extends Block
     {
         $context = ($element === null) ? $this->_rootElement : $element;
         foreach ($fields as $field) {
-            $value = $context->find($field['selector'], $field['strategy'], $field['input'])->getValue();
-            if ($field['value'] != $value) {
-                return false;
+            if (isset($field['value'])) {
+                $value = $context->find($field['selector'], $field['strategy'], $field['input'])->getValue();
+                if ($field['value'] != $value) {
+                    return false;
+                }
             }
         }
 
