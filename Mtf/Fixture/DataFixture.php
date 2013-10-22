@@ -207,9 +207,9 @@ abstract class DataFixture implements Fixture
                         if (is_callable($v)) {
                             $param = trim($key, '%');
                             $value = $v($param);
-                        } else {
-                            $value = str_replace($key, $v, $value);
                         }
+
+                        $value = str_replace($key, $v, $value);
                     }
                 }
             };
