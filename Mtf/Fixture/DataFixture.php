@@ -202,14 +202,14 @@ abstract class DataFixture implements Fixture
                 $replacePairs['%' . $pattern . '%'] = $replacement;
             }
             $callback = function (&$value) use ($replacePairs) {
-                foreach ($replacePairs as $key => $v) {
-                    if (strpos($value, $key) !== false) {
-                        if (is_callable($v)) {
-                            $param = trim($key, '%');
-                            $value = $v($param);
+                foreach ($replacePairs as $pattern => $replacement) {
+                    if (strpos($value, $pattern) !== false) {
+                        if (is_callable($replacement)) {
+                            $param = trim($pattern, '%');
+                            $replacement = $replacement($param);
                         }
 
-                        $value = str_replace($key, $v, $value);
+                        $value = str_replace($pattern, $replacement, $value);
                     }
                 }
             };
