@@ -46,7 +46,9 @@ class SelectElement extends Element
      */
     public function setValue($value)
     {
-        $this->_getWrappedElement(true)->selectOptionByLabel($value);
+        $criteria = new \PHPUnit_Extensions_Selenium2TestCase_ElementCriteria('xpath');
+        $criteria->value('//option[contains(text(), "' . $value . '")]');
+        $this->_getWrappedElement()->selectOptionByCriteria($criteria);
     }
 
     /**
