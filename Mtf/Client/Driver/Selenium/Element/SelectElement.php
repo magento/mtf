@@ -47,7 +47,7 @@ class SelectElement extends Element
     public function setValue($value)
     {
         $criteria = new \PHPUnit_Extensions_Selenium2TestCase_ElementCriteria('xpath');
-        $criteria->value('//option[contains(text(), "' . $value . '")]');
+        $criteria->value('.//option[contains(text(), "' . $value . '")]');
         $this->_getWrappedElement()->selectOptionByCriteria($criteria);
     }
 
