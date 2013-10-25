@@ -239,7 +239,6 @@ abstract class DataFixture implements Fixture
 
         $this->_applyPlaceholders($this->_data, array('isolation' => mt_rand()));
         $this->_applyPlaceholders($this->_data, $this->_placeholders);
-        $this->_placeholders = array();
 
         return true;
     }
