@@ -77,8 +77,6 @@ final class Browser implements \Mtf\Client\Browser
     public function open($url)
     {
         $this->_driver->url($url);
-        $this->_driver->refresh(); //@todo issue with firefox page open bug
-        $this->_driver->url($url);
     }
 
     /**
