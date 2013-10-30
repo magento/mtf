@@ -38,7 +38,9 @@ class Locator extends \ArrayObject
      */
     public function __construct($value, $strategy = self::SELECTOR_CSS)
     {
-        $this['value'] = $value;
-        $this['using'] = $strategy;
+        parent::__construct(array(
+            'value' => $value,
+            'using' => $strategy
+        ));
     }
 }

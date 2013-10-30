@@ -213,6 +213,7 @@ class Element implements ElementInterface
     public function find($selector, $strategy = Locator::SELECTOR_CSS, $typifiedElement = null)
     {
         $locator = new Locator($selector, $strategy);
+        $locator = $locator->getArrayCopy();
         $className = '\Mtf\Client\Driver\Selenium\Element';
 
         if (null !== $typifiedElement) {
