@@ -67,7 +67,7 @@ class MultiSelectElement extends SelectElement
     /**
      * Select Options by Label in Multiple Select
      *
-     * @param string|array $value
+     * @param string|array $values
      */
     public function setValue($values)
     {

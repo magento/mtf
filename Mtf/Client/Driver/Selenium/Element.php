@@ -94,7 +94,9 @@ class Element implements ElementInterface
             $criteria->value($this->_locator['value']);
             if ($waitForElementPresent) {
                 $this->_wrappedElement = $this->_driver->waitUntil(
-                    function() use ($context, $criteria) {return $context->element($criteria);}
+                    function () use ($context, $criteria) {
+                        return $context->element($criteria);
+                    }
                 );
             } else {
                 $driver = $this->_driver;

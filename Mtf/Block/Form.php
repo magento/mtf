@@ -43,7 +43,8 @@ class Form extends Block
         foreach ($fields as $key => $field) {
             if (isset($field['value'])) {
                 $mapping[$key]['selector'] = isset($this->_mapping[$key])
-                    ? (isset($this->_mapping[$key]['selector']) ? $this->_mapping[$key]['selector'] : $this->_mapping[$key])
+                    ? (isset($this->_mapping[$key]['selector']) ? $this->_mapping[$key]['selector']
+                        : $this->_mapping[$key])
                     : (isset($field['selector']) ? $field['selector'] : '#' . $key);
 
                 $mapping[$key]['strategy'] = isset($this->_mapping[$key]['strategy'])
