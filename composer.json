@@ -5,12 +5,6 @@
     "keywords":     ["automation", "magento", "testing"],
     "homepage":     "http://www.magentocommerce.com/",
     "license":      "proprietary",
-    "require": {
-        "php":                                  ">=5.4.0",
-        "phpunit/phpunit":                      ">=3.7",
-        "phpunit/phpunit-selenium":             ">=1.2",
-	"netwing/selenium-server-standalone":   ">=2.35"
-    },
     "autoload": {
         "psr-0": {
             "Mtf\\": ""
