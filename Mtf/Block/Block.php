@@ -38,6 +38,13 @@ abstract class Block implements BlockInterface
     protected $_rootElement;
 
     /**
+     * Temporary copy of root element in closure
+     *
+     * @var \Closure
+     */
+    private $tmpElement;
+
+    /**
      * @constructor
      * @param Element $element
      */
@@ -45,6 +52,21 @@ abstract class Block implements BlockInterface
     {
         $this->_rootElement = $element;
         $this->_init();
+        $this->tmpElement = function() use ($element) {
+            return clone $element;
+        };
+    }
+
+    /**
+     * Element reinitialization in order to keep operability of block after page reload
+     *
+     * @return Block
+     */
+    public function reinitRootElement()
+    {
+        $tmpElement = $this->tmpElement;
+        $this->_rootElement = $tmpElement();
+        return $this;
     }
 
     /**

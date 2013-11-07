@@ -75,6 +75,14 @@ class Element implements ElementInterface
     }
 
     /**
+     * Unset wrapped element
+     */
+    public function __clone()
+    {
+        $this->_wrappedElement = null;
+    }
+
+    /**
      * Return Wrapped Element.
      * If element was not created before:
      * 1. Context is defined. If context was not passed to constructor - test case (all page) is taken as context
