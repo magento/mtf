@@ -118,11 +118,12 @@ class Form extends Block
      *
      * @param Fixture $fixture
      * @param Element $element
+     * @return bool
      */
     public function verify(Fixture $fixture, Element $element = null)
     {
         $data = $fixture->getData('fields');
         $mapping = $this->dataMapping($data);
-        $this->_verify($mapping, $element);
+        return $this->_verify($mapping, $element);
     }
 }
