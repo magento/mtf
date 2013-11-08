@@ -21,15 +21,32 @@ use Mtf\Util\Generate\HandlerFactory;
 /**
  * Class EntryPoint
  */
-class EntryPoint extends \Magento\Core\Model\AbstractEntryPoint
+class EntryPoint
 {
+    /**
+     * Configuration parameters
+     *
+     * @var array
+     */
+    protected $_params;
+
+    /**
+     * Initialize configuration parameters
+     *
+     * @param array $params
+     */
+    public function __construct($params)
+    {
+        $this->_params = $params;
+    }
+
     /**
      * Start to generate all classes
      */
-    protected function _processRequest()
+    public function processRequest()
     {
         try {
-            $blocks = new BlockFactory($this->_config);
+            $blocks = new BlockFactory($this->_params);
             $blocks->generate();
         } catch (\Exception $e) {
             echo $e->getMessage();
@@ -37,7 +54,7 @@ class EntryPoint extends \Magento\Core\Model\AbstractEntryPoint
         }
 
         try {
-            $pages = new PageFactory($this->_config);
+            $pages = new PageFactory($this->_params);
             $pages->generate();
         } catch (\Exception $e) {
             echo $e->getMessage();
@@ -45,7 +62,7 @@ class EntryPoint extends \Magento\Core\Model\AbstractEntryPoint
         }
 
         try {
-            $fixtures = new FixtureFactory($this->_config);
+            $fixtures = new FixtureFactory($this->_params);
             $fixtures->generate();
         } catch (\Exception $e) {
             echo $e->getMessage();
@@ -53,7 +70,7 @@ class EntryPoint extends \Magento\Core\Model\AbstractEntryPoint
         }
 
         try {
-            $blocks = new RepositoryFactory($this->_config);
+            $blocks = new RepositoryFactory($this->_params);
             $blocks->generate();
         } catch (\Exception $e) {
             echo $e->getMessage();
@@ -61,7 +78,7 @@ class EntryPoint extends \Magento\Core\Model\AbstractEntryPoint
         }
 
         try {
-            $handlers = new HandlerFactory($this->_config);
+            $handlers = new HandlerFactory($this->_params);
             $handlers->generate();
         } catch (\Exception $e) {
             echo $e->getMessage();

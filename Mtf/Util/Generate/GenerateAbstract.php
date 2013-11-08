@@ -78,23 +78,23 @@ class GenerateAbstract
     /**
      * Configuration instance
      *
-     * @var \Mtf\System\Config
+     * @var array
      */
-    protected $_config;
+    protected $_params;
 
     /**
      * Initialize required configuration parameters
      *
-     * @param Config $config
+     * @param array $params
      */
-    public function __construct(Config $config)
+    public function __construct(array $params)
     {
-        $this->_config = $config;
+        $this->_params = $params;
 
-        $this->_appRoot = str_replace('\\', '/', $this->_config->getParam('mtf_app_root'));
-        $this->_mtfRoot = str_replace('\\', '/', $this->_config->getParam('mtf_mtf_root'));
+        $this->_appRoot = str_replace('\\', '/', $this->_params['mtf_app_root']);
+        $this->_mtfRoot = str_replace('\\', '/', $this->_params['mtf_mtf_root']);
 
-        $generatorConfig = $this->_config->getParam('generator_config');
+        $generatorConfig = $this->_params['generator_config'];
         $this->_fallback = $generatorConfig['tests_fallback'];
     }
 
@@ -484,8 +484,10 @@ class GenerateAbstract
     protected function _getPattern($type, $location)
     {
         $globPath = $this->_mtfRoot . '/' . $location;
-        if ($this->_config->getParam('generate_specified_modules') == static::GENERATE_BY_MODULES) {
-            $configModules = new \Mtf\System\Config($this->_config->getParam('specified_modules'));
+        if (isset($this->_params['generate_specified_modules'])
+            && $this->_params['generate_specified_modules'] == static::GENERATE_BY_MODULES
+        ) {
+            $configModules = new \Mtf\System\Config($this->_params['specified_modules']);
             $modules = $configModules->getConfigParam();
             if (empty($modules)) {
                 throw new \RuntimeException('Generator modules configuration file is empty');

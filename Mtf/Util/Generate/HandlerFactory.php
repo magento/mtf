@@ -42,7 +42,7 @@ class HandlerFactory extends GenerateAbstract
     {
         $items = $this->collectItems('Handler');
 
-        $generatorConfig = $this->_config->getParam('generator_config');
+        $generatorConfig = $this->_params['generator_config'];
         $fallback = $generatorConfig['handler_fallback'];
 
         $byTypes = array();

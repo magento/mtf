@@ -26,7 +26,7 @@ class Pages extends GenerateAbstract
      */
     public function generate()
     {
-        $filteredModules = $this->_config->getParam('modules', array());
+        $filteredModules = $this->_params['modules'];
 
         $items = $this->collectMca(array('admin', 'frontend'), $filteredModules);
 
