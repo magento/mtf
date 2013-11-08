@@ -72,7 +72,7 @@ class SelectElement extends Element
      */
     public function getValue()
     {
-        return $this->_getWrappedElement(true)->selectedValue();
+        return $this->_getWrappedElement(true)->selectedLabel();
     }
 
     /**
