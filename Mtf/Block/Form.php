@@ -48,8 +48,8 @@ class Form extends Block
                     : (isset($field['selector']) ? $field['selector'] : '#' . $key);
 
                 $mapping[$key]['strategy'] = isset($this->_mapping[$key]['strategy'])
-                    ? $this->_mapping[$key]['selector']
-                    : (isset($field['selector']) ? $field['selector'] : Locator::SELECTOR_CSS);
+                    ? $this->_mapping[$key]['strategy']
+                    : (isset($field['strategy']) ? $field['strategy'] : Locator::SELECTOR_CSS);
 
                 $mapping[$key]['input'] = isset($this->_mapping[$key]['input'])
                     ? $this->_mapping[$key]['input']
