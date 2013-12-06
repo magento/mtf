@@ -83,7 +83,6 @@ abstract class DataFixture implements Fixture
 
         $this->_applyPlaceholders($this->_data, array('isolation' => mt_rand()));
         $this->_applyPlaceholders($this->_data, $this->_placeholders);
-        $this->_placeholders = array();
     }
 
     /**
@@ -112,7 +111,6 @@ abstract class DataFixture implements Fixture
     {
         // apply placeholders if available
         $this->_applyPlaceholders($this->_data, $this->_placeholders);
-        $this->_placeholders = array();
 
         if (empty($this->_data)) {
             throw new \RuntimeException('Data must be set');
