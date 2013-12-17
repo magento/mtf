@@ -13,7 +13,6 @@ namespace Mtf\Client\Driver\Selenium;
 
 use Mtf\Client\Element as ElementInterface;
 use Mtf\Client\Element\Locator;
-use Mtf\Client\Driver\Selenium\SelectElement;
 
 /**
  * Class Element

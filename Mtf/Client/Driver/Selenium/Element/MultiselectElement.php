@@ -11,17 +11,14 @@
 
 namespace Mtf\Client\Driver\Selenium\Element;
 
-use Mtf\Client\Driver\Selenium\Element\SelectElement;
-use Mtf\Client\Element\Locator;
-
 /**
- * Class MultiSelectElement
+ * Class MultiselectElement
  * Class provides ability to work with page element multiselect
  * (Such as setting/getting value, clicking, drag-n-drop element, etc)
  *
  * @package Mtf\Client\Driver\Selenium\Element
  */
-class MultiSelectElement extends SelectElement
+class MultiselectElement extends SelectElement
 {
     /**
      * @var \PHPUnit_Extensions_Selenium2TestCase_Element_Select
