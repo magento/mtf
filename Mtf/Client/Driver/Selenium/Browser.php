@@ -11,9 +11,6 @@
 
 namespace Mtf\Client\Driver\Selenium;
 
-use Mtf\Client\Driver\Selenium\SelectElement;
-use Mtf\Client\Driver\Selenium\MultiSelectElement;
-use Mtf\Factory\Factory;
 use Mtf\Client\Element\Locator;
 
 /**
