@@ -18,7 +18,7 @@ use Mtf\ObjectManager;
  * @package Mtf\TestSuite
  * @api
  */
-class TestCase extends \PHPUnit_Framework_TestSuite
+class TestCase extends TestSuite
 {
     /**
      * @var ObjectManager
@@ -95,6 +95,16 @@ class TestCase extends \PHPUnit_Framework_TestSuite
     {
         $this->callback = $callback;
         $this->callbackArguments = $arguments;
+    }
+
+    /**
+     * Return the callback arguments.
+     *
+     * @return array
+     */
+    public function getCallbackArguments()
+    {
+        return $this->callbackArguments;
     }
 
     /**

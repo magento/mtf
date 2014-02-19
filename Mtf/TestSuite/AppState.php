@@ -20,7 +20,7 @@ use Mtf\ObjectManager;
  * @package Mtf\TestSuite
  * @api
  */
-class AppState extends \PHPUnit_Framework_TestSuite
+class AppState extends TestSuite
 {
     /**
      * @var ObjectManager

@@ -9,6 +9,7 @@
 namespace Mtf\TestCase;
 
 use Mtf\Constraint\AbstractConstraint;
+use Mtf\TestRunner\Process\ProcessManager;
 
 /**
  * Class Injectable
@@ -109,7 +110,7 @@ abstract class Injectable extends Functional
      * @param \PHPUnit_Framework_TestResult $result
      * @return \PHPUnit_Framework_TestResult
      */
-    public function run(\PHPUnit_Framework_TestResult $result = null)
+    public function run(\PHPUnit_Framework_TestResult $result = NULL)
     {
         /** @var $testVariationIterator \Mtf\Util\Iterator\TestCaseVariation */
         $testVariationIterator = $this->objectManager->create('Mtf\Util\Iterator\TestCaseVariation',
@@ -118,8 +119,14 @@ abstract class Injectable extends Functional
             ]
         );
         while ($testVariationIterator->valid()) {
-            $variation = $testVariationIterator->current();
-            $this->executeTestVariation($result, $variation);
+            if ($this->isParallelRun) {
+                // Running this test instance in a new thread.  Arguments will be merged when test runs on new thread.
+                $this->setVariationName($testVariationIterator->key());
+                parent::run($result);
+            } else {
+                $variation = $testVariationIterator->current();
+                $this->executeTestVariation($result, $variation);
+            }
             $testVariationIterator->next();
         }
         return $result;
