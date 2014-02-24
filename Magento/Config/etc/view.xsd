@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * {license_notice}
+ *
+ * @category    Magento
+ * @package     Framework
+ * @subpackage  Config
+ * @copyright   {copyright}
+ * @license     {license_link}
+ */
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="view">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="vars" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="var" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:simpleContent>
+                                        <xs:extension base="xs:string">
+                                            <xs:attribute name="name" type="xs:string" use="required"/>
+                                        </xs:extension>
+                                    </xs:simpleContent>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="module" type="xs:string" use="required"/>
+                    </xs:complexType>
+                    <xs:unique name="varNameIdentifier">
+                        <xs:selector xpath="var"/>
+                        <xs:field xpath="@name"/>
+                    </xs:unique>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+        <xs:unique name="varsModuleIdentifier">
+            <xs:selector xpath="vars"/>
+            <xs:field xpath="@module"/>
+        </xs:unique>
+    </xs:element>
+</xs:schema>

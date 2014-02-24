@@ -7,7 +7,9 @@
     "license":      "proprietary",
     "autoload": {
         "psr-0": {
-            "Mtf\\": ""
+            "Mtf\\": "",
+            "Magento\\": "",
+            "": "tests/app"
         }
     }
 }
