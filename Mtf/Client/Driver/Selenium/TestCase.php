@@ -2,9 +2,6 @@
 /**
  * {license_notice}
  *
- * @category    Mtf
- * @package     Mtf
- * @subpackage  functional_tests
  * @copyright   {copyright}
  * @license     {license_link}
  */
@@ -17,6 +14,7 @@ namespace Mtf\Client\Driver\Selenium;
  * Entry point to selenium
  *
  * @package Mtf\Client\Driver\Selenium
+ * @api
  */
 class TestCase extends \PHPUnit_Extensions_Selenium2TestCase
 {
@@ -28,12 +26,15 @@ class TestCase extends \PHPUnit_Extensions_Selenium2TestCase
 
     /**
      * Constructor
-     * @param int $timeout
+     *
+     * @constructor
+     * @param \Mtf\System\Config $config
      */
-    public function __construct($timeout = 10000)
+    public function __construct(\Mtf\System\Config $config)
     {
-        $this->_timeout = $timeout;
+        $this->_timeout = $config->getConfigParam('server/selenium/seleniumServerRequestsTimeout', 10) * 1000;
     }
+
     /**
      * Wait until callback isn't null or timeout occurs
      *
@@ -54,6 +55,6 @@ class TestCase extends \PHPUnit_Extensions_Selenium2TestCase
      */
     public function setSessionStrategy($strategy)
     {
-        $this->setUpSessionStrategy(array('sessionStrategy' => $strategy));
+        $this->setUpSessionStrategy(['sessionStrategy' => $strategy]);
     }
 }

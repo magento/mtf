@@ -2,10 +2,6 @@
 /**
  * {license_notice}
  *
- * @api
- * @category    Mtf
- * @package     Mtf
- * @subpackage  functional_tests
  * @copyright   {copyright}
  * @license     {license_link}
  */
@@ -24,6 +20,7 @@ use PHPUnit_Framework_TestSuite;
  * This listener provides strategy of reopening browser according reopen_browser_on config.
  *
  * @package Mtf\System\Browser
+ * @internal
  */
 class Listener implements \PHPUnit_Framework_TestListener
 {

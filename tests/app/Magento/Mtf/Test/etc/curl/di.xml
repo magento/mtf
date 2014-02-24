@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * {license_notice}
+ *
+ * @copyright   {copyright}
+ * @license     {license_link}
+ */
+-->
+<config>
+    <preference for="Magento\Mtf\Test\Handler\TestInterface" type="Magento\Mtf\Test\Handler\Test\Curl" />
+</config>

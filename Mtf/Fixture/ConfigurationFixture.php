@@ -2,16 +2,11 @@
 /**
  * {license_notice}
  *
- * @category    Mtf
- * @package     Mtf
- * @subpackage  functional_tests
  * @copyright   {copyright}
  * @license     {license_link}
  */
 
 namespace Mtf\Fixture;
-
-use Mtf\Fixture;
 
 /**
  * Class ConfigurationFixture
@@ -19,8 +14,10 @@ use Mtf\Fixture;
  * Ensures that system under test configured accordingly to fixture.
  *
  * @package Mtf\Fixture
+ * @api
+ * @abstract
  */
-abstract class ConfigurationFixture implements Fixture
+abstract class ConfigurationFixture implements FixtureInterface
 {
     //
 }

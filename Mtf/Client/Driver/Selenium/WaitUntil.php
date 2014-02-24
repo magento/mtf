@@ -2,9 +2,6 @@
 /**
  * {license_notice}
  *
- * @category    Mtf
- * @package     Mtf
- * @subpackage  functional_tests
  * @copyright   {copyright}
  * @license     {license_link}
  */
@@ -17,13 +14,14 @@ namespace Mtf\Client\Driver\Selenium;
  * Implements waitUntil method functionality
  *
  * @package Mtf\Client\Driver\Selenium
+ * @api
  */
 class WaitUntil
 {
     /**
      * PHPUnit Test Case instance
      *
-     * @var \PHPUnit_Extensions_Selenium2TestCase
+     * @var \Mtf\Client\Driver\Selenium\TestCase
      */
     private $_testCase;
 
@@ -42,9 +40,10 @@ class WaitUntil
     private $_defaultSleepInterval = 500;
 
     /**
-     * @param \PHPUnit_Extensions_Selenium2TestCase $testCase
+     * @constructor
+     * @param \Mtf\Client\Driver\Selenium\TestCase $testCase
      */
-    public function __construct(\PHPUnit_Extensions_Selenium2TestCase $testCase)
+    public function __construct(\Mtf\Client\Driver\Selenium\TestCase $testCase)
     {
         $this->_testCase = $testCase;
     }

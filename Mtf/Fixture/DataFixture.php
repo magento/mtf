@@ -2,16 +2,12 @@
 /**
  * {license_notice}
  *
- * @category    Mtf
- * @package     Mtf
- * @subpackage  functional_tests
  * @copyright   {copyright}
  * @license     {license_link}
  */
 
 namespace Mtf\Fixture;
 
-use Mtf\Fixture;
 use Mtf\Repository\AbstractRepository;
 use Mtf\System\Config;
 
@@ -21,36 +17,38 @@ use Mtf\System\Config;
  * Ensures correct data representation between the system under test and testing framework
  *
  * @package Mtf\Fixture
+ * @api
+ * @abstract
  */
-abstract class DataFixture implements Fixture
+abstract class DataFixture implements FixtureInterface
 {
     /**
      * Fixture data
      *
      * @var array
      */
-    protected $_data = array();
+    protected $_data = [];
 
     /**
      * Fixture default data configuration
      *
      * @var array
      */
-    protected $_defaultConfig = array();
+    protected $_defaultConfig = [];
 
     /**
      * Fixture Data Configuration
      *
      * @var array
      */
-    protected $_dataConfig = array();
+    protected $_dataConfig = [];
 
     /**
      * Array of placeholders applied on data
      *
      * @var array
      */
-    protected $_placeholders = array();
+    protected $_placeholders = [];
 
     /**
      * Configuration instance
@@ -73,7 +71,7 @@ abstract class DataFixture implements Fixture
      * @param Config $configuration
      * @param array $placeholders
      */
-    public function __construct(Config $configuration, array $placeholders = array())
+    public function __construct(Config $configuration, array $placeholders = [])
     {
         $this->_configuration = $configuration;
 
@@ -81,7 +79,7 @@ abstract class DataFixture implements Fixture
 
         $this->_initData();
 
-        $this->_applyPlaceholders($this->_data, array('isolation' => mt_rand()));
+        $this->_applyPlaceholders($this->_data, ['isolation' => mt_rand()]);
         $this->_applyPlaceholders($this->_data, $this->_placeholders);
     }
 
@@ -92,13 +90,8 @@ abstract class DataFixture implements Fixture
 
     /**
      * Persists prepared data into application
-     *
-     * @throws \BadMethodCallException
      */
-    public function persist()
-    {
-        throw new \BadMethodCallException('Not implemented yet');
-    }
+    abstract public function persist();
 
     /**
      * Return prepared data set.
@@ -195,7 +188,7 @@ abstract class DataFixture implements Fixture
     protected function _applyPlaceholders(array & $data, array $placeholders)
     {
         if ($placeholders) {
-            $replacePairs = array();
+            $replacePairs = [];
             foreach ($placeholders as $pattern => $replacement) {
                 $replacePairs['%' . $pattern . '%'] = $replacement;
             }
@@ -232,10 +225,10 @@ abstract class DataFixture implements Fixture
             return true;
         }
 
-        $this->_data = isset($dataSet['data']) ? $dataSet['data'] : array();
-        $this->_dataConfig = isset($dataSet['config']) ? $dataSet['config'] : array();
+        $this->_data = isset($dataSet['data']) ? $dataSet['data'] : [];
+        $this->_dataConfig = isset($dataSet['config']) ? $dataSet['config'] : [];
 
-        $this->_applyPlaceholders($this->_data, array('isolation' => mt_rand()));
+        $this->_applyPlaceholders($this->_data, ['isolation' => mt_rand()]);
         $this->_applyPlaceholders($this->_data, $this->_placeholders);
 
         return true;

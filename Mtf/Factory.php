@@ -2,9 +2,6 @@
 /**
  * {license_notice}
  *
- * @category    Mtf
- * @package     Mtf
- * @subpackage  functional_tests
  * @copyright   {copyright}
  * @license     {license_link}
  */
@@ -15,66 +12,42 @@ namespace Mtf;
  * Interface for Factories
  *
  * @package Mtf
+ * @deprecated
  */
 interface Factory
 {
     /**
-     * Init handler factory
-     */
-    public static function initApp();
-
-    /**
      * Get handler factory
      *
-     * @return \Mtf\Handler\HandlerFactory
+     * @return \Mtf\Handler\HandlerFactoryDeprecated
      */
     public static function getApp();
 
     /**
-     * Init client browser
-     */
-    public static function initClientBrowser();
-
-    /**
-     * Get client browser
-     *
-     * @return \Mtf\Client\Browser
-     */
-    public static function getClientBrowser();
-
-    /**
-     * Init page factory
-     */
-    public static function initPageFactory();
-
-    /**
      * Get page factory
      *
-     * @return \Mtf\Page\PageFactory
+     * @return \Mtf\Page\PageFactoryDeprecated
      */
     public static function getPageFactory();
 
     /**
-     * Init block factory
-     */
-    public static function initBlockFactory();
-
-    /**
      * Get block factory
      *
-     * @return \Mtf\Block\BlockFactory
+     * @return \Mtf\Block\BlockFactoryDeprecated
      */
     public static function getBlockFactory();
 
     /**
-     * Init fixture factory
+     * Get fixture factory
+     *
+     * @return \Mtf\Fixture\FixtureFactoryDeprecated
      */
-    public static function initFixtureFactory();
+    public static function getFixtureFactory();
 
     /**
      * Get fixture factory
      *
-     * @return \Mtf\Fixture\FixtureFactory
+     * @return \Mtf\Fixture\RepositoryFactoryDeprecated
      */
-    public static function getFixtureFactory();
+    public static function getRepositoryFactory();
 }

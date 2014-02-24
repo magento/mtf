@@ -2,17 +2,13 @@
 /**
  * {license_notice}
  *
- * @api
- * @category    Mtf
- * @package     Mtf
- * @subpackage  functional_tests
  * @copyright   {copyright}
  * @license     {license_link}
  */
 
 namespace Mtf\Block;
 
-use Mtf\Fixture;
+use Mtf\Fixture\FixtureInterface;
 use Mtf\Client\Element;
 use Mtf\Client\Element\Locator;
 
@@ -21,6 +17,7 @@ use Mtf\Client\Element\Locator;
  * Is used to represent any form on the page
  *
  * @package Mtf\Block
+ * @api
  */
 class Form extends Block
 {
@@ -39,7 +36,7 @@ class Form extends Block
      */
     protected function dataMapping(array $fields)
     {
-        $mapping = array();
+        $mapping = [];
         foreach ($fields as $key => $field) {
             if (isset($field['value'])) {
                 $mapping[$key]['selector'] = isset($this->_mapping[$key])
@@ -81,10 +78,10 @@ class Form extends Block
     /**
      * Fill the root form
      *
-     * @param Fixture $fixture
+     * @param FixtureInterface $fixture
      * @param Element $element
      */
-    public function fill(Fixture $fixture, Element $element = null)
+    public function fill(FixtureInterface $fixture, Element $element = null)
     {
         $data = $fixture->getData('fields');
         $mapping = $this->dataMapping($data);
@@ -116,11 +113,11 @@ class Form extends Block
     /**
      * Verify the root form
      *
-     * @param Fixture $fixture
+     * @param FixtureInterface $fixture
      * @param Element $element
      * @return bool
      */
-    public function verify(Fixture $fixture, Element $element = null)
+    public function verify(FixtureInterface $fixture, Element $element = null)
     {
         $data = $fixture->getData('fields');
         $mapping = $this->dataMapping($data);

@@ -2,10 +2,6 @@
 /**
  * {license_notice}
  *
- * @api
- * @category    Mtf
- * @package     Mtf
- * @subpackage  functional_tests
  * @copyright   {copyright}
  * @license     {license_link}
  */
@@ -21,6 +17,7 @@ use Mtf\System\Config;
  * Listener which provides framework with isolation capability
  *
  * @package Mtf\System\Isolation
+ * @internal
  */
 class Listener implements \PHPUnit_Framework_TestListener
 {
@@ -58,21 +55,21 @@ class Listener implements \PHPUnit_Framework_TestListener
      *
      * @var array
      */
-    private $_modeStack = array();
+    private $_modeStack = [];
 
     /**
      * Default stack of scopes
      *
      * @var array
      */
-    private $_defaultModeStack = array();
+    private $_defaultModeStack = [];
 
     /**
      * Last default modes
      *
      * @var array
      */
-    private $_lastDefaultModes = array();
+    private $_lastDefaultModes = [];
 
     /**
      * Isolation driver instance
@@ -82,6 +79,7 @@ class Listener implements \PHPUnit_Framework_TestListener
     private $_driver;
 
     /**
+     * @constructor
      * @param \Mtf\System\Isolation\Driver $driver
      * @param null|\Mtf\System\Config $configuration
      */
@@ -91,11 +89,11 @@ class Listener implements \PHPUnit_Framework_TestListener
             $configuration = new Config();
         }
         $this->_driver = $driver;
-        $this->_lastDefaultModes = array(
+        $this->_lastDefaultModes = [
             self::SCOPE_TEST_SUITE => $configuration->getConfigParam('isolation/' . self::SCOPE_TEST_SUITE),
             self::SCOPE_TEST_CASE  => $configuration->getConfigParam('isolation/' . self::SCOPE_TEST_CASE),
             self::SCOPE_TEST       => $configuration->getConfigParam('isolation/' . self::SCOPE_TEST),
-        );
+        ];
     }
 
     /**
@@ -167,7 +165,7 @@ class Listener implements \PHPUnit_Framework_TestListener
         }
         $newDefaultModes = $this->_lastDefaultModes;
         $mode = false;
-        $available = array(self::MODE_BOTH, self::MODE_AFTER, self::MODE_BEFORE, self::MODE_NONE);
+        $available = [self::MODE_BOTH, self::MODE_AFTER, self::MODE_BEFORE, self::MODE_NONE];
         foreach ($annotation['isolation'] as $isolationMode) {
             $isolationMode = trim($isolationMode);
             $scopeDefaultMode = false;
@@ -217,7 +215,7 @@ class Listener implements \PHPUnit_Framework_TestListener
         $mode = $this->_getMode($annotation, $scope);
         array_push($this->_defaultModeStack, $this->_lastDefaultModes);
         if (!$this->_isolated
-            && ($this->_isolationRequired || in_array($mode, array(self::MODE_BOTH, self::MODE_BEFORE)))
+            && ($this->_isolationRequired || in_array($mode, [self::MODE_BOTH, self::MODE_BEFORE]))
         ) {
             $this->_driver->isolate();
             $this->_isolated = true;
@@ -233,7 +231,7 @@ class Listener implements \PHPUnit_Framework_TestListener
     {
         $mode = array_pop($this->_modeStack);
         $this->_lastDefaultModes = array_pop($this->_defaultModeStack);
-        if (in_array($mode, array(self::MODE_BOTH, self::MODE_AFTER))) {
+        if (in_array($mode, [self::MODE_BOTH, self::MODE_AFTER])) {
             $this->_isolationRequired = true;
         }
     }

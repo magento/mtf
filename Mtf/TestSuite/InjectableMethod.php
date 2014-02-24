@@ -1,0 +1,212 @@
+<?php
+/**
+ * {license_notice}
+ *
+ * @copyright   {copyright}
+ * @license     {license_link}
+ */
+
+namespace Mtf\TestSuite;
+
+use Mtf\ObjectManager;
+
+/**
+ * Class InjectableMethod
+ *
+ * @package Mtf\TestSuite
+ * @api
+ */
+class InjectableMethod extends InjectableTestCase
+{
+    /**
+     * @constructor
+     * @param string $class
+     * @param string $name
+     * @param string $path
+     */
+    public function __construct($class = '', $name = '', $path = '')
+    {
+        $this->initObjectManager();
+        if (!$class || !class_exists($class, false)) {
+            $this->addTest(
+                self::warning(
+                    sprintf('Test Case Class is not valid or empty: "%s"', $class)
+                )
+            );
+            return;
+        }
+        if (!$name) {
+            $this->addTest(
+                self::warning(
+                    sprintf('Test Method Should be set for InjectableMethod class. Test Case Class: %s', $class)
+                )
+            );
+            return;
+        }
+        $this->setName($name);
+
+        $arguments = [
+            'class' => $class,
+            'path' => $path,
+            'name' => $name
+        ];
+
+        $theClass = new \ReflectionClass($class);
+        $method = $theClass->getMethod($name);
+        if (!$this->isPublicTestMethod($method)) {
+            return;
+        }
+
+        $methodName = $method->getName();
+        $test = self::createTest($theClass, $methodName, $arguments);
+        if ($test instanceof \PHPUnit_Framework_TestCase
+            || $test instanceof InjectableMethod
+        ) {
+            $test->setDependencies(
+                \PHPUnit_Util_Test::getDependencies($class, $methodName)
+            );
+        }
+        $this->addTest($test, \PHPUnit_Util_Test::getGroups($class, $methodName));
+
+        $this->testCase = true;
+    }
+
+    /**
+     * Check if test is eligible before adding to the suite.
+     *
+     * @param  \PHPUnit_Framework_Test $test
+     * @param  array $groups
+     */
+    public function addTest(\PHPUnit_Framework_Test $test, $groups = [])
+    {
+        $allow = true;
+        if ($test instanceof \PHPUnit_Framework_TestCase) {
+            $rule = $this->objectManager->get('Mtf\TestRunner\Rule\ObjectComposite');
+            $allow = $rule->apply($test);
+        }
+        if ($allow) {
+            parent::addTest($test, $groups);
+        }
+    }
+
+    /**
+     * Custom implementation of native PHPUnit_Framework_TestSuite::createTest method
+     *  - Test Case class should be instantiated with MTF Object Manager
+     *  - Data Provider Test Suite should be instantiated with MTF Object Manager
+     *
+     * @param \ReflectionClass $theClass
+     * @param string $name
+     * @param array $arguments
+     * @return \PHPUnit_Framework_Test
+     * @throws \PHPUnit_Framework_Exception
+     */
+    public static function createTest(\ReflectionClass $theClass, $name, array $arguments = [])
+    {
+        $objectManager = \Mtf\ObjectManager::getInstance();
+
+        $class = $theClass->getName();
+
+        $arguments['name'] = $name;
+
+        $backupSettings = \PHPUnit_Util_Test::getBackupSettings($class, $name);
+        $preserveGlobalState = \PHPUnit_Util_Test::getPreserveGlobalStateSettings($class, $name);
+        $runTestInSeparateProcess = \PHPUnit_Util_Test::getProcessIsolationSettings($class, $name);
+
+        try {
+            $data = \PHPUnit_Util_Test::getProvidedData($class, $name);
+        } catch (\Exception $e) {
+            $message = sprintf(
+                'The data provider specified for %s::%s is invalid.',
+                $class,
+                $name
+            );
+            $_message = $e->getMessage();
+            if (!empty($_message)) {
+                $message .= "\n" . $_message;
+            }
+
+            $data = new \PHPUnit_Framework_Warning($message);
+        }
+
+        // Test method with @dataProvider.
+        if (isset($data)) {
+            $test = $objectManager->create('Mtf\TestSuite\InjectableDataProvider',
+                [
+                    'class' => $class . '::' . $name
+                ]);
+            if (empty($data)) {
+                $data = new \PHPUnit_Framework_Warning(
+                    sprintf(
+                        'No tests found in suite "%s".',
+                        $test->getName()
+                    )
+                );
+            }
+
+            $groups = \PHPUnit_Util_Test::getGroups($class, $name);
+
+            if ($data instanceof \PHPUnit_Framework_Warning) {
+                $test->addTest($data, $groups);
+            } else {
+                foreach ($data as $_dataName => $_data) {
+                    $_arguments = $arguments;
+                    $_arguments['data'] = $_data;
+                    $_arguments['dataName'] = $_dataName;
+                    $_test = $objectManager->create($class, $_arguments);
+
+                    if ($runTestInSeparateProcess) {
+                        $_test->setRunTestInSeparateProcess(TRUE);
+
+                        if ($preserveGlobalState !== NULL) {
+                            $_test->setPreserveGlobalState($preserveGlobalState);
+                        }
+                    }
+
+                    if ($backupSettings['backupGlobals'] !== NULL) {
+                        $_test->setBackupGlobals(
+                            $backupSettings['backupGlobals']
+                        );
+                    }
+
+                    if ($backupSettings['backupStaticAttributes'] !== NULL) {
+                        $_test->setBackupStaticAttributes(
+                            $backupSettings['backupStaticAttributes']
+                        );
+                    }
+
+                    $test->addTest($_test, $groups);
+                }
+            }
+        } else {
+            $test = $objectManager->create($class, $arguments);
+        }
+
+        if (!isset($test)) {
+            throw new \PHPUnit_Framework_Exception('No valid test provided.');
+        }
+
+        if ($test instanceof \PHPUnit_Framework_TestCase) {
+            $test->setName($name);
+
+            if ($runTestInSeparateProcess) {
+                $test->setRunTestInSeparateProcess(TRUE);
+
+                if ($preserveGlobalState !== NULL) {
+                    $test->setPreserveGlobalState($preserveGlobalState);
+                }
+            }
+
+            if ($backupSettings['backupGlobals'] !== NULL) {
+                $test->setBackupGlobals($backupSettings['backupGlobals']);
+            }
+
+            if ($backupSettings['backupStaticAttributes'] !== NULL) {
+                $test->setBackupStaticAttributes(
+                    $backupSettings['backupStaticAttributes']
+                );
+            }
+        }
+
+        return $test;
+    }
+}

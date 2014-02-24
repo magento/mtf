@@ -2,3 +2,4 @@
 /vendor
 /generated
 /.idea
+phpunit.xml

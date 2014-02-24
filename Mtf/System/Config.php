@@ -2,10 +2,6 @@
 /**
  * {license_notice}
  *
- * @api
- * @category    Mtf
- * @package     Mtf
- * @subpackage  functional_tests
  * @copyright   {copyright}
  * @license     {license_link}
  */
@@ -18,6 +14,7 @@ use Symfony\Component\Yaml\Yaml;
  * Class Config
  *
  * @package Mtf\System
+ * @api
  */
 class Config
 {
@@ -31,6 +28,7 @@ class Config
     /**
      * Reads input file with configuration if not empty $filePath
      *
+     * @constructor
      * @param null|string $filePath
      */
     public function __construct($filePath = null)
@@ -47,27 +45,27 @@ class Config
     protected function _init($filePath)
     {
         if (is_string($filePath)) {
-            $paths = array($filePath);
+            $paths = [$filePath];
         } else {
-            $paths = array(
-                self::getEnvironmentValue('server_config_path'),
-                self::getEnvironmentValue('app_config_path'),
-                self::getEnvironmentValue('isolation_config_path'),
-                self::getEnvironmentValue('handlers_config_path')
-            );
+            $paths = [
+                self::getEnvironmentValue('server_config_path', 'config/server.yml.dist'),
+                self::getEnvironmentValue('app_config_path', 'config/application.yml.dist'),
+                self::getEnvironmentValue('isolation_config_path', 'config/isolation.yml.dist'),
+                self::getEnvironmentValue('handlers_config_path', 'config/handler.yml.dist')
+            ];
         }
 
         foreach ($paths as $path) {
-            if (!file_exists($path)) {
+            if (!file_exists(MTF_BP . '/' . $path)) {
                 throw new \Exception(
-                    'Configuration file ' . $path . ' cannot be found!'
+                    'Configuration file "' . $path . '" cannot be found!'
                 );
             }
             list ($prefix, $suffix) = explode('.yml', $path);
             $prefix = str_replace('\\', '/', $prefix);
             $prefix = explode('/', $prefix);
             $configurationScope = array_pop($prefix);
-            $this->_params[$configurationScope] = Yaml::parse($path);
+            $this->_params[$configurationScope] = Yaml::parse(MTF_BP . '/' . $path);
         }
     }
 
@@ -75,18 +73,19 @@ class Config
      * Get parameters
      *
      * @param null|string $key
+     * @param null|string $default
      * @return array|string|null
      */
-    public function getConfigParam($key = null)
+    public function getConfigParam($key = null, $default = null)
     {
         if (null === $key) {
-            $param = $this->_params;
+            $param = isset($this->_params) ? $this->_params : $default;
         } elseif (strpos($key, '/')) {
-            $param = $this->getParamByPath($key);
+            $param = $this->getParamByPath($key, $default);
         } elseif (isset($this->_params[$key])) {
             $param = $this->_params[$key];
         } else {
-            $param = null;
+            $param = $default;
         }
 
         return $param;
@@ -98,9 +97,10 @@ class Config
      * Method consider the path as chain of keys: a/b/c => ['a']['b']['c']
      *
      * @param string $path
+     * @param null|string $default
      * @return mixed
      */
-    public function getParamByPath($path)
+    public function getParamByPath($path, $default = null)
     {
         $keys = explode('/', $path);
 
@@ -109,7 +109,7 @@ class Config
             if (is_array($data) && isset($data[$key])) {
                 $data = $data[$key];
             } else {
-                return null;
+                return $default;
             }
         }
         return $data;
@@ -119,12 +119,13 @@ class Config
      * Return value from $_ENV container
      *
      * @param string $param
+     * @param string $default
      * @return null|string
      */
-    public static function getEnvironmentValue($param)
+    public static function getEnvironmentValue($param, $default = null)
     {
         if (!isset($_ENV[$param])) {
-            return null;
+            return $default;
         }
         return $_ENV[$param];
     }

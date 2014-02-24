@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* {license_notice}
+*
+* @copyright   {copyright}
+* @license     {license_link}
+*/
+-->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/3.7/phpunit.xsd"
          bootstrap="bootstrap.php"
@@ -6,7 +14,7 @@
          verbose="true">
     <testsuites>
         <testsuite name="PHPUnit">
-            <directory suffix=".php">testsuites/Mtf/TestSuite</directory>
+            <directory suffix=".php">tests/Magento/Mtf</directory>
         </testsuite>
     </testsuites>
 
@@ -20,12 +28,13 @@
     </listeners>
 
     <php>
-        <env name="app_frontend_url" value="http://localhost/index.php/"/>
-        <env name="app_backend_url" value="http://localhost/index.php/backend/"/>
-        <env name="app_config_path" value="framework/config/application.yml.dist"/>
-        <env name="server_config_path" value="framework/config/server.yml.dist"/>
-        <env name="isolation_config_path" value="framework/config/isolation.yml.dist"/>
-        <env name="handlers_config_path" value="framework/config/handler.yml.dist"/>
+        <env name="app_frontend_url" value="http://google.com/"/>
+        <env name="app_backend_url" value="http://localhost/backend/"/>
+        <env name="app_config_path" value="config/application.yml.dist"/>
+        <env name="server_config_path" value="config/server.yml.dist"/>
+        <env name="isolation_config_path" value="config/isolation.yml.dist"/>
+        <env name="handlers_config_path" value="config/handler.yml.dist"/>
+        <env name="configuration:Magento/Mtf/TestSuite/MtfTests" value="basic"/>
     </php>
 
 </phpunit>

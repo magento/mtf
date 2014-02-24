@@ -2,10 +2,6 @@
 /**
  * {license_notice}
  *
- * @api
- * @category    Mtf
- * @package     Mtf
- * @subpackage  functional_tests
  * @copyright   {copyright}
  * @license     {license_link}
  */
@@ -22,6 +18,7 @@ use Mtf\Factory\Factory;
  * Base isolation driver
  *
  * @package Mtf\System\Isolation\Driver
+ * @internal
  */
 class Base implements Driver
 {
@@ -34,6 +31,8 @@ class Base implements Driver
 
     /**
      * Constructor
+     *
+     * @constructor
      */
     public function __construct()
     {

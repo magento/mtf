@@ -2,16 +2,11 @@
 /**
  * {license_notice}
  *
- * @category    Mtf
- * @package     Mtf
- * @subpackage  functional_tests
  * @copyright   {copyright}
  * @license     {license_link}
  */
 
 namespace Mtf\Fixture;
-
-use Mtf\Fixture;
 
 /**
  * Class SessionFixture
@@ -19,8 +14,10 @@ use Mtf\Fixture;
  * Feeds system under test session with required data
  *
  * @package Mtf\Fixture
+ * @api
+ * @abstract
  */
-abstract class SessionFixture implements Fixture
+abstract class SessionFixture implements FixtureInterface
 {
 
 }

@@ -1,0 +1,40 @@
+<?php
+/**
+ * {license_notice}
+ *
+ * @copyright   {copyright}
+ * @license     {license_link}
+ */
+
+namespace Mtf\Fixture;
+
+use Mtf\Fixture;
+
+/**
+ * Interface for Fixture classes
+ *
+ * @package Mtf\Fixture
+ * @api
+ */
+interface FixtureInterface
+{
+    /**
+     * Persists prepared data into application
+     */
+    public function persist();
+
+    /**
+     * Return prepared data set
+     *
+     * @param $key [optional]
+     * @return mixed
+     */
+    public function getData($key = null);
+
+    /**
+     * Return data set configuration settings
+     *
+     * @return array
+     */
+    public function getDataConfig();
+}

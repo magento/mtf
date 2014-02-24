@@ -2,9 +2,6 @@
 /**
  * {license_notice}
  *
- * @category    Mtf
- * @package     Mtf
- * @subpackage  functional_tests
  * @copyright   {copyright}
  * @license     {license_link}
  */
@@ -12,6 +9,7 @@
 namespace Mtf\Client\Driver\Selenium;
 
 use Mtf\Client\Element\Locator;
+use Mtf\System\Config;
 
 /**
  * Class Browser
@@ -20,8 +18,9 @@ use Mtf\Client\Element\Locator;
  * working with windows, alerts, prompts etc.
  *
  * @package \Mtf\Client\Driver\Selenium
+ * @api
  */
-final class Browser implements \Mtf\Client\Browser
+class Browser implements \Mtf\Client\Browser
 {
     /**
      * Selenium test case
@@ -31,9 +30,16 @@ final class Browser implements \Mtf\Client\Browser
     protected $_driver;
 
     /**
+     * Selenium test case prototype
+     *
+     * @var TestCase
+     */
+    protected $_prototype;
+
+    /**
      * Configuration for driver
      *
-     * @var array
+     * @var Config
      */
     protected $_configuration;
 
@@ -41,11 +47,15 @@ final class Browser implements \Mtf\Client\Browser
      * Constructor
      *
      * @constructor
-     * @param array $configuration
+     * @param TestCase $driver
+     * @param Config $configuration
      */
-    final public function __construct(array $configuration)
+    public function __construct(TestCase $driver, Config $configuration)
     {
+        $this->_prototype = clone $driver;
+        $this->_driver = $driver;
         $this->_configuration = $configuration;
+
         $this->_init();
     }
 
@@ -54,11 +64,9 @@ final class Browser implements \Mtf\Client\Browser
      */
     protected function _init()
     {
-        $this->_driver = isset($this->_configuration['seleniumServerRequestsTimeout']) ?
-            new TestCase($this->_configuration['seleniumServerRequestsTimeout'] * 1000) : new TestCase();
-
+        $this->_driver = clone $this->_prototype;
         $this->_driver->setBrowserUrl('about:blank');
-        $this->_driver->setupSpecificBrowser($this->_configuration);
+        $this->_driver->setupSpecificBrowser($this->_configuration->getConfigParam('server/selenium'));
         $this->_driver->prepareSession();
 
         $this->_driver->currentWindow()->maximize();
@@ -109,8 +117,8 @@ final class Browser implements \Mtf\Client\Browser
         $this->_driver->stop();
         $this->_driver->setSessionStrategy('isolated');
         $this->_init();
-        if (isset($this->_configuration['sessionStrategy'])) {
-            $this->_driver->setSessionStrategy($this->_configuration['sessionStrategy']);
+        if ($sessionStrategy = $this->_configuration->getConfigParam('server/selenium/sessionStrategy')) {
+            $this->_driver->setSessionStrategy($sessionStrategy);
         }
     }
 

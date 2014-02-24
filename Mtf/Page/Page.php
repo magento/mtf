@@ -2,19 +2,16 @@
 /**
  * {license_notice}
  *
- * @category    Mtf
- * @package     Mtf
- * @subpackage  functional_tests
  * @copyright   {copyright}
  * @license     {license_link}
  */
 
 namespace Mtf\Page;
 
-use Mtf\Factory\Factory;
-use Mtf\Fixture\DataFixture;
-use Mtf\Page as PageInterface;
-use Mtf\Client\Driver\Selenium\Browser;
+use Mtf\Block\BlockFactory;
+use Mtf\Block\BlockInterface;
+use Mtf\Fixture\FixtureInterface;
+use Mtf\Client\Browser;
 use Mtf\System\Config;
 
 /**
@@ -24,9 +21,15 @@ use Mtf\System\Config;
  * and provide public getter methods to provide access to blocks
  *
  * @package Mtf\Page
+ * @api
  */
 class Page implements PageInterface
 {
+    /**
+     * Page url
+     */
+    const MCA = '';
+
     /**
      * Client Browser
      *
@@ -49,19 +52,41 @@ class Page implements PageInterface
     protected $_configuration;
 
     /**
-     * Constructor
+     * Page blocks definitions array
      *
+     * @var array
+     */
+    protected $_blocks = [];
+
+    /**
+     * Page blocks instances
+     *
+     * @var BlockInterface[]
+     */
+    protected $_blockInstances = [];
+
+    /**
+     * @var BlockFactory
+     */
+    protected $_blockFactory;
+
+    /**
+     * Constructor
      * Set configuration instance, client browser and call _init method
      *
+     * @constructor
      * @param Config $configuration
+     * @param Browser $browser
+     * @param BlockFactory $blockFactory
      */
-    final public function __construct(Config $configuration)
+    public function __construct(Config $configuration, Browser $browser, BlockFactory $blockFactory)
     {
         $this->_configuration = $configuration;
-
-        $this->_browser = Factory::getClientBrowser();
+        $this->_browser = $browser;
+        $this->_blockFactory = $blockFactory;
 
         $this->_init();
+        $this->_initBlocks();
     }
 
     public function __set($property, $value)
@@ -74,7 +99,12 @@ class Page implements PageInterface
      */
     protected function _init()
     {
-        $this->_url = '';
+        //
+    }
+
+    protected function _initBlocks()
+    {
+        //
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -83,9 +113,10 @@ class Page implements PageInterface
     /**
      * Page initialization
      *
-     * @param DataFixture $fixture
+     * @param FixtureInterface $fixture
+     * @return void
      */
-    public function init(DataFixture $fixture)
+    public function init(FixtureInterface $fixture)
     {
         //
     }
@@ -96,7 +127,7 @@ class Page implements PageInterface
      * @param array $params
      * @return $this
      */
-    public function open(array $params = array())
+    public function open(array $params = [])
     {
         $url = $this->_url;
 
@@ -112,5 +143,33 @@ class Page implements PageInterface
         $this->_browser->open($url);
 
         return $this;
+    }
+
+    /**
+     * Retrieve an instance of block
+     *
+     * @param $blockName
+     * @return BlockInterface
+     * @throws \InvalidArgumentException
+     */
+    public function getBlockInstance($blockName)
+    {
+        if (!isset($this->_blockInstances[$blockName])) {
+            $blockMeta = isset($this->_blocks[$blockName]) ? $this->_blocks[$blockName] : [];
+            $class = isset($blockMeta['class']) ? $blockMeta['class'] : false;
+            if ($class) {
+                $element = $this->_browser->find($blockMeta['locator'], $blockMeta['strategy']);
+                $block = $this->_blockFactory->create($class, [
+                    'element' => $element
+                ]);
+            } else {
+                throw new \InvalidArgumentException("There is no such block '{$blockName}' declared for the page "
+                    . "'{$class}' ");
+            }
+
+            $this->_blockInstances[$blockName] = $block;
+        }
+        // @todo fix to get link to new page if page reloaded
+        return $this->_blockInstances[$blockName]->reinitRootElement();
     }
 }

@@ -2,9 +2,6 @@
 /**
  * {license_notice}
  *
- * @category    Mtf
- * @package     Mtf
- * @subpackage  functional_tests
  * @copyright   {copyright}
  * @license     {license_link}
  */
@@ -15,15 +12,18 @@ namespace Mtf\Repository;
  * Class Abstract Repository
  *
  * @package Mtf\Repository
+ * @api
+ * @abstract
  */
-abstract class AbstractRepository
+abstract class AbstractRepository implements RepositoryInterface
 {
     /**
      * @var array
      */
-    protected $_data = array();
+    protected $_data = [];
 
     /**
+     * @constructor
      * @param array $defaultConfig
      * @param array $defaultData
      */
@@ -31,8 +31,7 @@ abstract class AbstractRepository
 
     /**
      * Get a Data Set from repository
-     *
-     * Return all Data Sets if no data set name specified.
+     * Return all Data Sets if no data set name specified
      *
      * @param string $dataSetName
      * @return array
@@ -43,6 +42,6 @@ abstract class AbstractRepository
             return $this->_data;
         }
 
-        return isset($this->_data[$dataSetName]) ? $this->_data[$dataSetName] : array();
+        return isset($this->_data[$dataSetName]) ? $this->_data[$dataSetName] : [];
     }
 }

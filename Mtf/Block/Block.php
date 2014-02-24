@@ -2,19 +2,14 @@
 /**
  * {license_notice}
  *
- * @api
- * @category    Mtf
- * @package     Mtf
- * @subpackage  functional_tests
  * @copyright   {copyright}
  * @license     {license_link}
  */
 
 namespace Mtf\Block;
 
-use Mtf\Block as BlockInterface;
-use Mtf\Client\Driver\Selenium\Element;
-use Mtf;
+use Mtf\Client\Element;
+use Mtf\Client\Element\Locator;
 
 /**
  * Class Block
@@ -27,13 +22,14 @@ use Mtf;
  *
  * @package Mtf\Block
  * @abstract
+ * @api
  */
 abstract class Block implements BlockInterface
 {
     /**
      * The root element of the block
      *
-     * @var Mtf\Client\Element
+     * @var Element
      */
     protected $_rootElement;
 
@@ -51,8 +47,9 @@ abstract class Block implements BlockInterface
     public function __construct(Element $element)
     {
         $this->_rootElement = $element;
+
         $this->_init();
-        $this->tmpElement = function() use ($element) {
+        $this->tmpElement = function () use ($element) {
             return clone $element;
         };
     }
@@ -90,7 +87,7 @@ abstract class Block implements BlockInterface
     /**
      * Wait for element is visible in the block
      */
-    public function waitForElementVisible($selector, $strategy = Mtf\Client\Element\Locator::SELECTOR_CSS)
+    public function waitForElementVisible($selector, $strategy = Locator::SELECTOR_CSS)
     {
         $browser = $this->_rootElement;
         return $browser->waitUntil(
@@ -104,7 +101,7 @@ abstract class Block implements BlockInterface
     /**
      * Wait for element is visible in the block
      */
-    public function waitForElementNotVisible($selector, $strategy = Mtf\Client\Element\Locator::SELECTOR_CSS)
+    public function waitForElementNotVisible($selector, $strategy = Locator::SELECTOR_CSS)
     {
         $browser = $this->_rootElement;
         return $browser->waitUntil(

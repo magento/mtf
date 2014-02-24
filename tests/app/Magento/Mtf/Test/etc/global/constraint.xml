@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<!--
+/**
+* {license_notice}
+*
+* @copyright   {copyright}
+* @license     {license_link}
+*/
+-->
+<constraint>
+    <pageOpenSuccess module="Magento_Mtf">
+        <severeness>low</severeness>
+        <require>
+            <page class="Magento\Mtf\Test\Page\Area\TestPage" />
+            <fixture class="Magento\Mtf\Test\Fixture\Test" />
+        </require>
+        <message></message>
+    </pageOpenSuccess>
+</constraint>

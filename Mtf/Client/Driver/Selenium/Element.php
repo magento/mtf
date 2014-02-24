@@ -2,9 +2,6 @@
 /**
  * {license_notice}
  *
- * @category    Mtf
- * @package     Mtf
- * @subpackage  functional_tests
  * @copyright   {copyright}
  * @license     {license_link}
  */
@@ -21,6 +18,7 @@ use Mtf\Client\Element\Locator;
  * (Such as setting/getting value, clicking, drag-n-drop element, etc)
  *
  * @package Mtf\Client\Driver\Selenium\Element
+ * @api
  */
 class Element implements ElementInterface
 {
@@ -57,12 +55,12 @@ class Element implements ElementInterface
      * Set driver, context and locator.
      *
      * @constructor
-     * @param \PHPUnit_Extensions_Selenium2TestCase $driver
+     * @param \Mtf\Client\Driver\Selenium\TestCase $driver
      * @param Locator $locator
      * @param Element $context
      */
     final public function __construct(
-        \PHPUnit_Extensions_Selenium2TestCase $driver,
+        \Mtf\Client\Driver\Selenium\TestCase $driver,
         Locator $locator,
         Element $context = null
     ) {
@@ -109,7 +107,7 @@ class Element implements ElementInterface
                 $driver = $this->_driver;
                 $this->_driver->waitUntil( function () use ($driver) {
                     $result = $driver->execute(
-                        array('script' => "return document['readyState']", 'args' => array())
+                        ['script' => "return document['readyState']", 'args' => []]
                     );
                     return $result === 'complete' || $result === 'uninitialized';
                 });
@@ -256,7 +254,7 @@ class Element implements ElementInterface
      */
     public function keys(array $keys)
     {
-        $this->_getWrappedElement()->value(array('value' => $keys));
+        $this->_getWrappedElement()->value(['value' => $keys]);
     }
 
     /**

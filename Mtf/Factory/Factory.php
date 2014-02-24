@@ -1,4 +1,10 @@
 <?php
+/**
+ * {license_notice}
+ *
+ * @copyright   {copyright}
+ * @license     {license_link}
+ */
 
 namespace Mtf\Factory;
 
@@ -12,6 +18,8 @@ use Mtf;
  * Factory class is responsible for providing static access to entities factories
  *
  * @package Mtf\Factory
+ * @api
+ * @deprecated
  */
 class Factory implements FactoryInterface
 {
@@ -25,7 +33,7 @@ class Factory implements FactoryInterface
     /**
      * Handlers Factory
      *
-     * @var Mtf\Handler\HandlerFactory
+     * @var Mtf\Handler\HandlerFactoryDeprecated
      */
     protected static $_app;
 
@@ -44,37 +52,50 @@ class Factory implements FactoryInterface
     /**
      * Page Factory
      *
-     * @var Mtf\Page\PageFactory
+     * @var Mtf\Page\PageFactoryDeprecated
      */
     protected static $_pageFactory;
 
     /**
      * Block Factory
      *
-     * @var Mtf\Block\BlockFactory
+     * @var Mtf\Block\BlockFactoryDeprecated
      */
     protected static $_blockFactory;
 
     /**
      * Fixture Factory
      *
-     * @var Mtf\Fixture\FixtureFactory
+     * @var Mtf\Fixture\FixtureFactoryDeprecated
      */
     protected static $_fixtureFactory;
 
     /**
-     * Fixture Factory
+     * Repository Factory
      *
-     * @var Mtf\Fixture\RepositoryFactory
+     * @var Mtf\Repository\RepositoryFactoryDeprecated
      */
     protected static $_repositoryFactory;
+
+    /**
+     * @var \Mtf\ObjectManager
+     */
+    protected static $_objectManager;
+
+    /**
+     * Init Object Manager
+     */
+    public static function initObjectManager()
+    {
+        self::$_objectManager = \Mtf\ObjectManager::getInstance();
+    }
 
     /**
      * Init configuration
      */
     public static function initConfig()
     {
-        self::$_config = new Config();
+        self::$_config = self::getObjectManager()->get('Mtf\System\Config');
     }
 
     /**
@@ -82,8 +103,7 @@ class Factory implements FactoryInterface
      */
     public static function initApp()
     {
-        $config = self::getConfig();
-        self::$_app = new Mtf\Handler\HandlerFactory($config);
+        self::$_app = self::getObjectManager()->get('Mtf\Handler\HandlerFactoryDeprecated');
     }
 
     /**
@@ -91,12 +111,7 @@ class Factory implements FactoryInterface
      */
     public static function initClientBrowser()
     {
-        $config = self::getConfig();
-        $serverConfiguration = $config->getConfigParam('server');
-        $arrayKeys = array_keys($serverConfiguration);
-        $serverName = reset($arrayKeys);
-        $browserClass = 'Mtf\\Client\\Driver\\' . ucfirst($serverName) . '\Browser';
-        self::$_clientBrowser = new $browserClass($serverConfiguration[$serverName]);
+        self::$_clientBrowser = self::getObjectManager()->get('Mtf\Client\Driver\Selenium\Browser');
     }
 
     /**
@@ -104,8 +119,7 @@ class Factory implements FactoryInterface
      */
     public static function initPageFactory()
     {
-        $config = self::getConfig();
-        self::$_pageFactory = new Mtf\Page\PageFactory($config);
+        self::$_pageFactory = self::getObjectManager()->get('Mtf\Page\PageFactoryDeprecated');
     }
 
     /**
@@ -113,8 +127,7 @@ class Factory implements FactoryInterface
      */
     public static function initBlockFactory()
     {
-        $config = self::getConfig();
-        self::$_blockFactory = new Mtf\Block\BlockFactory($config);
+        self::$_blockFactory = self::getObjectManager()->get('Mtf\Block\BlockFactoryDeprecated');
     }
 
     /**
@@ -122,8 +135,7 @@ class Factory implements FactoryInterface
      */
     public static function initFixtureFactory()
     {
-        $config = self::getConfig();
-        self::$_fixtureFactory = new Mtf\Fixture\FixtureFactory($config);
+        self::$_fixtureFactory = self::getObjectManager()->get('Mtf\Fixture\FixtureFactoryDeprecated');
     }
 
     /**
@@ -131,8 +143,20 @@ class Factory implements FactoryInterface
      */
     public static function initRepositoryFactory()
     {
-        $config = self::getConfig();
-        self::$_repositoryFactory = new Mtf\Repository\RepositoryFactory($config);
+        self::$_repositoryFactory = self::getObjectManager()->get('Mtf\Repository\RepositoryFactoryDeprecated');
+    }
+
+    /**
+     * Get Object Manager
+     *
+     * @return \Mtf\ObjectManager
+     */
+    public static function getObjectManager()
+    {
+        if (!self::$_objectManager) {
+            self::initObjectManager();
+        }
+        return self::$_objectManager;
     }
 
     /**
@@ -151,7 +175,7 @@ class Factory implements FactoryInterface
     /**
      * Get handlers factory
      *
-     * @return Mtf\Handler\HandlerFactory
+     * @return Mtf\Handler\HandlerFactoryDeprecated
      */
     public static function getApp()
     {
@@ -179,7 +203,7 @@ class Factory implements FactoryInterface
      * Get Page factory
      *
      * @api
-     * @return Mtf\Page\PageFactory
+     * @return Mtf\Page\PageFactoryDeprecated
      */
     public static function getPageFactory()
     {
@@ -193,7 +217,7 @@ class Factory implements FactoryInterface
      * Get block factory
      *
      * @api
-     * @return Mtf\Block\BlockFactory
+     * @return Mtf\Block\BlockFactoryDeprecated
      */
     public static function getBlockFactory()
     {
@@ -207,7 +231,7 @@ class Factory implements FactoryInterface
      * Get fixture factory
      *
      * @api
-     * @return Mtf\Fixture\FixtureFactory
+     * @return Mtf\Fixture\FixtureFactoryDeprecated
      */
     public static function getFixtureFactory()
     {
@@ -221,7 +245,7 @@ class Factory implements FactoryInterface
      * Get repository factory
      *
      * @api
-     * @return Mtf\Repository\RepositoryFactory
+     * @return Mtf\Repository\RepositoryFactoryDeprecated
      */
     public static function getRepositoryFactory()
     {

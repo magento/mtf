@@ -2,17 +2,12 @@
 /**
  * {license_notice}
  *
- * @spi
- * @category    Mtf
- * @package     Mtf
- * @subpackage  functional_tests
  * @copyright   {copyright}
  * @license     {license_link}
  */
 
 namespace Mtf\Handler;
 
-use Mtf\Handler;
 use Mtf\System\Config;
 
 /**
@@ -21,8 +16,10 @@ use Mtf\System\Config;
  * Abstract class for direct handlers
  *
  * @package Mtf\Handler
+ * @api
+ * @abstract
  */
-abstract class Direct implements Handler
+abstract class Direct implements HandlerInterface
 {
     /**
      * Configuration parameters array
@@ -33,10 +30,11 @@ abstract class Direct implements Handler
 
     /**
      * Constructor
+     *
      * @constructor
      * @param Config $configuration
      */
-    public function __construct($configuration)
+    public function __construct(Config $configuration)
     {
         $this->_configuration = $configuration;
     }

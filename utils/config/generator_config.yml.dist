@@ -5,9 +5,6 @@ specified_modules: dev\tests\mtf\utils\config\ee_modules.yml.dist
 # Fallback path configurations
 tests_fallback:
     1:
-        path: tests/design
-        namespace: Magento\Plush
-    2:
         path: tests/app
 
 # Handler priority configuration

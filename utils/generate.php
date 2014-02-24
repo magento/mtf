@@ -1,17 +1,45 @@
 <?php
+/**
+ * {license_notice}
+ *
+ * @copyright   {copyright}
+ * @license     {license_link}
+ */
 
-$appRoot = dirname(dirname(dirname(dirname(__DIR__))));
-$mtfRoot = dirname(dirname(__FILE__));
-require_once $mtfRoot . DIRECTORY_SEPARATOR . 'bootstrap.php';
+umask(0);
 
-$generatorConfigFile = $mtfRoot . "/utils/config/generator_config.yml.dist";
-$generatorConfig = new \Mtf\System\Config($generatorConfigFile);
-$params = $generatorConfig->getConfigParam();
+$mtfRoot = dirname(__DIR__);
+$mtfRoot = str_replace('\\', '/', $mtfRoot);
+define('MTF_BP', $mtfRoot);
 
-$params['mtf_app_root'] = $appRoot;
-$params['mtf_mtf_root'] = $mtfRoot;
+include_once $mtfRoot . '/bootstrap.php';
 
-$params = array_merge($params, $_REQUEST);
+$path = get_include_path();
+$path = rtrim($path, PATH_SEPARATOR);
+$path .= PATH_SEPARATOR . MTF_BP;
+$path .= PATH_SEPARATOR . MTF_BP . '/lib';
+set_include_path($path);
 
-$entryPoint = new \Mtf\Util\EntryPoint($params);
-$entryPoint->processRequest();
+$objectManager = \Mtf\ObjectManagerFactory::getObjectManager();
+
+/** @var $generate \Mtf\Util\Generate\Constraint */
+$generate = $objectManager->get('Mtf\Util\Generate\Constraint');
+$generate->launch();
+
+/** @var $generate \Mtf\Util\Generate\Fixture */
+$generate = $objectManager->get('Mtf\Util\Generate\Fixture');
+$generate->launch();
+
+/** @var $generate \Mtf\Util\Generate\Page */
+$generate = $objectManager->get('Mtf\Util\Generate\Page');
+$generate->launch();
+
+/** @var $generate \Mtf\Util\Generate\Repository */
+$generate = $objectManager->get('Mtf\Util\Generate\Repository');
+$generate->launch();
+
+/** @var $generate \Mtf\Util\Generate\Handler */
+$generate = $objectManager->get('Mtf\Util\Generate\Handler');
+$generate->launch();
+
+\Mtf\Util\Generate\GenerateResult::displayResults();
