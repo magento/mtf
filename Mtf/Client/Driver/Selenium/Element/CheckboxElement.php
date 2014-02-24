@@ -2,9 +2,6 @@
 /**
  * {license_notice}
  *
- * @category    Mtf
- * @package     Mtf
- * @subpackage  functional_tests
  * @copyright   {copyright}
  * @license     {license_link}
  */
@@ -12,7 +9,6 @@
 namespace Mtf\Client\Driver\Selenium\Element;
 
 use Mtf\Client\Driver\Selenium\Element;
-use Mtf\Client\Element\Locator;
 
 /**
  * Class CheckboxElement
@@ -20,6 +16,7 @@ use Mtf\Client\Element\Locator;
  * (Such as setting/getting value)
  *
  * @package Mtf\Client\Driver\Selenium\Element
+ * @api
  */
 class CheckboxElement extends Element
 {

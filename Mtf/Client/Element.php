@@ -2,9 +2,6 @@
 /**
  * {license_notice}
  *
- * @category    Mtf
- * @package     Mtf
- * @subpackage  functional_tests
  * @copyright   {copyright}
  * @license     {license_link}
  */
@@ -19,6 +16,7 @@ use Mtf\Client\Element\Locator;
  * Classes that implement this interface represents element of a page and provide ability to interact with this element.
  *
  * @package Mtf\Client
+ * @api
  */
 interface Element
 {

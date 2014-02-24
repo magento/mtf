@@ -2,9 +2,6 @@
 /**
  * {license_notice}
  *
- * @category    Mtf
- * @package     Mtf
- * @subpackage  functional_tests
  * @copyright   {copyright}
  * @license     {license_link}
  */
@@ -17,6 +14,7 @@ namespace Mtf\Client\Driver\Selenium\Element;
  * (Such as setting/getting value, clicking, drag-n-drop element, etc)
  *
  * @package Mtf\Client\Driver\Selenium\Element
+ * @api
  */
 class MultiselectElement extends SelectElement
 {

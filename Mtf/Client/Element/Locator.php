@@ -2,9 +2,6 @@
 /**
  * {license_notice}
  *
- * @category    Mtf
- * @package     Mtf
- * @subpackage  functional_tests
  * @copyright   {copyright}
  * @license     {license_link}
  */
@@ -17,8 +14,9 @@ namespace Mtf\Client\Element;
  * Locator class is responsible for keeping selector/location data of element on the page.
  *
  * @package Mtf\Client\Element
+ * @api
  */
-class Locator extends \ArrayObject
+class Locator implements \ArrayAccess
 {
     /**#@+
      * Locator strategy (from Selenium)
@@ -33,14 +31,65 @@ class Locator extends \ArrayObject
     /**#@-*/
 
     /**
+     * Container for locator properties
+     *
+     * @var array
+     */
+    private $container = [];
+
+    /**
+     * @constructor
      * @param string $value
      * @param string $strategy
      */
     public function __construct($value, $strategy = self::SELECTOR_CSS)
     {
-        parent::__construct(array(
+        $this->container = [
             'value' => $value,
             'using' => $strategy
-        ));
+        ];
+    }
+
+    /**
+     * Offset to set
+     *
+     * @param mixed $offset
+     * @param mixed $value
+     */
+    public function offsetSet($offset, $value) {
+        if (is_null($offset)) {
+            $this->container[] = $value;
+        } else {
+            $this->container[$offset] = $value;
+        }
+    }
+
+    /**
+     * Check whether a offset exists
+     *
+     * @param mixed $offset
+     * @return bool
+     */
+    public function offsetExists($offset) {
+        return isset($this->container[$offset]);
+    }
+
+    /**
+     * Offset to unset
+     *
+     * @param mixed $offset
+     */
+    public function offsetUnset($offset) {
+        unset($this->container[$offset]);
+    }
+
+    /**
+     * Offset to retrieve
+     *
+     * @param mixed $offset
+     * @return mixed|null
+     */
+    public function offsetGet($offset) {
+        return isset($this->container[$offset]) ? $this->container[$offset] : null;
     }
 }
