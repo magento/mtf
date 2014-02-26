@@ -8,7 +8,7 @@
 
 namespace Magento\Mtf\Test\Block;
 
-use Mtf\Block\Block;
+use Mtf\Block\Form;
 use Magento\Mtf\Test\Fixture\Test;
 
 /**
@@ -16,8 +16,17 @@ use Magento\Mtf\Test\Fixture\Test;
  *
  * @package Magento\Mtf\Test\Block
  */
-class TestBlock extends Block
+class TestBlock extends Form
 {
+    /**
+     * Array of placeholders applied on selector
+     *
+     * @var array
+     */
+    protected $placeholders = [
+        'placeholder' => 'q'
+    ];
+
     /**
      * Click on element
      *
@@ -28,5 +37,15 @@ class TestBlock extends Block
         $locator = $fixture->getLocator();
         $strategy = $fixture->getStrategy();
         $this->_rootElement->find($locator, $strategy)->click();
+    }
+
+    /**
+     * Perform search
+     *
+     * @param $fixture
+     */
+    public function search($fixture)
+    {
+        $this->fill($fixture);
     }
 }

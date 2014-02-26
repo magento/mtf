@@ -8,6 +8,7 @@
 
 namespace Mtf\Configuration;
 
+use Mtf\Util\XmlConverter;
 use Mtf\Config\FileResolver\Module;
 
 /**
@@ -21,17 +22,24 @@ class Reader
     /**
      * File Resolver
      *
-     * @var \Mtf\Config\FileResolver\Module
+     * @var Module
      */
     protected $fileResolver;
 
     /**
+     * @var XmlConverter
+     */
+    protected $xmlConverter;
+
+    /**
      * @constructor
      * @param Module $fileResolver
+     * @param \Mtf\Util\XmlConverter $xmlConverter
      */
-    public function __construct(Module $fileResolver)
+    public function __construct(Module $fileResolver, XmlConverter $xmlConverter)
     {
         $this->fileResolver = $fileResolver;
+        $this->xmlConverter = $xmlConverter;
     }
 
     /**
@@ -48,65 +56,13 @@ class Reader
         foreach ($files as $file) {
             $presetXml = simplexml_load_string($file);
             if ($presetXml instanceof \SimpleXMLElement) {
-                $array = $this->convert($presetXml);
+                $array = $this->xmlConverter->convert($presetXml);
                 if (is_array($array)) {
-                    $result = array_merge($result, $array);
+                    $result = array_replace($result, $array);
                 }
             }
         }
 
         return $result;
-    }
-
-    /**
-     * Convert SimpleXMLElement into string
-     *
-     * @param \SimpleXMLElement $element
-     * @return array|string
-     */
-    public function convert(\SimpleXMLElement $element)
-    {
-        $result = [];
-
-        foreach ($element->attributes() as $attributeName => $attribute) {
-            if ($attribute) {
-                $result[$attributeName] = (string)$attribute;
-            }
-        }
-
-        // add children values
-        if ($this->hasChildren($element)) {
-            foreach ($element->children() as $childName => $child) {
-                $result[$childName] = $this->convert($child);
-
-            }
-        } else {
-            if (empty($result)) {
-                // return as string, if nothing was found
-                $result = (string) $element;
-            } else {
-                // value has zero key element
-                $result[0] = (string) $element;
-            }
-        }
-        return $result;
-    }
-
-    /**
-     * Check whether element has children
-     *
-     * @param \SimpleXMLElement $element
-     * @return bool
-     */
-    protected function hasChildren(\SimpleXMLElement $element)
-    {
-        if (!$element->children()) {
-            return false;
-        }
-        // simplexml bug: @attributes is in children() but invisible in foreach
-        foreach ($element->children() as $child) {
-            return true;
-        }
-        return false;
     }
 }

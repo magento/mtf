@@ -8,6 +8,8 @@
 
 namespace Mtf\TestRunner\Configuration;
 
+use Mtf\Util\XmlConverter;
+
 /**
  * Class Reader
  *
@@ -44,7 +46,8 @@ class Reader
         $result = [];
 
         // add children values
-        if ($this->hasChildren($element)) {
+        $xmlConverter = new XmlConverter();
+        if ($xmlConverter->hasChildren($element)) {
             foreach ($element->children() as $childName => $child) {
                 if ($childName === 'suiteRule') {
                     $result['suiteRule'] = $this->convert($child);
@@ -70,21 +73,5 @@ class Reader
         }
 
         return $result;
-    }
-
-    /**
-     * @param \SimpleXMLElement $element
-     * @return bool
-     */
-    private function hasChildren(\SimpleXMLElement $element)
-    {
-        if (!$element->children()) {
-            return false;
-        }
-        // simplexml bug: @attributes is in children() but invisible in foreach
-        foreach ($element->children() as $child) {
-            return true;
-        }
-        return false;
     }
 }

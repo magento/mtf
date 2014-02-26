@@ -17,13 +17,10 @@ use Mtf\Fixture\InjectableFixture;
  */
 class Test extends InjectableFixture
 {
-    protected $repositoryClass = 'Magento\Mtf\Test\Repository\Test';
-
-    protected $handlerInterface = 'Magento\Mtf\Test\Handler\Test\TestInterface';
-
     protected $defaultDataSet = [
         'locator' => null,
         'strategy' => null,
+        'search' => null
     ];
 
     protected $locator = [
@@ -31,7 +28,7 @@ class Test extends InjectableFixture
         'frontend_input' => 'text',
         'frontend_label' => 'Locator',
         'is_required' => '1',
-        'default_value' => 'About',
+        'default_value' => '[name="q"]',
     ];
 
     protected $strategy = [
@@ -39,8 +36,13 @@ class Test extends InjectableFixture
         'frontend_input' => 'text',
         'frontend_label' => 'Strategy',
         'is_required' => '1',
-        'default_value' => 'link text',
+        'default_value' => 'css selector',
         'fixture' => 'Magento\Mtf\Test\Fixture\Test\Strategy',
+    ];
+
+    protected $search = [
+        'attribute_code' => 'search',
+        'default_value' => 'MTF',
     ];
 
     public function getLocator()
@@ -51,5 +53,10 @@ class Test extends InjectableFixture
     public function getStrategy()
     {
         return $this->getData('strategy');
+    }
+
+    public function getSearch()
+    {
+        return $this->getData('search');
     }
 }

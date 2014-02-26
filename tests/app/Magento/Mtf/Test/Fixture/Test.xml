@@ -24,5 +24,8 @@
             <default_value>link text</default_value>
             <fixture>Magento\Mtf\Test\Fixture\Test\Strategy</fixture>
         </strategy>
+        <search>
+            <attribute_code>search</attribute_code>
+        </search>
     </fields>
 </fixture>

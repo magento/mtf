@@ -85,4 +85,17 @@ class InjectableTestCase extends Injectable
     {
         //
     }
+
+    /**
+     * Test form filling
+     *
+     * @param TestPage $page
+     * @param Test $fixture
+     */
+    public function test7(TestPage $page, Test $fixture)
+    {
+        $page->open();
+        $page->getTestBlock()->search($fixture);
+        sleep(2);
+    }
 }

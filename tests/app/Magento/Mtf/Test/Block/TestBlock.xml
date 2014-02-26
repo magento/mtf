@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<!--
+/**
+* {license_notice}
+*
+* @copyright   {copyright}
+* @license     {license_link}
+*/
+-->
+<mapping strict="1">
+    <fields>
+        <search>
+            <selector>[name='%placeholder%']</selector>
+        </search>
+    </fields>
+</mapping>
