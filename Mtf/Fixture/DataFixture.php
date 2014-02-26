@@ -91,7 +91,10 @@ abstract class DataFixture implements FixtureInterface
     /**
      * Persists prepared data into application
      */
-    abstract public function persist();
+    public function persist()
+    {
+        //
+    }
 
     /**
      * Return prepared data set.
