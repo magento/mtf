@@ -55,32 +55,8 @@ class Factory extends \Magento\ObjectManager\Factory\Factory
         $type = get_class($object);
         $class = new \ReflectionClass($type);
         $method = $class->getMethod($method);
-        return $method->invokeArgs($object, $args);
 
-        /* Comment switch in order to use unordered argument
-        switch (count($args)) {
-            case 1:
-                return $object->$method($args[0]);
-            case 2:
-                return $object->$method($args[0], $args[1]);
-            case 3:
-                return $object->$method($args[0], $args[1], $args[2]);
-            case 4:
-                return $object->$method($args[0], $args[1], $args[2], $args[3]);
-            case 5:
-                return $object->$method($args[0], $args[1], $args[2], $args[3], $args[4]);
-            case 6:
-                return $object->$method($args[0], $args[1], $args[2], $args[3], $args[4], $args[5]);
-            case 7:
-                return $object->$method($args[0], $args[1], $args[2], $args[3], $args[4], $args[5], $args[6]);
-            case 8:
-                return $object->$method($args[0], $args[1], $args[2], $args[3], $args[4], $args[5], $args[6], $args[7]);
-            default:
-                $type = get_class($object);
-                $class = new \ReflectionClass($type);
-                $method = $class->getMethod($method);
-                return $method->invokeArgs($object, $args);
-        } */
+        return $method->invokeArgs($object, $args);
     }
 
     /**
