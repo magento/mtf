@@ -19,6 +19,7 @@ use Mtf\System\Config;
  * @package Mtf\Fixture
  * @api
  * @abstract
+ * @deprecated
  */
 abstract class DataFixture implements FixtureInterface
 {
