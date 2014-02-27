@@ -25,7 +25,7 @@ class Form extends Block
      *
      * @var array
      */
-    protected $_mapping = [];
+    protected $mapping = [];
 
     /**
      * Array of placeholders applied on selector
@@ -42,6 +42,8 @@ class Form extends Block
     protected $mappingMode = false;
 
     /**
+     * Wrap element to pass into form
+     *
      * @var string
      */
     protected $wrapper = '';
@@ -80,7 +82,7 @@ class Form extends Block
         if (file_exists($xmlFilePath)) {
             $mapping = $this->mapper->read($xmlFilePath);
             $this->wrapper = isset($mapping['wrapper']) ? $mapping['wrapper'] : '';
-            $this->_mapping = isset($mapping['fields']) ? $mapping['fields'] : [];
+            $this->mapping = isset($mapping['fields']) ? $mapping['fields'] : [];
             $this->mappingMode = isset($mapping['strict']) ? (bool)$mapping['strict'] : false;
             $this->applyPlaceholders();
         }
@@ -107,7 +109,7 @@ class Form extends Block
      */
     public function setMapping($mapping)
     {
-        $this->_mapping = array_replace($this->_mapping, $mapping);
+        $this->mapping = array_replace($this->mapping, $mapping);
     }
 
     /**
@@ -118,9 +120,9 @@ class Form extends Block
     {
         foreach ($this->placeholders as $placeholder => $replacement) {
             $pattern = '%' . $placeholder . '%';
-            foreach ($this->_mapping as $key => $locator) {
+            foreach ($this->mapping as $key => $locator) {
                 if (strpos($locator['selector'], $pattern) !== false) {
-                    $this->_mapping[$key]['selector'] = str_replace($pattern, $replacement, $locator['selector']);
+                    $this->mapping[$key]['selector'] = str_replace($pattern, $replacement, $locator['selector']);
                 }
             }
         }
@@ -135,16 +137,16 @@ class Form extends Block
     protected function dataMapping(array $fields)
     {
         $mapping = [];
-        $data = $this->mappingMode ? $this->_mapping : $fields;
+        $data = $this->mappingMode ? $this->mapping : $fields;
         foreach ($data as $key => $value) {
-            $mapping[$key]['selector'] = isset($this->_mapping[$key]['selector'])
-                ? $this->_mapping[$key]['selector']
+            $mapping[$key]['selector'] = isset($this->mapping[$key]['selector'])
+                ? $this->mapping[$key]['selector']
                 : (($this->wrapper != '') ? "[name='{$this->wrapper}[{$key}]']" : "[name={$key}]");
-            $mapping[$key]['strategy'] = isset($this->_mapping[$key]['strategy'])
-                ? $this->_mapping[$key]['strategy']
+            $mapping[$key]['strategy'] = isset($this->mapping[$key]['strategy'])
+                ? $this->mapping[$key]['strategy']
                 : Element\Locator::SELECTOR_CSS;
-            $mapping[$key]['input'] = isset($this->_mapping[$key]['input'])
-                ? $this->_mapping[$key]['input']
+            $mapping[$key]['input'] = isset($this->mapping[$key]['input'])
+                ? $this->mapping[$key]['input']
                 : null;
             $mapping[$key]['value'] = $this->mappingMode
                 ? (isset($fields[$key]['value']) ? $fields[$key]['value'] : $fields[$key])
