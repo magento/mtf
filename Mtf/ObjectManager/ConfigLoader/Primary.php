@@ -33,8 +33,11 @@ class Primary
     {
         $reader = new \Mtf\ObjectManager\Config\Reader\Dom(
             new \Mtf\Config\FileResolver\Primary(),
-            new \Magento\ObjectManager\Config\Mapper\Dom(),
-            new \Mtf\ObjectManager\Config\SchemaLocator(),
+            new \Magento\ObjectManager\Config\Mapper\Dom(
+                new \Magento\Stdlib\BooleanUtils(),
+                new \Magento\ObjectManager\Config\Mapper\ArgumentParser()
+            ),
+            new \Magento\ObjectManager\Config\SchemaLocator(),
             new \Mtf\Config\ValidationState($this->_appMode)
         );
 

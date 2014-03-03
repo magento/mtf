@@ -40,7 +40,7 @@ class Scoped extends \Magento\Config\Data
     /**
      * Scope priority loading scheme
      *
-     * @var array
+     * @var string[]
      */
     protected $_scopePriorityScheme = array();
 
@@ -52,6 +52,8 @@ class Scoped extends \Magento\Config\Data
     protected $_loadedScopes = array();
 
     /**
+     * Constructor
+     *
      * @param \Magento\Config\ReaderInterface $reader
      * @param \Magento\Config\ScopeInterface $configScope
      * @param \Magento\Config\CacheInterface $cache
@@ -74,7 +76,7 @@ class Scoped extends \Magento\Config\Data
      *
      * @param string $path
      * @param mixed $default
-     * @return mixed
+     * @return array|mixed|null
      */
     public function get($path = null, $default = null)
     {
@@ -84,6 +86,8 @@ class Scoped extends \Magento\Config\Data
 
     /**
      * Load data for current scope
+     *
+     * @return void
      */
     protected function _loadScopedData()
     {

@@ -12,14 +12,18 @@ interface Config
     /**
      * Set class relations
      *
-     * @param \Magento\ObjectManager\Relations $relations
+     * @param Relations $relations
+     *
+     * @return void
      */
     public function setRelations(Relations $relations);
 
     /**
      * Set configuration cache instance
      *
-     * @param \Magento\ObjectManager\ConfigCache $cache
+     * @param ConfigCache $cache
+     *
+     * @return void
      */
     public function setCache(ConfigCache $cache);
 
@@ -27,10 +31,9 @@ interface Config
      * Retrieve list of arguments per type
      *
      * @param string $type
-     * @param array $arguments
      * @return array
      */
-    public function getArguments($type, $arguments);
+    public function getArguments($type);
 
     /**
      * Check whether type is shared

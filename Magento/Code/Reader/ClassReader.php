@@ -54,7 +54,7 @@ class ClassReader
      * )
      *
      * @param string $className
-     * @return array
+     * @return string[]
      */
     public function getParents($className)
     {

@@ -10,6 +10,8 @@
 
 namespace Magento\Code\Generator;
 
+use \Magento\Autoload\IncludePath;
+
 abstract class EntityAbstract
 {
     /**
@@ -18,7 +20,7 @@ abstract class EntityAbstract
     const ENTITY_TYPE = 'abstract';
 
     /**
-     * @var array
+     * @var string[]
      */
     private $_errors = array();
 
@@ -37,47 +39,47 @@ abstract class EntityAbstract
     private $_resultClassName;
 
     /**
-     * @var \Magento\Code\Generator\Io
+     * @var Io
      */
     private $_ioObject;
 
     /**
      * Autoloader instance
      *
-     * @var \Magento\Autoload\IncludePath
+     * @var IncludePath
      */
     private $_autoloader;
 
     /**
      * Class generator object
      *
-     * @var \Magento\Code\Generator\CodeGenerator\CodeGeneratorInterface
+     * @var CodeGenerator\CodeGeneratorInterface
      */
     protected $_classGenerator;
 
     /**
-     * @param null $sourceClassName
-     * @param null $resultClassName
+     * @param null|string $sourceClassName
+     * @param null|string $resultClassName
      * @param Io $ioObject
      * @param CodeGenerator\CodeGeneratorInterface $classGenerator
-     * @param \Magento\Autoload\IncludePath $autoLoader
+     * @param IncludePath $autoLoader
      */
     public function __construct(
         $sourceClassName = null,
         $resultClassName = null,
-        \Magento\Code\Generator\Io $ioObject = null,
-        \Magento\Code\Generator\CodeGenerator\CodeGeneratorInterface $classGenerator = null,
-        \Magento\Autoload\IncludePath $autoLoader = null
+        Io $ioObject = null,
+        CodeGenerator\CodeGeneratorInterface $classGenerator = null,
+        IncludePath $autoLoader = null
     ) {
         if ($autoLoader) {
             $this->_autoloader = $autoLoader;
         } else {
-            $this->_autoloader = new \Magento\Autoload\IncludePath();
+            $this->_autoloader = new IncludePath();
         }
         if ($ioObject) {
             $this->_ioObject = $ioObject;
         } else {
-            $this->_ioObject = new \Magento\Code\Generator\Io(
+            $this->_ioObject = new Io(
                 new \Magento\Filesystem\Driver\File(),
                 $this->_autoloader
             );
@@ -85,10 +87,10 @@ abstract class EntityAbstract
         if ($classGenerator) {
             $this->_classGenerator = $classGenerator;
         } else {
-            $this->_classGenerator = new \Magento\Code\Generator\CodeGenerator\Zend();
+            $this->_classGenerator = new CodeGenerator\Zend();
         }
 
-        $this->_sourceClassName = ltrim($sourceClassName, \Magento\Autoload\IncludePath::NS_SEPARATOR);
+        $this->_sourceClassName = ltrim($sourceClassName, IncludePath::NS_SEPARATOR);
         if ($resultClassName) {
             $this->_resultClassName = $resultClassName;
         } elseif ($sourceClassName) {
@@ -123,7 +125,7 @@ abstract class EntityAbstract
     /**
      * List of occurred generation errors
      *
-     * @return array
+     * @return string[]
      */
     public function getErrors()
     {
@@ -131,6 +133,8 @@ abstract class EntityAbstract
     }
 
     /**
+     * Get source class name
+     *
      * @return string
      */
     protected function _getSourceClassName()
@@ -139,16 +143,20 @@ abstract class EntityAbstract
     }
 
     /**
+     * Get fully qualified class name
+     *
      * @param string $className
      * @return string
      */
     protected function _getFullyQualifiedClassName($className)
     {
-        return \Magento\Autoload\IncludePath::NS_SEPARATOR
-            . ltrim($className, \Magento\Autoload\IncludePath::NS_SEPARATOR);
+        return IncludePath::NS_SEPARATOR
+            . ltrim($className, IncludePath::NS_SEPARATOR);
     }
 
     /**
+     * Get result class name
+     *
      * @return string
      */
     protected function _getResultClassName()
@@ -157,6 +165,8 @@ abstract class EntityAbstract
     }
 
     /**
+     * Get default result class name
+     *
      * @param string $modelClassName
      * @return string
      */
@@ -197,11 +207,13 @@ abstract class EntityAbstract
     /**
      * Returns list of methods for class generator
      *
-     * @return mixed
+     * @return array
      */
     abstract protected function _getClassMethods();
 
     /**
+     * Generate code
+     *
      * @return string
      */
     protected function _generateCode()
@@ -216,8 +228,10 @@ abstract class EntityAbstract
     }
 
     /**
+     * Add error message
+     *
      * @param string $message
-     * @return \Magento\Code\Generator\EntityAbstract
+     * @return $this
      */
     protected function _addError($message)
     {
@@ -291,7 +305,7 @@ abstract class EntityAbstract
 
     /**
      * @param string $sourceCode
-     * @return mixed
+     * @return string
      */
     protected function _fixCodeStyle($sourceCode)
     {
@@ -363,6 +377,7 @@ abstract class EntityAbstract
      *
      * @param string $sourceClassName
      * @param string $resultClassName
+     * @return void
      */
     public function init($sourceClassName, $resultClassName)
     {

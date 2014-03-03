@@ -49,8 +49,8 @@ class ObjectManager extends \Magento\ObjectManager\ObjectManager
     /**
      * Get list of parameters for class method
      *
-     * @param $type
-     * @param $method
+     * @param string $type
+     * @param string $method
      * @return array|null
      */
     public function getParameters($type, $method)
@@ -61,8 +61,8 @@ class ObjectManager extends \Magento\ObjectManager\ObjectManager
     /**
      * Resolve and prepare arguments for class method
      *
-     * @param $object
-     * @param $method
+     * @param object $object
+     * @param string $method
      * @param array $arguments
      * @return array
      */
@@ -74,8 +74,8 @@ class ObjectManager extends \Magento\ObjectManager\ObjectManager
     /**
      * Invoke class method with prepared arguments
      *
-     * @param $object
-     * @param $method
+     * @param object $object
+     * @param string $method
      * @param array $arguments
      * @return mixed
      */

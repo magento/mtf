@@ -15,7 +15,7 @@ class Dom implements \Magento\Config\ConverterInterface
     /**
      * Convert dom node tree to array
      *
-     * @param $source
+     * @param mixed $source
      * @return array
      */
     public function convert($source)

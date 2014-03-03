@@ -13,6 +13,7 @@ interface DataInterface
      * Merge config data to the object
      *
      * @param array $config
+     * @return void
      */
     public function merge(array $config);
 

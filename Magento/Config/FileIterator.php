@@ -14,26 +14,36 @@ namespace Magento\Config;
 class FileIterator implements \Iterator, \Countable
 {
     /**
+     * Cache
+     *
      * @var array
      */
     protected $cached = array();
 
     /**
+     * Paths
+     *
      * @var array
      */
     protected $paths = array();
 
     /**
+     * Position
+     *
      * @var int
      */
     protected $position;
 
     /**
+     * Read directory
+     *
      * @var \Magento\Filesystem\Directory\ReadInterface
      */
     protected $directoryRead;
 
     /**
+     * Constructor
+     *
      * @param \Magento\Filesystem\Directory\ReadInterface $directory
      * @param array $paths
      */
@@ -47,17 +57,21 @@ class FileIterator implements \Iterator, \Countable
     }
 
     /**
-     * @inheritdoc
+     *Rewind
+     *
+     * @return void
      */
-    public function rewind()
+    function rewind()
     {
         reset($this->paths);
     }
 
     /**
+     * Current
+     *
      * @return string
      */
-    public function current()
+    function current()
     {
         if (!isset($this->cached[$this->key()])) {
             $this->cached[$this->key()] = $this->directoryRead->readFile($this->key());
@@ -67,30 +81,38 @@ class FileIterator implements \Iterator, \Countable
     }
 
     /**
+     * Key
+     *
      * @return mixed
      */
-    public function key()
+    function key()
     {
         return current($this->paths);
     }
 
     /**
-     * @inheritdoc
+     * Next
+     *
+     * @return void
      */
-    public function next()
+    function next()
     {
         next($this->paths);
     }
 
     /**
+     * Valid
+     *
      * @return bool
      */
-    public function valid()
+    function valid()
     {
         return (boolean)$this->key();
     }
 
     /**
+     * Convert to an array
+     *
      * @return array
      */
     public function toArray()
@@ -99,11 +121,12 @@ class FileIterator implements \Iterator, \Countable
         foreach ($this as $item) {
             $result[$this->key()] = $item;
         }
-
         return $result;
     }
 
     /**
+     * Count
+     *
      * @return int
      */
     public function count()

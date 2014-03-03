@@ -1,6 +1,13 @@
 <?xml version="1.0"?>
-
-<config>
+<!--
+/**
+ * {license_notice}
+ *
+ * @copyright   {copyright}
+ * @license     {license_link}
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <preference for="Mtf\Client\Browser" type="Mtf\Client\Driver\Selenium\Browser" />
     <preference for="Mtf\Constraint\AbstractConstraint" type="Mtf\Constraint\Dummy" />
     <preference for="Mtf\Util\Generate\Fixture\FieldsProviderInterface" type="Mtf\Util\Generate\Fixture\DummyFieldsProvider" />
@@ -12,8 +19,8 @@
     <type name="Mtf\Fixture\FixtureInterface" shared="false" />
     <type name="Mtf\TestCase\Functional" shared="false" />
     <type name="Mtf\Util\Iterator\TestCase">
-        <param name="rule">
-            <instance type="Mtf\TestRunner\Rule\SuiteComposite" />
-        </param>
+        <arguments>
+            <argument name="rule" xsi:type="object">Mtf\TestRunner\Rule\SuiteComposite</argument>
+        </arguments>
     </type>
 </config>

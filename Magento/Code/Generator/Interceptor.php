@@ -148,7 +148,7 @@ class Interceptor extends \Magento\Code\Generator\EntityAbstract
     /**
      * Returns list of methods for class generator
      *
-     * @return mixed
+     * @return array
      */
     protected function _getClassMethods()
     {

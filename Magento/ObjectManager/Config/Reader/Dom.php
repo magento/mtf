@@ -1,7 +1,5 @@
 <?php
 /**
- * ObjectManager DOM configuration reader
- *
  * {license_notice}
  *
  * @copyright   {copyright}
@@ -12,18 +10,19 @@ namespace Magento\ObjectManager\Config\Reader;
 class Dom extends \Magento\Config\Reader\Filesystem
 {
     /**
-     * List of paths to identifiable nodes
-     *
+     * Name of an attribute that stands for data type of node values
+     */
+    const TYPE_ATTRIBUTE = 'xsi:type';
+
+    /**
      * @var array
      */
     protected $_idAttributes = array(
-        '/config/preference'         => 'for',
-        '/config/type'               => 'name',
-        '/config/type/param'         => 'name',
-        '/config/type/plugin'        => 'name',
-        '/config/virtualType'        => 'name',
-        '/config/virtualType/param'  => 'name',
-        '/config/virtualType/plugin' => 'name',
+        '/config/preference'                                    => 'for',
+        '/config/(type|virtualType)'                            => 'name',
+        '/config/(type|virtualType)/plugin'                     => 'name',
+        '/config/(type|virtualType)/arguments/argument'         => 'name',
+        '/config/(type|virtualType)/arguments/argument(/item)+' => 'name',
     );
 
     /**
@@ -56,5 +55,15 @@ class Dom extends \Magento\Config\Reader\Filesystem
             $domDocumentClass,
             $defaultScope
         );
+    }
+
+    /**
+     * Create and return a config merger instance that takes into account types of arguments
+     *
+     * {@inheritdoc}
+     */
+    protected function _createConfigMerger($mergerClass, $initialContents)
+    {
+        return new $mergerClass($initialContents, $this->_idAttributes, self::TYPE_ATTRIBUTE, $this->_perFileSchema);
     }
 }

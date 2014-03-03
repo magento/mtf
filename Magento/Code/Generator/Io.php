@@ -59,7 +59,7 @@ class Io
     /**
      * Get path to generation directory
      *
-     * @param $directory
+     * @param null|string $directory
      * @return string
      */
     protected function initGeneratorDirectory($directory = null)

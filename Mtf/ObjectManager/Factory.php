@@ -21,23 +21,23 @@ class Factory extends \Magento\ObjectManager\Factory\Factory
     /**
      * @var \Mtf\System\Code\ClassReader
      */
-    protected $_classReader;
+    protected $classReader;
 
     /**
      * @constructor
      * @param \Magento\ObjectManager\Config $config
-     * @param \Magento\ObjectManager\ObjectManager $objectManager
+     * @param \Magento\Data\Argument\InterpreterInterface $argInterpreter
+     * @param \Magento\ObjectManager\Config\Argument\ObjectFactory $argObjectFactory
      * @param \Magento\ObjectManager\Definition $definitions
-     * @param array $globalArguments
      */
     public function __construct(
         \Magento\ObjectManager\Config $config,
-        \Magento\ObjectManager\ObjectManager $objectManager = null,
-        \Magento\ObjectManager\Definition $definitions = null,
-        $globalArguments = []
+        \Magento\Data\Argument\InterpreterInterface $argInterpreter,
+        \Magento\ObjectManager\Config\Argument\ObjectFactory $argObjectFactory,
+        \Magento\ObjectManager\Definition $definitions = null
     ) {
-        parent::__construct($config, $objectManager, $definitions, $globalArguments);
-        $this->_classReader = new ClassReader();
+        parent::__construct($config, $argInterpreter, $argObjectFactory, $definitions);
+        $this->classReader = new ClassReader();
     }
 
     /**
@@ -68,13 +68,13 @@ class Factory extends \Magento\ObjectManager\Factory\Factory
      */
     public function getParameters($type, $method)
     {
-        return $this->_classReader->getParameters($type, $method);
+        return $this->classReader->getParameters($type, $method);
     }
 
     /**
      * Resolve and prepare arguments for class method
      *
-     * @param string $object
+     * @param object $object
      * @param string $method
      * @param array $arguments
      * @return array
@@ -82,7 +82,7 @@ class Factory extends \Magento\ObjectManager\Factory\Factory
     public function prepareArguments($object, $method, array $arguments = [])
     {
         $type = get_class($object);
-        $parameters = $this->_classReader->getParameters($type, $method);
+        $parameters = $this->classReader->getParameters($type, $method);
         if ($parameters == null) {
             return [];
         }
@@ -91,82 +91,54 @@ class Factory extends \Magento\ObjectManager\Factory\Factory
     }
 
     /**
-     * Overwritten to have parameters passed to nested instances.
+     * Resolve constructor arguments.
+     * Overwritten to have parameters passed via names
      *
      * @param string $requestedType
      * @param array $parameters
-     * @param array $arguments
+     * @param array $argumentValues
      * @return array
-     * @throws \LogicException
-     * @throws \InvalidArgumentException
+     * @throws \UnexpectedValueException
      * @throws \BadMethodCallException
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    protected function _resolveArguments($requestedType, array $parameters, array $arguments = [])
+    protected function _resolveArguments($requestedType, array $parameters, array $argumentValues = array())
     {
-        $resolvedArguments = [];
-        $arguments = $this->_config->getArguments($requestedType, $arguments);
-
+        $result = array();
+        $arguments = $this->_config->getArguments($requestedType);
         foreach ($parameters as $parameter) {
             list($paramName, $paramType, $paramRequired, $paramDefault) = $parameter;
-            $argument = null;
-            if (array_key_exists($paramName, $arguments)) {
-                $argument = $arguments[$paramName];
-                if ($paramType && is_array($argument) && !isset($argument['instance'])) {
-                    $argument['instance'] = $paramType;
+            if (array_key_exists($paramName, $argumentValues)) {
+                $value = $argumentValues[$paramName];
+                if ($paramType && is_array($value)) {
+                    $value = $this->_argObjectFactory->getObjectManager()->create($paramType, $value);
                 }
-            } elseif (array_key_exists('options', $arguments) && array_key_exists($paramName, $arguments['options'])) {
-                // The parameter name doesn't exist in the arguments, but it is contained in the 'options' argument.
-                $argument = $arguments['options'][$paramName];
-            } elseif ($paramRequired) {
-                if ($paramType) {
-                    $argument = ['instance' => $paramType];
-                } else {
-                    $this->_creationStack = [];
-                    throw new \BadMethodCallException(
-                        'Missing required argument $' . $paramName . ' for ' . $requestedType . '.'
-                    );
+            } else if (array_key_exists($paramName, $arguments)) {
+                $argumentData = $arguments[$paramName];
+                if (!is_array($argumentData)) {
+                    throw new \UnexpectedValueException(sprintf(
+                        'Invalid parameter configuration provided for $%s argument of %s.', $paramName, $requestedType
+                    ));
                 }
+                try {
+                    $value = $this->_argInterpreter->evaluate($argumentData);
+                } catch (\Magento\Data\Argument\MissingOptionalValueException $e) {
+                    $value = $paramDefault;
+                }
+            } else if ($paramRequired) {
+                if (!$paramType) {
+                    throw new \BadMethodCallException(sprintf(
+                        'Missing required argument $%s of %s.', $paramName, $requestedType
+                    ));
+                }
+                $value = $this->_argObjectFactory->create($paramType);
             } else {
-                $argument = $paramDefault;
+                $value = $paramDefault;
             }
-            if ($paramType && !is_object($argument) && $argument !== $paramDefault) {
-                if (!is_array($argument) || !isset($argument['instance'])) {
-                    $this->_creationStack = [];
-                    throw new \InvalidArgumentException(
-                        'Invalid parameter configuration provided for $' . $paramName . ' argument in ' . $requestedType
-                    );
-                }
-                $argumentType = $argument['instance'];
-                if (isset($this->_creationStack[$argumentType])) {
-                    $this->_creationStack = [];
-                    throw new \LogicException(
-                        'Circular dependency: ' . $argumentType . ' depends on ' . $requestedType . ' and viceversa.'
-                    );
-                }
-                $this->_creationStack[$requestedType] = 1;
-                $isShared = (!isset($argument['shared']) && $this->_config->isShared($argumentType))
-                    || (isset($argument['shared']) && $argument['shared']);
-
-                if (array_key_exists('instance', $argument)) {
-                    unset($argument['instance']);
-                }
-                if (array_key_exists('shared', $argument)) {
-                    unset($argument['shared']);
-                }
-                $_arguments = !empty($argument) ? $argument : [];
-
-                $argument = $isShared
-                    ? $this->_objectManager->get($argumentType)
-                    : $this->_objectManager->create($argumentType, $_arguments);
-                unset($this->_creationStack[$requestedType]);
-            } elseif (is_array($argument) && isset($argument['argument'])) {
-                $argKey = $argument['argument'];
-                $argument = isset($this->_globalArguments[$argKey]) ? $this->_globalArguments[$argKey] : $paramDefault;
-            } else {
-                $argument = !empty($argument) ? $argument : $paramDefault;
-            }
-            $resolvedArguments[$paramName] = $argument;
+            $result[$paramName] = $value;
         }
-        return $resolvedArguments;
+        return $result;
     }
 }

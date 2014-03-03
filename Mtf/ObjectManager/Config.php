@@ -23,6 +23,7 @@ class Config extends ObjectManagerConfig
      * @var \ReflectionClass[]
      */
     protected $_nonSharedRefClasses = [];
+
     /**
      * Check whether type is shared
      *
