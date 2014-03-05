@@ -53,6 +53,14 @@ class Process
      */
     protected $_environment;
 
+    /**
+     * Constructor
+     *
+     * @param string $job
+     * @param \PHPUnit_Framework_Test $test
+     * @param \PHPUnit_Framework_TestResult $result
+     * @param Environment $environment
+     */
     public function __construct(
         $job,
         \PHPUnit_Framework_Test $test,

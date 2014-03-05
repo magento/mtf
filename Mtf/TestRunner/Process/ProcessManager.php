@@ -11,7 +11,7 @@ namespace Mtf\TestRunner\Process;
  * Class ProcessManager
  *
  */
-class ProcessManager implements ProcessManagerInterface
+class ProcessManager
 {
     /**
      * @var ProcessManager

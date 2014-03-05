@@ -49,7 +49,7 @@ class TestResult extends \PHPUnit_Framework_TestResult
         }
 
         else {
-            if ($e instanceof \PHPUnit_Extensions_Selenium2TestCase_Exception || $e instanceof PHPUnit_Extensions_Selenium2TestCase_WebDriverException) {
+            if ($e instanceof \PHPUnit_Extensions_Selenium2TestCase_Exception) {
                 $e = new TestResultException($e);
             }
             $this->errors[] = new \PHPUnit_Framework_TestFailure($test, $e);

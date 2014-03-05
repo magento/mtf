@@ -98,16 +98,6 @@ class TestCase extends TestSuite
     }
 
     /**
-     * Return the callback arguments.
-     *
-     * @return array
-     */
-    public function getCallbackArguments()
-    {
-        return $this->callbackArguments;
-    }
-
-    /**
      * Initialize Object Manager
      */
     protected function initObjectManager()
