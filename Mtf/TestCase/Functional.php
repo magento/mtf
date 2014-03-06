@@ -84,6 +84,8 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
 
     /**
      * Protected construct for child test cases
+     *
+     * @return void
      */
     protected function _construct()
     {
