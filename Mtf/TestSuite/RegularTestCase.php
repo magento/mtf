@@ -16,7 +16,7 @@ use Mtf\ObjectManager;
  * @package Mtf\TestSuite
  * @api
  */
-class RegularTestCase extends \PHPUnit_Framework_TestSuite
+class RegularTestCase extends TestSuite
 {
     /**
      * To accept $class argument name instead of $theClass

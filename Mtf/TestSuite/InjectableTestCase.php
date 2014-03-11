@@ -16,7 +16,7 @@ use Mtf\ObjectManager;
  * @package Mtf\TestSuite
  * @api
  */
-class InjectableTestCase extends \PHPUnit_Framework_TestSuite
+class InjectableTestCase extends TestSuite
 {
     /**
      * @var ObjectManager

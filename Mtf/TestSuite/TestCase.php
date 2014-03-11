@@ -18,7 +18,7 @@ use Mtf\ObjectManager;
  * @package Mtf\TestSuite
  * @api
  */
-class TestCase extends \PHPUnit_Framework_TestSuite
+class TestCase extends TestSuite
 {
     /**
      * @var ObjectManager
