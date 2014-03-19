@@ -11,6 +11,7 @@ namespace Mtf\Util\Generate;
 use Mtf\Util\Generate\Fixture\FieldsProviderInterface;
 use Mtf\Configuration\Reader;
 use Magento\ObjectManager;
+use Mtf\Util\XmlConverter;
 
 /**
  * Class Fixture
@@ -33,19 +34,27 @@ class Fixture extends AbstractGenerate
     protected $fieldsProvider;
 
     /**
+     * @var XmlConverter
+     */
+    protected $xmlConverter;
+
+    /**
      * @constructor
      * @param ObjectManager $objectManager
      * @param Reader $configReader
      * @param FieldsProviderInterface $fieldsProvider
+     * @param XmlConverter $xmlConverter
      */
     public function __construct(
         ObjectManager $objectManager,
         Reader $configReader,
-        FieldsProviderInterface $fieldsProvider
+        FieldsProviderInterface $fieldsProvider,
+        XmlConverter $xmlConverter
     ) {
         parent::__construct($objectManager);
         $this->configReader = $configReader;
         $this->fieldsProvider = $fieldsProvider;
+        $this->xmlConverter = $xmlConverter;
     }
 
     /**
@@ -234,7 +243,7 @@ class Fixture extends AbstractGenerate
         }
 
         if (isset($contentXml->data_config)) {
-            $dataConfig = $this->configReader->convert($contentXml->data_config[0]);
+            $dataConfig = $this->xmlConverter->convert($contentXml->data_config[0]);
             if (is_array($dataConfig)) {
                 $content .= "    protected \$dataConfig = ";
                 $content .= $this->toArrayDefinition($dataConfig, '    ');
