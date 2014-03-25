@@ -49,6 +49,9 @@ class ObjectManagerFactory
         if (!defined('MTF_TESTS_PATH')) {
             define('MTF_TESTS_PATH', MTF_BP . '/tests/app/');
         }
+        if (!defined('MTF_STATES_PATH')) {
+            define('MTF_STATES_PATH', MTF_BP . '/Mtf/App/State/');
+        }
 
         $diConfig = new $this->configClassName();
         $systemConfig = new SystemConfig();

@@ -28,8 +28,13 @@ class TestSuite extends \PHPUnit_Framework_TestSuite
      * @param  false|bool $processIsolation
      * @return \PHPUnit_Framework_TestResult
      */
-    public function run(\PHPUnit_Framework_TestResult $result = NULL, $filter = FALSE, array $groups = array(), array $excludeGroups = array(), $processIsolation = FALSE)
-    {
+    public function run(
+        \PHPUnit_Framework_TestResult $result = NULL,
+        $filter = FALSE,
+        array $groups = [],
+        array $excludeGroups = [],
+        $processIsolation = FALSE
+    ) {
         if ($result === NULL) {
             $result = $this->createResult();
         }
@@ -70,7 +75,7 @@ class TestSuite extends \PHPUnit_Framework_TestSuite
                 return $result;
             }
 
-            catch (Exception $e) {
+            catch (\Exception $e) {
                 $numTests = count($this);
 
                 for ($i = 0; $i < $numTests; $i++) {
@@ -84,7 +89,7 @@ class TestSuite extends \PHPUnit_Framework_TestSuite
         if (empty($groups)) {
             $tests = $this->tests;
         } else {
-            $tests = new SplObjectStorage;
+            $tests = new \SplObjectStorage;
 
             foreach ($groups as $group) {
                 if (isset($this->groups[$group])) {

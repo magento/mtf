@@ -129,6 +129,8 @@ abstract class Injectable extends Functional
             }
             $testVariationIterator->next();
         }
+        self::$sharedArguments = [];
+
         return $result;
     }
 

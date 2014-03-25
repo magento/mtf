@@ -75,17 +75,17 @@ class ApplicationState extends AbstractIterator
      */
     protected function getAppStates()
     {
-        return [
-            'State1' => [
-                'class' => 'Mtf\App\State\State1',
-                'name' => 'Application Configuration Profile 1',
+        $states = [];
+        $statePathes = glob(MTF_STATES_PATH . 'State[0-9]*');
+
+        foreach($statePathes as $key => $path) {
+            $states[] = [
+                'class' => 'Mtf\\App\\State\\' . basename($path, ".php"),
+                'name' => 'Application Configuration Profile ' . ($key + 1),
                 'arguments' => []
-            ],
-            'State2' => [
-                'class' => 'Mtf\App\State\State2',
-                'name' => 'Application Configuration Profile 2',
-                'arguments' => []
-            ]
-        ];
+            ];
+        }
+
+        return $states;
     }
 }
