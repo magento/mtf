@@ -26,28 +26,28 @@ class TestSuite extends \PHPUnit_Framework_TestSuite
      * @param  array $groups
      * @param  array $excludeGroups
      * @param  false|bool $processIsolation
+     *
      * @return \PHPUnit_Framework_TestResult
      */
     public function run(
-        \PHPUnit_Framework_TestResult $result = NULL,
-        $filter = FALSE,
+        \PHPUnit_Framework_TestResult $result = null,
+        $filter = false,
         array $groups = [],
         array $excludeGroups = [],
-        $processIsolation = FALSE
+        $processIsolation = false
     ) {
-        if ($result === NULL) {
+        if ($result === null) {
             $result = $this->createResult();
         }
 
         $result->startTestSuite($this);
 
-        $doSetup = TRUE;
+        $doSetup = true;
 
         if (!empty($excludeGroups)) {
             foreach ($this->groups as $_group => $_tests) {
-                if (in_array($_group, $excludeGroups) &&
-                    count($_tests) == count($this->tests)) {
-                    $doSetup = FALSE;
+                if (in_array($_group, $excludeGroups) && count($_tests) == count($this->tests)) {
+                    $doSetup = false;
                 }
             }
         }
@@ -56,28 +56,23 @@ class TestSuite extends \PHPUnit_Framework_TestSuite
             try {
                 $this->setUp();
 
-                if ($this->testCase &&
+                if ($this->testCase
                     // Some extensions use test names that are not classes;
                     // The method_exists() triggers an autoload call that causes issues with die()ing autoloaders.
-                    class_exists($this->name, false) &&
-                    method_exists($this->name, 'setUpBeforeClass')) {
+                    && class_exists($this->name, false)
+                    && method_exists($this->name, 'setUpBeforeClass')
+                ) {
                     call_user_func(array($this->name, 'setUpBeforeClass'));
                 }
-            }
-
-            catch (\PHPUnit_Framework_SkippedTestSuiteError $e) {
+            } catch (\PHPUnit_Framework_SkippedTestSuiteError $e) {
                 $numTests = count($this);
-
                 for ($i = 0; $i < $numTests; $i++) {
                     $result->addFailure($this, $e, 0);
                 }
 
                 return $result;
-            }
-
-            catch (\Exception $e) {
+            } catch (\Exception $e) {
                 $numTests = count($this);
-
                 for ($i = 0; $i < $numTests; $i++) {
                     $result->addError($this, $e, 0);
                 }
@@ -109,14 +104,12 @@ class TestSuite extends \PHPUnit_Framework_TestSuite
                 $test->setBackupGlobals($this->backupGlobals);
                 $test->setBackupStaticAttributes($this->backupStaticAttributes);
 
-                $test->run(
-                  $result, $filter, $groups, $excludeGroups, $processIsolation
-                );
+                $test->run($result, $filter, $groups, $excludeGroups, $processIsolation);
             } else {
-                $runTest = TRUE;
+                $runTest = true;
 
-                if ($filter !== FALSE ) {
-                    $tmp = \PHPUnit_Util_Test::describe($test, FALSE);
+                if ($filter !== false) {
+                    $tmp = \PHPUnit_Util_Test::describe($test, false);
 
                     if ($tmp[0] != '') {
                         $name = join('::', $tmp);
@@ -125,7 +118,7 @@ class TestSuite extends \PHPUnit_Framework_TestSuite
                     }
 
                     if (preg_match($filter, $name) == 0) {
-                        $runTest = FALSE;
+                        $runTest = false;
                     }
                 }
 
@@ -134,7 +127,7 @@ class TestSuite extends \PHPUnit_Framework_TestSuite
                         if (in_array($_group, $excludeGroups)) {
                             foreach ($_tests as $_test) {
                                 if ($test === $_test) {
-                                    $runTest = FALSE;
+                                    $runTest = false;
                                     break 2;
                                 }
                             }
@@ -145,9 +138,7 @@ class TestSuite extends \PHPUnit_Framework_TestSuite
                 if ($runTest) {
                     if ($test instanceof \PHPUnit_Framework_TestCase) {
                         $test->setBackupGlobals($this->backupGlobals);
-                        $test->setBackupStaticAttributes(
-                          $this->backupStaticAttributes
-                        );
+                        $test->setBackupStaticAttributes($this->backupStaticAttributes);
                         $test->setRunTestInSeparateProcess($processIsolation);
                     }
 
@@ -162,11 +153,12 @@ class TestSuite extends \PHPUnit_Framework_TestSuite
         $processManager->waitForProcessesToComplete();
 
         if ($doSetup) {
-            if ($this->testCase &&
+            if ($this->testCase
                 // Some extensions use test names that are not classes;
                 // The method_exists() triggers an autoload call that causes issues with die()ing autoloaders.
-                class_exists($this->name, false) &&
-                method_exists($this->name, 'tearDownAfterClass')) {
+                && class_exists($this->name, false)
+                && method_exists($this->name, 'tearDownAfterClass')
+            ) {
                 call_user_func(array($this->name, 'tearDownAfterClass'));
             }
 
