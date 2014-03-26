@@ -5,11 +5,10 @@
  * @copyright   {copyright}
  * @license     {license_link}
  */
-
 namespace Magento\App\Filesystem\DirectoryList;
 
-use Magento\App\Filesystem,
-    Magento\Filesystem\DirectoryList;
+use Magento\App\Filesystem;
+use Magento\Filesystem\DirectoryList;
 
 /**
  * Class Configuration
@@ -63,7 +62,9 @@ class Configuration
     public function configure(DirectoryList $directoryList)
     {
         foreach ($this->directories as $code => $directoryConfiguration) {
-            $directoryList->addDirectory($code, $directoryConfiguration);
+            if (!$directoryList->isConfigured($code)) {
+                $directoryList->addDirectory($code, $directoryConfiguration);
+            }
         }
 
         foreach ($this->protocols as $code => $protocolConfiguration) {

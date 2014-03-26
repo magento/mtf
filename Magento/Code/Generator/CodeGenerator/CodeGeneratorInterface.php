@@ -7,7 +7,6 @@
  * @copyright   {copyright}
  * @license     {license_link}
  */
-
 namespace Magento\Code\Generator\CodeGenerator;
 
 interface CodeGeneratorInterface extends \Zend\Code\Generator\GeneratorInterface

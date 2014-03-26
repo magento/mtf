@@ -9,8 +9,8 @@
  */
 namespace Magento\Filesystem\Driver;
 
-use Magento\Filesystem\FilesystemException,
-    Magento\Filesystem\DriverInterface;
+use Magento\Filesystem\FilesystemException;
+use Magento\Filesystem\DriverInterface;
 
 class File implements DriverInterface
 {
@@ -36,7 +36,7 @@ class File implements DriverInterface
     /**
      * Is file or directory exist in file system
      *
-     * @param $path
+     * @param string $path
      * @return bool
      * @throws FilesystemException
      */
@@ -45,10 +45,7 @@ class File implements DriverInterface
         clearstatcache();
         $result = @file_exists($this->getScheme() . $path);
         if ($result === null) {
-            throw new FilesystemException(
-                sprintf('Error occurred during execution %s',
-                    $this->getWarningMessage()
-                ));
+            throw new FilesystemException(sprintf('Error occurred during execution %s', $this->getWarningMessage()));
         }
         return $result;
     }
@@ -65,10 +62,7 @@ class File implements DriverInterface
         clearstatcache();
         $result = @stat($this->getScheme() . $path);
         if (!$result) {
-            throw new FilesystemException(
-                sprintf('Cannot gather stats! %s',
-                    $this->getWarningMessage()
-                ));
+            throw new FilesystemException(sprintf('Cannot gather stats! %s', $this->getWarningMessage()));
         }
         return $result;
     }
@@ -85,10 +79,7 @@ class File implements DriverInterface
         clearstatcache();
         $result = @is_readable($this->getScheme() . $path);
         if ($result === null) {
-            throw new FilesystemException(
-                sprintf('Error occurred during execution %s',
-                    $this->getWarningMessage()
-                ));
+            throw new FilesystemException(sprintf('Error occurred during execution %s', $this->getWarningMessage()));
         }
         return $result;
     }
@@ -105,10 +96,7 @@ class File implements DriverInterface
         clearstatcache();
         $result = @is_file($this->getScheme() . $path);
         if ($result === null) {
-            throw new FilesystemException(
-                sprintf('Error occurred during execution %s',
-                    $this->getWarningMessage()
-                ));
+            throw new FilesystemException(sprintf('Error occurred during execution %s', $this->getWarningMessage()));
         }
         return $result;
     }
@@ -125,10 +113,7 @@ class File implements DriverInterface
         clearstatcache();
         $result = @is_dir($this->getScheme() . $path);
         if ($result === null) {
-            throw new FilesystemException(
-                sprintf('Error occurred during execution %s',
-                    $this->getWarningMessage()
-                ));
+            throw new FilesystemException(sprintf('Error occurred during execution %s', $this->getWarningMessage()));
         }
         return $result;
     }
@@ -148,10 +133,8 @@ class File implements DriverInterface
         $result = @file_get_contents($this->getScheme() . $path, $flag, $context);
         if (false === $result) {
             throw new FilesystemException(
-                sprintf('Cannot read contents from file "%s" %s',
-                    $path,
-                    $this->getWarningMessage()
-                ));
+                sprintf('Cannot read contents from file "%s" %s', $path, $this->getWarningMessage())
+            );
         }
         return $result;
     }
@@ -168,10 +151,7 @@ class File implements DriverInterface
         clearstatcache();
         $result = @is_writable($this->getScheme() . $path);
         if ($result === null) {
-            throw new FilesystemException(
-                sprintf('Error occurred during execution %s',
-                    $this->getWarningMessage()
-                ));
+            throw new FilesystemException(sprintf('Error occurred during execution %s', $this->getWarningMessage()));
         }
         return $result;
     }
@@ -199,10 +179,9 @@ class File implements DriverInterface
     {
         $result = @mkdir($this->getScheme() . $path, $permissions, true);
         if (!$result) {
-            throw new FilesystemException(sprintf('Directory "%s" cannot be created %s',
-                $path,
-                $this->getWarningMessage()
-            ));
+            throw new FilesystemException(
+                sprintf('Directory "%s" cannot be created %s', $path, $this->getWarningMessage())
+            );
         }
         return $result;
     }
@@ -246,15 +225,16 @@ class File implements DriverInterface
         $result = @glob($globPattern, GLOB_BRACE);
         if ($result === false) {
             throw new FilesystemException(
-                sprintf('The "%s" pattern cannot be processed in "%s" path %s',
+                sprintf(
+                    'The "%s" pattern cannot be processed in "%s" path %s',
                     $pattern,
                     $path,
                     $this->getWarningMessage()
-                ));
+                )
+            );
         }
         return $result;
     }
-
 
     /**
      * Renames a file or directory
@@ -279,11 +259,8 @@ class File implements DriverInterface
         }
         if (!$result) {
             throw new FilesystemException(
-                sprintf('The "%s" path cannot be renamed into "%s" %s',
-                    $oldPath,
-                    $newPath,
-                    $this->getWarningMessage()
-                ));
+                sprintf('The "%s" path cannot be renamed into "%s" %s', $oldPath, $newPath, $this->getWarningMessage())
+            );
         }
         return $result;
     }
@@ -308,11 +285,13 @@ class File implements DriverInterface
         }
         if (!$result) {
             throw new FilesystemException(
-                sprintf('The file or directory "%s" cannot be copied to "%s" %s',
+                sprintf(
+                    'The file or directory "%s" cannot be copied to "%s" %s',
                     $source,
                     $destination,
                     $this->getWarningMessage()
-                ));
+                )
+            );
         }
         return $result;
     }
@@ -329,10 +308,8 @@ class File implements DriverInterface
         $result = @unlink($this->getScheme() . $path);
         if (!$result) {
             throw new FilesystemException(
-                sprintf('The file "%s" cannot be deleted %s',
-                    $path,
-                    $this->getWarningMessage()
-                ));
+                sprintf('The file "%s" cannot be deleted %s', $path, $this->getWarningMessage())
+            );
         }
         return $result;
     }
@@ -359,10 +336,8 @@ class File implements DriverInterface
         $result = @rmdir($this->getScheme() . $path);
         if (!$result) {
             throw new FilesystemException(
-                sprintf('The directory "%s" cannot be deleted %s',
-                    $path,
-                    $this->getWarningMessage()
-                ));
+                sprintf('The directory "%s" cannot be deleted %s', $path, $this->getWarningMessage())
+            );
         }
         return $result;
     }
@@ -380,10 +355,8 @@ class File implements DriverInterface
         $result = @chmod($this->getScheme() . $path, $permissions);
         if (!$result) {
             throw new FilesystemException(
-                sprintf('Cannot change permissions for path "%s" %s',
-                    $path,
-                    $this->getWarningMessage()
-                ));
+                sprintf('Cannot change permissions for path "%s" %s', $path, $this->getWarningMessage())
+            );
         }
         return $result;
     }
@@ -405,10 +378,8 @@ class File implements DriverInterface
         }
         if (!$result) {
             throw new FilesystemException(
-                sprintf('The file or directory "%s" cannot be touched %s',
-                    $path,
-                    $this->getWarningMessage()
-                ));
+                sprintf('The file or directory "%s" cannot be touched %s', $path, $this->getWarningMessage())
+            );
         }
         return $result;
     }
@@ -427,10 +398,8 @@ class File implements DriverInterface
         $result = @file_put_contents($this->getScheme() . $path, $content, $mode);
         if (!$result) {
             throw new FilesystemException(
-                sprintf('The specified "%s" file could not be written %s',
-                    $path,
-                    $this->getWarningMessage()
-                ));
+                sprintf('The specified "%s" file could not be written %s', $path, $this->getWarningMessage())
+            );
         }
         return $result;
     }
@@ -447,11 +416,7 @@ class File implements DriverInterface
     {
         $result = @fopen($this->getScheme() . $path, $mode);
         if (!$result) {
-            throw new FilesystemException(
-                sprintf('File "%s" cannot be opened %s',
-                    $path,
-                    $this->getWarningMessage()
-                ));
+            throw new FilesystemException(sprintf('File "%s" cannot be opened %s', $path, $this->getWarningMessage()));
         }
         return $result;
     }
@@ -469,10 +434,7 @@ class File implements DriverInterface
     {
         $result = @stream_get_line($resource, $length, $ending);
         if (false === $result) {
-            throw new FilesystemException(
-                sprintf('File cannot be read %s',
-                    $this->getWarningMessage()
-                ));
+            throw new FilesystemException(sprintf('File cannot be read %s', $this->getWarningMessage()));
         }
         return $result;
     }
@@ -489,10 +451,7 @@ class File implements DriverInterface
     {
         $result = @fread($resource, $length);
         if ($result === false) {
-            throw new FilesystemException(
-                sprintf('File cannot be read %s',
-                    $this->getWarningMessage()
-                ));
+            throw new FilesystemException(sprintf('File cannot be read %s', $this->getWarningMessage()));
         }
         return $result;
     }
@@ -512,10 +471,7 @@ class File implements DriverInterface
     {
         $result = @fgetcsv($resource, $length, $delimiter, $enclosure, $escape);
         if ($result === null) {
-            throw new FilesystemException(
-                sprintf('Wrong CSV handle %s',
-                    $this->getWarningMessage()
-                ));
+            throw new FilesystemException(sprintf('Wrong CSV handle %s', $this->getWarningMessage()));
         }
         return $result;
     }
@@ -531,10 +487,7 @@ class File implements DriverInterface
     {
         $result = @ftell($resource);
         if ($result === null) {
-            throw new FilesystemException(
-                sprintf('Error occurred during execution %s',
-                    $this->getWarningMessage()
-                ));
+            throw new FilesystemException(sprintf('Error occurred during execution %s', $this->getWarningMessage()));
         }
         return $result;
     }
@@ -553,9 +506,8 @@ class File implements DriverInterface
         $result = @fseek($resource, $offset, $whence);
         if ($result === -1) {
             throw new FilesystemException(
-                sprintf('Error occurred during execution of fileSeek %s',
-                    $this->getWarningMessage()
-                ));
+                sprintf('Error occurred during execution of fileSeek %s', $this->getWarningMessage())
+            );
         }
         return $result;
     }
@@ -583,9 +535,8 @@ class File implements DriverInterface
         $result = @fclose($resource);
         if (!$result) {
             throw new FilesystemException(
-                sprintf('Error occurred during execution of fileClose %s',
-                    $this->getWarningMessage()
-                ));
+                sprintf('Error occurred during execution of fileClose %s', $this->getWarningMessage())
+            );
         }
         return $result;
     }
@@ -603,9 +554,8 @@ class File implements DriverInterface
         $result = @fwrite($resource, $data);
         if (false === $result) {
             throw new FilesystemException(
-                sprintf('Error occurred during execution of fileWrite %s',
-                    $this->getWarningMessage()
-                ));
+                sprintf('Error occurred during execution of fileWrite %s', $this->getWarningMessage())
+            );
         }
         return $result;
     }
@@ -625,9 +575,8 @@ class File implements DriverInterface
         $result = @fputcsv($resource, $data, $delimiter, $enclosure);
         if (!$result) {
             throw new FilesystemException(
-                sprintf('Error occurred during execution of filePutCsv %s',
-                    $this->getWarningMessage()
-                ));
+                sprintf('Error occurred during execution of filePutCsv %s', $this->getWarningMessage())
+            );
         }
         return $result;
     }
@@ -644,9 +593,8 @@ class File implements DriverInterface
         $result = @fflush($resource);
         if (!$result) {
             throw new FilesystemException(
-                sprintf('Error occurred during execution of fileFlush %s',
-                    $this->getWarningMessage()
-                ));
+                sprintf('Error occurred during execution of fileFlush %s', $this->getWarningMessage())
+            );
         }
         return $result;
     }
@@ -664,9 +612,8 @@ class File implements DriverInterface
         $result = @flock($resource, $lockMode);
         if (!$result) {
             throw new FilesystemException(
-                sprintf('Error occurred during execution of fileLock %s',
-                    $this->getWarningMessage()
-                ));
+                sprintf('Error occurred during execution of fileLock %s', $this->getWarningMessage())
+            );
         }
         return $result;
     }
@@ -683,9 +630,8 @@ class File implements DriverInterface
         $result = @flock($resource, LOCK_UN);
         if (!$result) {
             throw new FilesystemException(
-                sprintf('Error occurred during execution of fileUnlock %s',
-                    $this->getWarningMessage()
-                ));
+                sprintf('Error occurred during execution of fileUnlock %s', $this->getWarningMessage())
+            );
         }
         return $result;
     }
@@ -711,7 +657,7 @@ class File implements DriverInterface
     public function getRelativePath($basePath, $path = null)
     {
         $path = $this->fixSeparator($path);
-        if ((strpos($path, $basePath) === 0) || ($basePath == $path . '/')) {
+        if (strpos($path, $basePath) === 0 || $basePath == $path . '/') {
             $result = substr($path, strlen($basePath));
         } else {
             $result = $path;

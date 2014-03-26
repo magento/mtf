@@ -7,7 +7,6 @@
  * @copyright   {copyright}
  * @license     {license_link}
  */
-
 namespace Magento\Code\Validator;
 
 use Magento\Code\ValidatorInterface;
@@ -66,13 +65,14 @@ class ContextAggregation implements ValidatorInterface
         if (false == empty($errors)) {
             $classPath = str_replace('\\', '/', $class->getFileName());
             throw new ValidationException(
-                'Incorrect dependency in class ' . $className . ' in ' . $classPath . PHP_EOL
-                . implode(PHP_EOL, $errors)
+                'Incorrect dependency in class ' . $className . ' in ' . $classPath . PHP_EOL . implode(
+                    PHP_EOL,
+                    $errors
+                )
             );
         }
         return true;
     }
-
 
     /**
      * Get arguments with object types
@@ -93,5 +93,4 @@ class ContextAggregation implements ValidatorInterface
 
         return $output;
     }
-
 }

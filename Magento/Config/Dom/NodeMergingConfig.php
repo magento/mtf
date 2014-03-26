@@ -5,7 +5,6 @@
  * @copyright   {copyright}
  * @license     {license_link}
  */
-
 namespace Magento\Config\Dom;
 
 /**
@@ -19,7 +18,9 @@ class NodeMergingConfig
     private $nodePathMatcher;
 
     /**
-     * @var array Format: array('/node/path' => '<node_id_attribute>', ...)
+     * Format: array('/node/path' => '<node_id_attribute>', ...)
+     *
+     * @var array
      */
     private $idAttributes = array();
 

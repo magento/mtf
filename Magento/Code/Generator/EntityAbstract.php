@@ -7,10 +7,9 @@
  * @copyright   {copyright}
  * @license     {license_link}
  */
-
 namespace Magento\Code\Generator;
 
-use \Magento\Autoload\IncludePath;
+use Magento\Autoload\IncludePath;
 
 abstract class EntityAbstract
 {
@@ -79,10 +78,7 @@ abstract class EntityAbstract
         if ($ioObject) {
             $this->_ioObject = $ioObject;
         } else {
-            $this->_ioObject = new Io(
-                new \Magento\Filesystem\Driver\File(),
-                $this->_autoloader
-            );
+            $this->_ioObject = new Io(new \Magento\Filesystem\Driver\File(), $this->_autoloader);
         }
         if ($classGenerator) {
             $this->_classGenerator = $classGenerator;
@@ -150,8 +146,7 @@ abstract class EntityAbstract
      */
     protected function _getFullyQualifiedClassName($className)
     {
-        return IncludePath::NS_SEPARATOR
-            . ltrim($className, IncludePath::NS_SEPARATOR);
+        return IncludePath::NS_SEPARATOR . ltrim($className, IncludePath::NS_SEPARATOR);
     }
 
     /**
@@ -184,14 +179,12 @@ abstract class EntityAbstract
     {
         // protected $_objectManager = null;
         $objectManager = array(
-            'name'       => '_objectManager',
+            'name' => '_objectManager',
             'visibility' => 'protected',
-            'docblock'   => array(
+            'docblock' => array(
                 'shortDescription' => 'Object Manager instance',
-                'tags'             => array(
-                    array('name' => 'var', 'description' => '\Magento\ObjectManager')
-                )
-            ),
+                'tags' => array(array('name' => 'var', 'description' => '\Magento\ObjectManager'))
+            )
         );
 
         return array($objectManager);
@@ -202,7 +195,7 @@ abstract class EntityAbstract
      *
      * @return array
      */
-    protected abstract function _getDefaultConstructorDefinition();
+    abstract protected function _getDefaultConstructorDefinition();
 
     /**
      * Returns list of methods for class generator
@@ -218,11 +211,15 @@ abstract class EntityAbstract
      */
     protected function _generateCode()
     {
-        $this->_classGenerator
-            ->setName($this->_getResultClassName())
-            ->addProperties($this->_getClassProperties())
-            ->addMethods($this->_getClassMethods())
-            ->setClassDocBlock($this->_getClassDocBlock());
+        $this->_classGenerator->setName(
+            $this->_getResultClassName()
+        )->addProperties(
+            $this->_getClassProperties()
+        )->addMethods(
+            $this->_getClassMethods()
+        )->setClassDocBlock(
+            $this->_getClassDocBlock()
+        );
 
         return $this->_getGeneratedCode();
     }
@@ -246,22 +243,36 @@ abstract class EntityAbstract
     {
         $sourceClassName = $this->_getSourceClassName();
         $resultClassName = $this->_getResultClassName();
-        $resultFileName  = $this->_ioObject->getResultFileName($resultClassName);
+        $resultFileName = $this->_ioObject->getResultFileName($resultClassName);
 
         $autoloader = $this->_autoloader;
 
         // @todo the controller handling logic below must be removed when controllers become PSR-0 compliant
         $controllerSuffix = 'Controller';
         $pathParts = explode('_', $sourceClassName);
-        if (strrpos($sourceClassName, $controllerSuffix) === strlen($sourceClassName) - strlen($controllerSuffix)
-            && isset($pathParts[2])
-            && !in_array($pathParts[2], array('Block', 'Helper', 'Model'))
+        if (strrpos(
+            $sourceClassName,
+            $controllerSuffix
+        ) === strlen(
+            $sourceClassName
+        ) - strlen(
+            $controllerSuffix
+        ) && isset(
+            $pathParts[2]
+        ) && !in_array(
+            $pathParts[2],
+            array('Block', 'Helper', 'Model')
+        )
         ) {
-            $controllerPath = preg_replace('/^([0-9A-Za-z]*)_([0-9A-Za-z]*)/', '\\1_\\2_controllers', $sourceClassName);
+            $controllerPath = preg_replace(
+                '/^([0-9A-Za-z]*)_([0-9A-Za-z]*)/',
+                '\\1_\\2_controllers',
+                $sourceClassName
+            );
             $filePath = stream_resolve_include_path(str_replace('_', '/', $controllerPath) . '.php');
             $isSourceClassValid = !empty($filePath);
         } else {
-            $isSourceClassValid =$autoloader::getFile($sourceClassName);
+            $isSourceClassValid = $autoloader::getFile($sourceClassName);
         }
 
         if (!$isSourceClassValid) {

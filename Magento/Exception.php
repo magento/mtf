@@ -7,8 +7,6 @@
  * @copyright  {copyright}
  * @license    {license_link}
  */
-
-
 namespace Magento;
 
 class Exception extends \Exception
@@ -16,6 +14,7 @@ class Exception extends \Exception
     /**
      * Check PCRE PREG error and throw exception
      *
+     * @return void
      * @throws \Magento\Exception
      */
     public static function processPcreError()

@@ -47,13 +47,11 @@ class FileIterator implements \Iterator, \Countable
      * @param \Magento\Filesystem\Directory\ReadInterface $directory
      * @param array $paths
      */
-    public function __construct(
-        \Magento\Filesystem\Directory\ReadInterface $directory,
-        array $paths
-    ) {
-        $this->paths            = $paths;
-        $this->position         = 0;
-        $this->directoryRead    = $directory;
+    public function __construct(\Magento\Filesystem\Directory\ReadInterface $directory, array $paths)
+    {
+        $this->paths = $paths;
+        $this->position = 0;
+        $this->directoryRead = $directory;
     }
 
     /**
@@ -61,7 +59,7 @@ class FileIterator implements \Iterator, \Countable
      *
      * @return void
      */
-    function rewind()
+    public function rewind()
     {
         reset($this->paths);
     }
@@ -71,13 +69,12 @@ class FileIterator implements \Iterator, \Countable
      *
      * @return string
      */
-    function current()
+    public function current()
     {
         if (!isset($this->cached[$this->key()])) {
             $this->cached[$this->key()] = $this->directoryRead->readFile($this->key());
         }
         return $this->cached[$this->key()];
-
     }
 
     /**
@@ -85,7 +82,7 @@ class FileIterator implements \Iterator, \Countable
      *
      * @return mixed
      */
-    function key()
+    public function key()
     {
         return current($this->paths);
     }
@@ -95,7 +92,7 @@ class FileIterator implements \Iterator, \Countable
      *
      * @return void
      */
-    function next()
+    public function next()
     {
         next($this->paths);
     }
@@ -105,9 +102,9 @@ class FileIterator implements \Iterator, \Countable
      *
      * @return bool
      */
-    function valid()
+    public function valid()
     {
-        return (boolean)$this->key();
+        return (bool)$this->key();
     }
 
     /**
@@ -117,7 +114,7 @@ class FileIterator implements \Iterator, \Countable
      */
     public function toArray()
     {
-        $result = [];
+        $result = array();
         foreach ($this as $item) {
             $result[$this->key()] = $item;
         }

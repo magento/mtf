@@ -5,7 +5,6 @@
  * @copyright   {copyright}
  * @license     {license_link}
  */
-
 namespace Magento\Config\Dom;
 
 /**
@@ -19,12 +18,16 @@ class ArrayNodeConfig
     private $nodePathMatcher;
 
     /**
-     * @var array Format: array('/associative/array/path' => '<array_key_attribute>', ...)
+     * Format: array('/associative/array/path' => '<array_key_attribute>', ...)
+     *
+     * @var array
      */
     private $assocArrays = array();
 
     /**
-     * @var array Format: array('/numeric/array/path', ...)
+     * Format: array('/numeric/array/path', ...)
+     *
+     * @var array
      */
     private $numericArrays = array();
 
@@ -34,7 +37,9 @@ class ArrayNodeConfig
      * @param array $numericArrays
      */
     public function __construct(
-        NodePathMatcher $nodePathMatcher, array $assocArrayAttributes, array $numericArrays = array()
+        NodePathMatcher $nodePathMatcher,
+        array $assocArrayAttributes,
+        array $numericArrays = array()
     ) {
         $this->nodePathMatcher = $nodePathMatcher;
         $this->assocArrays = $assocArrayAttributes;

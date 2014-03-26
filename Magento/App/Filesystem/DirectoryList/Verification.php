@@ -21,22 +21,14 @@ class Verification
      *
      * @var string[]
      */
-    protected static $productionDirs = array(
-        Filesystem::SESSION_DIR,
-        Filesystem::CACHE_DIR,
-        Filesystem::LOG_DIR,
-    );
+    protected static $productionDirs = array(Filesystem::SESSION_DIR, Filesystem::CACHE_DIR, Filesystem::LOG_DIR);
 
     /**
      * Codes of directories to create and verify in non-production mode
      *
      * @var string[]
      */
-    protected static $nonProductionDirs = array(
-        Filesystem::SESSION_DIR,
-        Filesystem::CACHE_DIR,
-        Filesystem::LOG_DIR,
-    );
+    protected static $nonProductionDirs = array(Filesystem::SESSION_DIR, Filesystem::CACHE_DIR, Filesystem::LOG_DIR);
 
     /**
      * @var \Magento\App\Filesystem
@@ -70,9 +62,7 @@ class Verification
      */
     protected function _getDirsToVerify(State $appState)
     {
-        $codes = ($appState->getMode() == State::MODE_PRODUCTION)
-            ? self::$productionDirs
-            : self::$nonProductionDirs;
+        $codes = $appState->getMode() == State::MODE_PRODUCTION ? self::$productionDirs : self::$nonProductionDirs;
         return $codes;
     }
 
@@ -81,7 +71,6 @@ class Verification
      *
      * @return void
      * @throws BootstrapException
-     *
      */
     public function createAndVerifyDirectories()
     {
@@ -103,9 +92,7 @@ class Verification
 
         if ($fails) {
             $dirList = implode(', ', $fails);
-            throw new BootstrapException(
-                "Cannot create or verify write access: {$dirList}"
-            );
+            throw new BootstrapException("Cannot create or verify write access: {$dirList}");
         }
     }
 }

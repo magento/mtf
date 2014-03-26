@@ -5,7 +5,6 @@
  * @copyright   {copyright}
  * @license     {license_link}
  */
-
 namespace Magento\Data\Argument\Interpreter;
 
 use Magento\Data\Argument\InterpreterInterface;
