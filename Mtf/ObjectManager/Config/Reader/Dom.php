@@ -23,35 +23,53 @@ class Dom extends \Magento\Config\Reader\Filesystem
     /**
      * @var array
      */
-    protected $_idAttributes = [
-        '/config/preference'                                    => 'for',
-        '/config/(type|virtualType)'                            => 'name',
-        '/config/(type|virtualType)/plugin'                     => 'name',
-        '/config/(type|virtualType)/arguments/argument'         => 'name',
-        '/config/(type|virtualType)/arguments/argument(/item)+' => 'name',
-    ];
+    protected $_idAttributes = array(
+        '/config/preference' => 'for',
+        '/config/(type|virtualType)' => 'name',
+        '/config/(type|virtualType)/plugin' => 'name',
+        '/config/(type|virtualType)/arguments/argument' => 'name',
+        '/config/(type|virtualType)/arguments/argument(/item)+' => 'name'
+    );
 
     /**
-     * @constructor
      * @param \Magento\Config\FileResolverInterface $fileResolver
      * @param \Magento\ObjectManager\Config\Mapper\Dom $converter
      * @param \Magento\ObjectManager\Config\SchemaLocator $schemaLocator
      * @param \Magento\Config\ValidationStateInterface $validationState
+     * @param string $fileName
      * @param array $idAttributes
-     * @param string $filename
      * @param string $domDocumentClass
+     * @param string $defaultScope
      */
     public function __construct(
         \Magento\Config\FileResolverInterface $fileResolver,
         \Magento\ObjectManager\Config\Mapper\Dom $converter,
         \Magento\ObjectManager\Config\SchemaLocator $schemaLocator,
         \Magento\Config\ValidationStateInterface $validationState,
-        $idAttributes = [],
-        $filename = 'di.xml',
-        $domDocumentClass = 'Magento\Config\Dom'
+        $fileName = 'di.xml',
+        $idAttributes = array(),
+        $domDocumentClass = 'Magento\Config\Dom',
+        $defaultScope = 'global'
     ) {
         parent::__construct(
-            $fileResolver, $converter, $schemaLocator, $validationState, $filename, $idAttributes, $domDocumentClass
+            $fileResolver,
+            $converter,
+            $schemaLocator,
+            $validationState,
+            $fileName,
+            $idAttributes,
+            $domDocumentClass,
+            $defaultScope
         );
+    }
+
+    /**
+     * Create and return a config merger instance that takes into account types of arguments
+     *
+     * {@inheritdoc}
+     */
+    protected function _createConfigMerger($mergerClass, $initialContents)
+    {
+        return new $mergerClass($initialContents, $this->_idAttributes, self::TYPE_ATTRIBUTE, $this->_perFileSchema);
     }
 }
