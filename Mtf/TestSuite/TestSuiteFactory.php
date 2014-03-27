@@ -52,4 +52,22 @@ class TestSuiteFactory
 
         return $object;
     }
+
+    /**
+     * Get test suite
+     *
+     * @param string $class
+     * @return InjectableTestCase|RegularTestCase
+     */
+    public function get($class)
+    {
+        $refClass = new \ReflectionClass($class);
+        if ($refClass->isSubclassOf('Mtf\\TestCase\\Injectable')) {
+            $object = $this->objectManager->get('Mtf\\TestSuite\\InjectableTestCase');
+        } else {
+            $object = $this->objectManager->create('Mtf\\TestSuite\\RegularTestCase');
+        }
+
+        return $object;
+    }
 }

@@ -57,12 +57,20 @@ class TestCase extends TestSuite
             $arguments = $testIterator->current();
 
             $class = $arguments['class'];
-            $testCaseSuite = $this->testSuiteFactory->create($class, $arguments);
+
+            $factory = $this->testSuiteFactory;
+            $testCallback = $this->objectManager->create('Mtf\TestSuite\Callback', ['theClass' => $class]);
+            $callbackFunction = function($result) use ($factory, $class, $arguments) {
+                $testSuite = $factory->create($class, $arguments);
+                $testSuite->run($result);
+            };
+
+            $testCallback->setCallback($callbackFunction);
             $rule = $this->objectManager->get('Mtf\TestRunner\Rule\SuiteComposite');
+            $testCaseSuite = $this->testSuiteFactory->get($class);
             $allow = $rule->filterSuite($testCaseSuite);
             if ($allow) {
-                $this->addTest($testCaseSuite, \PHPUnit_Util_Test::getGroups(
-                    get_class($testCaseSuite), $testCaseSuite->getName()));
+                $this->addTest($testCallback, \PHPUnit_Util_Test::getGroups($class));
             }
             $testIterator->next();
         }
