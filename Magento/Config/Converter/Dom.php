@@ -10,6 +10,7 @@ namespace Magento\Config\Converter;
 class Dom implements \Magento\Config\ConverterInterface
 {
     const ATTRIBUTES = '__attributes__';
+
     const CONTENT = '__content__';
 
     /**
@@ -40,8 +41,9 @@ class Dom implements \Magento\Config\ConverterInterface
                     $nodeData[self::CONTENT] = $childrenData;
                 }
                 $nodeListData[$node->nodeName][] = $nodeData;
-            } elseif ($node->nodeType == XML_CDATA_SECTION_NODE
-                || ($node->nodeType == XML_TEXT_NODE && trim($node->nodeValue) != '')
+            } elseif ($node->nodeType == XML_CDATA_SECTION_NODE || $node->nodeType == XML_TEXT_NODE && trim(
+                $node->nodeValue
+            ) != ''
             ) {
                 return $node->nodeValue;
             }

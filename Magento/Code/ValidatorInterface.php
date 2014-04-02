@@ -5,7 +5,6 @@
  * @copyright   {copyright}
  * @license     {license_link}
  */
-
 namespace Magento\Code;
 
 interface ValidatorInterface
@@ -18,4 +17,4 @@ interface ValidatorInterface
      * @throws \Magento\Code\ValidationException
      */
     public function validate($className);
-} 
+}

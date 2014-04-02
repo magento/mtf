@@ -5,7 +5,6 @@
  * @copyright   {copyright}
  * @license     {license_link}
  */
-
 namespace Magento\App\Arguments;
 
 use Magento\Data\Argument\InterpreterInterface;
@@ -19,22 +18,15 @@ use Magento\App\Arguments;
 class ArgumentInterpreter implements InterpreterInterface
 {
     /**
-     * @var Arguments
-     */
-    private $arguments;
-
-    /**
      * @var Constant
      */
     private $constInterpreter;
 
     /**
-     * @param Arguments $arguments
      * @param Constant $constInterpreter
      */
-    public function __construct(Arguments $arguments, Constant $constInterpreter)
+    public function __construct(Constant $constInterpreter)
     {
-        $this->arguments = $arguments;
         $this->constInterpreter = $constInterpreter;
     }
 
@@ -45,11 +37,6 @@ class ArgumentInterpreter implements InterpreterInterface
      */
     public function evaluate(array $data)
     {
-        $argumentName = $this->constInterpreter->evaluate($data);
-        $result = $this->arguments->get($argumentName);
-        if ($result === null) {
-            throw new MissingOptionalValueException("Value of application argument '$argumentName' is not defined.");
-        }
-        return $result;
+        return array('argument' => $this->constInterpreter->evaluate($data));
     }
 }

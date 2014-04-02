@@ -5,7 +5,6 @@
  * @copyright   {copyright}
  * @license     {license_link}
  */
-
 namespace Magento\ObjectManager\Config\Mapper;
 
 use Magento\Config\Converter\Dom\Flat as FlatConverter;
@@ -42,12 +41,7 @@ class ArgumentParser
     protected function getConverter()
     {
         if (!$this->converter) {
-            $arrayNodeConfig = new ArrayNodeConfig(
-                new NodePathMatcher(),
-                array(
-                    'argument(/item)+' => 'name',
-                )
-            );
+            $arrayNodeConfig = new ArrayNodeConfig(new NodePathMatcher(), array('argument(/item)+' => 'name'));
             $this->converter = new FlatConverter($arrayNodeConfig);
         }
         return $this->converter;

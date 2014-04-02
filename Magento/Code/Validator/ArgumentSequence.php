@@ -7,14 +7,15 @@
  * @copyright   {copyright}
  * @license     {license_link}
  */
-
 namespace Magento\Code\Validator;
+
 use Magento\Code\ValidatorInterface;
 use Magento\Code\ValidationException;
 
 class ArgumentSequence implements ValidatorInterface
 {
     const REQUIRED = 'required';
+
     const OPTIONAL = 'optional';
 
     /**
@@ -79,9 +80,19 @@ class ArgumentSequence implements ValidatorInterface
         if (false == $this->_checkArgumentSequence($classArguments, $requiredSequence)) {
             $classPath = str_replace('\\', '/', $class->getFileName());
             throw new ValidationException(
-                'Incorrect argument sequence in class ' . $className . ' in ' . $classPath . PHP_EOL
-                . 'Required: $' . implode(', $', array_keys($requiredSequence)) . PHP_EOL
-                . 'Actual  : $' . implode(', $', array_keys($classArguments)) . PHP_EOL
+                'Incorrect argument sequence in class ' .
+                $className .
+                ' in ' .
+                $classPath .
+                PHP_EOL .
+                'Required: $' .
+                implode(
+                    ', $',
+                    array_keys($requiredSequence)
+                ) . PHP_EOL . 'Actual  : $' . implode(
+                    ', $',
+                    array_keys($classArguments)
+                ) . PHP_EOL
             );
         }
 
@@ -140,9 +151,9 @@ class ArgumentSequence implements ValidatorInterface
         $migrated = array();
         foreach ($parentArgumentList[self::REQUIRED] as $name => $argument) {
             if (!isset($classArgumentList[self::OPTIONAL][$name])) {
-                $output[$name] =  isset($classArgumentList[self::REQUIRED][$name])
-                    ? $classArgumentList[self::REQUIRED][$name]
-                    : $argument;;
+                $output[$name] = isset(
+                    $classArgumentList[self::REQUIRED][$name]
+                ) ? $classArgumentList[self::REQUIRED][$name] : $argument;
             } else {
                 $migrated[$name] = $classArgumentList[self::OPTIONAL][$name];
             }
@@ -163,9 +174,9 @@ class ArgumentSequence implements ValidatorInterface
 
         foreach ($parentArgumentList[self::OPTIONAL] as $name => $argument) {
             if (!isset($output[$name])) {
-                $output[$name] = isset($classArgumentList[self::OPTIONAL][$name])
-                    ? $classArgumentList[self::OPTIONAL][$name]
-                    : $argument;
+                $output[$name] = isset(
+                    $classArgumentList[self::OPTIONAL][$name]
+                ) ? $classArgumentList[self::OPTIONAL][$name] : $argument;
             }
         }
 
@@ -197,10 +208,7 @@ class ArgumentSequence implements ValidatorInterface
             }
         }
 
-        return array(
-            self::REQUIRED => $required,
-            self::OPTIONAL => $optional,
-        );
+        return array(self::REQUIRED => $required, self::OPTIONAL => $optional);
     }
 
     /**

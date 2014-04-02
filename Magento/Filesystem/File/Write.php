@@ -7,7 +7,6 @@
  * @copyright   {copyright}
  * @license     {license_link}
  */
-
 namespace Magento\Filesystem\File;
 
 use Magento\Filesystem\DriverInterface;
@@ -56,11 +55,7 @@ class Write extends Read implements WriteInterface
         try {
             return $this->driver->fileWrite($this->resource, $data);
         } catch (FilesystemException $e) {
-            throw new FilesystemException(
-                sprintf('Cannot write to the "%s" file. %s',
-                    $this->path,
-                    $e->getMessage()
-                ));
+            throw new FilesystemException(sprintf('Cannot write to the "%s" file. %s', $this->path, $e->getMessage()));
         }
     }
 
@@ -78,11 +73,7 @@ class Write extends Read implements WriteInterface
         try {
             return $this->driver->filePutCsv($this->resource, $data, $delimiter, $enclosure);
         } catch (FilesystemException $e) {
-            throw new FilesystemException(
-                sprintf('Cannot write to the "%s" file. %s',
-                    $this->path,
-                    $e->getMessage()
-                ));
+            throw new FilesystemException(sprintf('Cannot write to the "%s" file. %s', $this->path, $e->getMessage()));
         }
     }
 
@@ -97,11 +88,7 @@ class Write extends Read implements WriteInterface
         try {
             return $this->driver->fileFlush($this->resource);
         } catch (FilesystemException $e) {
-            throw new FilesystemException(
-                sprintf('Cannot flush the "%s" file. %s',
-                    $this->path,
-                    $e->getMessage()
-                ));
+            throw new FilesystemException(sprintf('Cannot flush the "%s" file. %s', $this->path, $e->getMessage()));
         }
     }
 

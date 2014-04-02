@@ -7,7 +7,6 @@
  * @copyright   {copyright}
  * @license     {license_link}
  */
-
 namespace Magento\Code\Validator;
 
 use Magento\Code\ValidatorInterface;
@@ -74,8 +73,11 @@ class ConstructorIntegrity implements ValidatorInterface
                 }
 
                 $classPath = str_replace('\\', '/', $class->getFileName());
-                throw new \Magento\Code\ValidationException('Missed required argument ' . $requiredArgument['name']
-                    . ' in parent::__construct call. File: ' . $classPath
+                throw new \Magento\Code\ValidationException(
+                    'Missed required argument ' .
+                    $requiredArgument['name'] .
+                    ' in parent::__construct call. File: ' .
+                    $classPath
                 );
             }
 
@@ -85,9 +87,15 @@ class ConstructorIntegrity implements ValidatorInterface
             );
             if (false == $isCompatibleTypes) {
                 $classPath = str_replace('\\', '/', $class->getFileName());
-                throw new \Magento\Code\ValidationException('Incompatible argument type: Required type: '
-                    . $requiredArgument['type'] . '. Actual type: ' . $actualArgument['type']
-                    . '; File: ' . PHP_EOL . $classPath . PHP_EOL
+                throw new \Magento\Code\ValidationException(
+                    'Incompatible argument type: Required type: ' .
+                    $requiredArgument['type'] .
+                    '. Actual type: ' .
+                    $actualArgument['type'] .
+                    '; File: ' .
+                    PHP_EOL .
+                    $classPath .
+                    PHP_EOL
                 );
             }
         }
@@ -105,12 +113,9 @@ class ConstructorIntegrity implements ValidatorInterface
 
             $classPath = str_replace('\\', '/', $class->getFileName());
             throw new \Magento\Code\ValidationException(
-                'Extra parameters passed to parent construct: '
-                . implode(', ', $names)
-                . '. File: ' . $classPath
+                'Extra parameters passed to parent construct: ' . implode(', ', $names) . '. File: ' . $classPath
             );
         }
         return true;
     }
-
 }

@@ -5,7 +5,6 @@
  * @copyright   {copyright}
  * @license     {license_link}
  */
-
 namespace Magento\Filesystem\File;
 
 use Magento\Filesystem\DriverInterface;

@@ -64,6 +64,7 @@ interface Config
      * Extend configuration
      *
      * @param array $configuration
+     * @return void
      */
     public function extend(array $configuration);
 }

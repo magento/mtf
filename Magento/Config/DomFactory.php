@@ -8,7 +8,6 @@
  * @copyright   {copyright}
  * @license     {license_link}
  */
-
 namespace Magento\Config;
 
 /**
@@ -16,7 +15,6 @@ namespace Magento\Config;
  */
 class DomFactory
 {
-
     const CLASS_NAME = 'Magento\Config\Dom';
 
     /**

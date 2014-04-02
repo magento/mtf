@@ -25,7 +25,6 @@ class Data implements \Magento\Config\DataInterface
      */
     protected $_cache;
 
-
     /**
      * Cache tag
      *

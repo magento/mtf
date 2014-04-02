@@ -5,10 +5,8 @@
  * @copyright   {copyright}
  * @license     {license_link}
  */
-
 namespace Magento\Code;
 
-class ValidationException extends  \Exception
+class ValidationException extends \Exception
 {
-
-} 
+}

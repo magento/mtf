@@ -7,9 +7,9 @@
  */
 namespace Magento\ObjectManager\Config;
 
-use \Magento\ObjectManager\ConfigCache;
-use \Magento\ObjectManager\Definition;
-use \Magento\ObjectManager\Relations;
+use Magento\ObjectManager\ConfigCache;
+use Magento\ObjectManager\Definition;
+use Magento\ObjectManager\Relations;
 
 class Config implements \Magento\ObjectManager\Config
 {
@@ -63,20 +63,6 @@ class Config implements \Magento\ObjectManager\Config
     protected $_nonShared = array();
 
     /**
-     * Plugin configuration
-     *
-     * @var array
-     */
-    protected $_plugins = array();
-
-    /**
-     * Merged plugin config
-     *
-     * @var array
-     */
-    protected $_mergedPlugins = array();
-
-    /**
      * List of relations
      *
      * @var Relations
@@ -94,10 +80,8 @@ class Config implements \Magento\ObjectManager\Config
      * @param Relations $relations
      * @param Definition $definitions
      */
-    public function __construct(
-        Relations $relations = null,
-        Definition $definitions = null
-    ) {
+    public function __construct(Relations $relations = null, Definition $definitions = null)
+    {
         $this->_relations = $relations ?: new \Magento\ObjectManager\Relations\Runtime();
         $this->_definitions = $definitions ?: new \Magento\ObjectManager\Definition\Runtime();
     }
@@ -171,12 +155,16 @@ class Config implements \Magento\ObjectManager\Config
      */
     public function getPreference($type)
     {
+        $type = ltrim($type, '\\');
         $preferencePath = array();
         while (isset($this->_preferences[$type])) {
             if (isset($preferencePath[$this->_preferences[$type]])) {
                 throw new \LogicException(
-                    'Circular type preference: ' . $type . ' relates to '
-                    . $this->_preferences[$type] . ' and viceversa.'
+                    'Circular type preference: ' .
+                    $type .
+                    ' relates to ' .
+                    $this->_preferences[$type] .
+                    ' and viceversa.'
                 );
             }
             $type = $this->_preferences[$type];
@@ -236,12 +224,15 @@ class Config implements \Magento\ObjectManager\Config
         foreach ($configuration as $key => $curConfig) {
             switch ($key) {
                 case 'preferences':
-                    $this->_preferences = array_replace($this->_preferences, $curConfig);
+                    foreach ($curConfig as $for => $to) {
+                        $this->_preferences[ltrim($for, '\\')] = ltrim($to, '\\');
+                    }
                     break;
 
                 default:
+                    $key = ltrim($key, '\\');
                     if (isset($curConfig['type'])) {
-                        $this->_virtualTypes[$key] = $curConfig['type'];
+                        $this->_virtualTypes[$key] = ltrim($curConfig['type'], '\\');
                     }
                     if (isset($curConfig['arguments'])) {
                         if (!empty($this->_mergedArguments)) {
@@ -275,17 +266,22 @@ class Config implements \Magento\ObjectManager\Config
     {
         if ($this->_cache) {
             if (!$this->_currentCacheKey) {
-                $this->_currentCacheKey = md5(serialize(array(
-                    $this->_arguments, $this->_nonShared, $this->_preferences, $this->_virtualTypes
-                )));
+                $this->_currentCacheKey = md5(
+                    serialize(array($this->_arguments, $this->_nonShared, $this->_preferences, $this->_virtualTypes))
+                );
             }
             $key = md5($this->_currentCacheKey . serialize($configuration));
             $cached = $this->_cache->get($key);
             if ($cached) {
-                list(
-                    $this->_arguments, $this->_nonShared, $this->_preferences,
-                    $this->_virtualTypes, $this->_mergedArguments
-                ) = $cached;
+                list($this->_arguments,
+                    $this
+                    ->_nonShared,
+                    $this
+                    ->_preferences,
+                    $this
+                    ->_virtualTypes,
+                    $this
+                    ->_mergedArguments) = $cached;
             } else {
                 $this->_mergeConfiguration($configuration);
                 if (!$this->_mergedArguments) {
@@ -293,10 +289,16 @@ class Config implements \Magento\ObjectManager\Config
                         $this->_collectConfiguration($class);
                     }
                 }
-                $this->_cache->save(array(
-                    $this->_arguments, $this->_nonShared, $this->_preferences, $this->_virtualTypes,
-                    $this->_mergedArguments
-                ), $key);
+                $this->_cache->save(
+                    array(
+                        $this->_arguments,
+                        $this->_nonShared,
+                        $this->_preferences,
+                        $this->_virtualTypes,
+                        $this->_mergedArguments
+                    ),
+                    $key
+                );
             }
             $this->_currentCacheKey = $key;
         } else {

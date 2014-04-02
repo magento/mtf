@@ -5,7 +5,6 @@
  * @copyright   {copyright}
  * @license     {license_link}
  */
-
 namespace Magento\Filesystem\File;
 
 use Magento\Filesystem\DriverInterface;
@@ -100,7 +99,7 @@ class Read implements ReadInterface
      */
     public function readAll($flag = null, $context = null)
     {
-       return $this->driver->fileGetContents($this->path, $flag, $context);
+        return $this->driver->fileGetContents($this->path, $flag, $context);
     }
 
     /**

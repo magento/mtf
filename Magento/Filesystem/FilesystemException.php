@@ -11,5 +11,4 @@ namespace Magento\Filesystem;
 
 class FilesystemException extends \Exception
 {
-
 }

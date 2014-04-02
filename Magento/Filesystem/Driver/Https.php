@@ -9,8 +9,6 @@
  */
 namespace Magento\Filesystem\Driver;
 
-use Magento\Filesystem\FilesystemException;
-
 /**
  * Class Https
  *

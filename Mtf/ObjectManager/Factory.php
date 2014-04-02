@@ -25,18 +25,19 @@ class Factory extends \Magento\ObjectManager\Factory\Factory
 
     /**
      * @constructor
+     *
      * @param \Magento\ObjectManager\Config $config
-     * @param \Magento\Data\Argument\InterpreterInterface $argInterpreter
-     * @param \Magento\ObjectManager\Config\Argument\ObjectFactory $argObjectFactory
+     * @param \Magento\ObjectManager $objectManager
      * @param \Magento\ObjectManager\Definition $definitions
+     * @param array $globalArguments
      */
     public function __construct(
         \Magento\ObjectManager\Config $config,
-        \Magento\Data\Argument\InterpreterInterface $argInterpreter,
-        \Magento\ObjectManager\Config\Argument\ObjectFactory $argObjectFactory,
-        \Magento\ObjectManager\Definition $definitions = null
+        \Magento\ObjectManager $objectManager = null,
+        \Magento\ObjectManager\Definition $definitions = null,
+        $globalArguments = array()
     ) {
-        parent::__construct($config, $argInterpreter, $argObjectFactory, $definitions);
+        parent::__construct($config, $objectManager, $definitions, $globalArguments);
         $this->classReader = new ClassReader();
     }
 
@@ -91,12 +92,11 @@ class Factory extends \Magento\ObjectManager\Factory\Factory
     }
 
     /**
-     * Resolve constructor arguments.
-     * Overwritten to have parameters passed via names
+     * Resolve constructor arguments
      *
      * @param string $requestedType
      * @param array $parameters
-     * @param array $argumentValues
+     * @param array $arguments
      * @return array
      * @throws \UnexpectedValueException
      * @throws \BadMethodCallException
@@ -104,41 +104,102 @@ class Factory extends \Magento\ObjectManager\Factory\Factory
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    protected function _resolveArguments($requestedType, array $parameters, array $argumentValues = array())
+    protected function _resolveArguments($requestedType, array $parameters, array $arguments = array())
     {
-        $result = array();
-        $arguments = $this->_config->getArguments($requestedType);
+        $resolvedArguments = array();
+        $arguments = count($arguments)
+            ? array_replace($this->config->getArguments($requestedType), $arguments)
+            : $this->config->getArguments($requestedType);
         foreach ($parameters as $parameter) {
             list($paramName, $paramType, $paramRequired, $paramDefault) = $parameter;
-            if (array_key_exists($paramName, $argumentValues)) {
-                $value = $argumentValues[$paramName];
-                if ($paramType && is_array($value)) {
-                    $value = $this->_argObjectFactory->getObjectManager()->create($paramType, $value);
-                }
-            } else if (array_key_exists($paramName, $arguments)) {
-                $argumentData = $arguments[$paramName];
-                if (!is_array($argumentData)) {
-                    throw new \UnexpectedValueException(sprintf(
-                        'Invalid parameter configuration provided for $%s argument of %s.', $paramName, $requestedType
-                    ));
-                }
-                try {
-                    $value = $this->_argInterpreter->evaluate($argumentData);
-                } catch (\Magento\Data\Argument\MissingOptionalValueException $e) {
-                    $value = $paramDefault;
-                }
+            $argument = null;
+            if (array_key_exists($paramName, $arguments)) {
+                $argument = $arguments[$paramName];
+            } elseif (array_key_exists('options', $arguments) && array_key_exists($paramName, $arguments['options'])) {
+                // The parameter name doesn't exist in the arguments, but it is contained in the 'options' argument.
+                $argument = $arguments['options'][$paramName];
             } else if ($paramRequired) {
-                if (!$paramType) {
-                    throw new \BadMethodCallException(sprintf(
-                        'Missing required argument $%s of %s.', $paramName, $requestedType
-                    ));
+                if ($paramType) {
+                    $argument = array('instance' => $paramType);
+                } else {
+                    $this->creationStack = array();
+                    throw new \BadMethodCallException(
+                        'Missing required argument $' . $paramName . ' of ' . $requestedType . '.'
+                    );
                 }
-                $value = $this->_argObjectFactory->create($paramType);
             } else {
-                $value = $paramDefault;
+                $argument = $paramDefault;
             }
-            $result[$paramName] = $value;
+            if ($paramType && !is_object($argument) && $argument !== $paramDefault) {
+                if (!is_array($argument)) {
+                    throw new \UnexpectedValueException(
+                        'Invalid parameter configuration provided for $' . $paramName . ' argument of ' . $requestedType
+                    );
+                }
+                if (isset($argument['instance'])) {
+                    $argumentType = $argument['instance'];
+                    unset($argument['instance']);
+                    if (array_key_exists('shared', $argument)) {
+                        $isShared = $argument['shared'];
+                        unset($argument['shared']);
+                    } else {
+                        $isShared = $this->config->isShared($argumentType);
+                    }
+                } else {
+                    $argumentType = $paramType;
+                    $isShared = $this->config->isShared($argumentType);
+                }
+
+                $_arguments = !empty($argument) ? $argument : [];
+
+                $argument = $isShared
+                    ? $this->objectManager->get($argumentType)
+                    : $this->objectManager->create($argumentType, $_arguments);
+            } else if (is_array($argument)) {
+                if (isset($argument['argument'])) {
+                    $argKey = $argument['argument'];
+                    $argument = isset($this->globalArguments[$argKey]) ? $this->globalArguments[$argKey] : $paramDefault;
+                } else {
+                    $this->parseArray($argument);
+                }
+            }
+            $resolvedArguments[$paramName] = $argument;
         }
-        return $result;
+        return $resolvedArguments;
+    }
+
+    /**
+     * Parse array argument
+     *
+     * @param $array
+     * @return void
+     */
+    protected function parseArray(&$array)
+    {
+        foreach ($array as $key => $item) {
+            if (is_array($item)) {
+                if (isset($item['instance'])) {
+                    $itemType = $item['instance'];
+                    $isShared = (isset($item['shared'])) ? $item['shared'] : $this->config->isShared($itemType);
+
+                    unset($item['instance']);
+                    if (array_key_exists('shared', $item)) {
+                        unset($item['shared']);
+                    }
+
+                    $_arguments = !empty($item) ? $item : [];
+
+                    $array[$key] = $isShared
+                        ? $this->objectManager->get($itemType)
+                        : $this->objectManager->create($itemType, $_arguments);
+                } elseif (isset($item['argument'])) {
+                    $array[$key] = isset($this->globalArguments[$item['argument']])
+                        ? $this->globalArguments[$item['argument']]
+                        : null;
+                } else {
+                    $this->parseArray($item);
+                }
+            }
+        }
     }
 }
