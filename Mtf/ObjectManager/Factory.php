@@ -131,19 +131,23 @@ class Factory extends \Magento\ObjectManager\Factory\Factory
                 $argument = $paramDefault;
             }
             if ($paramType && !is_object($argument) && $argument !== $paramDefault) {
-                if (!is_array($argument) || !isset($argument['instance'])) {
+                if (!is_array($argument)) {
                     throw new \UnexpectedValueException(
                         'Invalid parameter configuration provided for $' . $paramName . ' argument of ' . $requestedType
                     );
                 }
-                $argumentType = $argument['instance'];
-                $isShared = (isset($argument['shared']) ? $argument['shared'] :$this->config->isShared($argumentType));
-
-                if (array_key_exists('instance', $argument)) {
+                if (isset($argument['instance'])) {
+                    $argumentType = $argument['instance'];
                     unset($argument['instance']);
-                }
-                if (array_key_exists('shared', $argument)) {
-                    unset($argument['shared']);
+                    if (array_key_exists('shared', $argument)) {
+                        $isShared = $argument['shared'];
+                        unset($argument['shared']);
+                    } else {
+                        $isShared = $this->config->isShared($argumentType);
+                    }
+                } else {
+                    $argumentType = $paramType;
+                    $isShared = $this->config->isShared($argumentType);
                 }
 
                 $_arguments = !empty($argument) ? $argument : [];
@@ -159,7 +163,7 @@ class Factory extends \Magento\ObjectManager\Factory\Factory
                     $this->parseArray($argument);
                 }
             }
-            $resolvedArguments[] = $argument;
+            $resolvedArguments[$paramName] = $argument;
         }
         return $resolvedArguments;
     }
