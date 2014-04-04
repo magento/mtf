@@ -136,7 +136,7 @@ class Factory extends \Magento\ObjectManager\Factory\Factory
                         'Invalid parameter configuration provided for $' . $paramName . ' argument of ' . $requestedType
                     );
                 }
-                if (isset($argument['instance'])) {
+                if (isset($argument['instance']) && !empty($argument['instance'])) {
                     $argumentType = $argument['instance'];
                     unset($argument['instance']);
                     if (array_key_exists('shared', $argument)) {
