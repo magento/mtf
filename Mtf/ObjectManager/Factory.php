@@ -177,28 +177,29 @@ class Factory extends \Magento\ObjectManager\Factory\Factory
     protected function parseArray(&$array)
     {
         foreach ($array as $key => $item) {
-            if (is_array($item)) {
-                if (isset($item['instance'])) {
-                    $itemType = $item['instance'];
-                    $isShared = (isset($item['shared'])) ? $item['shared'] : $this->config->isShared($itemType);
+            if (!is_array($item)) {
+                continue;
+            }
+            if (isset($item['instance'])) {
+                $itemType = $item['instance'];
+                $isShared = isset($item['shared']) ? $item['shared'] : $this->config->isShared($itemType);
 
-                    unset($item['instance']);
-                    if (array_key_exists('shared', $item)) {
-                        unset($item['shared']);
-                    }
-
-                    $_arguments = !empty($item) ? $item : [];
-
-                    $array[$key] = $isShared
-                        ? $this->objectManager->get($itemType)
-                        : $this->objectManager->create($itemType, $_arguments);
-                } elseif (isset($item['argument'])) {
-                    $array[$key] = isset($this->globalArguments[$item['argument']])
-                        ? $this->globalArguments[$item['argument']]
-                        : null;
-                } else {
-                    $this->parseArray($item);
+                unset($item['instance']);
+                if (array_key_exists('shared', $item)) {
+                    unset($item['shared']);
                 }
+
+                $_arguments = !empty($item) ? $item : [];
+
+                $array[$key] = $isShared
+                    ? $this->objectManager->get($itemType)
+                    : $this->objectManager->create($itemType, $_arguments);
+            } elseif (isset($item['argument'])) {
+                $array[$key] = isset($this->globalArguments[$item['argument']])
+                    ? $this->globalArguments[$item['argument']]
+                    : null;
+            } else {
+                $this->parseArray($item);
             }
         }
     }
