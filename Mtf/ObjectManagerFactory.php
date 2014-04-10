@@ -8,8 +8,9 @@
 
 namespace Mtf;
 
-use Mtf\System\Config as SystemConfig;
 use Mtf\ObjectManager\Factory;
+use Magento\Stdlib\BooleanUtils;
+use Mtf\System\Config as SystemConfig;
 use Mtf\ObjectManager as MagentoObjectManager;
 
 /**
@@ -58,9 +59,6 @@ class ObjectManagerFactory
         $configuration = $systemConfig->getConfigParam();
         $diConfig->extend($configuration);
 
-        $booleanUtils = new \Magento\Stdlib\BooleanUtils();
-        $argFactory = new \Magento\ObjectManager\Config\Argument\ObjectFactory($diConfig);
-
         $directories = isset($arguments[\Magento\App\Filesystem::PARAM_APP_DIRS])
             ? $arguments[\Magento\App\Filesystem::PARAM_APP_DIRS]
             : array();
@@ -69,13 +67,14 @@ class ObjectManagerFactory
             array($directoryList->getDir(\Magento\App\Filesystem::GENERATION_DIR))
         );
 
-        $appArguments = $this->createAppArguments($directoryList, []);
-        $argInterpreter = $this->createArgumentInterpreter($booleanUtils, $argFactory, $appArguments);
-        $factory = new Factory($diConfig, $argInterpreter, $argFactory);
+        $factory = new Factory($diConfig);
+        $argInterpreter = $this->createArgumentInterpreter(new BooleanUtils());
+        $argumentMapper = new \Magento\ObjectManager\Config\Mapper\Dom($argInterpreter);
 
+        $sharedInstances['Magento\ObjectManager\Config\Mapper\Dom'] = $argumentMapper;
         $objectManager = new $this->locatorClassName($factory, $diConfig, $sharedInstances);
 
-        $argFactory->setObjectManager($objectManager);
+        $factory->setObjectManager($objectManager);
         ObjectManager::setInstance($objectManager);
 
         self::configure($objectManager);
@@ -107,14 +106,10 @@ class ObjectManagerFactory
      * Return newly created instance on an argument interpreter, suitable for processing DI arguments
      *
      * @param \Magento\Stdlib\BooleanUtils $booleanUtils
-     * @param \Magento\ObjectManager\Config\Argument\ObjectFactory $objFactory
-     * @param \Magento\App\Arguments $appArguments
      * @return \Magento\Data\Argument\InterpreterInterface
      */
     protected function createArgumentInterpreter(
-        \Magento\Stdlib\BooleanUtils $booleanUtils,
-        \Magento\ObjectManager\Config\Argument\ObjectFactory $objFactory,
-        \Magento\App\Arguments $appArguments
+        \Magento\Stdlib\BooleanUtils $booleanUtils
     ) {
         $constInterpreter = new \Magento\Data\Argument\Interpreter\Constant();
         $result = new \Magento\Data\Argument\Interpreter\Composite(
@@ -124,8 +119,8 @@ class ObjectManagerFactory
                 'number' => new \Magento\Data\Argument\Interpreter\Number(),
                 'null' => new \Magento\Data\Argument\Interpreter\NullType(),
                 'const' => $constInterpreter,
-                'object' => new \Magento\ObjectManager\Config\Argument\Interpreter\Object($booleanUtils, $objFactory),
-                'init_parameter' => new \Magento\App\Arguments\ArgumentInterpreter($appArguments, $constInterpreter),
+                'object' => new \Magento\Data\Argument\Interpreter\Object($booleanUtils),
+                'init_parameter' => new \Magento\App\Arguments\ArgumentInterpreter($constInterpreter),
             ),
             \Magento\ObjectManager\Config\Reader\Dom::TYPE_ATTRIBUTE
         );
