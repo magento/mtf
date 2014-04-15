@@ -7,9 +7,9 @@
  */
 namespace Magento\ObjectManager\Config\Mapper;
 
-use Magento\Config\Converter\Dom\Flat as FlatConverter;
-use Magento\Config\Dom\NodePathMatcher;
-use Magento\Config\Dom\ArrayNodeConfig;
+use Magento\Framework\Config\Converter\Dom\Flat as FlatConverter;
+use Magento\Framework\Config\Dom\NodePathMatcher;
+use Magento\Framework\Config\Dom\ArrayNodeConfig;
 
 /**
  * Parser of a DI argument node that returns its array representation with no data loss

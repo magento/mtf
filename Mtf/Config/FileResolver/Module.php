@@ -9,7 +9,7 @@
 namespace Mtf\Config\FileResolver;
 
 use Mtf\Util\Iterator\File;
-use Magento\Config\FileResolverInterface;
+use Magento\Framework\Config\FileResolverInterface;
 
 /**
  * Class Module

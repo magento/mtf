@@ -44,7 +44,7 @@ class Generator
     ) {
         $this->_autoloader = $autoloader ?: new \Magento\Autoload\IncludePath();
         $this->_ioObject = $ioObject ?: new \Magento\Code\Generator\Io(
-            new \Magento\Filesystem\Driver\File(),
+            new \Magento\Framework\Filesystem\Driver\File(),
             $this->_autoloader
         );
         $this->_generatedEntities = $generatedEntities;

@@ -7,7 +7,7 @@
  */
 namespace Magento\Code;
 
-use Magento\Filesystem\Directory\Read;
+use Magento\Framework\Filesystem\Directory\Read;
 
 class Minifier
 {
@@ -33,17 +33,17 @@ class Minifier
 
     /**
      * @param \Magento\Code\Minifier\StrategyInterface $strategy
-     * @param \Magento\App\Filesystem $filesystem
+     * @param \Magento\Framework\App\Filesystem $filesystem
      * @param string $directoryName
      */
     public function __construct(
         \Magento\Code\Minifier\StrategyInterface $strategy,
-        \Magento\App\Filesystem $filesystem,
+        \Magento\Framework\App\Filesystem $filesystem,
         $directoryName
     ) {
         $this->_strategy = $strategy;
-        $this->rootDirectory = $filesystem->getDirectoryRead(\Magento\App\Filesystem::ROOT_DIR);
-        $this->pubViewCacheDir = $filesystem->getDirectoryRead(\Magento\App\Filesystem::PUB_VIEW_CACHE_DIR);
+        $this->rootDirectory = $filesystem->getDirectoryRead(\Magento\Framework\App\Filesystem::ROOT_DIR);
+        $this->pubViewCacheDir = $filesystem->getDirectoryRead(\Magento\Framework\App\Filesystem::PUB_VIEW_CACHE_DIR);
         $this->directoryName = $directoryName;
     }
 

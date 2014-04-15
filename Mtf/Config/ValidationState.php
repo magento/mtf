@@ -8,7 +8,7 @@
 
 namespace Mtf\Config;
 
-use Magento\Config\ValidationStateInterface;
+use Magento\Framework\Config\ValidationStateInterface;
 
 /**
  * Class ValidationState

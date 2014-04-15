@@ -59,12 +59,12 @@ class ObjectManagerFactory
         $configuration = $systemConfig->getConfigParam();
         $diConfig->extend($configuration);
 
-        $directories = isset($arguments[\Magento\App\Filesystem::PARAM_APP_DIRS])
-            ? $arguments[\Magento\App\Filesystem::PARAM_APP_DIRS]
+        $directories = isset($arguments[\Magento\Framework\App\Filesystem::PARAM_APP_DIRS])
+            ? $arguments[\Magento\Framework\App\Filesystem::PARAM_APP_DIRS]
             : array();
-        $directoryList = new \Magento\App\Filesystem\DirectoryList(realpath(MTF_BP . '../../../../'), $directories);
+        $directoryList = new \Magento\Framework\App\Filesystem\DirectoryList(realpath(MTF_BP . '../../../../'), $directories);
         \Magento\Autoload\IncludePath::addIncludePath(
-            array($directoryList->getDir(\Magento\App\Filesystem::GENERATION_DIR))
+            array($directoryList->getDir(\Magento\Framework\App\Filesystem::GENERATION_DIR))
         );
 
         $factory = new Factory($diConfig);
@@ -85,18 +85,18 @@ class ObjectManagerFactory
     /**
      * Create instance of application arguments
      *
-     * @param \Magento\App\Filesystem\DirectoryList $directoryList
+     * @param \Magento\Framework\App\Filesystem\DirectoryList $directoryList
      * @param array $arguments
-     * @return \Magento\App\Arguments
+     * @return \Magento\Framework\App\Arguments
      */
-    protected function createAppArguments(\Magento\App\Filesystem\DirectoryList $directoryList, array $arguments)
+    protected function createAppArguments(\Magento\Framework\App\Filesystem\DirectoryList $directoryList, array $arguments)
     {
-        return new \Magento\App\Arguments(
+        return new \Magento\Framework\App\Arguments(
             $arguments,
-            new \Magento\App\Arguments\Loader(
+            new \Magento\Framework\App\Arguments\Loader(
                 $directoryList,
-                isset($arguments[\Magento\App\Arguments\Loader::PARAM_CUSTOM_FILE])
-                    ? $arguments[\Magento\App\Arguments\Loader::PARAM_CUSTOM_FILE]
+                isset($arguments[\Magento\Framework\App\Arguments\Loader::PARAM_CUSTOM_FILE])
+                    ? $arguments[\Magento\Framework\App\Arguments\Loader::PARAM_CUSTOM_FILE]
                     : null
             )
         );
@@ -106,26 +106,26 @@ class ObjectManagerFactory
      * Return newly created instance on an argument interpreter, suitable for processing DI arguments
      *
      * @param \Magento\Stdlib\BooleanUtils $booleanUtils
-     * @return \Magento\Data\Argument\InterpreterInterface
+     * @return \Magento\Framework\Data\Argument\InterpreterInterface
      */
     protected function createArgumentInterpreter(
         \Magento\Stdlib\BooleanUtils $booleanUtils
     ) {
-        $constInterpreter = new \Magento\Data\Argument\Interpreter\Constant();
-        $result = new \Magento\Data\Argument\Interpreter\Composite(
+        $constInterpreter = new \Magento\Framework\Data\Argument\Interpreter\Constant();
+        $result = new \Magento\Framework\Data\Argument\Interpreter\Composite(
             array(
-                'boolean' => new \Magento\Data\Argument\Interpreter\Boolean($booleanUtils),
-                'string' => new \Magento\Data\Argument\Interpreter\String($booleanUtils),
-                'number' => new \Magento\Data\Argument\Interpreter\Number(),
-                'null' => new \Magento\Data\Argument\Interpreter\NullType(),
+                'boolean' => new \Magento\Framework\Data\Argument\Interpreter\Boolean($booleanUtils),
+                'string' => new \Magento\Framework\Data\Argument\Interpreter\String($booleanUtils),
+                'number' => new \Magento\Framework\Data\Argument\Interpreter\Number(),
+                'null' => new \Magento\Framework\Data\Argument\Interpreter\NullType(),
                 'const' => $constInterpreter,
-                'object' => new \Magento\Data\Argument\Interpreter\Object($booleanUtils),
-                'init_parameter' => new \Magento\App\Arguments\ArgumentInterpreter($constInterpreter),
+                'object' => new \Magento\Framework\Data\Argument\Interpreter\Object($booleanUtils),
+                'init_parameter' => new \Magento\Framework\App\Arguments\ArgumentInterpreter($constInterpreter),
             ),
             \Magento\ObjectManager\Config\Reader\Dom::TYPE_ATTRIBUTE
         );
         // Add interpreters that reference the composite
-        $result->addInterpreter('array', new \Magento\Data\Argument\Interpreter\ArrayType($result));
+        $result->addInterpreter('array', new \Magento\Framework\Data\Argument\Interpreter\ArrayType($result));
         return $result;
     }
 

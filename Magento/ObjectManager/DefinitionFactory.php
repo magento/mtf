@@ -10,7 +10,7 @@
  */
 namespace Magento\ObjectManager;
 
-use Magento\Filesystem\DriverInterface;
+use Magento\Framework\Filesystem\DriverInterface;
 use Magento\ObjectManager\Definition\Runtime;
 use Magento\ObjectManager\Relations;
 use Magento\ObjectManager\Code\Generator;
