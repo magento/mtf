@@ -10,7 +10,7 @@ namespace Mtf\Util\Generate;
 
 use Mtf\Util\Generate\Repository\CollectionProviderInterface;
 use Mtf\Configuration\Reader;
-use Magento\ObjectManager;
+use Magento\Framework\ObjectManager;
 
 /**
  * Class Repository

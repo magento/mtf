@@ -7,7 +7,7 @@
  * @copyright   {copyright}
  * @license     {license_link}
  */
-namespace Magento;
+namespace Magento\Framework;
 
 use Magento\Framework\Filesystem\FilesystemException;
 use Magento\Framework\Filesystem\File\ReadInterface;

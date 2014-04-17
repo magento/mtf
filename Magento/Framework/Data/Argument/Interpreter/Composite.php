@@ -7,7 +7,7 @@
  */
 namespace Magento\Framework\Data\Argument\Interpreter;
 
-use Magento\ObjectManager;
+use Magento\Framework\ObjectManager;
 use Magento\Framework\Data\Argument\InterpreterInterface;
 
 /**

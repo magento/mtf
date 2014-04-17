@@ -110,7 +110,7 @@ class Filesystem implements \Magento\Framework\Config\ReaderInterface
      *
      * @param string|null $scope
      * @return array
-     * @throws \Magento\Exception
+     * @throws \Magento\Framework\Exception
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
@@ -131,7 +131,7 @@ class Filesystem implements \Magento\Framework\Config\ReaderInterface
      *
      * @param array $fileList
      * @return array
-     * @throws \Magento\Exception
+     * @throws \Magento\Framework\Exception
      */
     protected function _readFiles($fileList)
     {
@@ -145,14 +145,14 @@ class Filesystem implements \Magento\Framework\Config\ReaderInterface
                     $configMerger->merge($content);
                 }
             } catch (\Magento\Framework\Config\Dom\ValidationException $e) {
-                throw new \Magento\Exception("Invalid XML in file " . $key . ":\n" . $e->getMessage());
+                throw new \Magento\Framework\Exception("Invalid XML in file " . $key . ":\n" . $e->getMessage());
             }
         }
         if ($this->_isValidated) {
             $errors = array();
             if ($configMerger && !$configMerger->validate($this->_schemaFile, $errors)) {
                 $message = "Invalid Document \n";
-                throw new \Magento\Exception($message . implode("\n", $errors));
+                throw new \Magento\Framework\Exception($message . implode("\n", $errors));
             }
         }
 

@@ -19,7 +19,7 @@ namespace Mtf;
  * @package Mtf
  * @api
  */
-class ObjectManager extends \Magento\ObjectManager\ObjectManager
+class ObjectManager extends \Magento\Framework\ObjectManager\ObjectManager
 {
     /**
      * @var \Mtf\ObjectManager\Factory
@@ -34,12 +34,12 @@ class ObjectManager extends \Magento\ObjectManager\ObjectManager
     /**
      * @constructor
      * @param \Mtf\ObjectManager\Factory $factory
-     * @param \Magento\ObjectManager\Config $config
+     * @param \Magento\Framework\ObjectManager\Config $config
      * @param array $sharedInstances
      */
     public function __construct(
         \Mtf\ObjectManager\Factory $factory = null,
-        \Magento\ObjectManager\Config $config = null,
+        \Magento\Framework\ObjectManager\Config $config = null,
         array $sharedInstances = []
     ) {
         parent::__construct($factory, $config, $sharedInstances);

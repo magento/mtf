@@ -8,7 +8,7 @@
 
 namespace Mtf\Util\Generate;
 
-use Magento\ObjectManager;
+use Magento\Framework\ObjectManager;
 
 /**
  * Class GenerateResult

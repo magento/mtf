@@ -9,12 +9,12 @@
 namespace Magento\Framework\Data\Argument\Interpreter;
 
 use Magento\Framework\Data\Argument\InterpreterInterface;
-use Magento\Stdlib\BooleanUtils;
+use Magento\Framework\Stdlib\BooleanUtils;
 
 class Object implements InterpreterInterface
 {
     /**
-     * @var \Magento\Stdlib\BooleanUtils
+     * @var \Magento\Framework\Stdlib\BooleanUtils
      */
     protected $booleanUtils;
 

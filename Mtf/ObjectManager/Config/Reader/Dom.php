@@ -33,8 +33,8 @@ class Dom extends \Magento\Framework\Config\Reader\Filesystem
 
     /**
      * @param \Magento\Framework\Config\FileResolverInterface $fileResolver
-     * @param \Magento\ObjectManager\Config\Mapper\Dom $converter
-     * @param \Magento\ObjectManager\Config\SchemaLocator $schemaLocator
+     * @param \Magento\Framework\ObjectManager\Config\Mapper\Dom $converter
+     * @param \Magento\Framework\ObjectManager\Config\SchemaLocator $schemaLocator
      * @param \Magento\Framework\Config\ValidationStateInterface $validationState
      * @param string $fileName
      * @param array $idAttributes
@@ -43,8 +43,8 @@ class Dom extends \Magento\Framework\Config\Reader\Filesystem
      */
     public function __construct(
         \Magento\Framework\Config\FileResolverInterface $fileResolver,
-        \Magento\ObjectManager\Config\Mapper\Dom $converter,
-        \Magento\ObjectManager\Config\SchemaLocator $schemaLocator,
+        \Magento\Framework\ObjectManager\Config\Mapper\Dom $converter,
+        \Magento\Framework\ObjectManager\Config\SchemaLocator $schemaLocator,
         \Magento\Framework\Config\ValidationStateInterface $validationState,
         $fileName = 'di.xml',
         $idAttributes = array(),

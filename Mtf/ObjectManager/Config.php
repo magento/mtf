@@ -8,7 +8,7 @@
 
 namespace Mtf\ObjectManager;
 
-use Magento\ObjectManager\Config\Config as ObjectManagerConfig;
+use Magento\Framework\ObjectManager\Config\Config as ObjectManagerConfig;
 
 /**
  * Class Config

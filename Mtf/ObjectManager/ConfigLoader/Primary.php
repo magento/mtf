@@ -33,10 +33,10 @@ class Primary
     {
         $reader = new \Mtf\ObjectManager\Config\Reader\Dom(
             new \Mtf\Config\FileResolver\Primary(),
-            new \Magento\ObjectManager\Config\Mapper\Dom(
+            new \Magento\Framework\ObjectManager\Config\Mapper\Dom(
                 $this->createArgumentInterpreter()
             ),
-            new \Magento\ObjectManager\Config\SchemaLocator(),
+            new \Magento\Framework\ObjectManager\Config\SchemaLocator(),
             new \Mtf\Config\ValidationState($this->_appMode)
         );
 
@@ -51,7 +51,7 @@ class Primary
      */
     protected function createArgumentInterpreter()
     {
-        $booleanUtils =  new \Magento\Stdlib\BooleanUtils();
+        $booleanUtils =  new \Magento\Framework\Stdlib\BooleanUtils();
         $constInterpreter = new \Magento\Framework\Data\Argument\Interpreter\Constant();
         $result = new \Magento\Framework\Data\Argument\Interpreter\Composite(
             [
@@ -63,7 +63,7 @@ class Primary
                 'const' => $constInterpreter,
                 'init_parameter' => new \Magento\Framework\App\Arguments\ArgumentInterpreter($constInterpreter)
             ],
-            \Magento\ObjectManager\Config\Reader\Dom::TYPE_ATTRIBUTE
+            \Magento\Framework\ObjectManager\Config\Reader\Dom::TYPE_ATTRIBUTE
         );
         // Add interpreters that reference the composite
         $result->addInterpreter('array', new \Magento\Framework\Data\Argument\Interpreter\ArrayType($result));

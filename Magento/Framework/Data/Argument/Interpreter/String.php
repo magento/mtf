@@ -8,7 +8,7 @@
 namespace Magento\Framework\Data\Argument\Interpreter;
 
 use Magento\Framework\Data\Argument\InterpreterInterface;
-use Magento\Stdlib\BooleanUtils;
+use Magento\Framework\Stdlib\BooleanUtils;
 
 /**
  * Interpreter of string data type that may optionally perform text translation
