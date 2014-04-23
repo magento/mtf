@@ -38,7 +38,6 @@ class Listener implements \PHPUnit_Framework_TestListener
     protected $_scope;
 
     /**
-     * @constructor
      * @param Config $configuration
      */
     public function __construct(Config $configuration = null)
@@ -50,55 +49,52 @@ class Listener implements \PHPUnit_Framework_TestListener
     }
 
     /**
-     * An error occurred.
-     *
-     * @param  PHPUnit_Framework_Test $test
-     * @param  Exception $e
-     * @param  float $time
+     * {@inheritdoc}
+     * @SuppressWarnings(PHPMD.ShortVariable)
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
     }
 
     /**
-     * A failure occurred.
-     *
-     * @param  PHPUnit_Framework_Test $test
-     * @param  PHPUnit_Framework_AssertionFailedError $e
-     * @param  float $time
+     * {@inheritdoc}
+     * @SuppressWarnings(PHPMD.ShortVariable)
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
     }
 
     /**
-     * Incomplete test.
-     *
-     * @param  PHPUnit_Framework_Test $test
-     * @param  Exception $e
-     * @param  float $time
+     * {@inheritdoc}
+     * @SuppressWarnings(PHPMD.ShortVariable)
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
     }
 
     /**
-     * Skipped test.
-     *
-     * @param  PHPUnit_Framework_Test $test
-     * @param  Exception $e
-     * @param  float $time
-     * @since  Method available since Release 3.0.0
+     * {@inheritdoc}
+     * @SuppressWarnings(PHPMD.ShortVariable)
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    public function addRiskyTest(\PHPUnit_Framework_Test $test, \Exception $e, $time)
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     * @SuppressWarnings(PHPMD.ShortVariable)
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
     }
 
     /**
-     * A test suite started.
-     *
-     * @param  PHPUnit_Framework_TestSuite $suite
-     * @since  Method available since Release 2.2.0
+     * {@inheritdoc}
      */
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
@@ -108,20 +104,14 @@ class Listener implements \PHPUnit_Framework_TestListener
     }
 
     /**
-     * A test suite ended.
-     *
-     * @param  PHPUnit_Framework_TestSuite $suite
-     * @since  Method available since Release 2.2.0
+     * {@inheritdoc}
      */
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
     }
 
     /**
-     * A test started.
-     * Reopen browser before every test if it was terminated.
-     *
-     * @param  PHPUnit_Framework_Test $test
+     * {@inheritdoc}
      */
     public function startTest(PHPUnit_Framework_Test $test)
     {
@@ -133,10 +123,7 @@ class Listener implements \PHPUnit_Framework_TestListener
     }
 
     /**
-     * A test ended.
-     *
-     * @param  PHPUnit_Framework_Test $test
-     * @param  float $time
+     * {@inheritdoc}
      */
     public function endTest(PHPUnit_Framework_Test $test, $time)
     {

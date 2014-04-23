@@ -79,7 +79,6 @@ class Listener implements \PHPUnit_Framework_TestListener
     private $_driver;
 
     /**
-     * @constructor
      * @param \Mtf\System\Isolation\Driver $driver
      * @param null|\Mtf\System\Config $configuration
      */
@@ -97,9 +96,7 @@ class Listener implements \PHPUnit_Framework_TestListener
     }
 
     /**
-     * A test suite started
-     *
-     * @param \PHPUnit_Framework_TestSuite $suite
+     * {@inheritdoc}
      */
     public function startTestSuite(\PHPUnit_Framework_TestSuite $suite)
     {
@@ -113,10 +110,7 @@ class Listener implements \PHPUnit_Framework_TestListener
     }
 
     /**
-     * A test suite ended
-     *
-     * @param \PHPUnit_Framework_TestSuite $suite
-     * @since  Method available since Release 2.2.0
+     * {@inheritdoc}
      */
     public function endTestSuite(\PHPUnit_Framework_TestSuite $suite)
     {
@@ -129,9 +123,7 @@ class Listener implements \PHPUnit_Framework_TestListener
     }
 
     /**
-     * A test started
-     *
-     * @param \PHPUnit_Framework_Test $test
+     * {@inheritdoc}
      */
     public function startTest(\PHPUnit_Framework_Test $test)
     {
@@ -140,10 +132,7 @@ class Listener implements \PHPUnit_Framework_TestListener
     }
 
     /**
-     * A test ended
-     *
-     * @param \PHPUnit_Framework_Test $test
-     * @param float $time
+     * {@inheritdoc}
      */
     public function endTest(\PHPUnit_Framework_Test $test, $time)
     {
@@ -237,44 +226,45 @@ class Listener implements \PHPUnit_Framework_TestListener
     }
 
     /**
-     * Stub for addError interface's method
-     *
-     * @param \PHPUnit_Framework_Test $test
-     * @param \Exception $e
-     * @param float $time
+     * {@inheritdoc}
+     * @SuppressWarnings(PHPMD.ShortVariable)
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function addError(\PHPUnit_Framework_Test $test, \Exception $e, $time)
     {
     }
 
     /**
-     * Stub for addFailure interface's method
-     *
-     * @param \PHPUnit_Framework_Test $test
-     * @param \PHPUnit_Framework_AssertionFailedError $e
-     * @param float $time
+     * {@inheritdoc}
+     * @SuppressWarnings(PHPMD.ShortVariable)
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function addFailure(\PHPUnit_Framework_Test $test, \PHPUnit_Framework_AssertionFailedError $e, $time)
     {
     }
 
     /**
-     * Stub for addIncompleteTest interface's method
-     *
-     * @param \PHPUnit_Framework_Test $test
-     * @param \Exception $e
-     * @param float $time
+     * {@inheritdoc}
+     * @SuppressWarnings(PHPMD.ShortVariable)
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function addIncompleteTest(\PHPUnit_Framework_Test $test, \Exception $e, $time)
     {
     }
 
     /**
-     * Stub for addSkippedTest interface's method
-     *
-     * @param \PHPUnit_Framework_Test $test
-     * @param \Exception $e
-     * @param float $time
+     * {@inheritdoc}
+     * @SuppressWarnings(PHPMD.ShortVariable)
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    public function addRiskyTest(\PHPUnit_Framework_Test $test, \Exception $e, $time)
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     * @SuppressWarnings(PHPMD.ShortVariable)
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function addSkippedTest(\PHPUnit_Framework_Test $test, \Exception $e, $time)
     {
