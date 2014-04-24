@@ -13,7 +13,7 @@ namespace Mtf\ObjectManager\Config;
  * @package Mtf\ObjectManager\Config
  * @internal
  */
-class SchemaLocator extends \Magento\ObjectManager\Config\SchemaLocator
+class SchemaLocator extends \Magento\Framework\ObjectManager\Config\SchemaLocator
 {
     /**
      * Get path to merged config schema

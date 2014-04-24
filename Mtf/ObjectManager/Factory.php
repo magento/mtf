@@ -16,7 +16,7 @@ use Mtf\System\Code\ClassReader;
  * @package Mtf\ObjectManager
  * @internal
  */
-class Factory extends \Magento\ObjectManager\Factory\Factory
+class Factory extends \Magento\Framework\ObjectManager\Factory\Factory
 {
     /**
      * @var \Mtf\System\Code\ClassReader
@@ -26,15 +26,15 @@ class Factory extends \Magento\ObjectManager\Factory\Factory
     /**
      * @constructor
      *
-     * @param \Magento\ObjectManager\Config $config
-     * @param \Magento\ObjectManager $objectManager
-     * @param \Magento\ObjectManager\Definition $definitions
+     * @param \Magento\Framework\ObjectManager\Config $config
+     * @param \Magento\Framework\ObjectManager $objectManager
+     * @param \Magento\Framework\ObjectManager\Definition $definitions
      * @param array $globalArguments
      */
     public function __construct(
-        \Magento\ObjectManager\Config $config,
-        \Magento\ObjectManager $objectManager = null,
-        \Magento\ObjectManager\Definition $definitions = null,
+        \Magento\Framework\ObjectManager\Config $config,
+        \Magento\Framework\ObjectManager $objectManager = null,
+        \Magento\Framework\ObjectManager\Definition $definitions = null,
         $globalArguments = array()
     ) {
         parent::__construct($config, $objectManager, $definitions, $globalArguments);

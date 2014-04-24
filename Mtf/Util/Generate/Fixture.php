@@ -10,7 +10,7 @@ namespace Mtf\Util\Generate;
 
 use Mtf\Util\Generate\Fixture\FieldsProviderInterface;
 use Mtf\Configuration\Reader;
-use Magento\ObjectManager;
+use Magento\Framework\ObjectManager;
 use Mtf\Util\XmlConverter;
 
 /**
