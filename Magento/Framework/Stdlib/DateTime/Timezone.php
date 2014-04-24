@@ -272,8 +272,8 @@ class Timezone implements \Magento\Framework\Stdlib\DateTime\TimezoneInterface
      * Returns a localized information string, supported are several types of informations.
      * For detailed information about the types look into the documentation
      *
-     * @param  string             $value  Name to get detailed information about
-     * @param  string             $path   (Optional) Type of information to return
+     * @param  string $value Name to get detailed information about
+     * @param  string $path (Optional) Type of information to return
      * @return string|false The wished information in the given language
      */
     protected function _getTranslation($value = null, $path = null)

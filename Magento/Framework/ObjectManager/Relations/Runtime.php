@@ -26,7 +26,7 @@ class Runtime implements \Magento\Framework\ObjectManager\Relations
      */
     public function __construct(\Magento\Framework\Code\Reader\ClassReader $classReader = null)
     {
-        $this->_classReader = $classReader ?: new \Magento\Framework\Code\Reader\ClassReader();
+        $this->_classReader = $classReader ? : new \Magento\Framework\Code\Reader\ClassReader();
     }
 
     /**
@@ -51,6 +51,6 @@ class Runtime implements \Magento\Framework\ObjectManager\Relations
         if (!class_exists($type)) {
             return $this->_default;
         }
-        return $this->_classReader->getParents($type) ?: $this->_default;
+        return $this->_classReader->getParents($type) ? : $this->_default;
     }
 }

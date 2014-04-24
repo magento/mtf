@@ -73,10 +73,10 @@ interface TimezoneInterface
     /**
      * Create \Magento\Framework\Stdlib\DateTime\DateInterface object for current locale
      *
-     * @param mixed              $date
-     * @param string             $part
+     * @param mixed $date
+     * @param string $part
      * @param string|Zend_Locale $locale
-     * @param bool               $useTimezone
+     * @param bool $useTimezone
      * @return \Magento\Framework\Stdlib\DateTime\DateInterface
      */
     public function date($date = null, $part = null, $locale = null, $useTimezone = true);

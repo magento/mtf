@@ -45,7 +45,7 @@ class Listener implements \PHPUnit_Framework_TestListener
         if (!isset($configuration)) {
             $configuration = new Config();
         }
-        $this->_scope = $configuration->getConfigParam('application/reopen_browser_on') ?: static::SCOPE_TEST_CASE;
+        $this->_scope = $configuration->getConfigParam('application/reopen_browser_on') ? : static::SCOPE_TEST_CASE;
     }
 
     /**

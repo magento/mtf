@@ -121,7 +121,7 @@ class Write extends Read implements WriteInterface
     public function renameFile($path, $newPath, WriteInterface $targetDirectory = null)
     {
         $this->assertIsFile($path);
-        $targetDirectory = $targetDirectory ?: $this;
+        $targetDirectory = $targetDirectory ? : $this;
         if (!$targetDirectory->isExist($this->driver->getParentDirectory($newPath))) {
             $targetDirectory->create($this->driver->getParentDirectory($newPath));
         }
@@ -143,7 +143,7 @@ class Write extends Read implements WriteInterface
     {
         $this->assertIsFile($path);
 
-        $targetDirectory = $targetDirectory ?: $this;
+        $targetDirectory = $targetDirectory ? : $this;
         if (!$targetDirectory->isExist($this->driver->getParentDirectory($destination))) {
             $targetDirectory->create($this->driver->getParentDirectory($destination));
         }

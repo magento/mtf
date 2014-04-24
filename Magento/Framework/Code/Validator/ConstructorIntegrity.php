@@ -23,7 +23,7 @@ class ConstructorIntegrity implements ValidatorInterface
      */
     public function __construct(\Magento\Framework\Code\Reader\ArgumentsReader $argumentsReader = null)
     {
-        $this->_argumentsReader = $argumentsReader ?: new \Magento\Framework\Code\Reader\ArgumentsReader();
+        $this->_argumentsReader = $argumentsReader ? : new \Magento\Framework\Code\Reader\ArgumentsReader();
     }
 
     /**

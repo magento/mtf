@@ -11,6 +11,7 @@ namespace Magento\Framework\Code\Minifier\Adapter\Js;
 if (!class_exists('JSMin')) {
     require_once __DIR__ . '/../../../../../JSMin/jsmin.php';
 }
+
 /**
  * Adapter for JSMin library
  */

@@ -72,11 +72,12 @@ abstract class Injectable extends Functional
         parent::__construct($name, $data, $dataName);
         $this->dataId = get_class($this) . '::' . $name;
         if (!isset(static::$sharedArguments[$this->dataId]) && method_exists($this, '__prepare')) {
-            static::$sharedArguments[$this->dataId] = (array) $this->objectManager->invoke($this, '__prepare');
+            static::$sharedArguments[$this->dataId] = (array)$this->objectManager->invoke($this, '__prepare');
         }
         if (method_exists($this, '__inject')) {
             $this->objectManager->invoke(
-                $this, '__inject',
+                $this,
+                '__inject',
                 isset(self::$sharedArguments[$this->dataId]) ? self::$sharedArguments[$this->dataId] : []
             );
         }
@@ -110,10 +111,11 @@ abstract class Injectable extends Functional
      * @param \PHPUnit_Framework_TestResult $result
      * @return \PHPUnit_Framework_TestResult
      */
-    public function run(\PHPUnit_Framework_TestResult $result = NULL)
+    public function run(\PHPUnit_Framework_TestResult $result = null)
     {
         /** @var $testVariationIterator \Mtf\Util\Iterator\TestCaseVariation */
-        $testVariationIterator = $this->objectManager->create('Mtf\Util\Iterator\TestCaseVariation',
+        $testVariationIterator = $this->objectManager->create(
+            'Mtf\Util\Iterator\TestCaseVariation',
             [
                 'testCase' => $this
             ]

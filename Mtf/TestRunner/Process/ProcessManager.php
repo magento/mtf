@@ -55,8 +55,11 @@ class ProcessManager
      * @param array $params
      * @return void
      */
-    public function run(\PHPUnit_Framework_Test $testcase, \PHPUnit_Framework_TestResult $result, array $params = array())
-    {
+    public function run(
+        \PHPUnit_Framework_Test $testcase,
+        \PHPUnit_Framework_TestResult $result,
+        array $params = array()
+    ) {
         $environment = $this->popEnvironment();
         $job = $this->generateTestCaseJob($testcase, $result, $params, $environment);
         $this->processJob($job, $testcase, $result, $environment);
@@ -120,8 +123,8 @@ class ProcessManager
             $readStreams[] = $p->getStdoutStream();
             $readStreams[] = $p->getStderrStream();
         }
-        $writeStreams = NULL;
-        $exceptStreams = NULL;
+        $writeStreams = null;
+        $exceptStreams = null;
 
         if (count($readStreams) === 0) {
             return;
@@ -178,7 +181,8 @@ class ProcessManager
      * @param Process $process
      * @return void
      */
-    private function removeDoneProcess($process) {
+    private function removeDoneProcess($process)
+    {
         $key = array_search($process, $this->_processes);
         if ($key !== false) {
             /* Returns the environment to the list of available environments */
@@ -198,9 +202,13 @@ class ProcessManager
      * @param Environment $environment
      * @return string
      */
-    private function generateTestCaseJob(\PHPUnit_Framework_Test $testcase, \PHPUnit_Framework_TestResult $result, array $params, Environment $environment)
-    {
-        if ($result === NULL) {
+    private function generateTestCaseJob(
+        \PHPUnit_Framework_Test $testcase,
+        \PHPUnit_Framework_TestResult $result,
+        array $params,
+        Environment $environment
+    ) {
+        if ($result === null) {
             $result = new PHPUnit_Framework_TestResult;
         }
 
@@ -209,7 +217,6 @@ class ProcessManager
         $template = new \Text_Template(
             sprintf(
                 '%s%sTestCaseRun.tpl',
-
                 __DIR__,
                 DIRECTORY_SEPARATOR
             )
@@ -228,39 +235,39 @@ class ProcessManager
         }
 
         if (defined('PHPUNIT_COMPOSER_INSTALL')) {
-            $composerAutoload = var_export(PHPUNIT_COMPOSER_INSTALL, TRUE);
+            $composerAutoload = var_export(PHPUNIT_COMPOSER_INSTALL, true);
         } else {
             $composerAutoload = '\'\'';
         }
 
         if (defined('__PHPUNIT_PHAR__')) {
-            $phar = var_export(__PHPUNIT_PHAR__, TRUE);
+            $phar = var_export(__PHPUNIT_PHAR__, true);
         } else {
             $phar = '\'\'';
         }
 
-        $data            = var_export(serialize($params['data']), TRUE);
-        $includePath     = var_export(get_include_path(), TRUE);
-        $env             = var_export(serialize($environment->getEnvironmentVariables()), TRUE);
+        $data = var_export(serialize($params['data']), true);
+        $includePath = var_export(get_include_path(), true);
+        $env = var_export(serialize($environment->getEnvironmentVariables()), true);
         // must do these fixes because TestCaseMethod.tpl has unserialize('{data}') in it, and we can't break BC
         // the lines above used to use addcslashes() rather than var_export(), which breaks null byte escape sequences
-        $data            = "'." . $data . ".'";
-        $includePath     = "'." . $includePath . ".'";
-        $env             = "'." . $env . ".'";
+        $data = "'." . $data . ".'";
+        $includePath = "'." . $includePath . ".'";
+        $env = "'." . $env . ".'";
 
         $template->setVar(
             array(
-                 'composerAutoload'               => $composerAutoload,
-                 'phar'                           => $phar,
-                 'filename'                       => $class->getFileName(),
-                 'className'                      => $class->getName(),
-                 'methodName'                     => $params['name'],
-                 'collectCodeCoverageInformation' => $coverage,
-                 'data'                           => $data,
-                 'dataName'                       => $params['dataName'],
-                 'include_path'                   => $includePath,
-                 'strict'                         => $strict,
-                 'env'                            => $env
+                'composerAutoload' => $composerAutoload,
+                'phar' => $phar,
+                'filename' => $class->getFileName(),
+                'className' => $class->getName(),
+                'methodName' => $params['name'],
+                'collectCodeCoverageInformation' => $coverage,
+                'data' => $data,
+                'dataName' => $params['dataName'],
+                'include_path' => $includePath,
+                'strict' => $strict,
+                'env' => $env
             )
         );
         return $template->render();
@@ -290,7 +297,7 @@ class ProcessManager
 
     private function popEnvironment()
     {
-        if (count($this->_environments) == 0)  {
+        if (count($this->_environments) == 0) {
             $this->waitForSingleProcessToComplete();
         }
 

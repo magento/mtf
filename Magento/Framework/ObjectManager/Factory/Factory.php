@@ -51,7 +51,7 @@ class Factory implements \Magento\Framework\ObjectManager\Factory
     ) {
         $this->config = $config;
         $this->objectManager = $objectManager;
-        $this->definitions = $definitions ?: new \Magento\Framework\ObjectManager\Definition\Runtime();
+        $this->definitions = $definitions ? : new \Magento\Framework\ObjectManager\Definition\Runtime();
         $this->globalArguments = $globalArguments;
     }
 
@@ -90,17 +90,19 @@ class Factory implements \Magento\Framework\ObjectManager\Factory
             $argument = null;
             if (array_key_exists($paramName, $arguments)) {
                 $argument = $arguments[$paramName];
-            } else if ($paramRequired) {
-                if ($paramType) {
-                    $argument = array('instance' => $paramType);
-                } else {
-                    $this->creationStack = array();
-                    throw new \BadMethodCallException(
-                        'Missing required argument $' . $paramName . ' of ' . $requestedType . '.'
-                    );
-                }
             } else {
-                $argument = $paramDefault;
+                if ($paramRequired) {
+                    if ($paramType) {
+                        $argument = array('instance' => $paramType);
+                    } else {
+                        $this->creationStack = array();
+                        throw new \BadMethodCallException(
+                            'Missing required argument $' . $paramName . ' of ' . $requestedType . '.'
+                        );
+                    }
+                } else {
+                    $argument = $paramDefault;
+                }
             }
             if ($paramType && !is_object($argument) && $argument !== $paramDefault) {
                 if (!is_array($argument) || !isset($argument['instance'])) {
@@ -109,16 +111,18 @@ class Factory implements \Magento\Framework\ObjectManager\Factory
                     );
                 }
                 $argumentType = $argument['instance'];
-                $isShared = (isset($argument['shared']) ? $argument['shared'] :$this->config->isShared($argumentType));
+                $isShared = (isset($argument['shared']) ? $argument['shared'] : $this->config->isShared($argumentType));
                 $argument = $isShared
                     ? $this->objectManager->get($argumentType)
                     : $this->objectManager->create($argumentType);
-            } else if (is_array($argument)) {
-                if (isset($argument['argument'])) {
-                    $argKey = $argument['argument'];
-                    $argument = isset($this->globalArguments[$argKey]) ? $this->globalArguments[$argKey] : $paramDefault;
-                } else {
-                    $this->parseArray($argument);
+            } else {
+                if (is_array($argument)) {
+                    if (isset($argument['argument'])) {
+                        $argKey = $argument['argument'];
+                        $argument = isset($this->globalArguments[$argKey]) ? $this->globalArguments[$argKey] : $paramDefault;
+                    } else {
+                        $this->parseArray($argument);
+                    }
                 }
             }
             $resolvedArguments[] = $argument;

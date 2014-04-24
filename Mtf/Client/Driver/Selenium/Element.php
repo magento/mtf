@@ -105,12 +105,14 @@ class Element implements ElementInterface
                 );
             } else {
                 $driver = $this->_driver;
-                $this->_driver->waitUntil( function () use ($driver) {
-                    $result = $driver->execute(
-                        ['script' => "return document['readyState']", 'args' => []]
-                    );
-                    return $result === 'complete' || $result === 'uninitialized';
-                });
+                $this->_driver->waitUntil(
+                    function () use ($driver) {
+                        $result = $driver->execute(
+                            ['script' => "return document['readyState']", 'args' => []]
+                        );
+                        return $result === 'complete' || $result === 'uninitialized';
+                    }
+                );
                 $this->_wrappedElement = $context->element($criteria);
             }
         }

@@ -22,14 +22,14 @@ class TestResult extends \PHPUnit_Framework_TestResult
      * Adds an error to the list of errors.
      *
      * @param  \PHPUnit_Framework_Test $test
-     * @param  \Exception              $e
-     * @param  float                   $time
+     * @param  \Exception $e
+     * @param  float $time
      */
     public function addError(\PHPUnit_Framework_Test $test, \Exception $e, $time)
     {
         if ($e instanceof \PHPUnit_Framework_IncompleteTest) {
             $this->notImplemented[] = new \PHPUnit_Framework_TestFailure(
-              $test, $e
+                $test, $e
             );
 
             $notifyMethod = 'addIncompleteTest';
@@ -37,26 +37,24 @@ class TestResult extends \PHPUnit_Framework_TestResult
             if ($this->stopOnIncomplete) {
                 $this->stop();
             }
-        }
+        } else {
+            if ($e instanceof \PHPUnit_Framework_SkippedTest) {
+                $this->skipped[] = new \PHPUnit_Framework_TestFailure($test, $e);
+                $notifyMethod = 'addSkippedTest';
 
-        else if ($e instanceof \PHPUnit_Framework_SkippedTest) {
-            $this->skipped[] = new \PHPUnit_Framework_TestFailure($test, $e);
-            $notifyMethod    = 'addSkippedTest';
+                if ($this->stopOnSkipped) {
+                    $this->stop();
+                }
+            } else {
+                if ($e instanceof \PHPUnit_Extensions_Selenium2TestCase_Exception) {
+                    $e = new TestResultException($e);
+                }
+                $this->errors[] = new \PHPUnit_Framework_TestFailure($test, $e);
+                $notifyMethod = 'addError';
 
-            if ($this->stopOnSkipped) {
-                $this->stop();
-            }
-        }
-
-        else {
-            if ($e instanceof \PHPUnit_Extensions_Selenium2TestCase_Exception) {
-                $e = new TestResultException($e);
-            }
-            $this->errors[] = new \PHPUnit_Framework_TestFailure($test, $e);
-            $notifyMethod   = 'addError';
-
-            if ($this->stopOnError || $this->stopOnFailure) {
-                $this->stop();
+                if ($this->stopOnError || $this->stopOnFailure) {
+                    $this->stop();
+                }
             }
         }
 
@@ -64,7 +62,7 @@ class TestResult extends \PHPUnit_Framework_TestResult
             $listener->$notifyMethod($test, $e, $time);
         }
 
-        $this->lastTestFailed = TRUE;
-        $this->time          += $time;
+        $this->lastTestFailed = true;
+        $this->time += $time;
     }
 }

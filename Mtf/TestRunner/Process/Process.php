@@ -88,7 +88,7 @@ class Process
      */
     public function isActive()
     {
-        $metadata = stream_get_meta_data($this->_pipes[1]); 
+        $metadata = stream_get_meta_data($this->_pipes[1]);
         return !$metadata["eof"];
     }
 
@@ -100,9 +100,9 @@ class Process
     public function open()
     {
         $descriptor = [
-            0 => [ 'pipe', 'r' ],
-            1 => [ 'pipe', 'w' ],
-            2 => [ 'pipe', 'w' ]
+            0 => ['pipe', 'r'],
+            1 => ['pipe', 'w'],
+            2 => ['pipe', 'w']
         ];
 
         $this->_process = proc_open(
@@ -202,7 +202,7 @@ class Process
     protected function fwrite_stream($pipe, $string)
     {
         $fwrite = 0; // number of bytes written in an iteration
-        for($written = 0; $written < strlen($string); $written += $fwrite) {
+        for ($written = 0; $written < strlen($string); $written += $fwrite) {
             $fwrite = fwrite($pipe, substr($string, $written));
             if ($fwrite === false) {
                 return $written;
@@ -236,7 +236,7 @@ class Process
      */
     public function processResults()
     {
-        if ($this->_result !== NULL) {
+        if ($this->_result !== null) {
             /* Needs to start the test here because the result itself may be shared across processes, and it
                keeps track of the current test
             */

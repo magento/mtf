@@ -214,12 +214,12 @@ abstract class EntityAbstract
         $this->_classGenerator->setName(
             $this->_getResultClassName()
         )->addProperties(
-            $this->_getClassProperties()
-        )->addMethods(
-            $this->_getClassMethods()
-        )->setClassDocBlock(
-            $this->_getClassDocBlock()
-        );
+                $this->_getClassProperties()
+            )->addMethods(
+                $this->_getClassMethods()
+            )->setClassDocBlock(
+                $this->_getClassDocBlock()
+            );
 
         return $this->_getGeneratedCode();
     }
@@ -251,18 +251,18 @@ abstract class EntityAbstract
         $controllerSuffix = 'Controller';
         $pathParts = explode('_', $sourceClassName);
         if (strrpos(
-            $sourceClassName,
-            $controllerSuffix
-        ) === strlen(
-            $sourceClassName
-        ) - strlen(
-            $controllerSuffix
-        ) && isset(
+                $sourceClassName,
+                $controllerSuffix
+            ) === strlen(
+                $sourceClassName
+            ) - strlen(
+                $controllerSuffix
+            ) && isset(
             $pathParts[2]
-        ) && !in_array(
-            $pathParts[2],
-            array('Block', 'Helper', 'Model')
-        )
+            ) && !in_array(
+                $pathParts[2],
+                array('Block', 'Helper', 'Model')
+            )
         ) {
             $controllerPath = preg_replace(
                 '/^([0-9A-Za-z]*)_([0-9A-Za-z]*)/',

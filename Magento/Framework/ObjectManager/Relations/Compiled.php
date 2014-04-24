@@ -3,7 +3,7 @@
  * List of parent classes with their parents and interfaces
  *
  * {license_notice}
- * 
+ *
  * @copyright {copyright}
  * @license   {license_link}
  */

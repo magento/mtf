@@ -129,8 +129,10 @@ class InjectableFixture implements FixtureInterface
                 $value = isset($params['default_value']) ? $params['default_value'] : null;
             }
             if (isset($params['fixture'])) {
-                $fixture = $this->fixtureFactory->create($params['fixture'],
-                    ['data' => $value, 'params' => $params, 'persist' => true]);
+                $fixture = $this->fixtureFactory->create(
+                    $params['fixture'],
+                    ['data' => $value, 'params' => $params, 'persist' => true]
+                );
                 $params['fixture'] = $fixture;
                 $value = $fixture->getData();
             }
@@ -192,7 +194,7 @@ class InjectableFixture implements FixtureInterface
     public function getDataFieldConfig($key)
     {
         if (!isset($this->$key)) {
-            throw new \RuntimeException(sprintf('Data key "%s" is missed',$key));
+            throw new \RuntimeException(sprintf('Data key "%s" is missed', $key));
         }
         return $this->$key;
     }

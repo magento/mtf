@@ -7,5 +7,5 @@
  * @license     {license_link}
  */
 -->
-<repository class="Magento\Mtf\Test\Repository\TestRepository" >
+<repository class="Magento\Mtf\Test\Repository\TestRepository">
 </repository>

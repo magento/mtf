@@ -130,10 +130,12 @@ class InjectableMethod extends InjectableTestCase
 
         // Test method with @dataProvider.
         if (isset($data)) {
-            $test = $objectManager->create('Mtf\TestSuite\InjectableDataProvider',
+            $test = $objectManager->create(
+                'Mtf\TestSuite\InjectableDataProvider',
                 [
                     'class' => $class . '::' . $name
-                ]);
+                ]
+            );
             if (empty($data)) {
                 $data = new \PHPUnit_Framework_Warning(
                     sprintf(
@@ -155,20 +157,20 @@ class InjectableMethod extends InjectableTestCase
                     $_test = $objectManager->create($class, $_arguments);
 
                     if ($runTestInSeparateProcess) {
-                        $_test->setRunTestInSeparateProcess(TRUE);
+                        $_test->setRunTestInSeparateProcess(true);
 
-                        if ($preserveGlobalState !== NULL) {
+                        if ($preserveGlobalState !== null) {
                             $_test->setPreserveGlobalState($preserveGlobalState);
                         }
                     }
 
-                    if ($backupSettings['backupGlobals'] !== NULL) {
+                    if ($backupSettings['backupGlobals'] !== null) {
                         $_test->setBackupGlobals(
                             $backupSettings['backupGlobals']
                         );
                     }
 
-                    if ($backupSettings['backupStaticAttributes'] !== NULL) {
+                    if ($backupSettings['backupStaticAttributes'] !== null) {
                         $_test->setBackupStaticAttributes(
                             $backupSettings['backupStaticAttributes']
                         );
@@ -189,18 +191,18 @@ class InjectableMethod extends InjectableTestCase
             $test->setName($name);
 
             if ($runTestInSeparateProcess) {
-                $test->setRunTestInSeparateProcess(TRUE);
+                $test->setRunTestInSeparateProcess(true);
 
-                if ($preserveGlobalState !== NULL) {
+                if ($preserveGlobalState !== null) {
                     $test->setPreserveGlobalState($preserveGlobalState);
                 }
             }
 
-            if ($backupSettings['backupGlobals'] !== NULL) {
+            if ($backupSettings['backupGlobals'] !== null) {
                 $test->setBackupGlobals($backupSettings['backupGlobals']);
             }
 
-            if ($backupSettings['backupStaticAttributes'] !== NULL) {
+            if ($backupSettings['backupStaticAttributes'] !== null) {
                 $test->setBackupStaticAttributes(
                     $backupSettings['backupStaticAttributes']
                 );

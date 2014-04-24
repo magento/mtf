@@ -1,10 +1,10 @@
 {
-    "name":         "magento/mtf",
-    "type":         "library",
-    "description":  "Magento Testing Framework",
-    "keywords":     ["automation", "magento", "testing"],
-    "homepage":     "http://www.magentocommerce.com/",
-    "license":      "proprietary",
+    "name": "magento/mtf",
+    "type": "library",
+    "description": "Magento Testing Framework",
+    "keywords": ["automation", "magento", "testing"],
+    "homepage": "http://www.magentocommerce.com/",
+    "license": "proprietary",
     "autoload": {
         "psr-0": {
             "Mtf\\": "",

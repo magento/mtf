@@ -33,7 +33,7 @@ class ArgumentSequence implements ValidatorInterface
      */
     public function __construct(\Magento\Framework\Code\Reader\ArgumentsReader $argumentsReader = null)
     {
-        $this->_argumentsReader = $argumentsReader ?: new \Magento\Framework\Code\Reader\ArgumentsReader();
+        $this->_argumentsReader = $argumentsReader ? : new \Magento\Framework\Code\Reader\ArgumentsReader();
     }
 
     /**
@@ -152,7 +152,7 @@ class ArgumentSequence implements ValidatorInterface
         foreach ($parentArgumentList[self::REQUIRED] as $name => $argument) {
             if (!isset($classArgumentList[self::OPTIONAL][$name])) {
                 $output[$name] = isset(
-                    $classArgumentList[self::REQUIRED][$name]
+                $classArgumentList[self::REQUIRED][$name]
                 ) ? $classArgumentList[self::REQUIRED][$name] : $argument;
             } else {
                 $migrated[$name] = $classArgumentList[self::OPTIONAL][$name];
@@ -175,7 +175,7 @@ class ArgumentSequence implements ValidatorInterface
         foreach ($parentArgumentList[self::OPTIONAL] as $name => $argument) {
             if (!isset($output[$name])) {
                 $output[$name] = isset(
-                    $classArgumentList[self::OPTIONAL][$name]
+                $classArgumentList[self::OPTIONAL][$name]
                 ) ? $classArgumentList[self::OPTIONAL][$name] : $argument;
             }
         }

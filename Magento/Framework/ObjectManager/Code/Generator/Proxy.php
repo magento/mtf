@@ -96,11 +96,11 @@ class Proxy extends \Magento\Framework\Code\Generator\EntityAbstract
             'name' => '_getSubject',
             'visibility' => 'protected',
             'body' => "if (!\$this->_subject) {\n" .
-            "    \$this->_subject = true === \$this->_isShared\n" .
-            "        ? \$this->_objectManager->get(\$this->_instanceName)\n" .
-            "        : \$this->_objectManager->create(\$this->_instanceName);\n" .
-            "}\n" .
-            "return \$this->_subject;",
+                "    \$this->_subject = true === \$this->_isShared\n" .
+                "        ? \$this->_objectManager->get(\$this->_instanceName)\n" .
+                "        : \$this->_objectManager->create(\$this->_instanceName);\n" .
+                "}\n" .
+                "return \$this->_subject;",
             'docblock' => array(
                 'shortDescription' => 'Get proxied instance',
                 'tags' => array(array('name' => 'return', 'description' => '\\' . $this->_getSourceClassName()))
@@ -110,9 +110,9 @@ class Proxy extends \Magento\Framework\Code\Generator\EntityAbstract
         $publicMethods = $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC);
         foreach ($publicMethods as $method) {
             if (!($method->isConstructor() ||
-                $method->isFinal() ||
-                $method->isStatic() ||
-                $method->isDestructor()) && !in_array(
+                    $method->isFinal() ||
+                    $method->isStatic() ||
+                    $method->isDestructor()) && !in_array(
                     $method->getName(),
                     array('__sleep', '__wakeup', '__clone')
                 )
@@ -181,8 +181,8 @@ class Proxy extends \Magento\Framework\Code\Generator\EntityAbstract
                 array('name' => 'shared', 'defaultValue' => true)
             ),
             'body' => "\$this->_objectManager = \$objectManager;" .
-            "\n\$this->_instanceName = \$instanceName;" .
-            "\n\$this->_isShared = \$shared;",
+                "\n\$this->_instanceName = \$instanceName;" .
+                "\n\$this->_isShared = \$shared;",
             'docblock' => array(
                 'shortDescription' => ucfirst(static::ENTITY_TYPE) . ' constructor',
                 'tags' => array(

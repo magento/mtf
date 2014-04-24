@@ -6,7 +6,7 @@
  * @license     {license_link}
  */
 
-namespace Magento\Mtf\Test\Handler\Test; 
+namespace Magento\Mtf\Test\Handler\Test;
 
 use Mtf\Fixture\FixtureInterface;
 use Mtf\Handler\Curl as AbstractCurl;
@@ -18,7 +18,7 @@ use Mtf\Handler\Curl as AbstractCurl;
  */
 class Curl extends AbstractCurl implements TestInterface
 {
-   public function persist(FixtureInterface $fixture = null)
+    public function persist(FixtureInterface $fixture = null)
     {
         //
     }

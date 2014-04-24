@@ -49,8 +49,8 @@ class Configuration
      */
     public function __construct(\Magento\Framework\App\ConfigInterface $config)
     {
-        $this->directories = $config->getValue(self::XML_FILESYSTEM_DIRECTORY_PATH) ?: array();
-        $this->protocols = $config->getValue(self::XML_FILESYSTEM_WRAPPER_PATH) ?: array();
+        $this->directories = $config->getValue(self::XML_FILESYSTEM_DIRECTORY_PATH) ? : array();
+        $this->protocols = $config->getValue(self::XML_FILESYSTEM_WRAPPER_PATH) ? : array();
     }
 
     /**

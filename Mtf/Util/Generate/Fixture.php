@@ -114,7 +114,7 @@ class Fixture extends AbstractGenerate
         $content .= '<fixture class="' . $className . '">' . "\n";
 
         $fields = $this->fieldsProvider->getFields($item);
-        if (!empty($item['fields']) && is_array($item['fields']) ){
+        if (!empty($item['fields']) && is_array($item['fields'])) {
             $fields = array_merge($fields, $item['fields']);
         }
         $item['fields'] = $fields;
@@ -157,7 +157,7 @@ class Fixture extends AbstractGenerate
     protected function collectFixturesXml()
     {
         $items = [];
-        $path = MTF_TESTS_PATH .'*/*';
+        $path = MTF_TESTS_PATH . '*/*';
         $modulesPages = glob($path);
         foreach ($modulesPages as $modulePath) {
             $modulePathArray = explode('/', $modulePath);
@@ -207,7 +207,7 @@ class Fixture extends AbstractGenerate
         if ($fieldsXml) {
             foreach ($fieldsXml[0] as $fieldXml) {
                 $name = $fieldXml->getName();
-                $fields[$name] = (array) $fieldXml;
+                $fields[$name] = (array)$fieldXml;
             }
         }
         $relativeFilePath = str_replace($modulePath . '/', '', $folderPath);
@@ -267,9 +267,9 @@ class Fixture extends AbstractGenerate
             $content .= "    ];\n";
         }
         foreach ($fields as $name => $field) {
-            $content .= "\n" . '    public function get'.$this->toCamelCase($name) . '()' . "\n";
+            $content .= "\n" . '    public function get' . $this->toCamelCase($name) . '()' . "\n";
             $content .= "    {\n";
-            $content .= "        return \$this->getData('".$name."');" . "\n";
+            $content .= "        return \$this->getData('" . $name . "');" . "\n";
             $content .= "    }\n";
         }
         $content .= "}\n";

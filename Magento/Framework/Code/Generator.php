@@ -42,8 +42,8 @@ class Generator
         \Magento\Framework\Code\Generator\Io $ioObject = null,
         array $generatedEntities = array()
     ) {
-        $this->_autoloader = $autoloader ?: new \Magento\Framework\Autoload\IncludePath();
-        $this->_ioObject = $ioObject ?: new \Magento\Framework\Code\Generator\Io(
+        $this->_autoloader = $autoloader ? : new \Magento\Framework\Autoload\IncludePath();
+        $this->_ioObject = $ioObject ? : new \Magento\Framework\Code\Generator\Io(
             new \Magento\Framework\Filesystem\Driver\File(),
             $this->_autoloader
         );

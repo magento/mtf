@@ -38,8 +38,8 @@ class Dom implements \Magento\Framework\Config\ConverterInterface
         ArgumentParser $argumentParser = null
     ) {
         $this->argumentInterpreter = $argumentInterpreter;
-        $this->booleanUtils = $booleanUtils ?: new BooleanUtils();
-        $this->argumentParser = $argumentParser ?: new ArgumentParser();
+        $this->booleanUtils = $booleanUtils ? : new BooleanUtils();
+        $this->argumentParser = $argumentParser ? : new ArgumentParser();
     }
 
     /**

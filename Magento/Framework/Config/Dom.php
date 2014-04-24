@@ -128,14 +128,14 @@ class Dom
 
             //different node type
             if ($this->_typeAttributeName && $node->hasAttribute(
-                $this->_typeAttributeName
-            ) && $matchedNode->hasAttribute(
-                $this->_typeAttributeName
-            ) && $node->getAttribute(
-                $this->_typeAttributeName
-            ) !== $matchedNode->getAttribute(
-                $this->_typeAttributeName
-            )
+                    $this->_typeAttributeName
+                ) && $matchedNode->hasAttribute(
+                    $this->_typeAttributeName
+                ) && $node->getAttribute(
+                    $this->_typeAttributeName
+                ) !== $matchedNode->getAttribute(
+                    $this->_typeAttributeName
+                )
             ) {
                 $parentMatchedNode = $this->_getMatchedNode($parentPath);
                 $newNode = $this->_dom->importNode($node, true);

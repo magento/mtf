@@ -3,7 +3,7 @@
  * Reader responsible for retrieving provided scope of configuration from storage
  *
  * {license_notice}
- * 
+ *
  * @copyright {copyright}
  * @license   {license_link}
  */

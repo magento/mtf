@@ -6,7 +6,7 @@
  * @license     {license_link}
  */
 
-namespace Magento\Mtf\Test\Repository; 
+namespace Magento\Mtf\Test\Repository;
 
 use Mtf\Repository\AbstractRepository;
 

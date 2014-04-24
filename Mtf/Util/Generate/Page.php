@@ -220,7 +220,7 @@ class Page extends AbstractGenerate
         $blocks = [];
         $blocksXml = $contentXml->xpath('block');
         foreach ($blocksXml as $blockXml) {
-            $blocks[] = (array) $blockXml;
+            $blocks[] = (array)$blockXml;
         }
 
         $relativeFilePath = str_replace($modulePath . '/', '', $folderPath);
@@ -257,7 +257,7 @@ class Page extends AbstractGenerate
             $content .= "\n    /**\n";
             $content .= "     * @return \\{$block['class']}\n";
             $content .= "     */\n";
-            $content .= '    public function get'.ucfirst($block['name']) . '()' . "\n";
+            $content .= '    public function get' . ucfirst($block['name']) . '()' . "\n";
             $content .= "    {\n";
             $content .= "        return \$this->getBlockInstance('{$block['name']}');\n";
             $content .= "    }\n";

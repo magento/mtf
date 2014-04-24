@@ -31,7 +31,10 @@ class Autoloader
     public function load($className)
     {
         if (!class_exists($className)) {
-            if (\Magento\Framework\Code\Generator::GENERATION_SUCCESS === $this->_generator->generateClass($className)) {
+            if (\Magento\Framework\Code\Generator::GENERATION_SUCCESS === $this->_generator->generateClass(
+                    $className
+                )
+            ) {
                 \Magento\Framework\Autoload\IncludePath::load($className);
             }
         }

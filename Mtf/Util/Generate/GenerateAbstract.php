@@ -255,10 +255,9 @@ class GenerateAbstract
                         $moduleName = array_shift($classPrefix) . '_' . array_shift($classPrefix);
 
                         $modules[$moduleName] = array(
-                            'front_name'   => $frontName,
+                            'front_name' => $frontName,
                             'class_prefix' => $classPrefix
-                        );
-                        ;
+                        );;
                     }
                 }
 
@@ -318,10 +317,10 @@ class GenerateAbstract
                                 $actionName = str_replace('Action', '', $method->getName());
 
                                 $actions[$class->getName() . '::' . $actionName] = array(
-                                    'class_name'  => $class->getName(),
+                                    'class_name' => $class->getName(),
                                     'action_name' => $actionName,
-                                    'area'        => $area,
-                                    'mca'         => $frontName . '/' . strtolower($controllerName . '/' . $actionName)
+                                    'area' => $area,
+                                    'mca' => $frontName . '/' . strtolower($controllerName . '/' . $actionName)
                                 );
                             }
 

@@ -117,7 +117,7 @@ class Constraint extends AbstractGenerate
         $content .= "class {$classShortName} extends AbstractConstraint\n";
         $content .= "{\n";
 
-        $severeness = (string) $item['severeness'];
+        $severeness = (string)$item['severeness'];
         $content .= "    /**\n";
         $content .= "     * Constraint severeness\n";
         $content .= "     *\n";

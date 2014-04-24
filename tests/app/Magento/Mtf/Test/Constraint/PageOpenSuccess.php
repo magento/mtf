@@ -6,7 +6,7 @@
  * @license     {license_link}
  */
 
-namespace Magento\Mtf\Test\Constraint; 
+namespace Magento\Mtf\Test\Constraint;
 
 use Mtf\Constraint\AbstractConstraint;
 use Magento\Mtf\Test\Page\Area\TestPage;

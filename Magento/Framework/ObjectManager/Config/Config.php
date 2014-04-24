@@ -82,8 +82,8 @@ class Config implements \Magento\Framework\ObjectManager\Config
      */
     public function __construct(Relations $relations = null, Definition $definitions = null)
     {
-        $this->_relations = $relations ?: new \Magento\Framework\ObjectManager\Relations\Runtime();
-        $this->_definitions = $definitions ?: new \Magento\Framework\ObjectManager\Definition\Runtime();
+        $this->_relations = $relations ? : new \Magento\Framework\ObjectManager\Relations\Runtime();
+        $this->_definitions = $definitions ? : new \Magento\Framework\ObjectManager\Definition\Runtime();
     }
 
     /**
@@ -185,19 +185,21 @@ class Config implements \Magento\Framework\ObjectManager\Config
         if (!isset($this->_mergedArguments[$type])) {
             if (isset($this->_virtualTypes[$type])) {
                 $arguments = $this->_collectConfiguration($this->_virtualTypes[$type]);
-            } else if ($this->_relations->has($type)) {
-                $relations = $this->_relations->getParents($type);
-                $arguments = array();
-                foreach ($relations as $relation) {
-                    if ($relation) {
-                        $relationArguments = $this->_collectConfiguration($relation);
-                        if ($relationArguments) {
-                            $arguments = array_replace($arguments, $relationArguments);
+            } else {
+                if ($this->_relations->has($type)) {
+                    $relations = $this->_relations->getParents($type);
+                    $arguments = array();
+                    foreach ($relations as $relation) {
+                        if ($relation) {
+                            $relationArguments = $this->_collectConfiguration($relation);
+                            if ($relationArguments) {
+                                $arguments = array_replace($arguments, $relationArguments);
+                            }
                         }
                     }
+                } else {
+                    $arguments = array();
                 }
-            } else {
-                $arguments = array();
             }
 
             if (isset($this->_arguments[$type])) {
@@ -275,13 +277,13 @@ class Config implements \Magento\Framework\ObjectManager\Config
             if ($cached) {
                 list($this->_arguments,
                     $this
-                    ->_nonShared,
+                        ->_nonShared,
                     $this
-                    ->_preferences,
+                        ->_preferences,
                     $this
-                    ->_virtualTypes,
+                        ->_virtualTypes,
                     $this
-                    ->_mergedArguments) = $cached;
+                        ->_mergedArguments) = $cached;
             } else {
                 $this->_mergeConfiguration($configuration);
                 if (!$this->_mergedArguments) {

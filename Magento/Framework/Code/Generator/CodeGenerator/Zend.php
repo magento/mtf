@@ -108,11 +108,11 @@ class Zend extends \Zend\Code\Generator\ClassGenerator implements
 
             if (isset(
                 $methodOptions['parameters']
-            ) && is_array(
-                $methodOptions['parameters']
-            ) && count(
-                $methodOptions['parameters']
-            ) > 0
+                ) && is_array(
+                    $methodOptions['parameters']
+                ) && count(
+                    $methodOptions['parameters']
+                ) > 0
             ) {
                 $parametersArray = array();
                 foreach ($methodOptions['parameters'] as $parameterOptions) {

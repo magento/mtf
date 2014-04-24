@@ -26,8 +26,8 @@ class ArgumentsReader
          * Skip native PHP types, classes without constructor
          */
         if (!$class->getFileName() || false == $class->hasMethod(
-            '__construct'
-        ) || !$inherited && $class->getConstructor()->class != $class->getName()
+                '__construct'
+            ) || !$inherited && $class->getConstructor()->class != $class->getName()
         ) {
             return $output;
         }

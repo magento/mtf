@@ -218,7 +218,7 @@ class Http extends File
      */
     protected function getScheme($scheme = null)
     {
-        $scheme = $scheme ?: $this->scheme;
+        $scheme = $scheme ? : $this->scheme;
         return $scheme ? $scheme . '://' : '';
     }
 }

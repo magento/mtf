@@ -93,7 +93,7 @@ class Form extends Block
      */
     protected function getXmlFilePath()
     {
-        return MTF_TESTS_PATH . str_replace('\\' , '/', get_class($this)) . '.xml';
+        return MTF_TESTS_PATH . str_replace('\\', '/', get_class($this)) . '.xml';
     }
 
     /**

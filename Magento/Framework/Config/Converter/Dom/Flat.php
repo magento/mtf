@@ -76,13 +76,15 @@ class Flat
                 if ($isArrayNode) {
                     if ($isNumericArrayNode) {
                         $value[$nodeName][] = $nodeData;
-                    } else if (isset($nodeData[$arrayKeyAttribute])) {
-                        $arrayKeyValue = $nodeData[$arrayKeyAttribute];
-                        $value[$nodeName][$arrayKeyValue] = $nodeData;
                     } else {
-                        throw new \UnexpectedValueException(
-                            "Array is expected to contain value for key '{$arrayKeyAttribute}'."
-                        );
+                        if (isset($nodeData[$arrayKeyAttribute])) {
+                            $arrayKeyValue = $nodeData[$arrayKeyAttribute];
+                            $value[$nodeName][$arrayKeyValue] = $nodeData;
+                        } else {
+                            throw new \UnexpectedValueException(
+                                "Array is expected to contain value for key '{$arrayKeyAttribute}'."
+                            );
+                        }
                     }
                 } else {
                     $value[$nodeName] = $nodeData;
@@ -119,7 +121,7 @@ class Flat
     protected function getNodeAttributes(\DOMNode $node)
     {
         $result = array();
-        $attributes = $node->attributes ?: array();
+        $attributes = $node->attributes ? : array();
         /** @var \DOMNode $attribute */
         foreach ($attributes as $attribute) {
             if ($attribute->nodeType == XML_ATTRIBUTE_NODE) {

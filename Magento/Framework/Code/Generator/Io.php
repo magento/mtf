@@ -42,8 +42,8 @@ class Io
     private $filesystemDriver;
 
     /**
-     * @param \Magento\Framework\Filesystem\Driver\File   $filesystemDriver
-     * @param \Magento\Framework\Autoload\IncludePath     $autoLoader
+     * @param \Magento\Framework\Filesystem\Driver\File $filesystemDriver
+     * @param \Magento\Framework\Autoload\IncludePath $autoLoader
      * @param null $generationDirectory
      */
     public function __construct(
@@ -51,7 +51,7 @@ class Io
         \Magento\Framework\Autoload\IncludePath $autoLoader = null,
         $generationDirectory = null
     ) {
-        $this->_autoloader = $autoLoader ?: new \Magento\Framework\Autoload\IncludePath();
+        $this->_autoloader = $autoLoader ? : new \Magento\Framework\Autoload\IncludePath();
         $this->filesystemDriver = $filesystemDriver;
         $this->initGeneratorDirectory($generationDirectory);
     }

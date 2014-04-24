@@ -21,13 +21,13 @@ class Locator implements \ArrayAccess
     /**#@+
      * Locator strategy (from Selenium)
      */
-    const SELECTOR_XPATH        = 'xpath';
-    const SELECTOR_CSS          = 'css selector';
-    const SELECTOR_ID           = 'id';
-    const SELECTOR_NAME         = 'name';
-    const SELECTOR_CLASS_NAME   = 'class name';
-    const SELECTOR_TAG_NAME     = 'tag name';
-    const SELECTOR_LINK_TEXT    = 'link text';
+    const SELECTOR_XPATH = 'xpath';
+    const SELECTOR_CSS = 'css selector';
+    const SELECTOR_ID = 'id';
+    const SELECTOR_NAME = 'name';
+    const SELECTOR_CLASS_NAME = 'class name';
+    const SELECTOR_TAG_NAME = 'tag name';
+    const SELECTOR_LINK_TEXT = 'link text';
     /**#@-*/
 
     /**
@@ -56,7 +56,8 @@ class Locator implements \ArrayAccess
      * @param mixed $offset
      * @param mixed $value
      */
-    public function offsetSet($offset, $value) {
+    public function offsetSet($offset, $value)
+    {
         if (is_null($offset)) {
             $this->container[] = $value;
         } else {
@@ -70,7 +71,8 @@ class Locator implements \ArrayAccess
      * @param mixed $offset
      * @return bool
      */
-    public function offsetExists($offset) {
+    public function offsetExists($offset)
+    {
         return isset($this->container[$offset]);
     }
 
@@ -79,7 +81,8 @@ class Locator implements \ArrayAccess
      *
      * @param mixed $offset
      */
-    public function offsetUnset($offset) {
+    public function offsetUnset($offset)
+    {
         unset($this->container[$offset]);
     }
 
@@ -89,7 +92,8 @@ class Locator implements \ArrayAccess
      * @param mixed $offset
      * @return mixed|null
      */
-    public function offsetGet($offset) {
+    public function offsetGet($offset)
+    {
         return isset($this->container[$offset]) ? $this->container[$offset] : null;
     }
 }

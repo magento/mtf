@@ -52,8 +52,13 @@ class AppState extends TestSuite
             $suite = $this->objectManager->create('Mtf\TestSuite\TestCase', ['name' => $appState['name']]);
             $suite->setCallback($callback, $appState);
 
-            $this->addTest($suite, \PHPUnit_Util_Test::getGroups(
-                get_class($suite), $suite->getName()));
+            $this->addTest(
+                $suite,
+                \PHPUnit_Util_Test::getGroups(
+                    get_class($suite),
+                    $suite->getName()
+                )
+            );
 
             $applicationStateIterator->next();
         }

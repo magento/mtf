@@ -42,8 +42,8 @@ class Dom implements \Magento\Framework\Config\ConverterInterface
                 }
                 $nodeListData[$node->nodeName][] = $nodeData;
             } elseif ($node->nodeType == XML_CDATA_SECTION_NODE || $node->nodeType == XML_TEXT_NODE && trim(
-                $node->nodeValue
-            ) != ''
+                    $node->nodeValue
+                ) != ''
             ) {
                 return $node->nodeValue;
             }

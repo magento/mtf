@@ -126,7 +126,7 @@ abstract class AbstractXml
     {
         if (is_null($this->_domConfig)) {
             $schemaFile = $this->getPerFileSchemaFile() &&
-                $this->_isRuntimeValidated() ? $this->getPerFileSchemaFile() : null;
+            $this->_isRuntimeValidated() ? $this->getPerFileSchemaFile() : null;
             $this->_domConfig = new \Magento\Framework\Config\Dom(
                 $this->_getInitialXml(),
                 $this->_getIdAttributes(),

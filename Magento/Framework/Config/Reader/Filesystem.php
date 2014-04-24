@@ -100,7 +100,7 @@ class Filesystem implements \Magento\Framework\Config\ReaderInterface
         $this->_schemaFile = $schemaLocator->getSchema();
         $this->_isValidated = $validationState->isValidated();
         $this->_perFileSchema = $schemaLocator->getPerFileSchema() &&
-            $this->_isValidated ? $schemaLocator->getPerFileSchema() : null;
+        $this->_isValidated ? $schemaLocator->getPerFileSchema() : null;
         $this->_domDocumentClass = $domDocumentClass;
         $this->_defaultScope = $defaultScope;
     }
@@ -116,7 +116,7 @@ class Filesystem implements \Magento\Framework\Config\ReaderInterface
      */
     public function read($scope = null)
     {
-        $scope = $scope ?: $this->_defaultScope;
+        $scope = $scope ? : $this->_defaultScope;
         $fileList = $this->_fileResolver->get($this->_fileName, $scope);
         if (!count($fileList)) {
             return array();

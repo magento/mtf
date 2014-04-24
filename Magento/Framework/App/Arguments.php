@@ -143,7 +143,7 @@ class Arguments
     public function getCacheTypeFrontendId($cacheType)
     {
         return isset(
-            $this->_data['cache']['type'][$cacheType]['frontend']
+        $this->_data['cache']['type'][$cacheType]['frontend']
         ) ? $this->_data['cache']['type'][$cacheType]['frontend'] : null;
     }
 

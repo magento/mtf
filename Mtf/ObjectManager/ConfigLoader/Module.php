@@ -49,7 +49,7 @@ class Module
      */
     protected function createArgumentInterpreter()
     {
-        $booleanUtils =  new \Magento\Framework\Stdlib\BooleanUtils();
+        $booleanUtils = new \Magento\Framework\Stdlib\BooleanUtils();
         $constInterpreter = new \Magento\Framework\Data\Argument\Interpreter\Constant();
         $result = new \Magento\Framework\Data\Argument\Interpreter\Composite(
             [

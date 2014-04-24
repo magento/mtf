@@ -90,8 +90,8 @@ class Listener implements \PHPUnit_Framework_TestListener
         $this->_driver = $driver;
         $this->_lastDefaultModes = [
             self::SCOPE_TEST_SUITE => $configuration->getConfigParam('isolation/' . self::SCOPE_TEST_SUITE),
-            self::SCOPE_TEST_CASE  => $configuration->getConfigParam('isolation/' . self::SCOPE_TEST_CASE),
-            self::SCOPE_TEST       => $configuration->getConfigParam('isolation/' . self::SCOPE_TEST),
+            self::SCOPE_TEST_CASE => $configuration->getConfigParam('isolation/' . self::SCOPE_TEST_CASE),
+            self::SCOPE_TEST => $configuration->getConfigParam('isolation/' . self::SCOPE_TEST),
         ];
     }
 

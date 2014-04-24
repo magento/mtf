@@ -63,7 +63,7 @@ class DefinitionFactory
      * @param DriverInterface $filesystemDriver
      * @param string $definitionDir
      * @param string $generationDir
-     * @param string  $definitionFormat
+     * @param string $definitionFormat
      */
     public function __construct(DriverInterface $filesystemDriver, $definitionDir, $generationDir, $definitionFormat)
     {

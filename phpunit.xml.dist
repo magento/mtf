@@ -19,7 +19,7 @@
     </testsuites>
 
     <listeners>
-        <listener class="Mtf\System\Browser\Listener" />
+        <listener class="Mtf\System\Browser\Listener"/>
         <listener class="Mtf\System\Isolation\Listener">
             <arguments>
                 <object class="Mtf\System\Isolation\Driver\Base"/>

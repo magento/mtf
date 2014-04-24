@@ -159,9 +159,12 @@ class Page implements PageInterface
             $class = isset($blockMeta['class']) ? $blockMeta['class'] : false;
             if ($class) {
                 $element = $this->_browser->find($blockMeta['locator'], $blockMeta['strategy']);
-                $block = $this->_blockFactory->create($class, [
-                    'element' => $element
-                ]);
+                $block = $this->_blockFactory->create(
+                    $class,
+                    [
+                        'element' => $element
+                    ]
+                );
             } else {
                 throw new \InvalidArgumentException("There is no such block '{$blockName}' declared for the page "
                     . "'{$class}' ");

@@ -7,7 +7,7 @@
  * @license     {license_link}
  */
 -->
-<page mca="testPage" >
+<page mca="testPage">
     <block>
         <name>testBlock</name>
         <class>Magento\Mtf\Test\Block\TestBlock</class>

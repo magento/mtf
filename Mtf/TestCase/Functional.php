@@ -62,7 +62,7 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
      *
      * @constructor
      * @param  string $name
-     * @param  array  $data
+     * @param  array $data
      * @param  string $dataName
      */
     public function __construct($name = null, array $data = [], $dataName = '')
@@ -98,7 +98,7 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
      * @param \PHPUnit_Framework_TestResult $result
      * @return \PHPUnit_Framework_TestResult
      */
-    public function run(\PHPUnit_Framework_TestResult $result = NULL)
+    public function run(\PHPUnit_Framework_TestResult $result = null)
     {
         if ($this->isParallelRun) {
             $params = array(
@@ -133,7 +133,8 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    protected function clearObjectManager() {
+    protected function clearObjectManager()
+    {
         $this->objectManager = null;
     }
 
@@ -143,7 +144,8 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
      * @param \PHPUnit_Framework_TestResult $result
      * @return void
      */
-    private function refineTestResult(\PHPUnit_Framework_TestResult $result) {
+    private function refineTestResult(\PHPUnit_Framework_TestResult $result)
+    {
         if (!$result->wasSuccessful()) {
             foreach ($result->failures() as $failure) {
                 $failure->failedTest()->clearObjectManager();

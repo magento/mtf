@@ -3,7 +3,7 @@
  * Config data. Represents loaded and cached configuration data. Should be used to gain access to different types
  *
  * {license_notice}
- * 
+ *
  * @copyright {copyright}
  * @license   {license_link}
  */

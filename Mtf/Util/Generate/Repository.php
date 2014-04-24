@@ -240,7 +240,7 @@ class Repository extends AbstractGenerate
         $items = [];
         $itemsXml = $contentXml->xpath('item');
         foreach ($itemsXml as $itemXml) {
-            $items[] = (array) $itemXml;
+            $items[] = (array)$itemXml;
         }
 
         $relativeFilePath = str_replace($modulePath . '/', '', $folderPath);

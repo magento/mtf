@@ -21,7 +21,7 @@ class Runtime implements \Magento\Framework\ObjectManager\Definition
      */
     public function __construct(\Magento\Framework\Code\Reader\ClassReader $reader = null)
     {
-        $this->_reader = $reader ?: new \Magento\Framework\Code\Reader\ClassReader();
+        $this->_reader = $reader ? : new \Magento\Framework\Code\Reader\ClassReader();
     }
 
     /**

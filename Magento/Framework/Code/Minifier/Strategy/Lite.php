@@ -38,8 +38,10 @@ class Lite implements \Magento\Framework\Code\Minifier\StrategyInterface
      * @param \Magento\Framework\Code\Minifier\AdapterInterface $adapter
      * @param \Magento\Framework\App\Filesystem $filesystem
      */
-    public function __construct(\Magento\Framework\Code\Minifier\AdapterInterface $adapter, \Magento\Framework\App\Filesystem $filesystem)
-    {
+    public function __construct(
+        \Magento\Framework\Code\Minifier\AdapterInterface $adapter,
+        \Magento\Framework\App\Filesystem $filesystem
+    ) {
         $this->adapter = $adapter;
         $this->rootDirectory = $filesystem->getDirectoryRead(\Magento\Framework\App\Filesystem::ROOT_DIR);
         $this->pubViewCacheDir = $filesystem->getDirectoryWrite(\Magento\Framework\App\Filesystem::PUB_VIEW_CACHE_DIR);

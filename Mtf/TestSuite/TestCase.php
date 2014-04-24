@@ -60,7 +60,7 @@ class TestCase extends TestSuite
 
             $factory = $this->testSuiteFactory;
             $testCallback = $this->objectManager->create('Mtf\TestSuite\Callback', ['theClass' => $class]);
-            $callbackFunction = function($result) use ($factory, $class, $arguments) {
+            $callbackFunction = function ($result) use ($factory, $class, $arguments) {
                 $testSuite = $factory->create($class, $arguments);
                 $testSuite->run($result);
             };

@@ -94,8 +94,8 @@ class GenerateResult
     {
         $suffixLength = $length - strlen($string);
         $suffix = '';
-        for ($i=0; $suffixLength>$i; $i++) {
-            $suffix.= ' ';
+        for ($i = 0; $suffixLength > $i; $i++) {
+            $suffix .= ' ';
         }
         return $string . $suffix;
     }

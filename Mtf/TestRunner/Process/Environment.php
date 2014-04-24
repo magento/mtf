@@ -33,7 +33,8 @@ class Environment
      *
      * @return array the environment variables to set
      */
-    public function getEnvironmentVariables() {
+    public function getEnvironmentVariables()
+    {
         return $this->_environmentVariables;
     }
 

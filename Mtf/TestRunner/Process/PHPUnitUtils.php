@@ -28,10 +28,10 @@ class PHPUnitUtils extends \PHPUnit_Util_PHP
      *
      * @throws PHPUnit_Framework_Exception
      */
-    public function runJob($job, \PHPUnit_Framework_Test $test = NULL, \PHPUnit_Framework_TestResult $result = NULL)
+    public function runJob($job, \PHPUnit_Framework_Test $test = null, \PHPUnit_Framework_TestResult $result = null)
     {
         throw new PHPUnit_Framework_Exception(
-          'Should not call this method.'
+            'Should not call this method.'
         );
     }
 
@@ -48,8 +48,12 @@ class PHPUnitUtils extends \PHPUnit_Util_PHP
      *
      * @return void
      */
-    public function processChildResult(\PHPUnit_Framework_Test $test, \PHPUnit_Framework_TestResult $result, $stdout, $stderr)
-    {
+    public function processChildResult(
+        \PHPUnit_Framework_Test $test,
+        \PHPUnit_Framework_TestResult $result,
+        $stdout,
+        $stderr
+    ) {
         parent::processChildResult($test, $result, $stdout, $stderr);
     }
 }

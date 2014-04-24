@@ -83,7 +83,7 @@ class WaitUntil
                     }
                     return $result;
                 }
-            } catch(\Exception $e) {
+            } catch (\Exception $e) {
                 $lastException = $e;
             }
             if (microtime(true) > $endTime) {

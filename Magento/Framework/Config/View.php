@@ -36,7 +36,8 @@ class View extends \Magento\Framework\Config\AbstractXml
     {
         $result = array();
         /** @var $varsNode \DOMElement */
-        foreach ($dom->childNodes->item(0)/*root*/->childNodes as $varsNode) {
+        foreach ($dom->childNodes->item(0) /*root*/
+                     ->childNodes as $varsNode) {
             $moduleName = $varsNode->getAttribute('module');
             /** @var $varNode \DOMElement */
             foreach ($varsNode->getElementsByTagName('var') as $varNode) {
@@ -90,8 +91,8 @@ class View extends \Magento\Framework\Config\AbstractXml
      */
     protected function _getInitialXml()
     {
-        return '<?xml version="1.0" encoding="UTF-8"?>'.
-               '<view xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"></view>';
+        return '<?xml version="1.0" encoding="UTF-8"?>' .
+        '<view xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"></view>';
     }
 
     /**

@@ -20,8 +20,8 @@ class DateTime extends Date
         $this->_localToNormalFilter = new \Zend_Filter_LocalizedToNormalized(
             array(
                 'date_format' => $this->_localeDate->getDateTimeFormat(
-                    \Magento\Framework\Stdlib\DateTime\TimezoneInterface::FORMAT_TYPE_SHORT
-                )
+                        \Magento\Framework\Stdlib\DateTime\TimezoneInterface::FORMAT_TYPE_SHORT
+                    )
             )
         );
         $this->_normalToLocalFilter = new \Zend_Filter_NormalizedToLocalized(

@@ -78,7 +78,7 @@ class ApplicationState extends AbstractIterator
         $states = [];
         $statePathes = glob(MTF_STATES_PATH . 'State[0-9]*');
 
-        foreach($statePathes as $key => $path) {
+        foreach ($statePathes as $key => $path) {
             $states[] = [
                 'class' => 'Mtf\\App\\State\\' . basename($path, ".php"),
                 'name' => 'Application Configuration Profile ' . ($key + 1),
