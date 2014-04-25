@@ -59,6 +59,13 @@ abstract class Injectable extends Functional
     protected static $sharedArguments = [];
 
     /**
+     * Array with local test run arguments
+     *
+     * @var array
+     */
+    protected $localArguments = [];
+
+    /**
      * Constructs a test case with the given name
      *
      * @constructor
@@ -73,13 +80,6 @@ abstract class Injectable extends Functional
         $this->dataId = get_class($this) . '::' . $name;
         if (!isset(static::$sharedArguments[$this->dataId]) && method_exists($this, '__prepare')) {
             static::$sharedArguments[$this->dataId] = (array)$this->objectManager->invoke($this, '__prepare');
-        }
-        if (method_exists($this, '__inject')) {
-            $this->objectManager->invoke(
-                $this,
-                '__inject',
-                isset(self::$sharedArguments[$this->dataId]) ? self::$sharedArguments[$this->dataId] : []
-            );
         }
         $this->filePath = $path;
     }
@@ -126,7 +126,23 @@ abstract class Injectable extends Functional
                 $this->setVariationName($testVariationIterator->key());
                 parent::run($result);
             } else {
-                $variation = $testVariationIterator->current();
+                if (method_exists($this, '__inject')) {
+                    $this->localArguments = $this->objectManager->invoke(
+                        $this, '__inject',
+                        isset(self::$sharedArguments[$this->dataId]) ? self::$sharedArguments[$this->dataId] : []
+                    );
+                    if (!$this->localArguments || !is_array($this->localArguments)) {
+                        $this->localArguments = [];
+                    }
+                }
+                if (isset(static::$sharedArguments[$this->dataId])) {
+                    $this->localArguments = array_merge(static::$sharedArguments[$this->dataId], $this->localArguments);
+                }
+                $variation = $this->prepareVariation(
+                    $testVariationIterator->current(),
+                    $this->localArguments
+
+                );
                 $this->executeTestVariation($result, $variation);
             }
             $testVariationIterator->next();
@@ -152,10 +168,8 @@ abstract class Injectable extends Functional
         $this->setVariationName($variationName);
 
         $arguments = isset($variation['arguments'])
-            ? array_merge(
-                $variation['arguments'],
-                isset(self::$sharedArguments[$this->dataId]) ? self::$sharedArguments[$this->dataId] : []
-            ) : [];
+            ? $variation['arguments']
+            : [];
         $this->setDependencyInput($arguments);
 
         if (isset($variation['constraint'])) {
@@ -206,5 +220,46 @@ abstract class Injectable extends Functional
         }
 
         return $buffer;
+    }
+
+    /**
+     * Prepare variation for Test Case Method
+     *
+     * @param array $variation
+     * @param array $arguments
+     * @return array
+     */
+    protected function prepareVariation(array $variation, array $arguments)
+    {
+        if (isset($variation['arguments'])) {
+            $arguments = array_merge($variation['arguments'], $arguments);
+        }
+        $resolvedArguments = $this->objectManager
+            ->prepareArguments($this, $this->getName(false), $arguments);
+
+        if (isset($arguments['constraint'])) {
+            $parameters = $this->objectManager->getParameters($this, $this->getName(false));
+            if (isset($parameters['constraint'])) {
+                $resolvedArguments['constraint'] = $this->prepareConstraintObject($arguments['constraint']);
+            } else {
+                $variation['constraint'] = $this->prepareConstraintObject($arguments['constraint']);
+            }
+        }
+
+        $variation['arguments'] = $resolvedArguments;
+
+        return $variation;
+    }
+
+    /**
+     * Prepare configuration object
+     *
+     * @param string $constraints
+     * @return \Mtf\Constraint\Composite
+     */
+    protected function prepareConstraintObject($constraints)
+    {
+        $constraintsArray = array_map('trim', explode(',', $constraints));
+        return $this->objectManager->create('Mtf\Constraint\Composite', ['constraints' => $constraintsArray]);
     }
 }

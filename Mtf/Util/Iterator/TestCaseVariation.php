@@ -117,35 +117,9 @@ class TestCaseVariation extends AbstractIterator
     protected function prepare()
     {
         $variation = [
-            'id' => $this->key()
+            'id' => $this->key(),
+            'arguments' => $this->current
         ];
-
-        $resolvedArguments = $this->objectManager
-            ->prepareArguments($this->testCase, $this->testCase->getName(false), $this->current);
-
-        if (isset($this->current['constraint'])) {
-            $parameters = $this->objectManager->getParameters($this->testCase, $this->testCase->getName(false));
-            if (isset($parameters['constraint'])) {
-                $resolvedArguments['constraint'] = $this->prepareConstraintObject($this->current['constraint']);
-            } else {
-                $variation['constraint'] = $this->prepareConstraintObject($this->current['constraint']);
-            }
-        }
-
-        $variation['arguments'] = $resolvedArguments;
-
         return $variation;
-    }
-
-    /**
-     * Prepare configuration object
-     *
-     * @param string $constraints
-     * @return \Mtf\Constraint\Composite
-     */
-    protected function prepareConstraintObject($constraints)
-    {
-        $constraintsArray = array_map('trim', explode(',', $constraints));
-        return $this->objectManager->create('Mtf\Constraint\Composite', ['constraints' => $constraintsArray]);
     }
 }
