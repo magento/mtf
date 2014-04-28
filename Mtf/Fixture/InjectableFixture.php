@@ -187,15 +187,20 @@ class InjectableFixture implements FixtureInterface
     /**
      * Verify whether key is present in fixture data
      *
-     * @param string $key
+     * @param string $key [optional]
      * @return bool
      */
-    public function hasData($key)
+    public function hasData($key = null)
     {
         if (empty($this->data)) {
             return false;
         }
-        return $this->getDataByKey($key) === null ? false : true;
+        /* process a/b/c key as ['a']['b']['c'] */
+        if (strpos($key, '/')) {
+            return $this->getDataByPath($key) === null ? false : true;
+        } else {
+            return $this->getDataByKey($key) === null ? false : true;
+        }
     }
 
     /**
