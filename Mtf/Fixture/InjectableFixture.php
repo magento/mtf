@@ -194,6 +194,8 @@ class InjectableFixture implements FixtureInterface
     {
         if (empty($this->data)) {
             return false;
+        } elseif ($key === null) {
+            return true;
         }
         /* process a/b/c key as ['a']['b']['c'] */
         if (strpos($key, '/')) {
