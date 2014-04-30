@@ -86,6 +86,11 @@ class InjectableFixture implements FixtureInterface
     protected $handlerInterface;
 
     /**
+     * @var array
+     */
+    protected $sourceParamsFallback = ['source', 'fixture'];
+
+    /**
      * Constructor
      *
      * @constructor
@@ -128,12 +133,11 @@ class InjectableFixture implements FixtureInterface
             if ($value === null) {
                 $value = isset($params['default_value']) ? $params['default_value'] : null;
             }
-            if (isset($params['fixture'])) {
-                $fixture = $this->fixtureFactory->create(
-                    $params['fixture'],
-                    ['data' => $value, 'params' => $params, 'persist' => true]
-                );
-                $params['fixture'] = $fixture;
+            $source = $this->getSourceParam($params);
+            if ($source) {
+                $fixture = $this->fixtureFactory->create($source,
+                    ['data' => $value, 'params' => $params, 'persist' => true]);
+                $params['source'] = $source;
                 $value = $fixture->getData();
             }
             $this->data[$key] = $value;
@@ -143,6 +147,24 @@ class InjectableFixture implements FixtureInterface
         if ($persist === true) {
             $this->persist();
         }
+    }
+
+    /**
+     * Return source param
+     *
+     * @param array $params
+     * @return null|string
+     */
+    protected function getSourceParam(array $params)
+    {
+        $param = null;
+        foreach ($this->sourceParamsFallback as $val) {
+            if (isset($params[$val])) {
+                $param = $params[$val];
+                break;
+            }
+        }
+        return $param;
     }
 
     /**
