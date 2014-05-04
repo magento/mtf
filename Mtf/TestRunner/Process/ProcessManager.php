@@ -131,10 +131,10 @@ class ProcessManager
         }
 
         /* runs through stream_select */
-        $num_changed_streams = stream_select($readStreams, $writeStreams, $exceptStreams, $timeoutInSecs);
-        if (false === $num_changed_streams) {
+        $numChangedStreams = stream_select($readStreams, $writeStreams, $exceptStreams, $timeoutInSecs);
+        if (false === $numChangedStreams) {
             /* error here */
-        } elseif ($num_changed_streams > 0) {
+        } elseif ($numChangedStreams > 0) {
 
             $doneProcesses = [];
 
@@ -276,7 +276,7 @@ class ProcessManager
     /**
      * Process job
      *
-     * @param $job
+     * @param string $job
      * @param \PHPUnit_Framework_Test $testcase
      * @param \PHPUnit_Framework_TestResult $result
      * @param Environment $environment
@@ -295,6 +295,9 @@ class ProcessManager
         $process->open();
     }
 
+    /**
+     * @return Environment
+     */
     private function popEnvironment()
     {
         if (count($this->_environments) == 0) {

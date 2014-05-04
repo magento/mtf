@@ -17,7 +17,7 @@ namespace Mtf\Util\Generate\Fixture;
 class DummyFieldsProvider implements FieldsProviderInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getFields(array $fixture)
     {

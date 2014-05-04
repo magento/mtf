@@ -20,6 +20,7 @@ interface FixtureInterface
 {
     /**
      * Persists prepared data into application
+     * @return void
      */
     public function persist();
 

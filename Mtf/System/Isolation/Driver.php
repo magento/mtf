@@ -19,7 +19,8 @@ namespace Mtf\System\Isolation;
 interface Driver
 {
     /**
-     * Isolate mechanism realisation
+     * Isolate mechanism realisation\
+     * @return void
      */
     public function isolate();
 }

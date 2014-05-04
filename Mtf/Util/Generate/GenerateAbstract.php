@@ -102,6 +102,7 @@ class GenerateAbstract
      * Add header content
      *
      * @param string $type
+     * @return void
      */
     protected function _startFactory($type)
     {
@@ -257,7 +258,7 @@ class GenerateAbstract
                         $modules[$moduleName] = array(
                             'front_name' => $frontName,
                             'class_prefix' => $classPrefix
-                        );;
+                        );
                     }
                 }
 
@@ -341,6 +342,7 @@ class GenerateAbstract
      * @param string $filename
      * @param string $location
      * @param string $path
+     * @return void
      * @throws \Exception
      */
     protected function _processItem(& $items, & $rewrites, $filename, $location, $path)

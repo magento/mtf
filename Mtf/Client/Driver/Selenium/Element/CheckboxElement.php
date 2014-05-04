@@ -34,6 +34,7 @@ class CheckboxElement extends Element
      * Mark checkbox if value 'Yes', otherwise unmark
      *
      * @param string $value
+     * @return void
      */
     public function setValue($value)
     {

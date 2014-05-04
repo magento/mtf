@@ -42,6 +42,7 @@ class Base implements Driver
 
     /**
      * Isolation by calling resetUrl
+     * @return void
      */
     public function isolate()
     {

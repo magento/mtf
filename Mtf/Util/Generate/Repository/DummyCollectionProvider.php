@@ -17,7 +17,7 @@ namespace Mtf\Util\Generate\Repository;
 class DummyCollectionProvider implements CollectionProviderInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getCollection(array $fixture)
     {

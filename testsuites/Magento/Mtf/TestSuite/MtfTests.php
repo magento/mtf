@@ -81,6 +81,7 @@ class MtfTests extends \PHPUnit_Framework_TestSuite
 
     /**
      * Call the initialization of ObjectManager
+     * @return void
      */
     public function init()
     {
@@ -89,6 +90,7 @@ class MtfTests extends \PHPUnit_Framework_TestSuite
 
     /**
      * Initialize ObjectManager
+     * @return void
      */
     private function initObjectManager()
     {

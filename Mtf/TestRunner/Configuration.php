@@ -26,7 +26,8 @@ class Configuration
     /**
      * Load configuration
      *
-     * @param $configFilePath
+     * @param string $configFilePath
+     * @return void
      */
     public function load($configFilePath)
     {

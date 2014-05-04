@@ -18,6 +18,10 @@ use Mtf\Handler\Ui as AbstractUi;
  */
 class Ui extends AbstractUi implements TestInterface
 {
+    /**
+     * @param FixtureInterface $fixture
+     * @return void
+     */
     public function persist(FixtureInterface $fixture = null)
     {
         //

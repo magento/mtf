@@ -128,7 +128,8 @@ abstract class Injectable extends Functional
             } else {
                 if (method_exists($this, '__inject')) {
                     $this->localArguments = $this->objectManager->invoke(
-                        $this, '__inject',
+                        $this,
+                        '__inject',
                         isset(self::$sharedArguments[$this->dataId]) ? self::$sharedArguments[$this->dataId] : []
                     );
                     if (!$this->localArguments || !is_array($this->localArguments)) {
@@ -141,7 +142,6 @@ abstract class Injectable extends Functional
                 $variation = $this->prepareVariation(
                     $testVariationIterator->current(),
                     $this->localArguments
-
                 );
                 $this->executeTestVariation($result, $variation);
             }

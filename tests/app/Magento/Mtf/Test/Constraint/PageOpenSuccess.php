@@ -31,6 +31,7 @@ class PageOpenSuccess extends AbstractConstraint
      *
      * @param TestPage $page
      * @param Test $fixture
+     * @return void
      */
     public function processAssert(TestPage $page, Test $fixture)
     {

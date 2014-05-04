@@ -73,6 +73,7 @@ class Handler extends AbstractGenerate
      *
      * @param string $name
      * @param array $item
+     * @return void
      */
     protected function generateUi($name, array $item)
     {
@@ -123,6 +124,7 @@ class Handler extends AbstractGenerate
      *
      * @param string $name
      * @param array $item
+     * @return void
      */
     protected function generateCurl($name, array $item)
     {
@@ -173,6 +175,7 @@ class Handler extends AbstractGenerate
      *
      * @param string $name
      * @param array $item
+     * @return void
      */
     protected function generateInterface($name, array $item)
     {

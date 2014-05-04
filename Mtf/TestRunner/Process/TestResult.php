@@ -21,16 +21,15 @@ class TestResult extends \PHPUnit_Framework_TestResult
     /**
      * Adds an error to the list of errors.
      *
-     * @param  \PHPUnit_Framework_Test $test
-     * @param  \Exception $e
-     * @param  float $time
+     * @param \PHPUnit_Framework_Test $test
+     * @param \Exception $e
+     * @param float $time
+     * @return void
      */
     public function addError(\PHPUnit_Framework_Test $test, \Exception $e, $time)
     {
         if ($e instanceof \PHPUnit_Framework_IncompleteTest) {
-            $this->notImplemented[] = new \PHPUnit_Framework_TestFailure(
-                $test, $e
-            );
+            $this->notImplemented[] = new \PHPUnit_Framework_TestFailure($test, $e);
 
             $notifyMethod = 'addIncompleteTest';
 

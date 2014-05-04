@@ -134,6 +134,7 @@ class Listener implements \PHPUnit_Framework_TestListener
      * Reopening is skipped for first time.
      *
      * @param string $scope
+     * @return void
      */
     protected function _run($scope)
     {
@@ -165,6 +166,7 @@ class Listener implements \PHPUnit_Framework_TestListener
 
     /**
      * Force reopen browser
+     * @return void
      */
     protected function _reopenBrowser()
     {

@@ -45,16 +45,11 @@ abstract class AbstractFactory
      * @param string $class
      * @param array $arguments
      * @return mixed
-     * @throws \UnexpectedValueException
      */
     public function create($class, array $arguments = [])
     {
         $object = $this->objectManager->create($class, $arguments);
-        $interfaceName = '\\Mtf\\' . $this->factoryName . '\\' . $this->factoryName . 'Interface';
-        if (!$object instanceof $interfaceName) {
-            throw new \UnexpectedValueException("{$this->factoryName} class '$class' has to implement "
-                . "{$interfaceName} interface.");
-        }
+        $this->checkInterface($object, $class);
         return $object;
     }
 
@@ -64,16 +59,32 @@ abstract class AbstractFactory
      *
      * @param string $class
      * @return mixed
-     * @throws \UnexpectedValueException
      */
     public function get($class)
     {
         $object = $this->objectManager->get($class);
+        $this->checkInterface($object, $class);
+        return $object;
+    }
+
+    /**
+     * @param mixed $object
+     * @param string $class
+     * @return void
+     * @throws \UnexpectedValueException
+     */
+    protected function checkInterface($object, $class)
+    {
         $interfaceName = '\\Mtf\\' . $this->factoryName . '\\' . $this->factoryName . 'Interface';
         if (!$object instanceof $interfaceName) {
-            throw new \UnexpectedValueException("{$this->factoryName} class '$class' has to implement "
-                . "$interfaceName interface.");
+            throw new \UnexpectedValueException(
+                sprintf(
+                    '%s class "%s" has to implement "%s" interface.',
+                    $this->factoryName,
+                    $class,
+                    $interfaceName
+                )
+            );
         }
-        return $object;
     }
 }

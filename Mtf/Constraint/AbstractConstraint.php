@@ -73,6 +73,7 @@ abstract class AbstractConstraint extends \PHPUnit_Framework_Constraint implemen
      *
      * @param \PHPUnit_Framework_TestCase $testCase
      * @param array $arguments
+     * @return void
      */
     public function configure(
         \PHPUnit_Framework_TestCase $testCase,

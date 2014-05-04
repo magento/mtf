@@ -44,7 +44,7 @@ class Factory extends \Magento\Framework\ObjectManager\Factory\Factory
     /**
      * Invoke class method and prepared arguments
      *
-     * @param $object
+     * @param mixed $object
      * @param string $method
      * @param array $args
      * @return mixed
@@ -161,7 +161,9 @@ class Factory extends \Magento\Framework\ObjectManager\Factory\Factory
                 if (is_array($argument)) {
                     if (isset($argument['argument'])) {
                         $argKey = $argument['argument'];
-                        $argument = isset($this->globalArguments[$argKey]) ? $this->globalArguments[$argKey] : $paramDefault;
+                        $argument = isset($this->globalArguments[$argKey])
+                            ? $this->globalArguments[$argKey]
+                            : $paramDefault;
                     } else {
                         $this->parseArray($argument);
                     }
@@ -175,10 +177,10 @@ class Factory extends \Magento\Framework\ObjectManager\Factory\Factory
     /**
      * Parse array argument
      *
-     * @param $array
+     * @param array $array
      * @return void
      */
-    protected function parseArray(&$array)
+    protected function parseArray(array &$array)
     {
         foreach ($array as $key => $item) {
             if (!is_array($item)) {

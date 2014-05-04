@@ -9,6 +9,9 @@ namespace Mtf\TestRunner\Process;
 
 class TestResultException extends \Exception
 {
+    /**
+     * @param \Exception $e
+     */
     public function __construct(\Exception $e)
     {
         parent::__construct($e->getMessage(), $e->getCode());

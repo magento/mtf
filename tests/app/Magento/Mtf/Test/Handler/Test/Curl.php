@@ -18,6 +18,10 @@ use Mtf\Handler\Curl as AbstractCurl;
  */
 class Curl extends AbstractCurl implements TestInterface
 {
+    /**
+     * @param FixtureInterface $fixture
+     * @return void
+     */
     public function persist(FixtureInterface $fixture = null)
     {
         //

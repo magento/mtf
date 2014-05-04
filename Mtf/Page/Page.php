@@ -89,6 +89,11 @@ class Page implements PageInterface
         $this->_initBlocks();
     }
 
+    /**
+     * @param string $property
+     * @param mixed $value
+     * @return void
+     */
     public function __set($property, $value)
     {
         $this->$property = $value;
@@ -96,12 +101,16 @@ class Page implements PageInterface
 
     /**
      * Init page. Set page url
+     * @return void
      */
     protected function _init()
     {
         //
     }
 
+    /**
+     * @return void
+     */
     protected function _initBlocks()
     {
         //
@@ -148,7 +157,7 @@ class Page implements PageInterface
     /**
      * Retrieve an instance of block
      *
-     * @param $blockName
+     * @param string $blockName
      * @return BlockInterface
      * @throws \InvalidArgumentException
      */
@@ -166,8 +175,9 @@ class Page implements PageInterface
                     ]
                 );
             } else {
-                throw new \InvalidArgumentException("There is no such block '{$blockName}' declared for the page "
-                    . "'{$class}' ");
+                throw new \InvalidArgumentException(
+                    sprintf('There is no such block "%s" declared for the page "%s" ', $blockName, $class)
+                );
             }
 
             $this->_blockInstances[$blockName] = $block;

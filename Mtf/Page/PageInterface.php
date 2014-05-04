@@ -38,7 +38,7 @@ interface PageInterface
     /**
      * Retrieve an instance of block
      *
-     * @param $blockName
+     * @param string $blockName
      * @return BlockInterface
      */
     public function getBlockInstance($blockName);

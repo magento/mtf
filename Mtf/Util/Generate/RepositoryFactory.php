@@ -23,6 +23,7 @@ class RepositoryFactory extends GenerateAbstract
 {
     /**
      * Generate Fixtures
+     * @return void
      */
     public function generate()
     {
@@ -37,6 +38,7 @@ class RepositoryFactory extends GenerateAbstract
 
     /**
      * Collect Fixture Repository items
+     * @return void
      */
     protected function _generateFixtureRepositories()
     {
@@ -51,6 +53,7 @@ class RepositoryFactory extends GenerateAbstract
      * Add Fixture Repository
      *
      * @param array $item
+     * @return void
      */
     protected function _addToFactory($item)
     {

@@ -19,6 +19,7 @@ class RegularTestCase extends Functional
 {
     /**
      * @depends Magento\Mtf\Test\TestCase\InjectableTestCase::test1
+     * @return void
      */
     public function test1()
     {
@@ -35,6 +36,8 @@ class RegularTestCase extends Functional
 
     /**
      * @dataProvider dataProvider
+     * @param string $fromDataProvider
+     * @return void
      */
     public function test2($fromDataProvider)
     {

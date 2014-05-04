@@ -19,6 +19,9 @@ class TestPage extends Page
 {
     const MCA = 'testPage';
 
+    /**
+     * @var array
+     */
     protected $_blocks = array(
         'testBlock' => array(
             'name' => 'testBlock',
@@ -38,6 +41,7 @@ class TestPage extends Page
 
     /**
      * Init page. Set page url
+     * @return void
      */
     protected function _init()
     {

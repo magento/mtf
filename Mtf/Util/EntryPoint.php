@@ -42,6 +42,7 @@ class EntryPoint
 
     /**
      * Start to generate all classes
+     * @return void
      */
     public function processRequest()
     {

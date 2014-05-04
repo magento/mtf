@@ -73,6 +73,7 @@ class Element implements ElementInterface
 
     /**
      * Unset wrapped element
+     * @return Element
      */
     public function __clone()
     {
@@ -121,6 +122,7 @@ class Element implements ElementInterface
 
     /**
      * Click at the current element
+     * @return void
      */
     public function click()
     {
@@ -130,6 +132,7 @@ class Element implements ElementInterface
 
     /**
      * Double-clicks at the current element
+     * @return void
      */
     public function doubleClick()
     {
@@ -139,6 +142,7 @@ class Element implements ElementInterface
 
     /**
      * Right-clicks at the current element
+     * @return void
      */
     public function rightClick()
     {
@@ -149,6 +153,7 @@ class Element implements ElementInterface
     /**
      * Check whether element is visible.
      * Return false if element cannot be found
+     * @return bool
      */
     public function isVisible()
     {
@@ -184,6 +189,7 @@ class Element implements ElementInterface
      * Clear and set new value to an element
      *
      * @param string|array $value
+     * @return void
      */
     public function setValue($value)
     {
@@ -238,6 +244,7 @@ class Element implements ElementInterface
      * Drag and drop element to(between) another element(s)
      *
      * @param ElementInterface $target
+     * @return void
      */
     public function dragAndDrop(ElementInterface $target)
     {
@@ -253,6 +260,7 @@ class Element implements ElementInterface
      * Send a sequence of key strokes to the active element.
      *
      * @param array $keys
+     * @return void
      */
     public function keys(array $keys)
     {
@@ -285,7 +293,8 @@ class Element implements ElementInterface
     /**
      * Set the text to the prompt popup
      *
-     * @param $text
+     * @param string $text
+     * @return void
      */
     public function setAlertText($text)
     {
@@ -294,6 +303,7 @@ class Element implements ElementInterface
 
     /**
      * Press OK on an alert or confirm a dialog
+     * @return void
      */
     public function acceptAlert()
     {
@@ -302,6 +312,7 @@ class Element implements ElementInterface
 
     /**
      * Press Cancel on alert or does not confirm a dialog
+     * @return void
      */
     public function dismissAlert()
     {

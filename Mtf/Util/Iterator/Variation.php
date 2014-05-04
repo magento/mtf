@@ -90,7 +90,7 @@ class Variation extends AbstractIterator
     /**
      * Parse source file, extract column names information and prepare data array
      *
-     * @param $variationFilePath
+     * @param string $variationFilePath
      * @return array
      */
     protected function readCsv($variationFilePath)
@@ -134,11 +134,11 @@ class Variation extends AbstractIterator
      * Transform 'a/b/c' key reference to normal array structure
      *
      * @param array $data
-     * @param $key
-     * @param $value
+     * @param string $key
+     * @param mixed $value
      * @return void
      */
-    protected function setArrayPathValue(array & $data, $key, $value)
+    protected function setArrayPathValue(array &$data, $key, $value)
     {
         $keys = explode('/', $key);
         while ($key = array_shift($keys)) {

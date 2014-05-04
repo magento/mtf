@@ -55,6 +55,7 @@ class Locator implements \ArrayAccess
      *
      * @param mixed $offset
      * @param mixed $value
+     * @return void
      */
     public function offsetSet($offset, $value)
     {
@@ -80,6 +81,7 @@ class Locator implements \ArrayAccess
      * Offset to unset
      *
      * @param mixed $offset
+     * @return void
      */
     public function offsetUnset($offset)
     {

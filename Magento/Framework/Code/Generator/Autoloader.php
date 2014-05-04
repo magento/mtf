@@ -7,17 +7,19 @@
  */
 namespace Magento\Framework\Code\Generator;
 
+use Magento\Framework\Code\Generator;
+
 class Autoloader
 {
     /**
-     * @var \Magento\Framework\Code\Generator
+     * @var Generator
      */
     protected $_generator;
 
     /**
-     * @param \Magento\Framework\Code\Generator $generator
+     * @param Generator $generator
      */
-    public function __construct(\Magento\Framework\Code\Generator $generator)
+    public function __construct(Generator $generator)
     {
         $this->_generator = $generator;
     }
@@ -31,10 +33,7 @@ class Autoloader
     public function load($className)
     {
         if (!class_exists($className)) {
-            if (\Magento\Framework\Code\Generator::GENERATION_SUCCESS === $this->_generator->generateClass(
-                    $className
-                )
-            ) {
+            if (Generator::GENERATION_SUCCESS === $this->_generator->generateClass($className)) {
                 \Magento\Framework\Autoload\IncludePath::load($className);
             }
         }

@@ -41,6 +41,7 @@ class SelectElement extends Element
      * Set the value
      *
      * @param string|array $value
+     * @return void
      */
     public function setValue($value)
     {
@@ -54,6 +55,7 @@ class SelectElement extends Element
      *
      * @param string $optionGroup
      * @param string $value
+     * @return void
      */
     public function setOptionGroupValue($optionGroup, $value)
     {
@@ -89,6 +91,7 @@ class SelectElement extends Element
      *
      * @param ElementInterface $target
      * @throws \BadMethodCallException
+     * @return void
      */
     public function dragAndDrop(ElementInterface $target)
     {
@@ -99,6 +102,7 @@ class SelectElement extends Element
      * Send a sequence of key strokes to the active element.
      *
      * @param array $keys
+     * @return void
      */
     public function keys(array $keys)
     {

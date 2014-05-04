@@ -21,7 +21,7 @@ class Config
     /**
      * Container for parameters
      *
-     * @var
+     * @var array
      */
     protected $_params;
 
@@ -40,6 +40,7 @@ class Config
      * Read configuration files
      *
      * @param string $filePath
+     * @return void
      * @throws \Exception
      */
     protected function _init($filePath)

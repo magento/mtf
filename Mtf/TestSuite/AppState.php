@@ -69,6 +69,7 @@ class AppState extends TestSuite
      * @param string $class
      * @param string $name
      * @param array $arguments
+     * @return void
      */
     public function appStateCallback($class, $name = '', array $arguments = [])
     {
@@ -79,6 +80,7 @@ class AppState extends TestSuite
 
     /**
      * Initialize ObjectManager
+     * @return void
      */
     protected function initObjectManager()
     {

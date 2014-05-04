@@ -23,6 +23,7 @@ class HandlerFactory extends GenerateAbstract
 {
     /**
      * Generate Handlers
+     * @return void
      */
     public function generate()
     {
@@ -37,6 +38,7 @@ class HandlerFactory extends GenerateAbstract
 
     /**
      * Collect Handler items
+     * @return void
      */
     protected function _generateHandlers()
     {
@@ -79,6 +81,7 @@ class HandlerFactory extends GenerateAbstract
      *
      * @param string $methodNameSuffix
      * @param array $item
+     * @return void
      */
     protected function _addHandlerToFactory($methodNameSuffix, $item)
     {
@@ -108,6 +111,7 @@ class HandlerFactory extends GenerateAbstract
      * Add header content
      *
      * @param string $type
+     * @return void
      */
     protected function _startFactory($type)
     {

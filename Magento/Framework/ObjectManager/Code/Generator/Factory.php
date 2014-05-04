@@ -44,7 +44,7 @@ class Factory extends \Magento\Framework\Code\Generator\EntityAbstract
      */
     protected function _getDefaultConstructorDefinition()
     {
-        // public function __construct(\Magento\Framework\ObjectManager $objectManager, $instanceName = <DEFAULT_INSTANCE_NAME>)
+        // public function __construct($objectManager, $instanceName)
         return array(
             'name' => '__construct',
             'parameters' => array(

@@ -198,6 +198,7 @@ class Listener implements \PHPUnit_Framework_TestListener
      *
      * @param array $annotation
      * @param string $scope
+     * @return void
      */
     private function _processBeforeScope(array $annotation, $scope)
     {
@@ -215,6 +216,7 @@ class Listener implements \PHPUnit_Framework_TestListener
 
     /**
      * Do isolation checks after scope
+     * @return void
      */
     private function _processAfterScope()
     {

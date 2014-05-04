@@ -24,7 +24,7 @@ class Strategy implements FixtureInterface
 
     /**
      * @constructor
-     * @param $data
+     * @param array $data
      * @param array $params
      * @param bool $persist
      */
@@ -39,6 +39,7 @@ class Strategy implements FixtureInterface
 
     /**
      * Persists prepared data into application
+     * @return void
      */
     public function persist()
     {

@@ -86,11 +86,13 @@ abstract class DataFixture implements FixtureInterface
 
     /**
      * Initialize fixture data
+     * @return void
      */
     abstract protected function _initData();
 
     /**
      * Persists prepared data into application
+     * @return void
      */
     public function persist()
     {
@@ -188,6 +190,7 @@ abstract class DataFixture implements FixtureInterface
      *
      * @param array $data
      * @param array $placeholders
+     * @return void
      */
     protected function _applyPlaceholders(array & $data, array $placeholders)
     {
@@ -215,7 +218,7 @@ abstract class DataFixture implements FixtureInterface
     /**
      * Switch current data set.
      *
-     * @param $name
+     * @param string $name
      * @return bool
      */
     public function switchData($name)

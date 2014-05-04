@@ -22,6 +22,7 @@ interface Page
      * Open the page URL in browser.
      *
      * @param array $params [optional]
+     * @return void
      */
     public function open(array $params = array());
 }

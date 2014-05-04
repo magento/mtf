@@ -34,7 +34,7 @@ class BlockFactory
     }
 
     /**
-     * @param $class
+     * @param string $class
      * @param array $arguments
      * @return BlockInterface
      * @throws \UnexpectedValueException
@@ -43,8 +43,9 @@ class BlockFactory
     {
         $object = $this->objectManager->create($class, $arguments);
         if (!$object instanceof BlockInterface) {
-            throw new \UnexpectedValueException("Block class '$class' has to implement"
-                . '\\Mtf\\Block\\BlockInterface interface.');
+            throw new \UnexpectedValueException(
+                sprintf('Block class "%s" has to implement \Mtf\Block\BlockInterface interface.', $class)
+            );
         }
 
         return $object;

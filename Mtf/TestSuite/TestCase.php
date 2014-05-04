@@ -98,6 +98,7 @@ class TestCase extends TestSuite
      *
      * @param array $callback
      * @param array $arguments
+     * @return void
      */
     public function setCallback(array $callback, array $arguments = [])
     {
@@ -107,6 +108,7 @@ class TestCase extends TestSuite
 
     /**
      * Initialize Object Manager
+     * @return void
      */
     protected function initObjectManager()
     {

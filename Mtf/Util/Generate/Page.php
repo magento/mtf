@@ -48,6 +48,7 @@ class Page extends AbstractGenerate
 
     /**
      * Launch Page generators
+     * @return void
      */
     public function launch()
     {
@@ -57,6 +58,7 @@ class Page extends AbstractGenerate
 
     /**
      * Generate Pages XML
+     * @return void
      */
     public function generateXml()
     {
@@ -73,6 +75,7 @@ class Page extends AbstractGenerate
      * Generate page XML configuration file from source definition
      *
      * @param array $item
+     * @return void
      */
     private function generatePageXml(array $item)
     {
@@ -145,6 +148,7 @@ class Page extends AbstractGenerate
 
     /**
      * Generate Pages Classes
+     * @return void
      */
     public function generateClasses()
     {
@@ -178,7 +182,8 @@ class Page extends AbstractGenerate
             $dirIterator = new \RegexIterator(
                 new \RecursiveIteratorIterator(
                     new \RecursiveDirectoryIterator($modulePath . '/Test/Page', \FilesystemIterator::SKIP_DOTS)
-                ), '/.xml$/i'
+                ),
+                '/.xml$/i'
             );
 
             foreach ($dirIterator as $fileInfo) {
@@ -201,6 +206,7 @@ class Page extends AbstractGenerate
      * Generate page classes from XML sources
      *
      * @param array $item
+     * @return void
      */
     private function generatePageClass(array $item)
     {

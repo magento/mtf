@@ -18,7 +18,7 @@ class TestClassResolver
     /**
      * Collect test classes of the given type from Modules'
      *
-     * @param $classType
+     * @param string $classType
      * @return array
      */
     public function get($classType)
@@ -34,7 +34,8 @@ class TestClassResolver
             $dirIterator = new \RegexIterator(
                 new \RecursiveIteratorIterator(
                     new \RecursiveDirectoryIterator($modulePath . '/Test/' . $classType, \FilesystemIterator::SKIP_DOTS)
-                ), '/.php$/i'
+                ),
+                '/.php$/i'
             );
 
             foreach ($dirIterator as $fileInfo) {

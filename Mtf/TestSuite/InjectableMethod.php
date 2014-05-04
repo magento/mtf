@@ -74,8 +74,9 @@ class InjectableMethod extends InjectableTestCase
     /**
      * Check if test is eligible before adding to the suite.
      *
-     * @param  \PHPUnit_Framework_Test $test
-     * @param  array $groups
+     * @param \PHPUnit_Framework_Test $test
+     * @param array $groups
+     * @return void
      */
     public function addTest(\PHPUnit_Framework_Test $test, $groups = [])
     {

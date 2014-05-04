@@ -43,8 +43,9 @@ class StateFactory
     {
         $object = $this->objectManager->create($class, $arguments);
         if (!$object instanceof StateInterface) {
-            throw new \UnexpectedValueException("Block class '$class' has to implement"
-                . '\\Mtf\\App\\State\\StateInterface interface.');
+            throw new \UnexpectedValueException(
+                sprintf('Block class "%s" has to implement \Mtf\App\State\StateInterface interface.', $class)
+            );
         }
 
         return $object;

@@ -12,6 +12,7 @@ use Mtf\ObjectManager\Factory;
 use Magento\Framework\Stdlib\BooleanUtils;
 use Mtf\System\Config as SystemConfig;
 use Mtf\ObjectManager as MagentoObjectManager;
+use Magento\Framework\App\Arguments\Loader;
 
 /**
  * Class ObjectManagerFactory
@@ -97,11 +98,9 @@ class ObjectManagerFactory
     ) {
         return new \Magento\Framework\App\Arguments(
             $arguments,
-            new \Magento\Framework\App\Arguments\Loader(
+            new Loader(
                 $directoryList,
-                isset($arguments[\Magento\Framework\App\Arguments\Loader::PARAM_CUSTOM_FILE])
-                    ? $arguments[\Magento\Framework\App\Arguments\Loader::PARAM_CUSTOM_FILE]
-                    : null
+                isset($arguments[Loader::PARAM_CUSTOM_FILE]) ? $arguments[Loader::PARAM_CUSTOM_FILE] : null
             )
         );
     }
@@ -153,6 +152,7 @@ class ObjectManagerFactory
      * This method is static to have the ability to configure multiple instances of Object manager when needed
      *
      * @param \Magento\Framework\ObjectManager $objectManager
+     * @return void
      */
     public static function configure(\Magento\Framework\ObjectManager $objectManager)
     {

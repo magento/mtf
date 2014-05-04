@@ -75,6 +75,7 @@ class Form extends Block
 
     /**
      * Initialize block
+     * @return void
      */
     protected function _init()
     {
@@ -97,7 +98,8 @@ class Form extends Block
     }
 
     /**
-     * @param $wrapper
+     * @param string $wrapper
+     * @return void
      */
     public function setWrapper($wrapper)
     {
@@ -105,9 +107,10 @@ class Form extends Block
     }
 
     /**
-     * @param $mapping
+     * @param array $mapping
+     * @return void
      */
-    public function setMapping($mapping)
+    public function setMapping(array $mapping)
     {
         $this->mapping = array_replace($this->mapping, $mapping);
     }
@@ -115,6 +118,7 @@ class Form extends Block
     /**
      * Apply placeholders to selectors.
      * Placeholder in .xml is specified via '%' sign from both side.
+     * @return void
      */
     protected function applyPlaceholders()
     {
@@ -161,6 +165,7 @@ class Form extends Block
      *
      * @param array $fields
      * @param Element $element
+     * @return void
      */
     protected function _fill(array $fields, Element $element = null)
     {

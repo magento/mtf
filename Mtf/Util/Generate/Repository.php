@@ -50,6 +50,7 @@ class Repository extends AbstractGenerate
 
     /**
      * Launch Repository generators
+     * @return void
      */
     public function launch()
     {
@@ -61,6 +62,7 @@ class Repository extends AbstractGenerate
 
     /**
      * Generate Repositories XML
+     * @return void
      */
     protected function generateXml()
     {
@@ -78,6 +80,7 @@ class Repository extends AbstractGenerate
      *
      * @param string $name
      * @param array $item
+     * @return void
      */
     protected function generateRepositoryXml($name, array $item)
     {
@@ -163,6 +166,7 @@ class Repository extends AbstractGenerate
 
     /**
      * Generate Repositories Classes
+     * @return void
      */
     protected function generateClasses()
     {
@@ -224,6 +228,7 @@ class Repository extends AbstractGenerate
      * Generate repository classes from XML sources
      *
      * @param array $item
+     * @return void
      */
     protected function generateClass(array $item)
     {
