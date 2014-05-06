@@ -21,6 +21,7 @@ interface Fixture
     /**
      * Persists prepared data into application
      *
+     * @return void
      * @throws \BadMethodCallException
      */
     public function persist();

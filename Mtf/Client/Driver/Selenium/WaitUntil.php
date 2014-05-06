@@ -91,8 +91,11 @@ class WaitUntil
                     $this->_testCase->timeouts()->implicitWait($implicitWait);
                 }
                 $message = "Timed out after {$timeout} second" . ($timeout != 1 ? 's' : '');
-                throw new \PHPUnit_Extensions_Selenium2TestCase_WebDriverException($message,
-                    \PHPUnit_Extensions_Selenium2TestCase_WebDriverException::Timeout, $lastException);
+                throw new \PHPUnit_Extensions_Selenium2TestCase_WebDriverException(
+                    $message,
+                    \PHPUnit_Extensions_Selenium2TestCase_WebDriverException::Timeout,
+                    $lastException
+                );
             }
             usleep($this->_defaultSleepInterval * 1000);
         }

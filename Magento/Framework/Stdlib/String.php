@@ -48,14 +48,9 @@ class String
         foreach ($str as $part) {
             if ($this->strlen($part) >= $length) {
                 $lastDelimiter = $this->strpos($this->strrev($part), $needle);
-                $tmpNewStr = $this->substr(
-                        $this->strrev($part),
-                        0,
-                        $lastDelimiter
-                    ) . $insert . $this->substr(
-                        $this->strrev($part),
-                        $lastDelimiter
-                    );
+                $tmpNewStr = $this->substr($this->strrev($part), 0, $lastDelimiter)
+                    . $insert
+                    . $this->substr($this->strrev($part), $lastDelimiter);
                 $newStr .= $this->strrev($tmpNewStr);
             } else {
                 $newStr .= $part;

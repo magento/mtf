@@ -10,6 +10,7 @@ namespace Magento\Mtf\Test\Block;
 
 use Mtf\Block\Form;
 use Magento\Mtf\Test\Fixture\Test;
+use Mtf\Fixture\FixtureInterface;
 
 /**
  * Class TestBlock
@@ -31,6 +32,7 @@ class TestBlock extends Form
      * Click on element
      *
      * @param Test $fixture
+     * @return void
      */
     public function click(Test $fixture)
     {
@@ -42,9 +44,10 @@ class TestBlock extends Form
     /**
      * Perform search
      *
-     * @param $fixture
+     * @param FixtureInterface $fixture
+     * @return void
      */
-    public function search($fixture)
+    public function search(FixtureInterface $fixture)
     {
         $this->fill($fixture);
     }

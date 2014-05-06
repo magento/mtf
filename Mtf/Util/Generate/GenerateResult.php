@@ -32,9 +32,10 @@ class GenerateResult
     protected static $results = [];
 
     /**
-     * @param $item
-     * @param $count
+     * @param mixed $item
+     * @param int $count
      * @param int $time
+     * @return void
      */
     public static function addResult($item, $count, $time = 0)
     {
@@ -90,6 +91,11 @@ class GenerateResult
         }
     }
 
+    /**
+     * @param string $string
+     * @param int $length
+     * @return string
+     */
     protected static function prepareForShell($string, $length)
     {
         $suffixLength = $length - strlen($string);

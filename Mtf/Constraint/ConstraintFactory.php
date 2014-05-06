@@ -58,8 +58,9 @@ class ConstraintFactory
     {
         $object = $this->objectManager->get($class);
         if (!$object instanceof ConstraintInterface) {
-            throw new \UnexpectedValueException("Constraint class '$class' has to implement "
-                . "\\Mtf\\Constraint\\ConstraintInterface interface.");
+            throw new \UnexpectedValueException(
+                sprintf('Constraint class "%s" has to implement \Mtf\Constraint\ConstraintInterface interface.', $class)
+            );
         }
 
         return $object;
@@ -77,7 +78,7 @@ class ConstraintFactory
     }
 
     /**
-     * @param $code
+     * @param string $code
      * @return string
      */
     protected function resolveClassName($code)

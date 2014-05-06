@@ -23,6 +23,7 @@ class Pages extends GenerateAbstract
 {
     /**
      * Generate Pages
+     * @return void
      */
     public function generate()
     {
@@ -41,6 +42,7 @@ class Pages extends GenerateAbstract
      * Generate page by its MCA
      *
      * @param array $mca
+     * @return void
      */
     public function generatePage(array $mca)
     {

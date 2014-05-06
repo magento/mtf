@@ -24,12 +24,12 @@ class Process
     protected $_process;
 
     /**
-     * @var PHPUnit_Framework_Test
+     * @var \PHPUnit_Framework_Test
      */
     protected $_test;
 
     /**
-     * @var PHPUnit_Framework_TestResult
+     * @var \PHPUnit_Framework_TestResult
      */
     protected $_result;
 
@@ -96,6 +96,7 @@ class Process
      * Opens the process and starts the job.
      *
      * @return void
+     * @throws \PHPUnit_Framework_Exception
      */
     public function open()
     {
@@ -115,14 +116,14 @@ class Process
         stream_set_blocking($this->_pipes[2], 0);
 
         if (!is_resource($this->_process)) {
-            throw new PHPUnit_Framework_Exception(
+            throw new \PHPUnit_Framework_Exception(
                 'Unable to create process for process isolation.'
             );
         }
 
-        $bytesWritten = $this->fwrite_stream($this->_pipes[0], $this->_job);
+        $bytesWritten = $this->writeToPipe($this->_pipes[0], $this->_job);
         if ($bytesWritten < strlen($this->_job)) {
-            throw new PHPUnit_Framework_Exception(
+            throw new \PHPUnit_Framework_Exception(
                 'Unable to spawn process with complete test case input'
             );
         }
@@ -199,12 +200,12 @@ class Process
      * @param string $string
      * @return int Number of bytes written
      */
-    protected function fwrite_stream($pipe, $string)
+    protected function writeToPipe($pipe, $string)
     {
-        $fwrite = 0; // number of bytes written in an iteration
-        for ($written = 0; $written < strlen($string); $written += $fwrite) {
-            $fwrite = fwrite($pipe, substr($string, $written));
-            if ($fwrite === false) {
+        $toWrite = 0; // number of bytes written in an iteration
+        for ($written = 0; $written < strlen($string); $written += $toWrite) {
+            $toWrite = fwrite($pipe, substr($string, $written));
+            if ($toWrite === false) {
                 return $written;
             }
         }
@@ -236,15 +237,13 @@ class Process
      */
     public function processResults()
     {
-        if ($this->_result !== null) {
-            /* Needs to start the test here because the result itself may be shared across processes, and it
-               keeps track of the current test
-            */
-            $this->_result->startTest($this->_test);
-
-            $this->getPhpUnitUtils()->processChildResult($this->_test, $this->_result, $this->_stdout, $this->_stderr);
-        } else {
+        if ($this->_result === null) {
             return array('stdout' => $this->_stdout, 'stderr' => $this->_stderr);
         }
+        /* Needs to start the test here because the result itself may be shared across processes, and it
+           keeps track of the current test
+        */
+        $this->_result->startTest($this->_test);
+        $this->getPhpUnitUtils()->processChildResult($this->_test, $this->_result, $this->_stdout, $this->_stderr);
     }
 }

@@ -16,7 +16,7 @@ namespace Mtf\Constraint;
 class Dummy extends AbstractConstraint
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function processAssert()
     {
@@ -24,7 +24,7 @@ class Dummy extends AbstractConstraint
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function toString()
     {

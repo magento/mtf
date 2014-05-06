@@ -61,6 +61,7 @@ class Browser implements \Mtf\Client\Browser
 
     /**
      * Initialize client driver.
+     * @return void
      */
     protected function _init()
     {
@@ -78,6 +79,7 @@ class Browser implements \Mtf\Client\Browser
      * Open an URL page
      *
      * @param string $url
+     * @return void
      */
     public function open($url)
     {
@@ -86,6 +88,7 @@ class Browser implements \Mtf\Client\Browser
 
     /**
      * Back to previous page
+     * @return void
      */
     public function back()
     {
@@ -94,6 +97,7 @@ class Browser implements \Mtf\Client\Browser
 
     /**
      * Forward page
+     * @return void
      */
     public function forward()
     {
@@ -102,6 +106,7 @@ class Browser implements \Mtf\Client\Browser
 
     /**
      * Refresh page
+     * @return void
      */
     public function refresh()
     {
@@ -111,6 +116,7 @@ class Browser implements \Mtf\Client\Browser
     /**
      * Open new browser
      * This will lead to clean browser session
+     * @return void
      */
     public function reopen()
     {
@@ -127,6 +133,7 @@ class Browser implements \Mtf\Client\Browser
      * Changes focus to main page if locator is not passed
      *
      * @param Locator|null $locator
+     * @return void
      */
     public function switchToFrame($locator = null)
     {
@@ -142,6 +149,7 @@ class Browser implements \Mtf\Client\Browser
 
     /**
      * Close current window and change focus to previous opened window
+     * @return void
      */
     public function closeWindow()
     {
@@ -157,6 +165,7 @@ class Browser implements \Mtf\Client\Browser
 
     /**
      * Select last opened window
+     * @return void
      */
     public function selectWindow()
     {

@@ -45,12 +45,12 @@ class Environment
      */
     public static function getEnvironments()
     {
-        $instance_specific_keys = [
+        $instanceSpecificKeys = [
             "app_frontend_url",
             "app_backend_url"
         ];
 
-        $global_keys = [
+        $globalKeys = [
             "app_config_path",
             "server_config_path",
             "isolation_config_path",
@@ -60,7 +60,7 @@ class Environment
         ];
 
         $globalEnvironmentVariables = [];
-        foreach ($global_keys as $key) {
+        foreach ($globalKeys as $key) {
             if (isset($_ENV[$key])) {
                 $globalEnvironmentVariables[$key] = $_ENV[$key];
             }
@@ -73,7 +73,7 @@ class Environment
             for ($x = 0; $x < $instancesCount; $x++) {
                 $environmentVariables = [];
 
-                foreach ($instance_specific_keys as $key) {
+                foreach ($instanceSpecificKeys as $key) {
                     $instanceKey = $key . "_" . $x;
                     if (isset($_ENV[$instanceKey])) {
                         $environmentVariables[$key] = $_ENV[$instanceKey];
@@ -89,7 +89,7 @@ class Environment
         } else {
             $environmentVariables = [];
 
-            foreach ($instance_specific_keys as $key) {
+            foreach ($instanceSpecificKeys as $key) {
                 if (isset($_ENV[$key])) {
                     $environmentVariables[$key] = $_ENV[$key];
                 }

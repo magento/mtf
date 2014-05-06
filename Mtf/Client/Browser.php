@@ -25,26 +25,31 @@ interface Browser
      * Open page
      *
      * @param string $url
+     * @return void
      */
     public function open($url);
 
     /**
      * Back to previous page
+     * @return void
      */
     public function back();
 
     /**
      * Forward page
+     * @return void
      */
     public function forward();
 
     /**
      * Refresh page
+     * @return void
      */
     public function refresh();
 
     /**
      * Reopen browser
+     * @return void
      */
     public function reopen();
 
@@ -52,16 +57,19 @@ interface Browser
      * Change the focus to a frame in the page by locator
      *
      * @param Locator|null $locator
+     * @return void
      */
     public function switchToFrame($locator = null);
 
     /**
      * Close the current window
+     * @return void
      */
     public function closeWindow();
 
     /**
      * Select window by its name
+     * @return void
      */
     public function selectWindow();
 

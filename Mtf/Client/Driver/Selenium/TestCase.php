@@ -52,6 +52,7 @@ class TestCase extends \PHPUnit_Extensions_Selenium2TestCase
      * Force set new session strategy. This will lead to clear all previous data stored in session
      *
      * @param string $strategy
+     * @return void
      */
     public function setSessionStrategy($strategy)
     {

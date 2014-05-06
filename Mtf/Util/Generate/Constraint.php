@@ -71,6 +71,7 @@ class Constraint extends AbstractGenerate
      *
      * @param string $name
      * @param array $item
+     * @return void
      */
     private function generateClass($name, array $item)
     {

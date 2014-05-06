@@ -17,7 +17,7 @@ namespace Mtf\App\State;
 class State1 extends AbstractState
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function apply()
     {
@@ -25,7 +25,7 @@ class State1 extends AbstractState
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getName()
     {

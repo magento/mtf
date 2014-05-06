@@ -23,6 +23,7 @@ class BlockFactory extends GenerateAbstract
 {
     /**
      * Generate Blocks
+     * @return void
      */
     public function generate()
     {
@@ -37,6 +38,7 @@ class BlockFactory extends GenerateAbstract
 
     /**
      * Collect Block items
+     * @return void
      */
     protected function _generateBlocks()
     {
@@ -50,6 +52,7 @@ class BlockFactory extends GenerateAbstract
      * Add Block to content
      *
      * @param array $item
+     * @return void
      */
     protected function _addBlockToFactory($item)
     {

@@ -88,6 +88,7 @@ class ObjectManager extends \Magento\Framework\ObjectManager\ObjectManager
      * Set object manager instance
      *
      * @param ObjectManager $objectManager
+     * @return void
      */
     public static function setInstance(ObjectManager $objectManager)
     {

@@ -23,6 +23,7 @@ class PageFactory extends GenerateAbstract
 {
     /**
      * Generate Pages
+     * @return void
      */
     public function generate()
     {
@@ -37,6 +38,7 @@ class PageFactory extends GenerateAbstract
 
     /**
      * Collect Page items
+     * @return void
      */
     protected function _generatePages()
     {
@@ -51,6 +53,7 @@ class PageFactory extends GenerateAbstract
      * Add Page to content
      *
      * @param array $item
+     * @return void
      */
     protected function _addPageToFactory($item)
     {

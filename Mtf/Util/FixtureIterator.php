@@ -14,6 +14,7 @@
 namespace Mtf\Util;
 
 use Mtf\Fixture\DataFixture;
+use Mtf\Repository\RepositoryInterface;
 
 class FixtureIterator implements \Iterator
 {
@@ -33,15 +34,21 @@ class FixtureIterator implements \Iterator
     protected $_key;
 
     /**
-     * @var
+     * @var RepositoryInterface
      */
     protected $_repository;
 
+    /**
+     * @param DataFixture $fixture
+     */
     public function __construct(DataFixture $fixture)
     {
         $this->_fixture = $fixture;
     }
 
+    /**
+     * @return void
+     */
     public function rewind()
     {
         $this->_repository = $this->_fixture->getRepository();
@@ -55,16 +62,25 @@ class FixtureIterator implements \Iterator
         }
     }
 
+    /**
+     * @return bool
+     */
     public function valid()
     {
         return array_key_exists($this->_key, $this->_repository);
     }
 
+    /**
+     * @return mixed|string
+     */
     public function key()
     {
         return $this->_key;
     }
 
+    /**
+     * @return array
+     */
     public function current()
     {
         return array(
@@ -72,6 +88,9 @@ class FixtureIterator implements \Iterator
         );
     }
 
+    /**
+     * @return void
+     */
     public function next()
     {
         $data = next($this->_repository);

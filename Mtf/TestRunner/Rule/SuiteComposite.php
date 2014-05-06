@@ -75,7 +75,7 @@ class SuiteComposite extends AbstractRule implements SuiteRuleInterface
     /**
      * Rule which verifies belonging to namespace
      *
-     * @param $value
+     * @param string $value
      * @return bool
      */
     protected function namespaceMatch($value)
@@ -89,7 +89,7 @@ class SuiteComposite extends AbstractRule implements SuiteRuleInterface
     /**
      * Rule which verifies belonging to module
      *
-     * @param $value
+     * @param string $value
      * @return bool
      */
     protected function moduleMatch($value)

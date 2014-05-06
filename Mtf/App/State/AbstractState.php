@@ -24,7 +24,7 @@ abstract class AbstractState implements StateInterface
     protected $isCleanInstance = false;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function apply()
     {
@@ -34,7 +34,7 @@ abstract class AbstractState implements StateInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function clearInstance()
     {

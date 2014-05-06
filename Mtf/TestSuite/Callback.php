@@ -32,6 +32,7 @@ class Callback extends \PHPUnit_Framework_TestSuite
      *
      * @param Callable $callback
      * @param array $arguments
+     * @return void
      */
     public function setCallback($callback, array $arguments = [])
     {

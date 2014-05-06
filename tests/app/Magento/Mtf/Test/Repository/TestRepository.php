@@ -17,6 +17,10 @@ use Mtf\Repository\AbstractRepository;
  */
 class TestRepository extends AbstractRepository
 {
+    /**
+     * @param array $defaultConfig
+     * @param array $defaultData
+     */
     public function __construct(array $defaultConfig, array $defaultData)
     {
     }

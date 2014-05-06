@@ -68,6 +68,7 @@ abstract class Block implements BlockInterface
 
     /**
      * Initialize for children classes
+     * @return void
      */
     protected function _init()
     {
@@ -86,6 +87,10 @@ abstract class Block implements BlockInterface
 
     /**
      * Wait for element is visible in the block
+     *
+     * @param string $selector
+     * @param string $strategy
+     * @return bool|null
      */
     public function waitForElementVisible($selector, $strategy = Locator::SELECTOR_CSS)
     {
@@ -100,6 +105,10 @@ abstract class Block implements BlockInterface
 
     /**
      * Wait for element is visible in the block
+     *
+     * @param string $selector
+     * @param string $strategy
+     * @return bool|null
      */
     public function waitForElementNotVisible($selector, $strategy = Locator::SELECTOR_CSS)
     {

@@ -63,6 +63,7 @@ class MultiselectElement extends SelectElement
      * Select Options by Label in Multiple Select
      *
      * @param string|array $values
+     * @return void
      */
     public function setValue($values)
     {
@@ -78,6 +79,7 @@ class MultiselectElement extends SelectElement
 
     /**
      * Clear selected options in multiple select
+     * @return void
      */
     public function clearSelectedOptions()
     {

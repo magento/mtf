@@ -48,7 +48,7 @@ class Composite extends AbstractConstraint
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function toString()
     {
@@ -60,6 +60,7 @@ class Composite extends AbstractConstraint
      *
      * @param \PHPUnit_Framework_TestCase $testCase
      * @param array $arguments
+     * @return void
      */
     public function configure(
         \PHPUnit_Framework_TestCase $testCase,
@@ -72,7 +73,7 @@ class Composite extends AbstractConstraint
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function matches($testCaseName)
     {

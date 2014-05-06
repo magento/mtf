@@ -22,6 +22,7 @@ class InjectableTestCase extends Injectable
     /**
      * @param TestPage $page
      * @param Test $fixture
+     * @return void
      */
     public function test1(TestPage $page, Test $fixture)
     {
@@ -33,6 +34,7 @@ class InjectableTestCase extends Injectable
     /**
      * @param TestPage $page
      * @param Test $fixture
+     * @return void
      */
     public function test2(TestPage $page, Test $fixture)
     {
@@ -44,6 +46,7 @@ class InjectableTestCase extends Injectable
     /**
      * @param string $fromDataProvider
      * @dataProvider dataProvider
+     * @return void
      */
     public function test3($fromDataProvider = '')
     {
@@ -64,6 +67,7 @@ class InjectableTestCase extends Injectable
 
     /**
      * Incomplete Test
+     * @return void
      */
     public function test4()
     {
@@ -72,6 +76,7 @@ class InjectableTestCase extends Injectable
 
     /**
      * Incomplete Test
+     * @return void
      */
     public function test5()
     {
@@ -80,6 +85,9 @@ class InjectableTestCase extends Injectable
 
     /**
      * Filtered Test, see TestRunner.xml
+     *
+     * @param \Mtf\ObjectManager $objectManager
+     * @return void
      */
     public function test6(\Mtf\ObjectManager $objectManager)
     {
@@ -91,6 +99,7 @@ class InjectableTestCase extends Injectable
      *
      * @param TestPage $page
      * @param Test $fixture
+     * @return void
      */
     public function test7(TestPage $page, Test $fixture)
     {

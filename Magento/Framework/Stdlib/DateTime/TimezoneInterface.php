@@ -82,7 +82,7 @@ interface TimezoneInterface
     public function date($date = null, $part = null, $locale = null, $useTimezone = true);
 
     /**
-     * Create \Magento\Framework\Stdlib\DateTime\DateInterface object with date converted to scope timezone and scope Locale
+     * Create DateInterface object with date converted to scope timezone and scope Locale
      *
      * @param   mixed $scope Information about scope
      * @param   string|integer|\Magento\Framework\Stdlib\DateTime\DateInterface|array|null $date date in UTC

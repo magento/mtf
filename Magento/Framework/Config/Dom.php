@@ -127,15 +127,11 @@ class Dom
         if ($matchedNode) {
 
             //different node type
-            if ($this->_typeAttributeName && $node->hasAttribute(
-                    $this->_typeAttributeName
-                ) && $matchedNode->hasAttribute(
-                    $this->_typeAttributeName
-                ) && $node->getAttribute(
-                    $this->_typeAttributeName
-                ) !== $matchedNode->getAttribute(
-                    $this->_typeAttributeName
-                )
+            if ($this->_typeAttributeName
+                && $node->hasAttribute($this->_typeAttributeName)
+                && $matchedNode->hasAttribute($this->_typeAttributeName)
+                && $node->getAttribute($this->_typeAttributeName)
+                !== $matchedNode->getAttribute($this->_typeAttributeName)
             ) {
                 $parentMatchedNode = $this->_getMatchedNode($parentPath);
                 $newNode = $this->_dom->importNode($node, true);
@@ -214,9 +210,10 @@ class Dom
 
     /**
      * Getter for node by path
+     * An exception is possible if original document contains multiple nodes for identifier
      *
      * @param string $nodePath
-     * @throws \Magento\Framework\Exception An exception is possible if original document contains multiple nodes for identifier
+     * @throws \Magento\Framework\Exception
      * @return \DOMElement|null
      */
     protected function _getMatchedNode($nodePath)

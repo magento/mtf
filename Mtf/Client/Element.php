@@ -22,16 +22,19 @@ interface Element
 {
     /**
      * Click
+     * @return void
      */
     public function click();
 
     /**
      * Double click
+     * @return void
      */
     public function doubleClick();
 
     /**
      * Right click
+     * @return void
      */
     public function rightClick();
 
@@ -60,6 +63,7 @@ interface Element
      * Set the value
      *
      * @param string|array $value
+     * @return void
      */
     public function setValue($value);
 
@@ -91,6 +95,7 @@ interface Element
      * Drag and drop element to another element
      *
      * @param Element $target
+     * @return void
      */
     public function dragAndDrop(Element $target);
 
@@ -98,6 +103,7 @@ interface Element
      * Send a sequence of key strokes to the active element.
      *
      * @param array $keys
+     * @return void
      */
     public function keys(array $keys);
 
@@ -111,11 +117,13 @@ interface Element
 
     /**
      * Press OK on an alert, or confirms a dialog
+     * @return void
      */
     public function acceptAlert();
 
     /**
      * Press Cancel on an alert, or does not confirm a dialog
+     * @return void
      */
     public function dismissAlert();
 
@@ -130,6 +138,7 @@ interface Element
      * Set the text to a prompt popup
      *
      * @param string $text
+     * @return void
      */
     public function setAlertText($text);
 

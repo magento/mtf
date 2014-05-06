@@ -30,6 +30,7 @@ class FixtureFactory extends GenerateAbstract
 
     /**
      * Generate Fixtures
+     * @return void
      */
     public function generate()
     {
@@ -44,6 +45,7 @@ class FixtureFactory extends GenerateAbstract
 
     /**
      * Collect Fixture items
+     * @return void
      */
     protected function _generateFixtures()
     {
@@ -57,6 +59,7 @@ class FixtureFactory extends GenerateAbstract
      * Add Fixture content
      *
      * @param array $item
+     * @return void
      */
     protected function _addFixtureToFactory($item)
     {

@@ -135,8 +135,14 @@ class InjectableFixture implements FixtureInterface
             }
             $source = $this->getSourceParam($params);
             if ($source) {
-                $fixture = $this->fixtureFactory->create($source,
-                    ['data' => $value, 'params' => $params, 'persist' => true]);
+                $fixture = $this->fixtureFactory->create(
+                    $source,
+                    [
+                        'data' => $value,
+                        'params' => $params,
+                        'persist' => true
+                    ]
+                );
                 $params['source'] = $source;
                 $value = $fixture->getData();
             }
@@ -169,6 +175,7 @@ class InjectableFixture implements FixtureInterface
 
     /**
      * Persists Fixture Data into application
+     * @return void
      */
     public function persist()
     {
@@ -307,6 +314,7 @@ class InjectableFixture implements FixtureInterface
      *
      * @param array $data
      * @param array $placeholders
+     * @return void
      */
     protected function _applyPlaceholders(array & $data, array $placeholders)
     {

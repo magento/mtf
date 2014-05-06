@@ -59,6 +59,7 @@ class Fixture extends AbstractGenerate
 
     /**
      * Launch Fixture generators
+     * @return void
      */
     public function launch()
     {
@@ -66,10 +67,9 @@ class Fixture extends AbstractGenerate
         $this->generateClasses();
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     /**
      * Generate Fixtures XML
+     * @return void
      */
     protected function generateXml()
     {
@@ -86,6 +86,7 @@ class Fixture extends AbstractGenerate
      *
      * @param string $name
      * @param array $item
+     * @return void
      */
     protected function generateFixtureXml($name, array $item)
     {
@@ -129,7 +130,7 @@ class Fixture extends AbstractGenerate
                 . '\\' . $classShortName . 'Interface';
         }
 
-        $content .= $this->toXml($item, '', '    ');
+        $content .= $this->toXml($item, '    ');
 
         $content .= "</fixture>\n";
         file_put_contents($folderName . '/' . $fileName, $content);
@@ -138,6 +139,7 @@ class Fixture extends AbstractGenerate
 
     /**
      * Generate Fixtures Classes
+     * @return void
      */
     protected function generateClasses()
     {
@@ -191,6 +193,7 @@ class Fixture extends AbstractGenerate
      * Generate fixture classes from XML sources
      *
      * @param array $item
+     * @return void
      */
     protected function generateClass(array $item)
     {
@@ -229,21 +232,21 @@ class Fixture extends AbstractGenerate
         $content .= "class {$className} extends InjectableFixture\n";
         $content .= "{\n";
 
-        if (isset($contentXml->repository_class)) {
+        if (isset($contentXml->{'repository_class'})) {
             $content .= "    /**\n";
             $content .= "     * @var string\n";
             $content .= "     */\n";
-            $content .= "    protected \$repositoryClass = '{$contentXml->repository_class}';\n\n";
+            $content .= "    protected \$repositoryClass = '{$contentXml->{'repository_class'}}';\n\n";
         }
-        if (isset($contentXml->handler_interface)) {
+        if (isset($contentXml->{'handler_interface'})) {
             $content .= "    /**\n";
             $content .= "     * @var string\n";
             $content .= "     */\n";
-            $content .= "    protected \$handlerInterface = '{$contentXml->handler_interface}';\n\n";
+            $content .= "    protected \$handlerInterface = '{$contentXml->{'handler_interface'}}';\n\n";
         }
 
-        if (isset($contentXml->data_config)) {
-            $dataConfig = $this->xmlConverter->convert($contentXml->data_config[0]);
+        if (isset($contentXml->{'data_config'})) {
+            $dataConfig = $this->xmlConverter->convert($contentXml->{'data_config'}[0]);
             if (is_array($dataConfig)) {
                 $content .= "    protected \$dataConfig = ";
                 $content .= $this->toArrayDefinition($dataConfig, '    ');
@@ -293,16 +296,16 @@ class Fixture extends AbstractGenerate
 
     /**
      * @param array $data
-     * @param string $tag
      * @param string $tab
+     * @param string $tag
      * @return string
      */
-    protected function toXml(array $data, $tag = '', $tab)
+    protected function toXml(array $data, $tab, $tag = '')
     {
         $xml = '';
         foreach ($data as $fieldName => $fieldValue) {
             if (is_array($fieldValue)) {
-                $fieldValue = $this->toXml($fieldValue, '', $tab . '    ');
+                $fieldValue = $this->toXml($fieldValue, $tab . '    ');
                 $xml .= $tab . "<{$fieldName}>\n";
                 $xml .= $fieldValue;
                 $xml .= $tab . "</{$fieldName}>\n";
