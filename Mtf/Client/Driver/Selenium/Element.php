@@ -222,7 +222,7 @@ class Element implements ElementInterface
      *
      * @param string $selector
      * @param string $strategy [optional]
-     * @param string $typifiedElement = select|multiselect|checkbox|null
+     * @param string $typifiedElement = select|multiselect|checkbox|null OR custom class with full namespace
      * @return mixed
      */
     public function find($selector, $strategy = Locator::SELECTOR_CSS, $typifiedElement = null)
@@ -231,9 +231,13 @@ class Element implements ElementInterface
         $className = '\Mtf\Client\Driver\Selenium\Element';
 
         if (null !== $typifiedElement) {
-            $typifiedElement = ucfirst(strtolower($typifiedElement));
-            if (class_exists($className . '\\' . $typifiedElement . 'Element')) {
-                $className .= '\\' . $typifiedElement . 'Element';
+            if (strpos($typifiedElement, '\\') === false) {
+                $typifiedElement = ucfirst(strtolower($typifiedElement));
+                if (class_exists($className . '\\' . $typifiedElement . 'Element')) {
+                    $className .= '\\' . $typifiedElement . 'Element';
+                }
+            } else {
+                $className = $typifiedElement;
             }
         }
 
