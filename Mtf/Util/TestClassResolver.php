@@ -21,7 +21,7 @@ class TestClassResolver
      * @param string $classType
      * @return array
      */
-    public function get($classType)
+    public function get($classType, array $includeOnly = [])
     {
         $classes = [];
 
@@ -45,6 +45,11 @@ class TestClassResolver
                 $classPath = str_replace(MTF_TESTS_PATH, '', $filePath);
                 $className = str_replace('/', '\\', $classPath);
                 $className = str_replace('.php', '', $className);
+                if (!empty($includeOnly)) {
+                    if (false === array_search($className, $includeOnly)) {
+                        continue;
+                    }
+                }
                 $classes[] = [
                     'name' => $className,
                     'class' => $className,
