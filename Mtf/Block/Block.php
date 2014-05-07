@@ -34,6 +34,13 @@ abstract class Block implements BlockInterface
     protected $_rootElement;
 
     /**
+     * Factory for creating Blocks
+     *
+     * @var BlockFactory
+     */
+    protected $blockFactory;
+
+    /**
      * Temporary copy of root element in closure
      *
      * @var \Closure
@@ -43,10 +50,12 @@ abstract class Block implements BlockInterface
     /**
      * @constructor
      * @param Element $element
+     * @param BlockFactory $blockFactory
      */
-    public function __construct(Element $element)
+    public function __construct(Element $element, BlockFactory $blockFactory)
     {
         $this->_rootElement = $element;
+        $this->blockFactory = $blockFactory;
 
         $this->_init();
         $this->tmpElement = function () use ($element) {
@@ -78,7 +87,7 @@ abstract class Block implements BlockInterface
     /**
      * Check if the root element of the block is visible or not
      *
-     * @return boolean
+     * @return bool
      */
     public function isVisible()
     {

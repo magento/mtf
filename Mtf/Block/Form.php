@@ -8,8 +8,9 @@
 
 namespace Mtf\Block;
 
-use Mtf\Fixture\FixtureInterface;
 use Mtf\Client\Element;
+use Mtf\Fixture\FixtureInterface;
+use Mtf\Fixture\InjectableFixture;
 
 /**
  * Class Form
@@ -65,16 +66,18 @@ class Form extends Block
     /**
      * @constructor
      * @param Element $element
+     * @param BlockFactory $blockFactory
      * @param Mapper $mapper
      */
-    public function __construct(Element $element, Mapper $mapper)
+    public function __construct(Element $element, BlockFactory $blockFactory, Mapper $mapper)
     {
         $this->mapper = $mapper;
-        parent::__construct($element);
+        parent::__construct($element, $blockFactory);
     }
 
     /**
      * Initialize block
+     *
      * @return void
      */
     protected function _init()
@@ -90,6 +93,8 @@ class Form extends Block
     }
 
     /**
+     * Get path for form *.xml file with mapping
+     *
      * @return string
      */
     protected function getXmlFilePath()
@@ -98,6 +103,8 @@ class Form extends Block
     }
 
     /**
+     * Set wrapper value to the root form
+     *
      * @param string $wrapper
      * @return void
      */
@@ -107,6 +114,8 @@ class Form extends Block
     }
 
     /**
+     * Set mapping to the root form
+     *
      * @param array $mapping
      * @return void
      */
@@ -118,6 +127,7 @@ class Form extends Block
     /**
      * Apply placeholders to selectors.
      * Placeholder in .xml is specified via '%' sign from both side.
+     *
      * @return void
      */
     protected function applyPlaceholders()
@@ -135,13 +145,13 @@ class Form extends Block
     /**
      * Fixture mapping
      *
-     * @param array $fields
+     * @param array|null $fields
      * @return array
      */
-    protected function dataMapping(array $fields)
+    protected function dataMapping($fields = null)
     {
         $mapping = [];
-        $data = $this->mappingMode ? $this->mapping : $fields;
+        $data = ($this->mappingMode || null === $fields) ? $this->mapping : $fields;
         foreach ($data as $key => $value) {
             $mapping[$key]['selector'] = isset($this->mapping[$key]['selector'])
                 ? $this->mapping[$key]['selector']
@@ -164,7 +174,7 @@ class Form extends Block
      * Fill specified form data
      *
      * @param array $fields
-     * @param Element $element
+     * @param Element|null $element
      * @return void
      */
     protected function _fill(array $fields, Element $element = null)
@@ -183,7 +193,7 @@ class Form extends Block
      * Fill the root form
      *
      * @param FixtureInterface $fixture
-     * @param Element $element
+     * @param Element|null $element
      * @return $this
      */
     public function fill(FixtureInterface $fixture, Element $element = null)
@@ -197,41 +207,40 @@ class Form extends Block
     }
 
     /**
-     * Verify specified form data
+     * Get data of specified form data
      *
      * @param array $fields
-     * @param Element $element
-     * @return bool
+     * @param Element|null $element
+     * @return array
      */
-    protected function _verify(array $fields, Element $element = null)
+    protected function _getData(array $fields, Element $element = null)
     {
+        $data = [];
         $context = ($element === null) ? $this->_rootElement : $element;
-        foreach ($fields as $field) {
+        foreach ($fields as $key => $field) {
             $element = $context->find($field['selector'], $field['strategy'], $field['input']);
             if ($this->mappingMode || $element->isVisible()) {
-                $value = $element->getValue();
-                if ($field['value'] != $value) {
-                    return false;
-                }
+                $data[$key] = $element->getValue();
             }
         }
 
-        return true;
+        return $data;
     }
 
     /**
-     * Verify the root form
+     * Get data of the root form
      *
-     * @param FixtureInterface $fixture
-     * @param Element $element
-     * @return bool
+     * @param FixtureInterface|null $fixture
+     * @param Element|null $element
+     * @return array
      */
-    public function verify(FixtureInterface $fixture, Element $element = null)
+    public function getData(FixtureInterface $fixture = null, Element $element = null)
     {
-        $data = $fixture->getData();
+        $isHasData = ($fixture instanceof InjectableFixture) ? $fixture->hasData() : true;
+        $data = ($fixture && $isHasData) ? $fixture->getData() : [];
         $fields = isset($data['fields']) ? $data['fields'] : $data;
         $mapping = $this->dataMapping($fields);
 
-        return $this->_verify($mapping, $element);
+        return $this->_getData($mapping, $element);
     }
 }

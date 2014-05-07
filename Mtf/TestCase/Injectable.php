@@ -9,7 +9,6 @@
 namespace Mtf\TestCase;
 
 use Mtf\Constraint\AbstractConstraint;
-use Mtf\TestRunner\Process\ProcessManager;
 
 /**
  * Class Injectable
@@ -174,7 +173,7 @@ abstract class Injectable extends Functional
 
         if (isset($variation['constraint'])) {
             $this->constraint = $variation['constraint'];
-            $this->constraint->configure($this, $arguments);
+            $this->constraint->configure($this, array_merge($arguments, $this->localArguments));
         }
         parent::run($result);
     }
