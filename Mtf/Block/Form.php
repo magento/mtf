@@ -171,10 +171,9 @@ class Form extends Block
      * @return Element
      * @throws \Exception
      */
-    protected function getElement($context, $field)
+    protected function getElement(Element $context, array $field)
     {
-        $elementClass = $field['class'];
-        if ($elementClass) {
+        if ($field['class']) {
             $element = $context->find($field['selector'], $field['strategy'], $field['class']);
             if (!$element instanceof Element) {
                 throw new \Exception('Wrong Element Class.');
