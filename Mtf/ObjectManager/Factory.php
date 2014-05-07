@@ -180,7 +180,7 @@ class Factory extends \Magento\Framework\ObjectManager\Factory\Factory
      * @param array $array
      * @return void
      */
-    protected function parseArray(array &$array)
+    protected function parseArray(&$array)
     {
         foreach ($array as $key => $item) {
             if (!is_array($item)) {
