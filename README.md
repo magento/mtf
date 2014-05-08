@@ -14,3 +14,7 @@ All Submissions you make to Magento is an eBay Inc. company ("Magento") through 
 2. Reporting Tool
 3. Modularity support
 4. Input Data (Data Sets) management improvements
+
+## User Documentation
+
+[Magento Testing Framework Guidline|https://wiki.magento.com/display/MAGE2DOC/Magento+Testing+Framework+Guidelines]
