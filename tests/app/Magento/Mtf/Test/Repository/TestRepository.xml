@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<!--
+/**
+ * {license_notice}
+ *
+ * @copyright   {copyright}
+ * @license     {license_link}
+ */
+-->
+<repository class="Magento\Mtf\Test\Repository\TestRepository">
+</repository>

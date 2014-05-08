@@ -1,0 +1,15 @@
+{
+    "name": "magento/mtf",
+    "type": "library",
+    "description": "Magento Testing Framework",
+    "keywords": ["automation", "magento", "testing"],
+    "homepage": "http://www.magentocommerce.com/",
+    "license": "OSL-3.0",
+    "autoload": {
+        "psr-0": {
+            "Mtf\\": "",
+            "Magento\\": "",
+            "": "tests/app"
+        }
+    }
+}

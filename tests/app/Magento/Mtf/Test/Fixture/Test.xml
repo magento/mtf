@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+<!--
+/**
+* {license_notice}
+*
+* @copyright   {copyright}
+* @license     {license_link}
+*/
+-->
+<fixture class="Magento\Mtf\Test\Fixture\Test">
+    <fields>
+        <locator>
+            <attribute_code>locator</attribute_code>
+            <frontend_input>text</frontend_input>
+            <frontend_label>Locator</frontend_label>
+            <is_required>1</is_required>
+            <default_value>About</default_value>
+        </locator>
+        <strategy>
+            <attribute_code>strategy</attribute_code>
+            <frontend_input>text</frontend_input>
+            <frontend_label>Strategy</frontend_label>
+            <is_required>1</is_required>
+            <default_value>link text</default_value>
+            <fixture>Magento\Mtf\Test\Fixture\Test\Strategy</fixture>
+        </strategy>
+        <search>
+            <attribute_code>search</attribute_code>
+        </search>
+    </fields>
+</fixture>

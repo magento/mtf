@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<!--
+/**
+ * {license_notice}
+ *
+ * @copyright   {copyright}
+ * @license     {license_link}
+ */
+-->
+<page mca="testPage">
+    <block>
+        <name>testBlock</name>
+        <class>Magento\Mtf\Test\Block\TestBlock</class>
+        <locator>body</locator>
+        <strategy>tag-selector</strategy>
+    </block>
+</page>
