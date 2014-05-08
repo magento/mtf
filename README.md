@@ -1,5 +1,5 @@
 # Magento 2
-=============
+
 Magento Testing Framework is an open source R&D project facilitating the improvement of Magento Core products. Magento Testing Framework helps in avoiding duplication of test cases automated across the application utilizing data driven approach. With the new and improved Magento Testing Framework, developers will be able to automate functional testing of the developed functionality enabling frequent releases and higher product quality.
 
 All Submissions you make to Magento is an eBay Inc. company ("Magento") through GitHub are subject to the following terms and conditions:
