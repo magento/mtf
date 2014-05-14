@@ -162,12 +162,37 @@ class Form extends Block
             $mapping[$key]['input'] = isset($this->mapping[$key]['input'])
                 ? $this->mapping[$key]['input']
                 : null;
+            $mapping[$key]['class'] = isset($this->mapping[$key]['class'])
+                ? $this->mapping[$key]['class']
+                : null;
             $mapping[$key]['value'] = $this->mappingMode
                 ? (isset($fields[$key]['value']) ? $fields[$key]['value'] : $fields[$key])
                 : (isset($value['value']) ? $value['value'] : $value);
         }
 
         return $mapping;
+    }
+
+    /**
+     * Get element of particular class if defined in xml configuration or of one of framework classes otherwise
+     *
+     * @param Element $context
+     * @param array $field
+     * @return Element
+     * @throws \Exception
+     */
+    protected function getElement(Element $context, array $field)
+    {
+        if ($field['class']) {
+            $element = $context->find($field['selector'], $field['strategy'], $field['class']);
+            if (!$element instanceof Element) {
+                throw new \Exception('Wrong Element Class.');
+            }
+        } else {
+            $element = $context->find($field['selector'], $field['strategy'], $field['input']);
+        }
+
+        return $element;
     }
 
     /**
@@ -181,7 +206,7 @@ class Form extends Block
     {
         $context = ($element === null) ? $this->_rootElement : $element;
         foreach ($fields as $name => $field) {
-            $element = $context->find($field['selector'], $field['strategy'], $field['input']);
+            $element = $this->getElement($context, $field);
             if ($this->mappingMode || ($element->isVisible() && !$element->isDisabled())) {
                 $element->setValue($field['value']);
                 $this->setFields[$name] = $field['value'];
