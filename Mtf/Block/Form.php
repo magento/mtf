@@ -158,7 +158,9 @@ class Form extends Block
             if (isset($value['value'])) {
                 $value = $value['value'];
             }
-            if (!$this->mappingMode && is_array($value) && null !== $fields) {
+            if (!$this->mappingMode && is_array($value) && null !== $fields
+                && isset($mappingFields[$key]['composite'])
+            ) {
                 $mapping[$key] = $this->dataMapping($value, $mappingFields[$key]);
             } else {
                 $mapping[$key]['selector'] = isset($mappingFields[$key]['selector'])

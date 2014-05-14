@@ -145,6 +145,9 @@ class InjectableFixture implements FixtureInterface
                 );
                 $params[$source['field']] = $fixture;
                 $value = $fixture->getData();
+                if ($value === null) {
+                    continue;
+                }
             }
             $this->data[$key] = $value;
         }
