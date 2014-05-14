@@ -146,28 +146,34 @@ class Form extends Block
      * Fixture mapping
      *
      * @param array|null $fields
+     * @param string|null $parent
      * @return array
      */
-    protected function dataMapping($fields = null)
+    protected function dataMapping(array $fields = null, $parent = null)
     {
         $mapping = [];
-        $data = ($this->mappingMode || null === $fields) ? $this->mapping : $fields;
+        $mappingFields = ($parent !== null) ? $parent : $this->mapping;
+        $data = ($this->mappingMode || null === $fields) ? $mappingFields : $fields;
         foreach ($data as $key => $value) {
-            $mapping[$key]['selector'] = isset($this->mapping[$key]['selector'])
-                ? $this->mapping[$key]['selector']
-                : (($this->wrapper != '') ? "[name='{$this->wrapper}[{$key}]']" : "[name={$key}]");
-            $mapping[$key]['strategy'] = isset($this->mapping[$key]['strategy'])
-                ? $this->mapping[$key]['strategy']
-                : Element\Locator::SELECTOR_CSS;
-            $mapping[$key]['input'] = isset($this->mapping[$key]['input'])
-                ? $this->mapping[$key]['input']
-                : null;
-            $mapping[$key]['class'] = isset($this->mapping[$key]['class'])
-                ? $this->mapping[$key]['class']
-                : null;
-            $mapping[$key]['value'] = $this->mappingMode
-                ? (isset($fields[$key]['value']) ? $fields[$key]['value'] : $fields[$key])
-                : (isset($value['value']) ? $value['value'] : $value);
+            if (isset($value['value'])) {
+                $value = $value['value'];
+            }
+            if (!$this->mappingMode && is_array($value) && null !== $fields) {
+                $mapping[$key] = $this->dataMapping($value, $mappingFields[$key]);
+            } else {
+                $mapping[$key]['selector'] = isset($mappingFields[$key]['selector'])
+                    ? $mappingFields[$key]['selector']
+                    : (($this->wrapper != '') ? "[name='{$this->wrapper}" . "[{$key}]']" : "[name={$key}]");
+                $mapping[$key]['strategy'] = isset($mappingFields[$key]['strategy'])
+                    ? $mappingFields[$key]['strategy']
+                    : Element\Locator::SELECTOR_CSS;
+                $mapping[$key]['input'] = isset($mappingFields[$key]['input'])
+                    ? $mappingFields[$key]['input']
+                    : null;
+                $mapping[$key]['value'] = $this->mappingMode
+                    ? (isset($fields[$key]['value']) ? $fields[$key]['value'] : $fields[$key])
+                    : $value;
+            }
         }
 
         return $mapping;
@@ -183,7 +189,7 @@ class Form extends Block
      */
     protected function getElement(Element $context, array $field)
     {
-        if ($field['class']) {
+        if (isset($field['class'])) {
             $element = $context->find($field['selector'], $field['strategy'], $field['class']);
             if (!$element instanceof Element) {
                 throw new \Exception('Wrong Element Class.');
@@ -199,17 +205,20 @@ class Form extends Block
      * Fill specified form data
      *
      * @param array $fields
-     * @param Element|null $element
-     * @return void
+     * @param Element $element
      */
     protected function _fill(array $fields, Element $element = null)
     {
         $context = ($element === null) ? $this->_rootElement : $element;
         foreach ($fields as $name => $field) {
-            $element = $this->getElement($context, $field);
-            if ($this->mappingMode || ($element->isVisible() && !$element->isDisabled())) {
-                $element->setValue($field['value']);
-                $this->setFields[$name] = $field['value'];
+            if (!isset($field['value'])) {
+                $this->_fill($field);
+            } else {
+                $element = $this->getElement($context, $field);
+                if ($this->mappingMode || ($element->isVisible() && !$element->isDisabled())) {
+                    $element->setValue($field['value']);
+                    $this->setFields[$name] = $field['value'];
+                }
             }
         }
     }
@@ -243,9 +252,13 @@ class Form extends Block
         $data = [];
         $context = ($element === null) ? $this->_rootElement : $element;
         foreach ($fields as $key => $field) {
-            $element = $context->find($field['selector'], $field['strategy'], $field['input']);
-            if ($this->mappingMode || $element->isVisible()) {
-                $data[$key] = $element->getValue();
+            if (!isset($field['value'])) {
+                $data[$key] = $this->_getData($field);
+            } else {
+                $element = $this->getElement($context, $field);
+                if ($this->mappingMode || $element->isVisible()) {
+                    $data[$key] = $element->getValue();
+                }
             }
         }
 
@@ -261,9 +274,13 @@ class Form extends Block
      */
     public function getData(FixtureInterface $fixture = null, Element $element = null)
     {
-        $isHasData = ($fixture instanceof InjectableFixture) ? $fixture->hasData() : true;
-        $data = ($fixture && $isHasData) ? $fixture->getData() : [];
-        $fields = isset($data['fields']) ? $data['fields'] : $data;
+        if (null === $fixture) {
+            $fields = null;
+        } else {
+            $isHasData = ($fixture instanceof InjectableFixture) ? $fixture->hasData() : true;
+            $data = $isHasData ? $fixture->getData() : [];
+            $fields = isset($data['fields']) ? $data['fields'] : $data;
+        }
         $mapping = $this->dataMapping($fields);
 
         return $this->_getData($mapping, $element);

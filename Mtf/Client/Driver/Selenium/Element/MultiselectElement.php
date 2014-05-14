@@ -46,7 +46,7 @@ class MultiselectElement extends SelectElement
      */
     public function getValue()
     {
-        return $this->_getWrappedElement()->selectedValues();
+        return $this->_getWrappedElement()->selectedLabels();
     }
 
     /**

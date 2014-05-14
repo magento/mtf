@@ -136,14 +136,14 @@ class InjectableFixture implements FixtureInterface
             $source = $this->getSourceParam($params);
             if ($source) {
                 $fixture = $this->fixtureFactory->create(
-                    $source,
+                    $source['source'],
                     [
                         'data' => $value,
                         'params' => $params,
                         'persist' => true
                     ]
                 );
-                $params['source'] = $source;
+                $params[$source['field']] = $fixture;
                 $value = $fixture->getData();
             }
             $this->data[$key] = $value;
@@ -159,14 +159,15 @@ class InjectableFixture implements FixtureInterface
      * Return source param
      *
      * @param array $params
-     * @return null|string
+     * @return null|array
      */
     protected function getSourceParam(array $params)
     {
         $param = null;
         foreach ($this->sourceParamsFallback as $val) {
             if (isset($params[$val])) {
-                $param = $params[$val];
+                $param['field'] = $val;
+                $param['source'] = $params[$val];
                 break;
             }
         }
