@@ -209,4 +209,40 @@ class Factory extends \Magento\Framework\ObjectManager\Factory\Factory
             }
         }
     }
+
+    /**
+     * Create instance with call time arguments
+     *
+     * @param string $requestedType
+     * @param array $arguments
+     * @return object
+     * @throws \Exception
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     */
+    public function create($requestedType, array $arguments = array())
+    {
+        $type = $this->config->getInstanceType($requestedType);
+        $parameters = $this->definitions->getParameters($type);
+        if ($parameters == null) {
+            return new $type();
+        }
+        if (isset($this->creationStack[$requestedType])) {
+            $lastFound = end($this->creationStack);
+            $this->creationStack = array();
+            throw new \LogicException("Circular dependency: {$requestedType} depends on {$lastFound} and vice versa.");
+        }
+        $this->creationStack[$requestedType] = $requestedType;
+        try {
+            $args = $this->_resolveArguments($requestedType, $parameters, $arguments);
+            unset($this->creationStack[$requestedType]);
+        } catch (\Exception $e) {
+            unset($this->creationStack[$requestedType]);
+            throw $e;
+        }
+
+        $reflection = new \ReflectionClass($type);
+
+        return $reflection->newInstanceArgs($args);
+    }
 }
