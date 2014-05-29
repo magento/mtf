@@ -35,6 +35,7 @@
         <env name="isolation_config_path" value="config/isolation.yml.dist"/>
         <env name="handlers_config_path" value="config/handler.yml.dist"/>
         <env name="configuration:Magento/Mtf/TestSuite/MtfTests" value="basic"/>
+        <env name="log_directory" value="var/log"/>
     </php>
 
 </phpunit>

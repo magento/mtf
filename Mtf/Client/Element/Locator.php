@@ -98,4 +98,14 @@ class Locator implements \ArrayAccess
     {
         return isset($this->container[$offset]) ? $this->container[$offset] : null;
     }
+
+    /**
+     * Locator value and strategy string
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return 'Locator with value "' . $this->container['value'] . '" and strategy "' . $this->container['using'] . '"';
+    }
 }

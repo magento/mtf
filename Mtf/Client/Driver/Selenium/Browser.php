@@ -10,6 +10,7 @@ namespace Mtf\Client\Driver\Selenium;
 
 use Mtf\Client\Element\Locator;
 use Mtf\System\Config;
+use Mtf\System\Event\EventManagerInterface;
 
 /**
  * Class Browser
@@ -44,17 +45,26 @@ class Browser implements \Mtf\Client\Browser
     protected $_configuration;
 
     /**
+     * Event manager to manage events
+     *
+     * @var \Mtf\System\Event\EventManager
+     */
+    protected $_eventManager;
+
+    /**
      * Constructor
      *
      * @constructor
      * @param TestCase $driver
+     * @param EventManagerInterface $eventManager
      * @param Config $configuration
      */
-    public function __construct(TestCase $driver, Config $configuration)
+    public function __construct(TestCase $driver, EventManagerInterface $eventManager, Config $configuration)
     {
         $this->_prototype = clone $driver;
         $this->_driver = $driver;
         $this->_configuration = $configuration;
+        $this->_eventManager = $eventManager;
 
         $this->_init();
     }
@@ -84,6 +94,7 @@ class Browser implements \Mtf\Client\Browser
     public function open($url)
     {
         $this->_driver->url($url);
+        $this->_eventManager->dispatchEvent([__METHOD__], [__METHOD__, $url]);
     }
 
     /**
@@ -184,6 +195,7 @@ class Browser implements \Mtf\Client\Browser
     public function find($selector, $strategy = Locator::SELECTOR_CSS, $typifiedElement = null)
     {
         $locator = new Locator($selector, $strategy);
+        $this->_eventManager->dispatchEvent([__METHOD__], [__METHOD__, (string) $locator]);
         $className = '\Mtf\Client\Driver\Selenium\Element';
 
         if (null !== $typifiedElement) {
@@ -193,7 +205,7 @@ class Browser implements \Mtf\Client\Browser
             }
         }
 
-        return new $className($this->_driver, $locator);
+        return new $className($this->_driver, $this->_eventManager, $locator);
     }
 
     /**
@@ -217,5 +229,15 @@ class Browser implements \Mtf\Client\Browser
     public function getUrl()
     {
         return $this->_driver->url();
+    }
+
+    /**
+     * Get current page html source
+     *
+     * @return string
+     */
+    public function getHtmlSource()
+    {
+        return $this->_driver->source();
     }
 }

@@ -51,20 +51,29 @@ class Element implements ElementInterface
     protected $_wrappedElement;
 
     /**
+     * @var \Mtf\System\Event\EventManager
+     */
+    protected $_eventManager;
+
+    /**
      * Initialization.
-     * Set driver, context and locator.
+     * Set driver, eventManager, context and locator.
      *
      * @constructor
      * @param \Mtf\Client\Driver\Selenium\TestCase $driver
+     * @param \Mtf\System\Event\EventManagerInterface $eventManager
      * @param Locator $locator
      * @param Element $context
      */
     final public function __construct(
         \Mtf\Client\Driver\Selenium\TestCase $driver,
+        \Mtf\System\Event\EventManagerInterface $eventManager,
         Locator $locator,
         Element $context = null
     ) {
         $this->_driver = $driver;
+
+        $this->_eventManager = $eventManager;
 
         $this->_context = $context;
 
@@ -126,6 +135,7 @@ class Element implements ElementInterface
      */
     public function click()
     {
+        $this->_eventManager->dispatchEvent([__METHOD__], [__METHOD__, (string) $this->_locator]);
         $this->_driver->moveto($this->_getWrappedElement());
         $this->_driver->click();
     }
@@ -158,6 +168,7 @@ class Element implements ElementInterface
     public function isVisible()
     {
         try {
+            $this->_eventManager->dispatchEvent([__METHOD__], [__METHOD__, (string) $this->_locator]);
             $visible = $this->_getWrappedElement(false)->displayed();
         } catch (\PHPUnit_Extensions_Selenium2TestCase_WebDriverException $e) {
             $visible = false;
@@ -193,6 +204,7 @@ class Element implements ElementInterface
      */
     public function setValue($value)
     {
+        $this->_eventManager->dispatchEvent([__METHOD__], [__METHOD__, (string)$this->_locator, "value: $value"]);
         $this->_getWrappedElement()->clear();
         $this->_getWrappedElement()->value($value);
     }
@@ -227,6 +239,7 @@ class Element implements ElementInterface
      */
     public function find($selector, $strategy = Locator::SELECTOR_CSS, $typifiedElement = null)
     {
+        $this->_eventManager->dispatchEvent([__METHOD__], [__METHOD__, (string) $this->_locator]);
         $locator = new Locator($selector, $strategy);
         $className = '\Mtf\Client\Driver\Selenium\Element';
 
@@ -241,7 +254,7 @@ class Element implements ElementInterface
             }
         }
 
-        return new $className($this->_driver, $locator, $this);
+        return new $className($this->_driver, $this->_eventManager, $locator, $this);
     }
 
     /**

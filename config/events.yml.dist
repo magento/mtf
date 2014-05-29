@@ -1,0 +1,8 @@
+Mtf\System\Observer\Log:
+    '#open#'
+    '#find#'
+    '#setValue#'
+    '#isVisible#'
+    '#click#'
+Mtf\System\Observer\SourceCode:
+    '#open#'

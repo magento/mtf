@@ -58,12 +58,17 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
     private $processManager;
 
     /**
+     * @var \Mtf\System\Event\EventManagerInterface
+     */
+    protected $eventManager;
+
+    /**
      * Constructs a test case with the given name.
      *
      * @constructor
-     * @param  string $name
-     * @param  array $data
-     * @param  string $dataName
+     * @param string $name
+     * @param array $data
+     * @param string $dataName
      */
     public function __construct($name = null, array $data = [], $dataName = '')
     {
@@ -78,6 +83,7 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
         parent::__construct($name, $data, $dataName);
 
         $this->objectManager = \Mtf\ObjectManagerFactory::getObjectManager();
+        $this->eventManager = $this->objectManager->get('Mtf\System\Event\EventManagerInterface');
 
         $this->_construct();
     }

@@ -97,4 +97,9 @@ interface Browser
      * @return string
      */
     public function getUrl();
+
+    /**
+     * @return string
+     */
+    public function getHtmlSource();
 }
