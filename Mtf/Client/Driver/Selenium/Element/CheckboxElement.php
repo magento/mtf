@@ -27,7 +27,7 @@ class CheckboxElement extends Element
      */
     public function getValue()
     {
-        return $this->isSelected() ? true : false;
+        return $this->isSelected() ? 'Yes' : 'No';
     }
 
     /**
