@@ -5,9 +5,12 @@
  * @copyright  {copyright}
  * @license    {license_link}
  */
+
 namespace Mtf\System;
 
-class Logger implements \Mtf\System\LoggerInterface
+use Mtf\System\LoggerInterface;
+
+class Logger implements LoggerInterface
 {
     /**
      * Log directory parameter key

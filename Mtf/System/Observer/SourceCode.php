@@ -9,7 +9,7 @@ namespace Mtf\System\Event;
 
 use Mtf\Client\Driver\Selenium\Browser;
 use Mtf\System\Event\ObserverInterface;
-use Mtf\System\LoggerInterface;
+use Mtf\System\Logger;
 use Mtf\System\Event\Event;
 use Mtf\System\Event\State;
 
@@ -26,7 +26,7 @@ class SourceCode implements ObserverInterface
     protected $browser;
 
     /**
-     * @var LoggerInterface
+     * @var Logger
      */
     protected $logger;
 
@@ -36,12 +36,12 @@ class SourceCode implements ObserverInterface
     protected $state;
 
     /**
-     * @param LoggerInterface $logger
+     * @param Logger $logger
      * @param Browser $browser
      * @param State $state
      */
     public function __construct(
-        LoggerInterface $logger,
+        Logger $logger,
         Browser $browser,
         State $state
     ) {

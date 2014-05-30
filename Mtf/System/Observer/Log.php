@@ -7,7 +7,7 @@
  */
 namespace Mtf\System\Observer;
 
-use Mtf\System\LoggerInterface as Logger;
+use Mtf\System\Logger;
 use Mtf\System\Event\State;
 use Mtf\System\Event\Event;
 
