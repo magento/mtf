@@ -7,24 +7,13 @@
  * @license     {license_link}
  */
 -->
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" >
-    <preset name="system">
-        <event pattern="#.*#">
-            <observer class="Mtf\System\Event\LogObserver" />
-            <observer class="Mtf\System\Event\SourceCodeObserver" />
-        </event>
-        <event pattern="#.*Browser.*#">
-            <observer class="Mtf\System\Event\LogObserver" />
-        </event>
-    </preset>
-    <preset name="hard">
-        <event pattern="#.*Category.*#">
-            <observer class="Mtf\System\Event\LogObserver" />
-            <observer class="Mtf\System\Event\SourceCodeObserver" />
-        </event>
-        <event pattern="#.*#">
-            <observer class="Mtf\System\Event\LogObserver" />
-            <observer class="Mtf\System\Event\SourceCodeObserver" />
-        </event>
-    </preset>
+<config>
+    <observer class="Mtf\System\Observer\Log">
+        <tag pattern="Mtf\Client\Driver\Selenium\Browser::find"/>
+        <tag pattern="Mtf\Client\Driver\Selenium\Element::find"/>
+    </observer>
+    <observer class="Mtf\System\Event\SourceCode">
+        <tag pattern="Mtf\Client\Driver\Selenium\Browser::find"/>
+        <tag pattern="Mtf\Client\Driver\Selenium\Element::find"/>
+    </observer>
 </config>

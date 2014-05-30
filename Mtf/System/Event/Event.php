@@ -91,7 +91,6 @@ class Event
             . $this->state->getTestClassName()
             . $this->state->getTestMethodName()
             . $this->state->getPageUrl()
-            . $this->state->getTestStage()
         );
     }
 }

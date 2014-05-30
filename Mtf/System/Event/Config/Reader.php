@@ -1,17 +1,15 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: tshevchenko
- * Date: 30.05.14
- * Time: 13:08
+ * {license_notice}
+ *
+ * @copyright  {copyright}
+ * @license    {license_link}
  */
 
 namespace Mtf\System\Event\Config;
 
-use Mtf\Util\XmlConverter;
 use Mtf\Config\FileResolver\Primary;
-
-
+use \Magento\Framework\Config\Reader\Filesystem;
 
 /**
  * Class Reader
@@ -19,52 +17,47 @@ use Mtf\Config\FileResolver\Primary;
  * @package Mtf\Fixture\Configuration
  * @internal
  */
-class Reader
+class Reader extends Filesystem
 {
     /**
-     * File Resolver
+     * List of id attributes for merge
      *
-     * @var Primary
+     * @var array
      */
-    protected $fileResolver;
+    protected $_idAttributes = [
+        '/config/observer/tag' => 'pattern',
+        '/config/observer' => 'class'
+    ];
 
     /**
-     * @var XmlConverter
-     */
-    protected $xmlConverter;
-
-    /**
-     * @constructor
      * @param Primary $fileResolver
-     * @param \Mtf\Util\XmlConverter $xmlConverter
+     * @param Converter $converter
+     * @param SchemaLocator $schemaLocator
+     * @param ValidationState $validationState
+     * @param string $fileName
+     * @param array $idAttributes
+     * @param string $domDocumentClass
+     * @param string $defaultScope
      */
-    public function __construct(Primary $fileResolver, XmlConverter $xmlConverter)
-    {
-        $this->fileResolver = $fileResolver;
-        $this->xmlConverter = $xmlConverter;
-    }
-
-    /**
-     * Read entity files and merge them into one array
-     *
-     * @param string $entityName
-     * @param string $scope
-     * @return array
-     */
-    public function read($entityName, $scope = 'global')
-    {
-        $result = [];
-        $files = $this->fileResolver->get($entityName . '.xml', $scope);
-        foreach ($files as $file) {
-            $presetXml = simplexml_load_string($file);
-            if ($presetXml instanceof \SimpleXMLElement) {
-                $array = $this->xmlConverter->convert($presetXml);
-                if (is_array($array)) {
-                    $result = array_replace($result, $array);
-                }
-            }
-        }
-
-        return $result;
+    public function __construct(
+        Primary $fileResolver,
+        Converter $converter,
+        SchemaLocator $schemaLocator,
+        ValidationState $validationState,
+        $fileName = 'events.xml',
+        $idAttributes = array(),
+        $domDocumentClass = 'Magento\Framework\Config\Dom',
+        $defaultScope = 'global'
+    ) {
+        parent::__construct(
+            $fileResolver,
+            $converter,
+            $schemaLocator,
+            $validationState,
+            $fileName,
+            $idAttributes,
+            $domDocumentClass,
+            $defaultScope
+        );
     }
 }

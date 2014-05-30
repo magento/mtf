@@ -70,7 +70,7 @@ class EventManager implements EventManagerInterface
             $subjects,
             $eventName
         );
-        $map = $this->config->getConfigParam('events_config_path');
+        $map = $this->config->get('default');
         foreach ($map as $observerName => $observerTags) {
             if (array_intersect($observerTags, $event->getTags())) {
                 $observer = $this->observerPool->getObserver($observerName);

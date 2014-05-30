@@ -5,6 +5,7 @@
  * @copyright  {copyright}
  * @license    {license_link}
  */
+
 namespace Mtf\System\Event;
 
 use Mtf\ObjectManager;
