@@ -40,7 +40,7 @@ class Event
      * @param State $state
      * @param array $tags
      * @param array $subjects
-     * @param $eventName
+     * @param string $eventName
      */
     public function __construct(
         State $state,
