@@ -7,6 +7,10 @@
  */
 namespace Mtf\System\Observer;
 
+use Mtf\System\LoggerInterface as Logger;
+use Mtf\System\Event\State;
+use Mtf\System\Event\Event;
+
 class Log implements \Mtf\System\Event\ObserverInterface
 {
     /**
@@ -15,7 +19,7 @@ class Log implements \Mtf\System\Event\ObserverInterface
     const FILE_NAME = 'logger.log';
 
     /**
-     * @var \Mtf\System\LoggerInterface
+     * @var Logger
      */
     protected $logger;
 
@@ -25,10 +29,16 @@ class Log implements \Mtf\System\Event\ObserverInterface
     protected $filename;
 
     /**
-     * @param \Mtf\System\LoggerInterface $logger
-     * @param null|string $filename
+     * @var State
      */
-    public function __construct(\Mtf\System\LoggerInterface $logger, $filename = null)
+    protected $state;
+
+    /**
+     * @param Logger $logger
+     * @param State $state
+     * @param string $filename
+     */
+    public function __construct(Logger $logger, State $state, $filename = null)
     {
         $this->logger = $logger;
         if (!$filename) {
@@ -38,14 +48,32 @@ class Log implements \Mtf\System\Event\ObserverInterface
     }
 
     /**
-     * @param \Mtf\System\Event\Event $event
+     * @param Event $event
      *
      * @return void
      */
-    public function process(\Mtf\System\Event\Event $event)
+    public function process(Event $event)
     {
         foreach ($event->getSubjects() as $message) {
-            $this->logger->log($message . PHP_EOL, $this->filename);
+            $this->logger->log($this->getMessagePrefix() . ' ' . $message . PHP_EOL, $this->filename);
         }
+    }
+
+    /**
+     * Retrieve message context prefix
+     *
+     * @return string
+     */
+    protected function getMessagePrefix()
+    {
+        return sprintf(
+            '%s %s %s %s %s %s',
+            date("Y-m-d H:i:sP"),
+            $this->state->getTestSuiteName(),
+            $this->state->getTestClassName(),
+            $this->state->getTestMethodName(),
+            $this->state->getStageName(),
+            $this->state->getPageUrl()
+        );
     }
 }
