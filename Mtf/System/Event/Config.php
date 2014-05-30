@@ -11,6 +11,7 @@ class Config
     {
         $this->reader = $reader;
     }
+
     public function getEventConfigPath()
     {
         $array = $this->reader->read('eventTags');

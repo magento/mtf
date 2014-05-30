@@ -7,7 +7,7 @@
  */
 namespace Mtf\System\Event;
 
-use Mtf\System\Config;
+use Mtf\System\Event\Config;
 
 /**
  * Class EventManager
