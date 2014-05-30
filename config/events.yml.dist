@@ -6,3 +6,11 @@ Mtf\System\Observer\Log:
     '#click#'
 Mtf\System\Observer\SourceCode:
     '#open#'
+Mtf\System\Observer\State:
+    '#click#'
+    '#open#'
+    '#back#'
+    '#forward#'
+Mtf\System\Observer\Precondition:
+    '#before_fixture_persist#'
+    '#after_fixture_persist#'

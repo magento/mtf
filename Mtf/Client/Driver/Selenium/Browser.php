@@ -104,6 +104,7 @@ class Browser implements \Mtf\Client\Browser
     public function back()
     {
         $this->_driver->back();
+        $this->_eventManager->dispatchEvent([__METHOD__], [__METHOD__]);
     }
 
     /**
@@ -113,6 +114,7 @@ class Browser implements \Mtf\Client\Browser
     public function forward()
     {
         $this->_driver->forward();
+        $this->_eventManager->dispatchEvent([__METHOD__], [__METHOD__]);
     }
 
     /**
