@@ -8,21 +8,11 @@
 namespace Mtf\System\Event;
 
 /**
- * Class Event
+ * Class State
  * @package Mtf\System\Event
  */
 class State
 {
-    /**
-     * Precondition test stage
-     */
-    const TEST_STAGE_PRECONDITION = 'precondition';
-
-    /**
-     * Main test flow stage
-     */
-    const TEST_STAGE_TEST = 'test';
-
     /**
      * @var string
      */
@@ -41,7 +31,7 @@ class State
     /**
      * @var string
      */
-    private $testStage;
+    private $handlerName;
 
     /**
      * @var string
@@ -73,11 +63,19 @@ class State
     }
 
     /**
-     * @param string $testStageName
+     * @param string $hendlerName
      */
-    public function setTestStage($testStageName)
+    public function startHandlerPersist($hendlerName)
     {
-        $this->testStage = $testStageName;
+        $this->handlerName = $hendlerName;
+    }
+
+    /**
+     * Clear handler property
+     */
+    public function stopHandlerPersist()
+    {
+        $this->handlerName = null;
     }
 
     /**
@@ -115,9 +113,9 @@ class State
     /**
      * @return string
      */
-    public function getTestStage()
+    public function getHandlerName()
     {
-        return $this->testStage;
+        return $this->handlerName;
     }
 
     /**
