@@ -12,7 +12,7 @@
         <tag pattern="Mtf\Client\Driver\Selenium\Browser::find"/>
         <tag pattern="Mtf\Client\Driver\Selenium\Element::find"/>
     </observer>
-    <observer class="Mtf\System\Event\SourceCode">
+    <observer class="Mtf\System\Observer\SourceCode">
         <tag pattern="Mtf\Client\Driver\Selenium\Browser::find"/>
         <tag pattern="Mtf\Client\Driver\Selenium\Element::find"/>
     </observer>
