@@ -96,7 +96,7 @@ class State
      */
     public function getTestSuiteName()
     {
-        return $this->testSuiteName;
+        return $this->testSuiteName ?: 'default';
     }
 
     /**
@@ -104,7 +104,7 @@ class State
      */
     public function getTestClassName()
     {
-        return $this->testClassName;
+        return $this->testClassName ?: 'default';
     }
 
     /**
@@ -112,7 +112,7 @@ class State
      */
     public function getTestMethodName()
     {
-        return $this->testMethodName;
+        return $this->testMethodName ?: 'default';
     }
 
     /**
@@ -120,7 +120,7 @@ class State
      */
     public function getStageName()
     {
-        return $this->stageName;
+        return $this->stageName ?: 'default';
     }
 
     /**
@@ -128,6 +128,6 @@ class State
      */
     public function getPageUrl()
     {
-        return $this->pageUrl;
+        return $this->pageUrl ?: 'default';
     }
 }
