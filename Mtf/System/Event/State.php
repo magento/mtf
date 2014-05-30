@@ -14,6 +14,11 @@ namespace Mtf\System\Event;
 class State
 {
     /**
+     * Test main flow stage
+     */
+    const TEST_MAIN_FLOW_STAGE = 'Test Main Flow';
+
+    /**
      * @var string
      */
     private $testSuiteName;
@@ -31,7 +36,7 @@ class State
     /**
      * @var string
      */
-    private $handlerName;
+    private $stageName = self::TEST_MAIN_FLOW_STAGE;
 
     /**
      * @var string
@@ -63,19 +68,19 @@ class State
     }
 
     /**
-     * @param string $hendlerName
+     * @param string $fixtureName
      */
-    public function startHandlerPersist($hendlerName)
+    public function startFixturePersist($fixtureName)
     {
-        $this->handlerName = $hendlerName;
+        $this->stageName = 'Persisting ' . $fixtureName;
     }
 
     /**
      * Clear handler property
      */
-    public function stopHandlerPersist()
+    public function stopFixturePersist()
     {
-        $this->handlerName = null;
+        $this->stageName = self::TEST_MAIN_FLOW_STAGE;
     }
 
     /**
@@ -113,9 +118,9 @@ class State
     /**
      * @return string
      */
-    public function getHandlerName()
+    public function getStageName()
     {
-        return $this->handlerName;
+        return $this->stageName;
     }
 
     /**
