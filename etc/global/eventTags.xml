@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * {license_notice}
+ *
+ * @copyright   {copyright}
+ * @license     {license_link}
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" >
+    <preset name="default">
+        <observer class="Mtf\System\Event\LogObserver">
+            <tags>
+                <event pattern="#.*Open.*#"/>
+                <event pattern="#.*Find.*#"/>
+            </tags>
+        </observer>
+    </preset>
+</config>
