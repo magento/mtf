@@ -86,7 +86,7 @@ class Event
     public function getIdentifier()
     {
         return microtime(true) . '-' . sha1(
-            $this->tags
+            implode('', $this->tags)
             . $this->state->getTestSuiteName()
             . $this->state->getTestClassName()
             . $this->state->getTestMethodName()

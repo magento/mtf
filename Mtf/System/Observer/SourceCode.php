@@ -5,14 +5,16 @@
  * @copyright  {copyright}
  * @license    {license_link}
  */
-namespace Mtf\System\Event;
+namespace Mtf\System\Observer;
 
 use Mtf\Client\Driver\Selenium\Browser;
-use Mtf\System\Event\ObserverInterface;
 use Mtf\System\Logger;
+use Mtf\System\Event\ObserverInterface;
 use Mtf\System\Event\Event;
 use Mtf\System\Event\State;
-
+/**
+ * Class SourceCode
+ */
 class SourceCode implements ObserverInterface
 {
     /**
@@ -51,19 +53,21 @@ class SourceCode implements ObserverInterface
     }
 
     /**
-     * Returns path for event artifact
+     * Create destination directory
      *
-     * @param Event $event
      * @return string
      */
-    protected function getArtifactPath(Event $event)
+    protected function createDestinationDirectory()
     {
-        return sprintf('%s/%s/%s/page-source/%s',
+        $directory = sprintf('%s/%s/%s/page-source',
             $this->state->getTestSuiteName(),
             $this->state->getTestClassName(),
-            $this->state->getTestMethodName(),
-            $event->getIdentifier()
+            $this->state->getTestMethodName()
         );
+        if (!is_dir($directory)) {
+            mkdir($directory, 0777, true);
+        }
+        return realpath($directory);
     }
 
     /**
@@ -74,6 +78,7 @@ class SourceCode implements ObserverInterface
      */
     public function process(Event $event)
     {
-        $this->logger->log($this->browser->getHtmlSource(), $this->getArtifactPath($event));
+        $directory = $this->createDestinationDirectory();
+        $this->logger->log($this->browser->getHtmlSource(), $directory . '/' . $event->getIdentifier());
     }
 }
