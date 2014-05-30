@@ -8,8 +8,12 @@
 namespace Mtf\System\Event;
 
 use Mtf\Client\Driver\Selenium\Browser;
+use Mtf\System\Event\ObserverInterface;
+use Mtf\System\LoggerInterface;
+use Mtf\System\Event\Event;
+use Mtf\System\Event\State;
 
-class SourceCode implements \Mtf\System\Event\ObserverInterface
+class SourceCode implements ObserverInterface
 {
     /**
      * File name of source code
@@ -22,37 +26,54 @@ class SourceCode implements \Mtf\System\Event\ObserverInterface
     protected $browser;
 
     /**
-     * @var \Mtf\System\LoggerInterface
+     * @var LoggerInterface
      */
     protected $logger;
 
     /**
-     * @var string
+     * @var State
      */
-    protected $filename;
+    protected $state;
 
     /**
-     * @param \Mtf\System\LoggerInterface $logger
+     * @param LoggerInterface $logger
      * @param Browser $browser
-     * @param null|string $filename
+     * @param State $state
      */
-    public function __construct(\Mtf\System\LoggerInterface $logger, Browser $browser, $filename = null)
-    {
+    public function __construct(
+        LoggerInterface $logger,
+        Browser $browser,
+        State $state
+    ) {
         $this->browser = $browser;
         $this->logger = $logger;
-        if (!$filename) {
-            $filename = static::FILE_NAME;
-        }
-        $this->filename = $filename;
+        $this->state = $state;
     }
 
     /**
+     * Returns path for event artifact
+     *
+     * @param Event $event
+     * @return string
+     */
+    protected function getArtifactPath(Event $event)
+    {
+        return sprintf('%s/%s/%s/page-source/%s',
+            $this->state->getTestSuiteName(),
+            $this->state->getTestClassName(),
+            $this->state->getTestMethodName(),
+            $event->getIdentifier()
+        );
+    }
+
+    /**
+     * Collect page source artifact to storage
+     *
      * @param Event $event
      * @return void
      */
-    public function process(\Mtf\System\Event\Event $event)
+    public function process(Event $event)
     {
-        $source = $this->browser->getHtmlSource();
-        $this->logger->log($source . PHP_EOL, $this->filename);
+        $this->logger->log($this->browser->getHtmlSource(), $this->getArtifactPath($event));
     }
 }
