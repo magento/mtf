@@ -7,6 +7,8 @@
  */
 namespace Mtf\System\Event;
 
+use Mtf\System\Event\State;
+
 /**
  * Class Event
  * @package Mtf\System\Event
@@ -28,20 +30,6 @@ class Event
     public $tags;
 
     /**
-     * Current called test class
-     *
-     * @var string
-     */
-    public $testClassName;
-
-    /**
-     * Curent called test method
-     *
-     * @var string
-     */
-    public $testMethodName;
-
-    /**
      * Custom event name given by user
      *
      * @var string
@@ -49,24 +37,21 @@ class Event
     public $eventName;
 
     /**
+     * @param State $state
      * @param array $tags
      * @param array $subjects
      * @param $eventName
-     * @param $testClassName
-     * @param $testMethodName
      */
     public function __construct(
+        State $state,
         array $tags,
         array $subjects,
-        $eventName,
-        $testClassName,
-        $testMethodName
+        $eventName
     ) {
         $this->tags = $tags;
         $this->subjects = $subjects;
         $this->eventName = $eventName;
-        $this->testClassName = $testClassName;
-        $this->testMethodName = $testMethodName;
+        $this->state = $state;
     }
 
     /**
@@ -94,18 +79,19 @@ class Event
     }
 
     /**
+     * Returns event identifier
+     *
      * @return string
      */
-    public function getTestClassName()
+    public function getIdentifier()
     {
-        return $this->testClassName;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTestMethodName()
-    {
-        return $this->testMethodName;
+        return microtime(true) . '-' . sha1(
+            $this->tags
+            . $this->state->getTestSuiteName()
+            . $this->state->getTestClassName()
+            . $this->state->getTestMethodName()
+            . $this->state->getPageUrl()
+            . $this->state->getTestStage()
+        );
     }
 }

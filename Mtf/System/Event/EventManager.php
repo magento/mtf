@@ -68,9 +68,7 @@ class EventManager implements EventManagerInterface
         $event = $this->eventFactory->create(
             $eventTags,
             $subjects,
-            $eventName,
-            $this->testClass,
-            $this->testMethod
+            $eventName
         );
         $map = $this->config->getConfigParam('events_config_path');
         foreach ($map as $observerName => $observerTags) {
@@ -79,23 +77,5 @@ class EventManager implements EventManagerInterface
                 $observer->process($event);
             }
         }
-    }
-
-    /**
-     * @param string $testClass
-     * @return void
-     */
-    public function setTestClass($testClass)
-    {
-        $this->testClass = $testClass;
-    }
-
-    /**
-     * @param string $testName
-     * @return void
-     */
-    public function setTestMethod($testName)
-    {
-        $this->testMethod = $testName;
     }
 }
