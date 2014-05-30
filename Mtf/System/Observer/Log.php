@@ -29,11 +29,6 @@ class Log implements \Mtf\System\Event\ObserverInterface
     protected $filename;
 
     /**
-     * @var State
-     */
-    protected $state;
-
-    /**
      * @param Logger $logger
      * @param State $state
      * @param string $filename
@@ -55,25 +50,7 @@ class Log implements \Mtf\System\Event\ObserverInterface
     public function process(Event $event)
     {
         foreach ($event->getSubjects() as $message) {
-            $this->logger->log($this->getMessagePrefix() . ' ' . $message . PHP_EOL, $this->filename);
+            $this->logger->log($event->getIdentifier() . ' ' . $message . PHP_EOL, $this->filename);
         }
-    }
-
-    /**
-     * Retrieve message context prefix
-     *
-     * @return string
-     */
-    protected function getMessagePrefix()
-    {
-        return sprintf(
-            '%s %s %s %s %s %s',
-            date("Y-m-d H:i:sP"),
-            $this->state->getTestSuiteName(),
-            $this->state->getTestClassName(),
-            $this->state->getTestMethodName(),
-            $this->state->getStageName(),
-            $this->state->getPageUrl()
-        );
     }
 }

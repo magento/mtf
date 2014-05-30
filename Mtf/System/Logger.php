@@ -87,7 +87,6 @@ class Logger implements LoggerInterface
     protected function checkDirectory($path)
     {
         $result = true;
-        $path = realpath($this->getRootPath() . '/' . $path);
         if (!is_dir($path)) {
             $result = mkdir($path, 0777, true);
         }
@@ -114,7 +113,7 @@ class Logger implements LoggerInterface
      */
     public function log($message, $filename, $context = FILE_APPEND)
     {
-        $filePath = $this->getRootPath() . '/' . $this->getLogDirectoryPath() . '/' . ltrim($filename, '\/');
+        $filePath = $this->getLogDirectoryPath() . '/' . ltrim($filename, '\/');
         return file_put_contents($filePath, $message, $context);
     }
 }
