@@ -32,8 +32,6 @@ class EventFactory
      * @param array $tags
      * @param array $subjects
      * @param string $eventName
-     * @param string $testClassName
-     * @param string $testMethodName
      * @return \Mtf\System\Event\Event
      */
     public function create(array $tags, array $subjects, $eventName)
