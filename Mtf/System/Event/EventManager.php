@@ -36,7 +36,7 @@ class EventManager implements EventManagerInterface
     protected $observerPool;
 
     /**
-     * @var \Mtf\System\Config
+     * @var \Mtf\System\Event\Config
      */
     protected $config;
 
@@ -70,7 +70,7 @@ class EventManager implements EventManagerInterface
             $subjects,
             $eventName
         );
-        $map = $this->config->get('default');
+        $map = $this->config->getObservers();
         foreach ($map as $observerName => $observerTags) {
             if (array_intersect($observerTags, $event->getTags())) {
                 $observer = $this->observerPool->getObserver($observerName);

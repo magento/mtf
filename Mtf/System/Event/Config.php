@@ -13,12 +13,17 @@ class Config extends Data
      */
     protected $reader;
 
+    /**
+     * Constructor
+     * @param Reader $reader
+     */
     public function __construct(
         Reader $reader
     ) {
         $this->reader = $reader;
-        $data = $this->reader->read();
+        $data = $reader->read();
         $this->merge($data);
+
     }
 
     /**
@@ -27,8 +32,6 @@ class Config extends Data
      * @var array
      */
     protected $_data = array();
-
-
 
     /**
      * Merge config data to the object
@@ -63,5 +66,23 @@ class Config extends Data
             }
         }
         return $data;
+    }
+
+    /**
+     * Returns observers
+     *
+     * @return array
+     */
+    public function getObservers()
+    {
+        $observers = [];
+        foreach ($this->get('config') as $metadata) {
+            foreach($metadata['observer'] as $observer) {
+                foreach($observer['tag'] as $tag) {
+                    $observers[$observer['class']][] = $tag['pattern'];
+                }
+            }
+        }
+        return $observers;
     }
 }
