@@ -8,20 +8,15 @@
 namespace Mtf\System\Event;
 
 /**
- * Class Event
+ * Class State
  * @package Mtf\System\Event
  */
 class State
 {
     /**
-     * Precondition test stage
+     * Test main flow stage
      */
-    const TEST_STAGE_PRECONDITION = 'precondition';
-
-    /**
-     * Main test flow stage
-     */
-    const TEST_STAGE_TEST = 'test';
+    const TEST_MAIN_FLOW_STAGE = 'Test Main Flow';
 
     /**
      * @var string
@@ -41,7 +36,7 @@ class State
     /**
      * @var string
      */
-    private $testStage;
+    private $stageName = self::TEST_MAIN_FLOW_STAGE;
 
     /**
      * @var string
@@ -73,11 +68,19 @@ class State
     }
 
     /**
-     * @param string $testStageName
+     * @param string $fixtureName
      */
-    public function setTestStage($testStageName)
+    public function startFixturePersist($fixtureName)
     {
-        $this->testStage = $testStageName;
+        $this->stageName = 'Persisting ' . $fixtureName;
+    }
+
+    /**
+     * Clear handler property
+     */
+    public function stopFixturePersist()
+    {
+        $this->stageName = self::TEST_MAIN_FLOW_STAGE;
     }
 
     /**
@@ -115,9 +118,9 @@ class State
     /**
      * @return string
      */
-    public function getTestStage()
+    public function getStageName()
     {
-        return $this->testStage;
+        return $this->stageName;
     }
 
     /**
