@@ -12,10 +12,7 @@ use Mtf\Config\FileResolver\Primary;
 use \Magento\Framework\Config\Reader\Filesystem;
 
 /**
- * Class Reader
- *
- * @package Mtf\Fixture\Configuration
- * @internal
+ * Class for reading events.xml files
  */
 class Reader extends Filesystem
 {
@@ -30,6 +27,8 @@ class Reader extends Filesystem
     ];
 
     /**
+     * Constructor
+     *
      * @param Primary $fileResolver
      * @param Converter $converter
      * @param SchemaLocator $schemaLocator
@@ -38,6 +37,7 @@ class Reader extends Filesystem
      * @param array $idAttributes
      * @param string $domDocumentClass
      * @param string $defaultScope
+     * @constructor
      */
     public function __construct(
         Primary $fileResolver,
