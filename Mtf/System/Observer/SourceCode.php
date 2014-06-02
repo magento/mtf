@@ -60,8 +60,8 @@ class SourceCode implements ObserverInterface
     protected function createDestinationDirectory()
     {
         $directory = sprintf('%s/%s/%s/page-source',
-            $this->state->getTestSuiteName(),
-            $this->state->getTestClassName(),
+            strtolower(str_replace('\\', '-', $this->state->getTestSuiteName())),
+            strtolower(str_replace('\\', '-', $this->state->getTestClassName())),
             $this->state->getTestMethodName()
         );
         if (!is_dir($directory)) {

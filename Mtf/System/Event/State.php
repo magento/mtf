@@ -21,17 +21,17 @@ class State
     /**
      * @var string
      */
-    private $testSuiteName;
+    private static $testSuiteName;
 
     /**
      * @var string
      */
-    private $testClassName;
+    private static $testClassName;
 
     /**
      * @var string
      */
-    private $testMethodName;
+    private static $testMethodName;
 
     /**
      * @var string
@@ -48,7 +48,7 @@ class State
      */
     public function setTestSuiteName($testSuiteName)
     {
-        $this->testSuiteName = $testSuiteName;
+        self::$testSuiteName = $testSuiteName;
     }
 
     /**
@@ -56,7 +56,7 @@ class State
      */
     public function setTestClassName($testClassName)
     {
-        $this->testClassName = $testClassName;
+        self::$testClassName = $testClassName;
     }
 
     /**
@@ -64,7 +64,7 @@ class State
      */
     public function setTestMethodName($testMethodName)
     {
-        $this->testClassName = $testMethodName;
+        self::$testMethodName = $testMethodName;
     }
 
     /**
@@ -96,7 +96,7 @@ class State
      */
     public function getTestSuiteName()
     {
-        return $this->testSuiteName ?: 'default';
+        return self::$testSuiteName ?: 'default';
     }
 
     /**
@@ -104,7 +104,7 @@ class State
      */
     public function getTestClassName()
     {
-        return $this->testClassName ?: 'default';
+        return self::$testClassName ?: 'default';
     }
 
     /**
@@ -112,7 +112,7 @@ class State
      */
     public function getTestMethodName()
     {
-        return $this->testMethodName ?: 'default';
+        return self::$testMethodName ?: 'default';
     }
 
     /**
