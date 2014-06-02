@@ -25,13 +25,22 @@ class TestCase extends \PHPUnit_Extensions_Selenium2TestCase
     private $_timeout;
 
     /**
+     * @var \Mtf\System\Event\EventManager
+     */
+    protected $_eventManager;
+
+    /**
      * Constructor
      *
      * @constructor
      * @param \Mtf\System\Config $config
+     * @param \Mtf\System\Event\EventManager $eventManager
      */
-    public function __construct(\Mtf\System\Config $config)
+    public function __construct(
+        \Mtf\System\Config $config,
+        \Mtf\System\Event\EventManager $eventManager)
     {
+        $this->_eventManager = $eventManager;
         $this->_timeout = $config->getConfigParam('server/selenium/seleniumServerRequestsTimeout', 10) * 1000;
     }
 
@@ -44,7 +53,7 @@ class TestCase extends \PHPUnit_Extensions_Selenium2TestCase
      */
     public function waitUntil($callback, $timeout = null)
     {
-        $waitUntil = new WaitUntil($this);
+        $waitUntil = new WaitUntil($this, $this->_eventManager);
         return $waitUntil->run($callback, $this->_timeout);
     }
 

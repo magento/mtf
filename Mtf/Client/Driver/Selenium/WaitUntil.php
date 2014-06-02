@@ -39,13 +39,20 @@ class WaitUntil
      */
     private $_defaultSleepInterval = 500;
 
+    private $_eventManager;
+
     /**
      * @constructor
-     * @param \Mtf\Client\Driver\Selenium\TestCase $testCase
+     *
+     * @param TestCase $testCase
+     * @param \Mtf\System\Event\EventManager $eventManager
      */
-    public function __construct(\Mtf\Client\Driver\Selenium\TestCase $testCase)
-    {
+    public function __construct(
+        \Mtf\Client\Driver\Selenium\TestCase $testCase,
+        \Mtf\System\Event\EventManager $eventManager
+    ){
         $this->_testCase = $testCase;
+        $this->_eventManager = $eventManager;
     }
 
     /**
@@ -91,6 +98,7 @@ class WaitUntil
                     $this->_testCase->timeouts()->implicitWait($implicitWait);
                 }
                 $message = "Timed out after {$timeout} second" . ($timeout != 1 ? 's' : '');
+                $this->_eventManager->dispatchEvent([__CLASS__, __CLASS__ . "::failure"], [$message]);
                 throw new \PHPUnit_Extensions_Selenium2TestCase_WebDriverException(
                     $message,
                     \PHPUnit_Extensions_Selenium2TestCase_WebDriverException::Timeout,
