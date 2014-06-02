@@ -1,9 +1,18 @@
 <?php
+/**
+ * {license_notice}
+ *
+ * @copyright  {copyright}
+ * @license    {license_link}
+ */
 namespace Mtf\System\Event;
 
 use Mtf\System\Event\Config\Reader;
 use Magento\Framework\Config\Data;
 
+/**
+ * Class for dealing wth events.xml config file and adoption it as Config to an application
+ */
 class Config extends Data
 {
     /**
@@ -23,7 +32,6 @@ class Config extends Data
         $this->reader = $reader;
         $data = $reader->read();
         $this->merge($data);
-
     }
 
     /**
@@ -49,7 +57,7 @@ class Config extends Data
      *
      * @param string $path
      * @param mixed $default
-     * @return array|mixed|null
+     * @return array|string|null
      */
     public function get($path = null, $default = null)
     {

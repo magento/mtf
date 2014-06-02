@@ -5,16 +5,17 @@
  * @copyright  {copyright}
  * @license    {license_link}
  */
-
-
 namespace Mtf\System\Event\Config;
 
 use Magento\Framework\Config\ValidationStateInterface;
 
+/**
+ * Class for defining different behaviour depending on DEVELOPER mode
+ */
 class ValidationState implements ValidationStateInterface
 {
     /**
-     * Validate
+     * Determines the behaviour on the DEVELOPER mode enabled or not; should be used as DEVELOPER mode always in MTF
      *
      * @return bool
      */
@@ -22,4 +23,4 @@ class ValidationState implements ValidationStateInterface
     {
         return true;
     }
-} 
+}

@@ -13,22 +13,24 @@ use Magento\Framework\Config\ConverterInterface;
 class Converter implements ConverterInterface
 {
     /**
+     * Convert xml node to array or string
+     *
      * @param \DOMDocument $node
      * @return array|string
      */
     public function convert($node)
     {
         $result = [];
-        if($node->nodeType == XML_TEXT_NODE) {
+        if ($node->nodeType == XML_TEXT_NODE) {
             $result = $node->nodeValue;
         }
         else {
-            if($node->hasChildNodes()){
+            if ($node->hasChildNodes()) {
                 $children = $node->childNodes;
                 for($i=0; $i < $children->length; $i++) {
                     $child = $children->item($i);
 
-                    if($child->nodeName != '#text') {
+                    if ($child->nodeName != '#text') {
                         $result[$child->nodeName][] = $this->convert($child);
                     }
                     else if ($child->nodeName == '#text') {
@@ -40,9 +42,9 @@ class Converter implements ConverterInterface
                     }
                 }
             }
-            if($node->hasAttributes()) {
+            if ($node->hasAttributes()) {
                 $attributes = $node->attributes;
-                if(!is_null($attributes)) {
+                if (!is_null($attributes)) {
                     foreach ($attributes as $attribute) {
                         $result[$attribute->name] = $attribute->value;
                     }

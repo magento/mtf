@@ -9,7 +9,7 @@
 namespace Mtf\System\Event\Config;
 
 /**
- * Class SchemaLocator
+ * Class SchemaLocator for locating events.xml configuration file
  */
 class SchemaLocator implements \Magento\Framework\Config\SchemaLocatorInterface
 {
@@ -32,4 +32,4 @@ class SchemaLocator implements \Magento\Framework\Config\SchemaLocatorInterface
     {
         return null;
     }
-} 
+}
