@@ -18,7 +18,7 @@ class StateListener implements \PHPUnit_Framework_TestListener
 
     public function __construct(State $stateObject)
     {
-        $this->eventState = $stateObject;
+        $this->stateObject = $stateObject;
     }
 
     public function addError(\PHPUnit_Framework_Test $test, \Exception $e, $time)
