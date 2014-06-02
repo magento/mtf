@@ -8,6 +8,11 @@
 
 namespace Mtf\Client\Driver\Selenium;
 
+use Magento\Framework\Exception;
+use Mtf\Client\Driver\Selenium\WaitUntil;
+use Mtf\System\Event\EventManager;
+
+
 /**
  * Class TestCase
  *
@@ -19,42 +24,46 @@ namespace Mtf\Client\Driver\Selenium;
 class TestCase extends \PHPUnit_Extensions_Selenium2TestCase
 {
     /**
-     * Timeout for waitUntil
-     * @var int
+     * @var EventManager
      */
-    private $_timeout;
+    protected $eventManager;
 
     /**
-     * @var \Mtf\System\Event\EventManager
+     * @var WaitUntil
      */
-    protected $_eventManager;
+    protected $waitUntil;
 
     /**
      * Constructor
      *
      * @constructor
-     * @param \Mtf\System\Config $config
-     * @param \Mtf\System\Event\EventManager $eventManager
+     * @param WaitUntil $waitUntil
+     * @param EventManager $eventManager
      */
     public function __construct(
-        \Mtf\System\Config $config,
-        \Mtf\System\Event\EventManager $eventManager)
-    {
-        $this->_eventManager = $eventManager;
-        $this->_timeout = $config->getConfigParam('server/selenium/seleniumServerRequestsTimeout', 10) * 1000;
+        WaitUntil $waitUntil,
+        EventManager $eventManager
+    ) {
+        $this->waitUntil = $waitUntil;
+        $this->eventManager = $eventManager;
     }
 
     /**
      * Wait until callback isn't null or timeout occurs
      *
-     * @param callable $callback
-     * @param null|int $timeout
-     * @return mixed
+     * @param $callback
+     * @param null $timeout
      */
     public function waitUntil($callback, $timeout = null)
     {
-        $waitUntil = new WaitUntil($this, $this->_eventManager);
-        return $waitUntil->run($callback, $this->_timeout);
+        $implicitWait = $this->timeouts()->getLastImplicitWaitValue();
+        try {
+            $this->timeouts()->implicitWait(0);
+            $this->waitUntil->run($callback, $timeout);
+            $this->timeouts()->implicitWait($implicitWait);
+        } catch (\Exception $e) {
+            $this->timeouts()->implicitWait($implicitWait);
+        }
     }
 
     /**
