@@ -9,5 +9,32 @@
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xs:element name="config">
+        <xs:complexType>
+            <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                <xs:element type="observer" name="observer"/>
+            </xs:sequence>
+        </xs:complexType>
     </xs:element>
+
+    <xs:complexType name="observer">
+        <xs:annotation>
+            <xs:documentation>
+                Observer node with all attached tags for events inside
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence minOccurs="0" maxOccurs="unbounded">
+            <xs:element type="tag" name="tag" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="class" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="tag">
+        <xs:annotation>
+            <xs:documentation>
+                Tag with pattern to look for
+            </xs:documentation>
+        </xs:annotation>
+        <xs:attribute type="xs:string" name="pattern" use="required"/>
+    </xs:complexType>
+
 </xs:schema>

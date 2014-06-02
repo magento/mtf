@@ -37,6 +37,13 @@ class Event
     public $eventName;
 
     /**
+     * State of the application, containg testcase, testmethod etc of the application run
+     *
+     * @var State
+     */
+    public $state;
+
+    /**
      * @param State $state
      * @param array $tags
      * @param array $subjects
