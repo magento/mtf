@@ -24,7 +24,7 @@ interface LoggerInterface
 
     /**
      * @param string $logDirectoryPath
-     * @return mixed
+     * @return $this
      */
     public function setLogDirectoryPath($logDirectoryPath);
 }

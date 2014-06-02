@@ -11,6 +11,9 @@ use Mtf\System\Logger;
 use Mtf\System\Event\State;
 use Mtf\System\Event\Event;
 
+/**
+ * Class for logging events in MTF
+ */
 class Log implements \Mtf\System\Event\ObserverInterface
 {
     /**
@@ -19,16 +22,22 @@ class Log implements \Mtf\System\Event\ObserverInterface
     const FILE_NAME = 'logger.log';
 
     /**
+     * Logger class
+     *
      * @var Logger
      */
     protected $logger;
 
     /**
+     * filename of the log file
+     *
      * @var string
      */
     protected $filename;
 
     /**
+     * Constructor
+     *
      * @param Logger $logger
      * @param State $state
      * @param string $filename
@@ -43,8 +52,9 @@ class Log implements \Mtf\System\Event\ObserverInterface
     }
 
     /**
-     * @param Event $event
+     * Process current event
      *
+     * @param Event $event
      * @return void
      */
     public function process(Event $event)

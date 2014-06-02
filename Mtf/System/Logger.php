@@ -5,11 +5,11 @@
  * @copyright  {copyright}
  * @license    {license_link}
  */
-
 namespace Mtf\System;
 
-use Mtf\System\LoggerInterface;
-
+/**
+ * Class for working with log directory and file
+ */
 class Logger implements LoggerInterface
 {
     /**
@@ -18,21 +18,15 @@ class Logger implements LoggerInterface
     const LOG_DIR_PARAM = 'log_directory';
 
     /**
-     * @var string
-     */
-    protected $message;
-
-    /**
-     * @var string
-     */
-    protected $filepath;
-
-    /**
+     * Path to log directory
+     *
      * @var string
      */
     protected $logDirectoryPath;
 
     /**
+     * Constructor
+     *
      * @param Config $config
      * @param null $customLogDirectory
      */
@@ -48,6 +42,8 @@ class Logger implements LoggerInterface
     }
 
     /**
+     * Set log directory
+     *
      * @param string $dirPath
      * @return $this
      */
@@ -59,6 +55,8 @@ class Logger implements LoggerInterface
     }
 
     /**
+     * Getter for logDirectoryPath
+     *
      * @return string
      */
     public function getLogDirectoryPath()
@@ -67,6 +65,8 @@ class Logger implements LoggerInterface
     }
 
     /**
+     * Set appropriate log directories
+     *
      * @param array $dirs
      */
     protected function resolveLogDirectory(array $dirs)
@@ -81,6 +81,8 @@ class Logger implements LoggerInterface
     }
 
     /**
+     * Create log directory if not exists
+     *
      * @param $path
      * @throws \RuntimeException
      */
@@ -96,6 +98,8 @@ class Logger implements LoggerInterface
     }
 
     /**
+     * Get root path of the directory
+     *
      * @return string
      */
     protected function getRootPath()
@@ -105,6 +109,8 @@ class Logger implements LoggerInterface
     }
 
     /**
+     * Log message into log file
+     *
      * @param string $message
      * @param string $filename
      * @param int $context

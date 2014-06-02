@@ -5,23 +5,25 @@
  * @copyright  {copyright}
  * @license    {license_link}
  */
-
 namespace Mtf\System\Event;
 
 use Mtf\ObjectManager;
 
 /**
- * Class EventFactory
- * @package Mtf\System\Event
+ * Factory for creating Event classes
  */
 class EventFactory
 {
     /**
+     * ObjectManager
+     *
      * @var \Mtf\ObjectManager
      */
     protected $objectManager;
 
     /**
+     * Constructor
+     *
      * @param ObjectManager $objectManager
      */
     public function __construct(ObjectManager $objectManager)
@@ -30,6 +32,8 @@ class EventFactory
     }
 
     /**
+     * Create Event class object
+     *
      * @param array $tags
      * @param array $subjects
      * @param string $eventName

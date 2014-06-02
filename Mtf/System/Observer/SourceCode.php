@@ -12,8 +12,9 @@ use Mtf\System\Logger;
 use Mtf\System\Event\ObserverInterface;
 use Mtf\System\Event\Event;
 use Mtf\System\Event\State;
+
 /**
- * Class SourceCode
+ * Observer for obtaining html source of the current page
  */
 class SourceCode implements ObserverInterface
 {
@@ -23,21 +24,29 @@ class SourceCode implements ObserverInterface
     const FILE_NAME = 'source_code.log';
 
     /**
+     * Browser object
+     *
      * @var Browser
      */
     protected $browser;
 
     /**
+     * Logger object
+     *
      * @var Logger
      */
     protected $logger;
 
     /**
+     * State object
+     *
      * @var State
      */
     protected $state;
 
     /**
+     * Constructor
+     *
      * @param Logger $logger
      * @param Browser $browser
      * @param State $state

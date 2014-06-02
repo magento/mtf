@@ -16,31 +16,43 @@ use Mtf\System\Event\Config;
 class EventManager implements EventManagerInterface
 {
     /**
+     * Test class name
+     *
      * @var string
      */
     protected $testClass;
 
     /**
+     * Test method name
+     *
      * @var string
      */
     protected $testMethod;
 
     /**
+     * Event Factory class object
+     *
      * @var EventFactory
      */
     protected $eventFactory;
 
     /**
+     * Class for keeping observers pool
+     *
      * @var ObserverPool
      */
     protected $observerPool;
 
     /**
+     * Config class object
+     *
      * @var \Mtf\System\Event\Config
      */
     protected $config;
 
     /**
+     * Constructor
+     *
      * @param EventFactory $eventFactory
      * @param ObserverPool $observerPool
      * @param Config $config

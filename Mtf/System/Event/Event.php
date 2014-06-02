@@ -7,11 +7,8 @@
  */
 namespace Mtf\System\Event;
 
-use Mtf\System\Event\State;
-
 /**
- * Class Event
- * @package Mtf\System\Event
+ * Class containing Event info
  */
 class Event
 {
