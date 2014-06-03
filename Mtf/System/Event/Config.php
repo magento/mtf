@@ -98,7 +98,7 @@ class Config extends Data
         foreach ($this->get('config') as $metadata) {
             foreach($metadata['preset'] as $preset) {
                 if ($preset['name'] == $this->presetName) {
-                    foreach($preset as $observer) {
+                    foreach($preset['observer'] as $observer) {
                         foreach($observer['tag'] as $tag) {
                             $observers[$observer['class']][] = $tag['pattern'];
                         }
