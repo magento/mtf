@@ -33,15 +33,15 @@ class Config extends Data
      * Constructor
      *
      * @param Reader $reader
-     * @param \Mtf\System\Config $config
      */
     public function __construct(
-        Reader $reader,
-        \Mtf\System\Config $config
+        Reader $reader
     ) {
         $this->reader = $reader;
         $data = $reader->read();
-        $this->presetName = $config->getConfigParam('events_preset');
+        $this->presetName = isset($_ENV['events_preset'])
+            ? $_ENV['events_preset']
+            : 'default';
         $this->merge($data);
     }
 
