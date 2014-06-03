@@ -29,7 +29,12 @@ class Log implements \Mtf\System\Event\ObserverInterface
     protected $logger;
 
     /**
-     * filename of the log file
+     * @var State
+     */
+    protected $state;
+
+    /**
+     * Filename of the log file
      *
      * @var string
      */
@@ -45,10 +50,8 @@ class Log implements \Mtf\System\Event\ObserverInterface
     public function __construct(Logger $logger, State $state, $filename = null)
     {
         $this->logger = $logger;
-        if (!$filename) {
-            $filename = static::FILE_NAME;
-        }
-        $this->filename = $filename;
+        $this->state = $state;
+        $this->filename = $filename ?: static::FILE_NAME;
     }
 
     /**
@@ -60,7 +63,27 @@ class Log implements \Mtf\System\Event\ObserverInterface
     public function process(Event $event)
     {
         foreach ($event->getSubjects() as $message) {
-            $this->logger->log($event->getIdentifier() . ' ' . $message . PHP_EOL, $this->filename);
+            $this->logger->log($this->getMessagePrefix($event) . ' ' . $message . PHP_EOL, $this->filename);
         }
+    }
+
+    /**
+     * Retrieve message context prefix
+     *
+     * @param Event $event
+     * @return string
+     */
+    protected function getMessagePrefix(Event $event)
+    {
+        return sprintf(
+            '%s %s %s %s %s %s %s',
+            date("Y-m-d H:i:sP"),
+            $event->getIdentifier(),
+            $this->state->getTestSuiteName(),
+            $this->state->getTestClassName(),
+            $this->state->getTestMethodName(),
+            $this->state->getStageName(),
+            $this->state->getPageUrl()
+        );
     }
 }
