@@ -242,4 +242,24 @@ class Browser implements \Mtf\Client\Browser
     {
         return $this->_driver->source();
     }
+
+    /**
+     * Inject Js Error collector
+     */
+    public function injectJsErrorCollector()
+    {
+        $this->_driver->execute(
+            'window.MtfJsErrors = []; window.onerror = function(e) {window.MtfJsErrors[document.Url][] = e;}'
+        );
+    }
+
+    /**
+     * Get js errors
+     *
+     * @return string[][]
+     */
+    public function getJsErrors()
+    {
+        return $this->_driver->execute('return window.MtfJsErrors');
+    }
 }

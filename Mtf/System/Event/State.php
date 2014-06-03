@@ -54,6 +54,16 @@ class State
     private $pageUrl;
 
     /**
+     * @var EventManager
+     */
+    private $eventManager;
+
+    public function __construct(EventManager $eventManager)
+    {
+        $this->eventManager = $eventManager;
+    }
+
+    /**
      * Setter for testSuiteName
      *
      * @param string $testSuiteName
@@ -110,7 +120,13 @@ class State
      */
     public function setPageUrl($pageUrl)
     {
-        $this->pageUrl = $pageUrl;
+        if ($this->pageUrl != $pageUrl) {
+            $this->eventManager->dispatchEvent(
+                'page_changed',
+                sprintf('Page changed from url %s to url %s', $this->pageUrl, $pageUrl)
+            );
+            $this->pageUrl = $pageUrl;
+        }
     }
 
     /**
