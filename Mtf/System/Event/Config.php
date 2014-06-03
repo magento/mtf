@@ -23,14 +23,25 @@ class Config extends Data
     protected $reader;
 
     /**
+     * Preset name for observers configuration
+     *
+     * @var string
+     */
+    protected $presetName;
+
+    /**
      * Constructor
+     *
      * @param Reader $reader
+     * @param \Mtf\System\Config $config
      */
     public function __construct(
-        Reader $reader
+        Reader $reader,
+        \Mtf\System\Config $config
     ) {
         $this->reader = $reader;
         $data = $reader->read();
+        $this->presetName = $config->getConfigParam('events_preset');
         $this->merge($data);
     }
 
@@ -85,9 +96,13 @@ class Config extends Data
     {
         $observers = [];
         foreach ($this->get('config') as $metadata) {
-            foreach($metadata['observer'] as $observer) {
-                foreach($observer['tag'] as $tag) {
-                    $observers[$observer['class']][] = $tag['pattern'];
+            foreach($metadata['preset'] as $preset) {
+                if ($preset['name'] == $this->presetName) {
+                    foreach($preset as $observer) {
+                        foreach($observer['tag'] as $tag) {
+                            $observers[$observer['class']][] = $tag['pattern'];
+                        }
+                    }
                 }
             }
         }
