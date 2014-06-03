@@ -30,6 +30,20 @@ class Config extends Data
     protected $presetName;
 
     /**
+     * Map of events-observers
+     *
+     * @var array
+     */
+    protected $observers;
+
+    /**
+     * Parsed presets
+     *
+     * @var array
+     */
+    protected $parsedPresets;
+
+    /**
      * Constructor
      *
      * @param Reader $reader
@@ -98,14 +112,31 @@ class Config extends Data
         foreach ($this->get('config') as $metadata) {
             foreach($metadata['preset'] as $preset) {
                 if ($preset['name'] == $this->presetName) {
-                    foreach($preset['observer'] as $observer) {
-                        foreach($observer['tag'] as $tag) {
-                            $observers[$observer['class']][] = $tag['pattern'];
-                        }
-                    }
+                    $observers = $this->getPresetObservers($preset);
                 }
             }
         }
         return $observers;
+    }
+
+    /**
+     * Get observers for preset
+     *
+     * @param array $preset
+     * @return array
+     */
+    protected function getPresetObservers($preset)
+    {
+        $observers = $parentObservers = [];
+        if (null !== $preset['extends'] && !in_array($this->parsedPresets, $preset['extends'])) {
+            $parentObservers = $this->getPresetObservers($preset['extends']);
+        }
+        foreach($preset['observer'] as $observer) {
+            foreach($observer['tag'] as $tag) {
+                $observers[$observer['class']][] = $tag['pattern'];
+            }
+        }
+        $this->parsedPresets[] = $preset['name'];
+        return array_merge($parentObservers, $observers);
     }
 }
