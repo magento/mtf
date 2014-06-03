@@ -56,7 +56,7 @@ class WaitUntil
      *
      * @param callback $callback Callback to run until it returns not null or timeout occurs
      * @param null|int $timeout
-     * @return void
+     * @return mixed
      * @throws \PHPUnit_Extensions_Selenium2TestCase_Exception
      * @throws \PHPUnit_Extensions_Selenium2TestCase_WebDriverException
      */
@@ -73,10 +73,7 @@ class WaitUntil
         $lastException = null;
         while (true) {
             try {
-                $result = call_user_func($callback);
-                if (!is_null($result)) {
-                    break;
-                }
+                return call_user_func($callback);
             } catch (\Exception $e) {
                 $lastException = $e;
             }
