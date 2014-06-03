@@ -8,12 +8,30 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="events.xsd">
-    <observer class="Mtf\System\Observer\Log">
-        <tag pattern="Mtf\Client\Driver\Selenium\Browser::find"/>
-        <tag pattern="Mtf\Client\Driver\Selenium\Element::find"/>
-    </observer>
-    <observer class="Mtf\System\Observer\SourceCode">
-        <tag pattern="Mtf\Client\Driver\Selenium\Browser::find"/>
-        <tag pattern="Mtf\Client\Driver\Selenium\Element::find"/>
-    </observer>
+    <preset name="default">
+        <observer class="Mtf\System\Observer\Log">
+            <tag pattern="Mtf\Client\Driver\Selenium\Browser::find"/>
+        </observer>
+        <observer class="Mtf\System\Observer\SourceCode">
+            <tag pattern="Mtf\Client\Driver\Selenium\Element::find"/>
+        </observer>
+    </preset>
+    <preset name="detailed">
+        <observer class="Mtf\System\Observer\Log">
+            <tag pattern="Mtf\Client\Driver\Selenium\Browser::find"/>
+            <tag pattern="Mtf\Client\Driver\Selenium\Element::find"/>
+        </observer>
+        <observer class="Mtf\System\Observer\SourceCode">
+            <tag pattern="Mtf\Client\Driver\Selenium\Browser::find"/>
+            <tag pattern="Mtf\Client\Driver\Selenium\Element::find"/>
+        </observer>
+    </preset>
+    <preset name="light" extends="default">
+        <observer class="Mtf\System\Observer\Log">
+            <tag pattern="Mtf\Client\Driver\Selenium\Browser::find"/>
+        </observer>
+        <observer class="Mtf\System\Observer\SourceCode">
+            <tag pattern="Mtf\Client\Driver\Selenium\Element::find"/>
+        </observer>
+    </preset>
 </config>
