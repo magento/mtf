@@ -25,11 +25,7 @@
                 <object class="Mtf\System\Isolation\Driver\Base"/>
             </arguments>
         </listener>
-        <listener class="Mtf\System\Event\StateListener">
-            <arguments>
-                <object class="Mtf\System\Event\State"/>
-            </arguments>
-        </listener>
+        <listener class="Mtf\System\Event\StateListener"/>
     </listeners>
 
     <php>

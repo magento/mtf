@@ -58,6 +58,9 @@ class State
      */
     private $eventManager;
 
+    /**
+     * @param EventManager $eventManager
+     */
     public function __construct(EventManager $eventManager)
     {
         $this->eventManager = $eventManager;
@@ -68,7 +71,7 @@ class State
      *
      * @param string $testSuiteName
      */
-    public function setTestSuiteName($testSuiteName)
+    public static function setTestSuiteName($testSuiteName)
     {
         self::$testSuiteName = $testSuiteName;
     }
@@ -78,7 +81,7 @@ class State
      *
      * @param string $testClassName
      */
-    public function setTestClassName($testClassName)
+    public static function setTestClassName($testClassName)
     {
         self::$testClassName = $testClassName;
     }
@@ -88,7 +91,7 @@ class State
      *
      * @param string $testMethodName
      */
-    public function setTestMethodName($testMethodName)
+    public static function setTestMethodName($testMethodName)
     {
         self::$testMethodName = $testMethodName;
     }
