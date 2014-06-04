@@ -124,7 +124,7 @@ class Config extends Data
     {
         $extendedObservers = $observers = [];
         foreach ($metadata['preset'] as $preset) {
-            if ($preset['name'] == $name) {
+            if ($preset['name'] == $name && isset($preset['observer'])) {
                 $this->parsedPresets[] = $preset['name'];
                 if (isset($preset['extends'])) {
                     if (!in_array($preset['extends'], $this->parsedPresets)) {
