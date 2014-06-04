@@ -135,9 +135,9 @@ class Element implements ElementInterface
      */
     public function click()
     {
-        $this->_eventManager->dispatchEvent([__METHOD__], [__METHOD__, (string) $this->_locator]);
         $this->_driver->moveto($this->_getWrappedElement());
         $this->_driver->click();
+        $this->_eventManager->dispatchEvent([__METHOD__], [__METHOD__, (string) $this->_locator]);
     }
 
     /**

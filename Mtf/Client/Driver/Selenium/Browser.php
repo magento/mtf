@@ -275,7 +275,9 @@ class Browser implements \Mtf\Client\Browser
     {
         return $this->_driver->execute(
             [
-                'script' => 'return JSON.parse(localStorage.getItem("errorsHistory"));',
+                'script' => 'errors = JSON.parse(localStorage.getItem("errorsHistory"));
+                localStorage.removeItem("errorsHistory");
+                return errors;',
                 'args' => []
             ]
         );
