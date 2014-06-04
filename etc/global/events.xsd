@@ -11,10 +11,48 @@
     <xs:element name="config">
         <xs:complexType>
             <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                <xs:element type="observer" name="observer"/>
+                <xs:element type="preset" name="preset">
+                    <xs:unique name="uniqueObserverClass">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Observer class must be unique.
+                            </xs:documentation>
+                        </xs:annotation>
+                        <xs:selector xpath="observer"/>
+                        <xs:field xpath="@class"/>
+                    </xs:unique>
+                </xs:element>
             </xs:sequence>
         </xs:complexType>
+        <xs:unique name="uniquePresetName">
+            <xs:annotation>
+                <xs:documentation>
+                    Preset name must be unique.
+                </xs:documentation>
+            </xs:annotation>
+            <xs:selector xpath="preset"/>
+            <xs:field xpath="@name"/>
+        </xs:unique>
     </xs:element>
+
+    <xs:complexType name="preset">
+        <xs:sequence minOccurs="0" maxOccurs="unbounded">
+            <xs:element type="observer" name="observer">
+                <xs:unique name="uniqueTagPattern">
+                    <xs:annotation>
+                        <xs:documentation>
+                            Tag pattern must be unique.
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:selector xpath="tag"/>
+                    <xs:field xpath="@pattern"/>
+                </xs:unique>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name" use="required"/>
+        <xs:attribute type="xs:string" name="extends" use="optional"/>
+    </xs:complexType>
+
 
     <xs:complexType name="observer">
         <xs:annotation>

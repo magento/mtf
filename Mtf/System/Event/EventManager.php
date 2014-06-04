@@ -44,11 +44,11 @@ class EventManager implements EventManagerInterface
     protected $observerPool;
 
     /**
-     * Config class object
+     * Map of observers and event tags for current preset defined in ENV
      *
-     * @var \Mtf\System\Event\Config
+     * @var array
      */
-    protected $config;
+    protected $map;
 
     /**
      * Constructor
@@ -64,7 +64,7 @@ class EventManager implements EventManagerInterface
     ) {
         $this->observerPool = $observerPool;
         $this->eventFactory = $eventFactory;
-        $this->config = $config;
+        $this->map = $config->getObservers();
     }
 
     /**
@@ -82,8 +82,7 @@ class EventManager implements EventManagerInterface
             $subjects,
             $eventName
         );
-        $map = $this->config->getObservers();
-        foreach ($map as $observerName => $observerTags) {
+        foreach ($this->map as $observerName => $observerTags) {
             if (array_intersect($observerTags, $event->getTags())) {
                 $observer = $this->observerPool->getObserver($observerName);
                 $observer->process($event);

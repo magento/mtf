@@ -53,16 +53,20 @@ class TestCase extends \PHPUnit_Extensions_Selenium2TestCase
      *
      * @param $callback
      * @param null $timeout
+     * @throws \Exception
+     * @return mixed
      */
     public function waitUntil($callback, $timeout = null)
     {
         $implicitWait = $this->timeouts()->getLastImplicitWaitValue();
         try {
             $this->timeouts()->implicitWait(0);
-            $this->waitUntil->run($callback, $timeout);
+            $result = $this->waitUntil->run($callback, $timeout);
             $this->timeouts()->implicitWait($implicitWait);
+            return $result;
         } catch (\Exception $e) {
             $this->timeouts()->implicitWait($implicitWait);
+            throw $e;
         }
     }
 
