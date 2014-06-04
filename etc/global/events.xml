@@ -29,11 +29,10 @@
             <tag pattern="after_fixture_persist"/>
         </observer>
     </preset>
-    <preset name="detailed" extends="light">
+    <preset name="detailed" extends="base">
         <observer class="Mtf\System\Observer\ClientError">
             <tag pattern="page_changed"/>
         </observer>
-    <preset name="detailed" extends="base">
         <observer class="Mtf\System\Observer\Log">
             <tag pattern="Mtf\Client\Driver\Selenium\Element::find"/>
         </observer>
