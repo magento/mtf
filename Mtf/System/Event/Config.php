@@ -108,35 +108,52 @@ class Config extends Data
      */
     public function getObservers()
     {
-        $observers = [];
-        foreach ($this->get('config') as $metadata) {
-            foreach($metadata['preset'] as $preset) {
-                if ($preset['name'] == $this->presetName) {
-                    $observers = $this->getPresetObservers($preset);
-                }
-            }
-        }
-        return $observers;
+        $metadata = $this->get('config');
+        return $this->getPresetObservers($metadata[0], $this->presetName);
     }
 
     /**
      * Get observers for preset
      *
-     * @param array $preset
+     * @param array $metadata
+     * @param string $name
+     * @throws \Exception
      * @return array
      */
-    protected function getPresetObservers($preset)
+    protected function getPresetObservers($metadata, $name)
     {
-        $observers = $parentObservers = [];
-        if (null !== $preset['extends'] && !in_array($this->parsedPresets, $preset['extends'])) {
-            $parentObservers = $this->getPresetObservers($preset['extends']);
-        }
-        foreach($preset['observer'] as $observer) {
-            foreach($observer['tag'] as $tag) {
-                $observers[$observer['class']][] = $tag['pattern'];
+        $extendedObservers = $observers = [];
+        foreach ($metadata['preset'] as $preset) {
+            if ($preset['name'] == $name && isset($preset['observer'])) {
+                $this->parsedPresets[] = $preset['name'];
+                if (isset($preset['extends'])) {
+                    if (!in_array($preset['extends'], $this->parsedPresets)) {
+                        $extendedObservers = $this->getPresetObservers($metadata, $preset['extends']);
+                    } else {
+                        throw(
+                            new \Exception(
+                                sprintf(
+                                    'Preset "%s" extends preset "%s" and vice versa. Please avoid recursion',
+                                    $preset['name'],
+                                    $preset['extends']
+                                )
+                            )
+                        );
+                    }
+                }
+                foreach ($preset['observer'] as $observer) {
+                    foreach($observer['tag'] as $tag) {
+                        if (
+                            !isset($extendedObservers[$observer['class']]) ||
+                            !in_array($tag['pattern'], $extendedObservers[$observer['class']])
+                        ) {
+                            $observers[$observer['class']][] = $tag['pattern'];
+                        }
+                    }
+                }
+                break;
             }
         }
-        $this->parsedPresets[] = $preset['name'];
-        return array_merge($parentObservers, $observers);
+        return array_merge_recursive($extendedObservers, $observers);
     }
 }
