@@ -39,11 +39,6 @@ class ClientError implements \Mtf\System\Event\ObserverInterface
     protected $filename;
 
     /**
-     * @var bool
-     */
-    private static $injected = false;
-
-    /**
      * @param Logger $logger
      * @param EventState $state
      * @param Browser $browser
@@ -66,11 +61,6 @@ class ClientError implements \Mtf\System\Event\ObserverInterface
      */
     public function process(Event $event)
     {
-        if (!self::$injected) {
-            $this->browser->injectJsErrorCollector();
-            self::$injected = true;
-            return;
-        }
         $errors = $this->browser->getJsErrors();
         if (!empty($errors)) {
             $this->logger->log($event->getMessagePrefix() . "\n", $this->filename);
