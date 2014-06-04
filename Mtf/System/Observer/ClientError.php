@@ -8,7 +8,7 @@
 namespace Mtf\System\Observer;
 
 use Mtf\System\Logger;
-use Mtf\System\Event\State;
+use Mtf\System\Event\State as EventState;
 use Mtf\System\Event\Event;
 use \Mtf\Client\Driver\Selenium\Browser;
 
@@ -27,7 +27,7 @@ class ClientError implements \Mtf\System\Event\ObserverInterface
     protected $logger;
 
     /**
-     * @var State
+     * @var EventState
      */
     protected $state;
 
@@ -39,12 +39,17 @@ class ClientError implements \Mtf\System\Event\ObserverInterface
     protected $filename;
 
     /**
+     * @var bool
+     */
+    private static $injected = false;
+
+    /**
      * @param Logger $logger
-     * @param State $state
+     * @param EventState $state
      * @param Browser $browser
      * @param string $filename
      */
-    public function __construct(Logger $logger, State $state, Browser $browser, $filename = null)
+    public function __construct(Logger $logger, EventState $state, Browser $browser, $filename = null)
     {
         $this->logger = $logger;
         $this->state = $state;
@@ -61,16 +66,21 @@ class ClientError implements \Mtf\System\Event\ObserverInterface
      */
     public function process(Event $event)
     {
-        $currentUrl = $this->browser->getUrl();
-        if ($this->state->getPageUrl() != $currentUrl) {
-            $this->logger->log($event->getMessagePrefix(), $this->filename);
-            foreach ($this->browser->getJsErrors() as $url => $jsErrors) {
+        if (!self::$injected) {
+            $this->browser->injectJsErrorCollector();
+            self::$injected = true;
+            return;
+        }
+        $this->logger->log($event->getMessagePrefix(), $this->filename);
+        $errors = $this->browser->getJsErrors();
+        if (!empty($errors)) {
+            foreach ($errors as $url => $jsErrors) {
                 $this->logger->log($url, $this->filename);
                 foreach ($jsErrors as $error) {
                     $this->logger->log($error, $this->filename);
                 }
             }
-            $this->browser->injectJsErrorCollector();
         }
+        $this->browser->injectJsErrorCollector();
     }
 }

@@ -249,7 +249,20 @@ class Browser implements \Mtf\Client\Browser
     public function injectJsErrorCollector()
     {
         $this->_driver->execute(
-            'window.MtfJsErrors = []; window.onerror = function(e) {window.MtfJsErrors[document.Url][] = e;}'
+            [
+                'script' => 'window.onerror = function(e) {
+                    var errors = {};
+                    if (localStorage.getItem("errorsHistory")) {
+                        errors = JSON.parse(localStorage.getItem("errorsHistory"));
+                    }
+                    if (!(window.location.href in errors)) {
+                        errors[window.location.href] = [];
+                    }
+                    errors[window.location.href].push(e);
+                    localStorage.setItem("errorsHistory", JSON.stringify(errors));
+                }',
+                'args' => []
+            ]
         );
     }
 
@@ -260,6 +273,11 @@ class Browser implements \Mtf\Client\Browser
      */
     public function getJsErrors()
     {
-        return $this->_driver->execute('return window.MtfJsErrors');
+        return $this->_driver->execute(
+            [
+                'script' => 'return JSON.parse(localStorage.getItem("errorsHistory"));',
+                'args' => []
+            ]
+        );
     }
 }

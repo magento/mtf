@@ -19,6 +19,9 @@
         </observer>
     </preset>
     <preset name="detailed" extends="light">
+        <observer class="Mtf\System\Observer\ClientError">
+            <tag pattern="page_changed"/>
+        </observer>
         <observer class="Mtf\System\Observer\Log">
             <tag pattern="Mtf\Client\Driver\Selenium\Element::find"/>
         </observer>

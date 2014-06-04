@@ -122,8 +122,8 @@ class State
     {
         if ($this->pageUrl != $pageUrl) {
             $this->eventManager->dispatchEvent(
-                'page_changed',
-                sprintf('Page changed from url %s to url %s', $this->pageUrl, $pageUrl)
+                ['page_changed'],
+                [sprintf('Page changed from url %s to url %s', $this->pageUrl, $pageUrl)]
             );
             $this->pageUrl = $pageUrl;
         }
