@@ -74,7 +74,7 @@ class SourceCode implements ObserverInterface
             $this->state->getTestMethodName()
         );
         if (!is_dir($this->logger->getLogDirectoryPath() . '/' . $directory)) {
-            mkdir($directory, 0777, true);
+            mkdir($this->logger->getLogDirectoryPath() . '/' . $directory, 0777, true);
         }
         return $directory;
     }
