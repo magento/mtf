@@ -71,9 +71,9 @@ class ClientError implements \Mtf\System\Event\ObserverInterface
             self::$injected = true;
             return;
         }
-        $this->logger->log($event->getMessagePrefix() . "\n", $this->filename);
         $errors = $this->browser->getJsErrors();
         if (!empty($errors)) {
+            $this->logger->log($event->getMessagePrefix() . "\n", $this->filename);
             foreach ($errors as $url => $jsErrors) {
                 $this->logger->log($url . "\n", $this->filename);
                 foreach ($jsErrors as $error) {
