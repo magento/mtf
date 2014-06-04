@@ -108,35 +108,34 @@ class Config extends Data
      */
     public function getObservers()
     {
-        $observers = [];
-        foreach ($this->get('config') as $metadata) {
-            foreach($metadata['preset'] as $preset) {
-                if ($preset['name'] == $this->presetName) {
-                    $observers = $this->getPresetObservers($preset);
-                }
-            }
-        }
-        return $observers;
+        $metadata = $this->get('config');
+        return $this->getPresetObservers($metadata, $this->presetName);
     }
 
     /**
      * Get observers for preset
      *
-     * @param array $preset
+     * @param array $metadata
+     * @param string $name
      * @return array
      */
-    protected function getPresetObservers($preset)
+    protected function getPresetObservers($metadata, $name)
     {
-        $observers = $parentObservers = [];
-        if (null !== $preset['extends'] && !in_array($this->parsedPresets, $preset['extends'])) {
-            $parentObservers = $this->getPresetObservers($preset['extends']);
-        }
-        foreach($preset['observer'] as $observer) {
-            foreach($observer['tag'] as $tag) {
-                $observers[$observer['class']][] = $tag['pattern'];
+        $extendedObservers = $observers = [];
+        foreach ($metadata['preset'] as $preset) {
+            if ($preset['name'] == $name) {
+                if (isset($preset['extends']) && !in_array($preset['extends'], $this->parsedPresets)) {
+                    $extendedObservers = $this->getPresetObservers($metadata, $preset['extends']);
+                }
+                foreach ($preset['observer'] as $observer) {
+                    foreach($observer['tag'] as $tag) {
+                        $observers[$observer['class']][] = $tag['pattern'];
+                    }
+                }
+                $this->parsedPresets[] = $preset['name'];
+                break;
             }
         }
-        $this->parsedPresets[] = $preset['name'];
-        return array_merge($parentObservers, $observers);
+        return array_merge($extendedObservers, $observers);
     }
 }
