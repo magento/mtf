@@ -143,7 +143,10 @@ class Config extends Data
                 }
                 foreach ($preset['observer'] as $observer) {
                     foreach($observer['tag'] as $tag) {
-                        if (!in_array($tag['pattern'], $extendedObservers[$observer['class']])) {
+                        if (
+                            !isset($extendedObservers[$observer['class']]) ||
+                            !in_array($tag['pattern'], $extendedObservers[$observer['class']])
+                        ) {
                             $observers[$observer['class']][] = $tag['pattern'];
                         }
                     }
