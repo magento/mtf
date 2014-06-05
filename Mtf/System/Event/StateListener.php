@@ -7,12 +7,10 @@
  */
 namespace Mtf\System\Event;
 
-use Mtf\System\Event\State;
-
 class StateListener implements \PHPUnit_Framework_TestListener
 {
     /**
-     * @var \Mtf\System\Event\State
+     * @var State
      */
     protected $stateObject;
 

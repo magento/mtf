@@ -14,7 +14,7 @@ use Mtf\System\Event\ObserverInterface;
 class Precondition implements ObserverInterface
 {
     /**
-     * @var \Mtf\System\Event\State|State
+     * @var State
      */
     protected $stateObject;
 
