@@ -22,6 +22,13 @@
             <tag pattern="before_fixture_persist"/>
             <tag pattern="after_fixture_persist"/>
         </observer>
+        <observer class="Mtf\System\Observer\Screenshot">
+            <tag pattern="Mtf\Client\Driver\Selenium\Browser::click"/>
+            <tag pattern="Mtf\Client\Driver\Selenium\Element::click"/>
+            <tag pattern="Mtf\Client\Driver\Selenium\Browser::open"/>
+            <tag pattern="Mtf\Client\Driver\Selenium\Browser::forward"/>
+            <tag pattern="Mtf\Client\Driver\Selenium\Browser::back"/>
+        </observer>
     </preset>
     <preset name="detailed" extends="base">
         <observer class="Mtf\System\Observer\Log">
