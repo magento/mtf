@@ -106,6 +106,6 @@ class Locator implements \ArrayAccess
      */
     public function __toString()
     {
-        return 'Locator with value "' . $this->container['value'] . '" and strategy "' . $this->container['using'] . '"';
+        return $this->container['using'] . '(' . $this->container['value'] . ')';
     }
 }

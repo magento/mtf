@@ -84,8 +84,7 @@ class Element implements ElementInterface
 
         $this->_locator = $locator;
 
-        $this->_absoluteSelector = $context ? $context->getAbsoluteSelector() . ' > ' : '';
-        $this->_absoluteSelector .= $this->_locator['using'] . '(' . $this->_locator['value'];
+        $this->_absoluteSelector = ($context ? $context->getAbsoluteSelector() . ' > ' : '') . $this->_locator['value'];
     }
 
     /**
