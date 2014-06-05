@@ -9,6 +9,7 @@
 namespace Mtf\TestSuite;
 
 use Mtf\ObjectManager;
+use Mtf\System\Event\EventManager;
 
 /**
  * Class InjectableMethod
@@ -116,6 +117,10 @@ class InjectableMethod extends InjectableTestCase
         try {
             $data = \PHPUnit_Util_Test::getProvidedData($class, $name);
         } catch (\Exception $e) {
+            /** @var EventManager $eventManager */
+            $eventManager = $objectManager->get('Mtf\System\Event\Event');
+            $eventManager->dispatchEvent(['Exception'], [$e]);
+
             $message = sprintf(
                 'The data provider specified for %s::%s is invalid.',
                 $class,
