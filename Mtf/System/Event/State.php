@@ -51,7 +51,7 @@ class State
      *
      * @var string
      */
-    private $pageUrl;
+    private $pageUrl = 'about:blank';
 
     /**
      * @var EventManager
