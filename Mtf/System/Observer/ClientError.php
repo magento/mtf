@@ -10,16 +10,14 @@ namespace Mtf\System\Observer;
 use Mtf\System\Logger;
 use Mtf\System\Event\State as EventState;
 use Mtf\System\Event\Event;
+use \Mtf\Client\Driver\Selenium\Browser;
 
-/**
- * Class for logging events in MTF
- */
-class Log implements \Mtf\System\Event\ObserverInterface
+class ClientError implements \Mtf\System\Event\ObserverInterface
 {
     /**
      * Log file name
      */
-    const FILE_NAME = 'logger.log';
+    const FILE_NAME = 'client_error.log';
 
     /**
      * Logger class
@@ -41,18 +39,19 @@ class Log implements \Mtf\System\Event\ObserverInterface
     protected $filename;
 
     /**
-     * Constructor
-     *
      * @param Logger $logger
      * @param EventState $state
+     * @param Browser $browser
      * @param string $filename
      */
-    public function __construct(Logger $logger, EventState $state, $filename = null)
+    public function __construct(Logger $logger, EventState $state, Browser $browser, $filename = null)
     {
         $this->logger = $logger;
         $this->state = $state;
+        $this->browser = $browser;
         $this->filename = $filename ?: static::FILE_NAME;
     }
+
 
     /**
      * Process current event
@@ -62,8 +61,16 @@ class Log implements \Mtf\System\Event\ObserverInterface
      */
     public function process(Event $event)
     {
-        foreach ($event->getSubjects() as $message) {
-            $this->logger->log($event->getMessagePrefix() . ' ' . $message . PHP_EOL, $this->filename);
+        $errors = $this->browser->getJsErrors();
+        if (!empty($errors)) {
+            $this->logger->log($event->getMessagePrefix() . "\n", $this->filename);
+            foreach ($errors as $url => $jsErrors) {
+                $this->logger->log($url . "\n", $this->filename);
+                foreach ($jsErrors as $error) {
+                    $this->logger->log($error . "\n", $this->filename);
+                }
+            }
         }
+        $this->browser->injectJsErrorCollector();
     }
 }

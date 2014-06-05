@@ -98,4 +98,23 @@ class Event
             . $this->state->getPageUrl()
         );
     }
+
+    /**
+     * Retrieve message context prefix
+     *
+     * @return string
+     */
+    public function getMessagePrefix()
+    {
+        return sprintf(
+            '%s %s %s %s %s %s %s',
+            date("Y-m-d H:i:sP"),
+            $this->getIdentifier(),
+            $this->state->getTestSuiteName(),
+            $this->state->getTestClassName(),
+            $this->state->getTestMethodName(),
+            $this->state->getStageName(),
+            $this->state->getPageUrl()
+        );
+    }
 }

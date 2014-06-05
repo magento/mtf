@@ -242,4 +242,44 @@ class Browser implements \Mtf\Client\Browser
     {
         return $this->_driver->source();
     }
+
+    /**
+     * Inject Js Error collector
+     */
+    public function injectJsErrorCollector()
+    {
+        $this->_driver->execute(
+            [
+                'script' => 'window.onerror = function(e) {
+                    var errors = {};
+                    if (localStorage.getItem("errorsHistory")) {
+                        errors = JSON.parse(localStorage.getItem("errorsHistory"));
+                    }
+                    if (!(window.location.href in errors)) {
+                        errors[window.location.href] = [];
+                    }
+                    errors[window.location.href].push(e);
+                    localStorage.setItem("errorsHistory", JSON.stringify(errors));
+                }',
+                'args' => []
+            ]
+        );
+    }
+
+    /**
+     * Get js errors
+     *
+     * @return string[][]
+     */
+    public function getJsErrors()
+    {
+        return $this->_driver->execute(
+            [
+                'script' => 'errors = JSON.parse(localStorage.getItem("errorsHistory"));
+                localStorage.removeItem("errorsHistory");
+                return errors;',
+                'args' => []
+            ]
+        );
+    }
 }
