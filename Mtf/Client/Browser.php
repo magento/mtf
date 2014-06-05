@@ -102,4 +102,9 @@ interface Browser
      * @return string
      */
     public function getHtmlSource();
+
+    /**
+     * @return string
+     */
+    public function getScreenshotData();
 }

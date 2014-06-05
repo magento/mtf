@@ -12,6 +12,10 @@ use Mtf\System\Event\State as EventState;
 use Mtf\System\Event\ObserverInterface;
 use Mtf\Client\Driver\Selenium\Browser;
 
+/**
+ * Class State
+ * @package Mtf\System\Observer
+ */
 class State implements ObserverInterface
 {
     /**
@@ -28,7 +32,7 @@ class State implements ObserverInterface
      * @param Browser $browser
      * @param EventState $state
      */
-    function __construct(Browser $browser, EventState $state)
+    public function __construct(Browser $browser, EventState $state)
     {
         $this->browser = $browser;
         $this->stateObject = $state;
