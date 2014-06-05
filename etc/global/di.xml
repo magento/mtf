@@ -10,7 +10,6 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <preference for="Mtf\Client\Browser" type="Mtf\Client\Driver\Selenium\Browser"/>
     <preference for="Mtf\System\Event\EventManagerInterface" type="Mtf\System\Event\EventManager"/>
-    <preference for="Mtf\Exception\ExceptionInterface" type="Mtf\Exception\Exception"/>
     <preference for="Mtf\Constraint\AbstractConstraint" type="Mtf\Constraint\Dummy"/>
     <preference for="Mtf\Util\Generate\Fixture\FieldsProviderInterface"
                 type="Mtf\Util\Generate\Fixture\DummyFieldsProvider"/>

@@ -63,11 +63,6 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
     protected $eventManager;
 
     /**
-     * @var \Mtf\Exception\ExceptionFactory
-     */
-    protected $exceptionFactory;
-
-    /**
      * Constructs a test case with the given name.
      *
      * @param null $name
@@ -89,8 +84,6 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
         $this->objectManager = \Mtf\ObjectManagerFactory::getObjectManager();
         $this->eventManager = $this->objectManager->get('Mtf\System\Event\EventManagerInterface');
 
-        $this->exceptionFactory = $this->objectManager->get('Mtf\Exception\ExceptionFactory');
-
         $this->_construct();
     }
 
@@ -109,7 +102,6 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
      *
      * @param \PHPUnit_Framework_TestResult $result
      * @return \PHPUnit_Framework_TestResult
-     * @throws \Mtf\Exception\Exception
      */
     public function run(\PHPUnit_Framework_TestResult $result = null)
     {
@@ -124,12 +116,7 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
             try {
                 parent::run($result);
             } catch (\Exception $e) {
-                throw $this->exceptionFactory->create(
-                    $e->getMessage(),
-                    $e->getCode(),
-                    $e->getPrevious(),
-                    $this->eventManager
-                );
+                $this->eventManager->dispatchEvent(['Exception'], [$e]);
             }
 
             if ($this->processManager->isParallelModeSupported()) {
