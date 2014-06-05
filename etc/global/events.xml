@@ -11,12 +11,6 @@
     <preset name="default">
     </preset>
     <preset name="base">
-        <observer class="Mtf\System\Observer\Log">
-            <tag pattern="Mtf\Client\Driver\Selenium\Browser::find"/>
-        </observer>
-        <observer class="Mtf\System\Observer\SourceCode">
-            <tag pattern="Mtf\Client\Driver\Selenium\Browser::find"/>
-        </observer>
         <observer class="Mtf\System\Observer\State">
             <tag pattern="Mtf\Client\Driver\Selenium\Browser::click"/>
             <tag pattern="Mtf\Client\Driver\Selenium\Element::click"/>
@@ -24,7 +18,7 @@
             <tag pattern="Mtf\Client\Driver\Selenium\Browser::forward"/>
             <tag pattern="Mtf\Client\Driver\Selenium\Browser::back"/>
         </observer>
-        <observer class="Mtf\System\Observer\Precodition">
+        <observer class="Mtf\System\Observer\Precondition">
             <tag pattern="before_fixture_persist"/>
             <tag pattern="after_fixture_persist"/>
         </observer>
@@ -34,9 +28,11 @@
             <tag pattern="page_changed"/>
         </observer>
         <observer class="Mtf\System\Observer\Log">
+            <tag pattern="Mtf\Client\Driver\Selenium\Browser::find"/>
             <tag pattern="Mtf\Client\Driver\Selenium\Element::find"/>
         </observer>
         <observer class="Mtf\System\Observer\SourceCode">
+            <tag pattern="Mtf\Client\Driver\Selenium\Browser::find"/>
             <tag pattern="Mtf\Client\Driver\Selenium\Element::find"/>
         </observer>
     </preset>

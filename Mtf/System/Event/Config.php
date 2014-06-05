@@ -108,6 +108,9 @@ class Config extends Data
      */
     public function getObservers()
     {
+        if (!isset($this->presetName)) {
+            return [];
+        }
         $metadata = $this->get('config');
         return $this->getPresetObservers($metadata[0], $this->presetName);
     }

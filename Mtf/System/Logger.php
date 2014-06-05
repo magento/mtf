@@ -119,6 +119,6 @@ class Logger implements LoggerInterface
      */
     public function log($message, $filename, $context = FILE_APPEND)
     {
-        return file_put_contents($filename, $message, $context);
+        return file_put_contents($this->getLogDirectoryPath() . '/' . $filename, $message, $context);
     }
 }

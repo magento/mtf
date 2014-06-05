@@ -8,7 +8,7 @@
 namespace Mtf\System\Observer;
 
 use Mtf\System\Event\Event;
-use Mtf\System\Event\State as EventSate;
+use Mtf\System\Event\State as EventState;
 use Mtf\System\Event\ObserverInterface;
 use Mtf\Client\Driver\Selenium\Browser;
 
@@ -20,15 +20,15 @@ class State implements ObserverInterface
     protected $browser;
 
     /**
-     * @var \Mtf\System\Event\State|State
+     * @var EventState
      */
     protected $stateObject;
 
     /**
      * @param Browser $browser
-     * @param EventSate $state
+     * @param EventState $state
      */
-    function __construct(Browser $browser, EventSate $state)
+    function __construct(Browser $browser, EventState $state)
     {
         $this->browser = $browser;
         $this->stateObject = $state;

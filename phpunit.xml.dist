@@ -37,6 +37,7 @@
         <env name="handlers_config_path" value="config/handler.yml.dist"/>
         <env name="configuration:Magento/Mtf/TestSuite/MtfTests" value="basic"/>
         <env name="log_directory" value="var/log"/>
+        <env name="events_preset" value="detailed"/>
     </php>
 
 </phpunit>

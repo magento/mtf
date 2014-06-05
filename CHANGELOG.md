@@ -1,9 +1,6 @@
-1.1.0-dev
 * Created Event Management and observers structure
   * Added logger to store errors and events
-  * Added logger for screenshot capturing
   * Added logger for html source code
-  * Added logger for client side errors
 
 1.0.0-dev
 =============

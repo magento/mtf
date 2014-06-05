@@ -73,10 +73,10 @@ class SourceCode implements ObserverInterface
             strtolower(str_replace('\\', '-', $this->state->getTestClassName())),
             $this->state->getTestMethodName()
         );
-        if (!is_dir($directory)) {
-            mkdir($directory, 0777, true);
+        if (!is_dir($this->logger->getLogDirectoryPath() . '/' . $directory)) {
+            mkdir($this->logger->getLogDirectoryPath() . '/' . $directory, 0777, true);
         }
-        return realpath($directory);
+        return $directory;
     }
 
     /**
