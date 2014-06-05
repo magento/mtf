@@ -14,7 +14,8 @@
         <observer class="Mtf\System\Observer\State">
             <tag pattern="Mtf\Client\Driver\Selenium\Browser::click"/>
             <tag pattern="Mtf\Client\Driver\Selenium\Element::click"/>
-            <tag pattern="Mtf\Client\Driver\Selenium\Browser::open"/>
+            <tag pattern="Mtf\Client\Driver\Selenium\Browser::open::before"/>
+            <tag pattern="Mtf\Client\Driver\Selenium\Browser::open::after"/>
             <tag pattern="Mtf\Client\Driver\Selenium\Browser::forward"/>
             <tag pattern="Mtf\Client\Driver\Selenium\Browser::back"/>
         </observer>
@@ -25,7 +26,8 @@
         <observer class="Mtf\System\Observer\Screenshot">
             <tag pattern="Mtf\Client\Driver\Selenium\Browser::click"/>
             <tag pattern="Mtf\Client\Driver\Selenium\Element::click"/>
-            <tag pattern="Mtf\Client\Driver\Selenium\Browser::open"/>
+            <tag pattern="Mtf\Client\Driver\Selenium\Browser::open::before"/>
+            <tag pattern="Mtf\Client\Driver\Selenium\Browser::open::after"/>
             <tag pattern="Mtf\Client\Driver\Selenium\Browser::forward"/>
             <tag pattern="Mtf\Client\Driver\Selenium\Browser::back"/>
             <tag pattern="Exception"/>
@@ -43,7 +45,8 @@
         <observer class="Mtf\System\Observer\Screenshot">
             <tag pattern="Mtf\Client\Driver\Selenium\Browser::click"/>
             <tag pattern="Mtf\Client\Driver\Selenium\Element::click"/>
-            <tag pattern="Mtf\Client\Driver\Selenium\Browser::open"/>
+            <tag pattern="Mtf\Client\Driver\Selenium\Browser::open::before"/>
+            <tag pattern="Mtf\Client\Driver\Selenium\Browser::open::after"/>
             <tag pattern="Mtf\Client\Driver\Selenium\Browser::forward"/>
             <tag pattern="Mtf\Client\Driver\Selenium\Browser::back"/>
             <tag pattern="Exception"/>

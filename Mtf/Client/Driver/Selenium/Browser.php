@@ -93,8 +93,9 @@ class Browser implements \Mtf\Client\Browser
      */
     public function open($url)
     {
+        $this->_eventManager->dispatchEvent([__METHOD__ . '::before'], [__METHOD__, $url]);
         $this->_driver->url($url);
-        $this->_eventManager->dispatchEvent([__METHOD__], [__METHOD__, $url]);
+        $this->_eventManager->dispatchEvent([__METHOD__ . '::after'], [__METHOD__, $url]);
     }
 
     /**
