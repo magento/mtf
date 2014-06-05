@@ -7,17 +7,17 @@
  */
 namespace Mtf\System\Observer;
 
+use Mtf\System\Event\State as EventState;
 use Mtf\System\Event\Event;
 use Mtf\System\Event\ObserverInterface;
-use Mtf\System\Event\State;
 use Mtf\System\Logger;
 
 class Screenshot implements ObserverInterface
 {
     /**
-     * File name of screenshot
+     * Image extension
      */
-    const FILE_NAME = 'screenshot.png';
+    const FILE_EXTENSION = '.png';
 
     /**
      * @var \Mtf\System\Logger
@@ -31,9 +31,9 @@ class Screenshot implements ObserverInterface
 
     /**
      * @param Logger $logger
-     * @param State $state
+     * @param EventState $state
      */
-    public function __construct(Logger $logger, State $state)
+    public function __construct(Logger $logger, EventState $state)
     {
         $this->logger = $logger;
         $this->state = $state;
@@ -46,7 +46,10 @@ class Screenshot implements ObserverInterface
     public function process(Event $event)
     {
         $testCase = $event->getSubjects()[1];
-        $this->logger->log($testCase->currentScreenshot(), $this->createDestinationDirectory() . '/' . self::FILE_NAME);
+        $this->logger->log(
+            $testCase->currentScreenshot(),
+            $this->createDestinationDirectory() . '/' . $event->getIdentifier() . self::FILE_EXTENSION
+        );
     }
 
     /**
@@ -54,7 +57,7 @@ class Screenshot implements ObserverInterface
      */
     protected function createDestinationDirectory()
     {
-        $directory = sprintf('%s/%s/%s/page-source',
+        $directory = sprintf('%s/%s/%s/screenshots',
             strtolower(str_replace('\\', '-', $this->state->getTestSuiteName())),
             strtolower(str_replace('\\', '-', $this->state->getTestClassName())),
             $this->state->getTestMethodName()
