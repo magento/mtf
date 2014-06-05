@@ -8,20 +8,20 @@
 namespace Mtf\System\Observer;
 
 use Mtf\System\Event\Event;
-use Mtf\System\Event\State;
+use Mtf\System\Event\State as EventState;
 use Mtf\System\Event\ObserverInterface;
 
 class Precondition implements ObserverInterface
 {
     /**
-     * @var \Mtf\System\Event\State|State
+     * @var EventState
      */
     protected $stateObject;
 
     /**
-     * @param State $state
+     * @param EventState $state
      */
-    public function __construct(State $state)
+    public function __construct(EventState $state)
     {
         $this->stateObject = $state;
     }

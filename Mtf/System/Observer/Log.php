@@ -8,7 +8,7 @@
 namespace Mtf\System\Observer;
 
 use Mtf\System\Logger;
-use Mtf\System\Event\State;
+use Mtf\System\Event\State as EventState;
 use Mtf\System\Event\Event;
 
 /**
@@ -29,7 +29,7 @@ class Log implements \Mtf\System\Event\ObserverInterface
     protected $logger;
 
     /**
-     * @var State
+     * @var EventState
      */
     protected $state;
 
@@ -44,10 +44,10 @@ class Log implements \Mtf\System\Event\ObserverInterface
      * Constructor
      *
      * @param Logger $logger
-     * @param State $state
+     * @param EventState $state
      * @param string $filename
      */
-    public function __construct(Logger $logger, State $state, $filename = null)
+    public function __construct(Logger $logger, EventState $state, $filename = null)
     {
         $this->logger = $logger;
         $this->state = $state;
