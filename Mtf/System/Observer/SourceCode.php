@@ -9,14 +9,13 @@ namespace Mtf\System\Observer;
 
 use Mtf\Client\Driver\Selenium\Browser;
 use Mtf\System\Logger;
-use Mtf\System\Event\ObserverInterface;
 use Mtf\System\Event\Event;
-use Mtf\System\Event\State;
+use Mtf\System\Event\State as EventState;
 
 /**
  * Observer for obtaining html source of the current page
  */
-class SourceCode implements ObserverInterface
+class SourceCode extends AbstractObserver
 {
     /**
      * File name of source code
@@ -30,53 +29,10 @@ class SourceCode implements ObserverInterface
      */
     protected $browser;
 
-    /**
-     * Logger object
-     *
-     * @var Logger
-     */
-    protected $logger;
-
-    /**
-     * State object
-     *
-     * @var State
-     */
-    protected $state;
-
-    /**
-     * Constructor
-     *
-     * @param Logger $logger
-     * @param Browser $browser
-     * @param State $state
-     */
-    public function __construct(
-        Logger $logger,
-        Browser $browser,
-        State $state
-    ) {
-        $this->browser = $browser;
-        $this->logger = $logger;
-        $this->state = $state;
-    }
-
-    /**
-     * Create destination directory
-     *
-     * @return string
-     */
-    protected function createDestinationDirectory()
+    public function __construct(Logger $logger, EventState $state, Browser $browser)
     {
-        $directory = sprintf('%s/%s/%s/page-source',
-            strtolower(str_replace('\\', '-', $this->state->getTestSuiteName())),
-            strtolower(str_replace('\\', '-', $this->state->getTestClassName())),
-            $this->state->getTestMethodName()
-        );
-        if (!is_dir($this->logger->getLogDirectoryPath() . '/' . $directory)) {
-            mkdir($this->logger->getLogDirectoryPath() . '/' . $directory, 0777, true);
-        }
-        return $directory;
+        parent::__construct($logger, $state);
+        $this->browser = $browser;
     }
 
     /**
@@ -87,7 +43,7 @@ class SourceCode implements ObserverInterface
      */
     public function process(Event $event)
     {
-        $directory = $this->createDestinationDirectory();
+        $directory = $this->createDestinationDirectory('page-source');
         $this->logger->log($this->browser->getHtmlSource(), $directory . '/' . $event->getIdentifier());
     }
 }

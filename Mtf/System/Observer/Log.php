@@ -14,24 +14,12 @@ use Mtf\System\Event\Event;
 /**
  * Class for logging events in MTF
  */
-class Log implements \Mtf\System\Event\ObserverInterface
+class Log extends AbstractObserver
 {
     /**
      * Log file name
      */
     const FILE_NAME = 'logger.log';
-
-    /**
-     * Logger class
-     *
-     * @var Logger
-     */
-    protected $logger;
-
-    /**
-     * @var State
-     */
-    protected $state;
 
     /**
      * Filename of the log file
@@ -49,8 +37,7 @@ class Log implements \Mtf\System\Event\ObserverInterface
      */
     public function __construct(Logger $logger, State $state, $filename = null)
     {
-        $this->logger = $logger;
-        $this->state = $state;
+        parent::__construct($logger, $state);
         $this->filename = $filename ?: static::FILE_NAME;
     }
 
@@ -65,25 +52,5 @@ class Log implements \Mtf\System\Event\ObserverInterface
         foreach ($event->getSubjects() as $message) {
             $this->logger->log($this->getMessagePrefix($event) . ' ' . $message . PHP_EOL, $this->filename);
         }
-    }
-
-    /**
-     * Retrieve message context prefix
-     *
-     * @param Event $event
-     * @return string
-     */
-    protected function getMessagePrefix(Event $event)
-    {
-        return sprintf(
-            '%s %s %s %s %s %s %s',
-            date("Y-m-d H:i:sP"),
-            $event->getIdentifier(),
-            $this->state->getTestSuiteName(),
-            $this->state->getTestClassName(),
-            $this->state->getTestMethodName(),
-            $this->state->getStageName(),
-            $this->state->getPageUrl()
-        );
     }
 }

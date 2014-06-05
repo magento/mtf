@@ -95,7 +95,6 @@ class Browser implements \Mtf\Client\Browser
     {
         $this->_driver->url($url);
         $this->_eventManager->dispatchEvent([__METHOD__], [__METHOD__, $url]);
-        $this->_eventManager->dispatchEvent([__METHOD__ . '::screenshot'], [__METHOD__]);
     }
 
     /**
@@ -106,7 +105,6 @@ class Browser implements \Mtf\Client\Browser
     {
         $this->_driver->back();
         $this->_eventManager->dispatchEvent([__METHOD__], [__METHOD__]);
-        $this->_eventManager->dispatchEvent([__METHOD__ . '::screenshot'], [__METHOD__]);
     }
 
     /**
@@ -117,7 +115,6 @@ class Browser implements \Mtf\Client\Browser
     {
         $this->_driver->forward();
         $this->_eventManager->dispatchEvent([__METHOD__], [__METHOD__]);
-        $this->_eventManager->dispatchEvent([__METHOD__ . '::screenshot'], [__METHOD__]);
     }
 
     /**
@@ -201,7 +198,6 @@ class Browser implements \Mtf\Client\Browser
     {
         $locator = new Locator($selector, $strategy);
         $this->_eventManager->dispatchEvent([__METHOD__], [__METHOD__, (string) $locator]);
-        $this->_eventManager->dispatchEvent([__METHOD__ . '::screenshot'], [__METHOD__]);
         $className = '\Mtf\Client\Driver\Selenium\Element';
 
         if (null !== $typifiedElement) {

@@ -23,11 +23,12 @@
             <tag pattern="after_fixture_persist"/>
         </observer>
         <observer class="Mtf\System\Observer\Screenshot">
-            <tag pattern="Mtf\Client\Driver\Selenium\Browser::click::screenshot"/>
-            <tag pattern="Mtf\Client\Driver\Selenium\Element::click::screenshot"/>
-            <tag pattern="Mtf\Client\Driver\Selenium\Browser::open::screenshot"/>
-            <tag pattern="Mtf\Client\Driver\Selenium\Browser::forward::screenshot"/>
-            <tag pattern="Mtf\Client\Driver\Selenium\Browser::back::screenshot"/>
+            <tag pattern="Mtf\Client\Driver\Selenium\Browser::click"/>
+            <tag pattern="Mtf\Client\Driver\Selenium\Element::click"/>
+            <tag pattern="Mtf\Client\Driver\Selenium\Browser::open"/>
+            <tag pattern="Mtf\Client\Driver\Selenium\Browser::forward"/>
+            <tag pattern="Mtf\Client\Driver\Selenium\Browser::back"/>
+            <tag pattern="Exception"/>
         </observer>
     </preset>
     <preset name="detailed" extends="base">
@@ -40,11 +41,12 @@
             <tag pattern="Mtf\Client\Driver\Selenium\Element::find"/>
         </observer>
         <observer class="Mtf\System\Observer\Screenshot">
-            <tag pattern="Mtf\Client\Driver\Selenium\Browser::click::screenshot"/>
-            <tag pattern="Mtf\Client\Driver\Selenium\Element::click::screenshot"/>
-            <tag pattern="Mtf\Client\Driver\Selenium\Browser::open::screenshot"/>
-            <tag pattern="Mtf\Client\Driver\Selenium\Browser::forward::screenshot"/>
-            <tag pattern="Mtf\Client\Driver\Selenium\Browser::back::screenshot"/>
+            <tag pattern="Mtf\Client\Driver\Selenium\Browser::click"/>
+            <tag pattern="Mtf\Client\Driver\Selenium\Element::click"/>
+            <tag pattern="Mtf\Client\Driver\Selenium\Browser::open"/>
+            <tag pattern="Mtf\Client\Driver\Selenium\Browser::forward"/>
+            <tag pattern="Mtf\Client\Driver\Selenium\Browser::back"/>
+            <tag pattern="Exception"/>
         </observer>
     </preset>
 </config>
