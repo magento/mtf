@@ -117,6 +117,7 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
                 parent::run($result);
             } catch (\Exception $e) {
                 $this->eventManager->dispatchEvent(['Exception'], [$e]);
+                throw $e;
             }
 
             if ($this->processManager->isParallelModeSupported()) {
