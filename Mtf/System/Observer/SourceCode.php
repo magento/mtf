@@ -11,7 +11,7 @@ use Mtf\Client\Driver\Selenium\Browser;
 use Mtf\System\Logger;
 use Mtf\System\Event\ObserverInterface;
 use Mtf\System\Event\Event;
-use Mtf\System\Event\State;
+use Mtf\System\Event\State as EventState;
 
 /**
  * Observer for obtaining html source of the current page
@@ -40,7 +40,7 @@ class SourceCode implements ObserverInterface
     /**
      * State object
      *
-     * @var State
+     * @var EventState
      */
     protected $state;
 
@@ -49,12 +49,12 @@ class SourceCode implements ObserverInterface
      *
      * @param Logger $logger
      * @param Browser $browser
-     * @param State $state
+     * @param EventState $state
      */
     public function __construct(
         Logger $logger,
         Browser $browser,
-        State $state
+        EventState $state
     ) {
         $this->browser = $browser;
         $this->logger = $logger;

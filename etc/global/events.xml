@@ -28,6 +28,7 @@
             <tag pattern="page_changed"/>
         </observer>
         <observer class="Mtf\System\Observer\Log">
+            <tag pattern="Exception"/>
             <tag pattern="Mtf\Client\Driver\Selenium\Browser::find"/>
             <tag pattern="Mtf\Client\Driver\Selenium\Element::find"/>
         </observer>

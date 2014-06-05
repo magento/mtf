@@ -65,8 +65,7 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
     /**
      * Constructs a test case with the given name.
      *
-     * @constructor
-     * @param string $name
+     * @param null $name
      * @param array $data
      * @param string $dataName
      */
@@ -114,7 +113,11 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
             );
             $this->processManager->run($this, $result, $params);
         } else {
-            parent::run($result);
+            try {
+                parent::run($result);
+            } catch (\Exception $e) {
+                $this->eventManager->dispatchEvent(['Exception'], [$e]);
+            }
 
             if ($this->processManager->isParallelModeSupported()) {
                 $this->refineTestResult($result);
