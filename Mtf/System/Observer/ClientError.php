@@ -12,24 +12,12 @@ use Mtf\System\Event\State as EventState;
 use Mtf\System\Event\Event;
 use \Mtf\Client\Driver\Selenium\Browser;
 
-class ClientError implements \Mtf\System\Event\ObserverInterface
+class ClientError extends AbstractObserver
 {
     /**
      * Log file name
      */
     const FILE_NAME = 'client_error.log';
-
-    /**
-     * Logger class
-     *
-     * @var Logger
-     */
-    protected $logger;
-
-    /**
-     * @var EventState
-     */
-    protected $state;
 
     /**
      * Filename of the log file
@@ -46,12 +34,10 @@ class ClientError implements \Mtf\System\Event\ObserverInterface
      */
     public function __construct(Logger $logger, EventState $state, Browser $browser, $filename = null)
     {
-        $this->logger = $logger;
-        $this->state = $state;
+        parent::__construct($logger, $state);
         $this->browser = $browser;
         $this->filename = $filename ?: static::FILE_NAME;
     }
-
 
     /**
      * Process current event
@@ -63,7 +49,7 @@ class ClientError implements \Mtf\System\Event\ObserverInterface
     {
         $errors = $this->browser->getJsErrors();
         if (!empty($errors)) {
-            $this->logger->log($event->getMessagePrefix() . "\n", $this->filename);
+            $this->logger->log($this->getMessagePrefix($event) . "\n", $this->filename);
             foreach ($errors as $url => $jsErrors) {
                 $this->logger->log($url . "\n", $this->filename);
                 foreach ($jsErrors as $error) {
