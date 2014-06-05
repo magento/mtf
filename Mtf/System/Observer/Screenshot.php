@@ -11,6 +11,7 @@ use Mtf\System\Event\State as EventState;
 use Mtf\System\Event\Event;
 use Mtf\System\Event\ObserverInterface;
 use Mtf\System\Logger;
+use Mtf\Client\Browser;
 
 class Screenshot implements ObserverInterface
 {
@@ -30,11 +31,17 @@ class Screenshot implements ObserverInterface
     protected $state;
 
     /**
+     * @var \Mtf\Client\Browser
+     */
+    protected $browser;
+
+    /**
      * @param Logger $logger
      * @param EventState $state
      */
-    public function __construct(Logger $logger, EventState $state)
+    public function __construct(Browser $browser, Logger $logger, EventState $state)
     {
+        $this->browser = $browser;
         $this->logger = $logger;
         $this->state = $state;
     }
@@ -45,9 +52,8 @@ class Screenshot implements ObserverInterface
      */
     public function process(Event $event)
     {
-        $testCase = $event->getSubjects()[1];
         $this->logger->log(
-            $testCase->currentScreenshot(),
+            $this->browser->getScreenshotData(),
             $this->createDestinationDirectory() . '/' . $event->getIdentifier() . self::FILE_EXTENSION
         );
     }
