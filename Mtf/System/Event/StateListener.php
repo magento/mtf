@@ -53,7 +53,7 @@ class StateListener implements \PHPUnit_Framework_TestListener
      */
     public function startTest(\PHPUnit_Framework_Test $test)
     {
-        State::setTestMethodName(get_class($test));
+        State::setTestClassName(get_class($test));
         State::setTestMethodName($test->getName());
     }
 
