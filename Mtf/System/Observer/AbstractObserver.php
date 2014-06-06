@@ -64,14 +64,13 @@ abstract class AbstractObserver implements ObserverInterface
     public function getMessagePrefix(Event $event)
     {
         return sprintf(
-            '%s %s %s %s %s %s %s %s',
+            '%s %s %s %s %s %s %s',
             date("Y-m-d H:i:sP"),
             $event->getIdentifier(),
             $this->state->getAppStateName(),
             $this->state->getTestSuiteName(),
             $this->state->getTestClassName(),
             $this->state->getTestMethodName(),
-            $this->state->getStageName(),
             $this->state->getPageUrl()
         );
     }

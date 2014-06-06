@@ -13,12 +13,6 @@ namespace Mtf\System\Event;
 class State
 {
     /**
-     * Test main flow stage
-     * @const
-     */
-    const TEST_MAIN_FLOW_STAGE = 'Test Main Flow';
-
-    /**
      * Name for current Test suite
      *
      * @var string
@@ -38,13 +32,6 @@ class State
      * @var string
      */
     private static $testMethodName;
-
-    /**
-     * Name for current Flow Stage
-     *
-     * @var string
-     */
-    private $stageName = self::TEST_MAIN_FLOW_STAGE;
 
     /**
      * Url of current page
@@ -102,26 +89,6 @@ class State
     }
 
     /**
-     * Set stage name to "persisting $fixtureName"
-     *
-     * @param string $fixtureName
-     */
-    public function startFixturePersist($fixtureName)
-    {
-        $this->stageName = 'Persisting ' . $fixtureName;
-    }
-
-    /**
-     * Set stage name to default
-     *
-     * Clear handler property
-     */
-    public function stopFixturePersist()
-    {
-        $this->stageName = self::TEST_MAIN_FLOW_STAGE;
-    }
-
-    /**
      * Setter for pageUrl
      *
      * @param string $pageUrl
@@ -165,16 +132,6 @@ class State
     public function getTestMethodName()
     {
         return self::$testMethodName ?: 'default';
-    }
-
-    /**
-     * Getter for current $stageName
-     *
-     * @return string
-     */
-    public function getStageName()
-    {
-        return $this->stageName ?: 'default';
     }
 
     /**

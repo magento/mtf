@@ -20,10 +20,6 @@
         <observer class="Mtf\System\Observer\AppState">
             <tag name="app_state_applied"/>
         </observer>
-        <observer class="Mtf\System\Observer\Precondition">
-            <tag name="before_fixture_persist"/>
-            <tag name="after_fixture_persist"/>
-        </observer>
         <observer class="Mtf\System\Observer\Screenshot">
             <tag name="exception"/>
         </observer>
