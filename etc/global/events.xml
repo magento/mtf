@@ -11,11 +11,14 @@
     <preset name="default">
     </preset>
     <preset name="base">
-        <observer class="Mtf\System\Observer\State">
+        <observer class="Mtf\System\Observer\PageUrl">
             <tag name="click_after"/>
             <tag name="open_after"/>
             <tag name="forward"/>
             <tag name="back"/>
+        </observer>
+        <observer class="Mtf\System\Observer\AppState">
+            <tag name="app_state_applied"/>
         </observer>
         <observer class="Mtf\System\Observer\Precondition">
             <tag name="before_fixture_persist"/>

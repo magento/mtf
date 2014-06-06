@@ -59,6 +59,11 @@ class State
     private $eventManager;
 
     /**
+     * @var string
+     */
+    private $appStateName = 'No AppState Applied';
+
+    /**
      * @param EventManager $eventManager
      */
     public function __construct(EventManager $eventManager)
@@ -180,5 +185,25 @@ class State
     public function getPageUrl()
     {
         return $this->pageUrl ?: 'default';
+    }
+
+    /**
+     * Set application state name
+     *
+     * @param string $appStateName
+     */
+    public function setAppStateName($appStateName)
+    {
+        $this->appStateName = $appStateName;
+    }
+
+    /**
+     * Get application state name
+     *
+     * @return string
+     */
+    public function getAppStateName()
+    {
+        return $this->appStateName;
     }
 }

@@ -13,10 +13,10 @@ use Mtf\System\Event\ObserverInterface;
 use Mtf\Client\Driver\Selenium\Browser;
 
 /**
- * Class State
+ * Class AppState
  * @package Mtf\System\Observer
  */
-class State implements ObserverInterface
+class AppState implements ObserverInterface
 {
     /**
      * @var \Mtf\Client\Driver\Selenium\Browser
@@ -44,6 +44,8 @@ class State implements ObserverInterface
      */
     public function process(Event $event)
     {
-        $this->stateObject->setPageUrl($this->browser->getUrl());
+        if (isset($event->getSubjects()[0])) {
+            $this->stateObject->setAppStateName($event->getSubjects()[0]);
+        }
     }
 }
