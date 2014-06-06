@@ -115,14 +115,14 @@ class Element implements ElementInterface
             $criteria = new \PHPUnit_Extensions_Selenium2TestCase_ElementCriteria($this->_locator['using']);
             $criteria->value($this->_locator['value']);
             if ($waitForElementPresent) {
-                $this->_wrappedElement = $this->_driver->waitUntil(
+                $this->_wrappedElement = $this->waitUntil(
                     function () use ($context, $criteria) {
                         return $context->element($criteria);
                     }
                 );
             } else {
                 $driver = $this->_driver;
-                $this->_driver->waitUntil(
+                $this->waitUntil(
                     function () use ($driver) {
                         $result = $driver->execute(
                             ['script' => "return document['readyState']", 'args' => []]
@@ -298,14 +298,24 @@ class Element implements ElementInterface
      * Callback example: function() use ($element) {$element->isVisible();}
      * Timeout can be defined in configuration
      *
-     * @param callback $callback
-     * @return mixed
+     * @param callable $callback
+     * @return mixed|void
+     * @throws \Exception
      */
     public function waitUntil($callback)
     {
-        return $this->_driver->waitUntil($callback);
+        try {
+            return $this->_driver->waitUntil($callback);
+        } catch (\Exception $e) {
+            throw new \Exception(
+                sprintf(
+                    "Error occurred during waiting for an element %s with message (%s)",
+                    $this->getAbsoluteSelector(),
+                    $e->getMessage()
+                )
+            );
+        }
     }
-
     /**
      * Get the alert dialog text
      *

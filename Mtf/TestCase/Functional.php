@@ -115,8 +115,11 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
         } else {
             try {
                 parent::run($result);
+                if ($this->getStatus() == \PHPUnit_Runner_BaseTestRunner::STATUS_ERROR) {
+                    $this->eventManager->dispatchEvent(['exception'], [$this->getStatusMessage()]);
+                }
             } catch (\Exception $e) {
-                $this->eventManager->dispatchEvent(['exception'], [$e]);
+                $this->eventManager->dispatchEvent(['exception'], [$e->getMessage()]);
                 throw $e;
             }
 
