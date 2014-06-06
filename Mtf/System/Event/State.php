@@ -109,7 +109,7 @@ class State
      *
      * @return string
      */
-    public function getTestSuiteName()
+    public static function getTestSuiteName()
     {
         return self::$testSuiteName ?: 'default';
     }
@@ -119,7 +119,7 @@ class State
      *
      * @return string
      */
-    public function getTestClassName()
+    public static function getTestClassName()
     {
         return self::$testClassName ?: 'default';
     }
@@ -129,7 +129,7 @@ class State
      *
      * @return string
      */
-    public function getTestMethodName()
+    public static function getTestMethodName()
     {
         return self::$testMethodName ?: 'default';
     }

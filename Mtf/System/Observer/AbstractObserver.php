@@ -45,9 +45,9 @@ abstract class AbstractObserver implements ObserverInterface
     protected function createDestinationDirectory($suffix = '')
     {
         $directory = sprintf('%s/%s/%s/' . $suffix,
-            strtolower(str_replace('\\', '-', $this->state->getTestSuiteName())),
-            strtolower(str_replace('\\', '-', $this->state->getTestClassName())),
-            $this->state->getTestMethodName()
+            strtolower(str_replace('\\', '-', EventState::getTestSuiteName())),
+            strtolower(str_replace('\\', '-', EventState::getTestClassName())),
+            EventState::getTestMethodName()
         );
         if (!is_dir($this->logger->getLogDirectoryPath() . '/' . $directory)) {
             mkdir($this->logger->getLogDirectoryPath() . '/' . $directory, 0777, true);
@@ -68,9 +68,9 @@ abstract class AbstractObserver implements ObserverInterface
             date("Y-m-d H:i:sP"),
             $event->getIdentifier(),
             $this->state->getAppStateName(),
-            $this->state->getTestSuiteName(),
-            $this->state->getTestClassName(),
-            $this->state->getTestMethodName(),
+            EventState::getTestSuiteName(),
+            EventState::getTestClassName(),
+            EventState::getTestMethodName(),
             $this->state->getPageUrl()
         );
     }

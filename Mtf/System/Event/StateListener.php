@@ -38,12 +38,14 @@ class StateListener implements \PHPUnit_Framework_TestListener
 
     public function startTestSuite(\PHPUnit_Framework_TestSuite $suite)
     {
-        State::setTestSuiteName(get_class($suite));
+        if ('default' === State::getTestSuiteName()) {
+            State::setTestSuiteName($suite->getName());
+        }
     }
 
     public function endTestSuite(\PHPUnit_Framework_TestSuite $suite)
     {
-        //
+        State::setTestSuiteName('default');
     }
 
     /**

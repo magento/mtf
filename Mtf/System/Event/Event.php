@@ -74,9 +74,9 @@ class Event
         return sha1(
             microtime(true)
             . implode('', $this->tags)
-            . $this->state->getTestSuiteName()
-            . $this->state->getTestClassName()
-            . $this->state->getTestMethodName()
+            . State::getTestSuiteName()
+            . State::getTestClassName()
+            . State::getTestMethodName()
             . $this->state->getPageUrl()
         );
     }
