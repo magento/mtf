@@ -43,7 +43,7 @@ class Event
         $tags,
         array $subjects
     ) {
-        $this->tag = $tag;
+        $this->tags = $tags;
         $this->subjects = $subjects;
         $this->state = $state;
     }
