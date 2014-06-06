@@ -84,7 +84,7 @@ class Element implements ElementInterface
 
         $this->_locator = $locator;
 
-        $this->_absoluteSelector = ($context ? $context->getAbsoluteSelector() . ' > ' : '') . $this->_locator['value'];
+        $this->_absoluteSelector = ($context ? $context->getAbsoluteSelector() . ' > ' : '') . $this->_locator;
     }
 
     /**
@@ -142,9 +142,10 @@ class Element implements ElementInterface
      */
     public function click()
     {
+        $this->_eventManager->dispatchEvent(['click_before'], [__METHOD__, $this->getAbsoluteSelector()]);
         $this->_driver->moveto($this->_getWrappedElement());
         $this->_driver->click();
-        $this->_eventManager->dispatchEvent([__METHOD__], [__METHOD__, $this->getAbsoluteSelector()]);
+        $this->_eventManager->dispatchEvent(['click_after'], [__METHOD__, $this->getAbsoluteSelector()]);
     }
 
     /**
@@ -175,7 +176,7 @@ class Element implements ElementInterface
     public function isVisible()
     {
         try {
-            $this->_eventManager->dispatchEvent([__METHOD__], [__METHOD__, $this->getAbsoluteSelector()]);
+            $this->_eventManager->dispatchEvent(['is_visible'], [__METHOD__, $this->getAbsoluteSelector()]);
             $visible = $this->_getWrappedElement(false)->displayed();
         } catch (\PHPUnit_Extensions_Selenium2TestCase_WebDriverException $e) {
             $visible = false;
@@ -211,7 +212,7 @@ class Element implements ElementInterface
      */
     public function setValue($value)
     {
-        $this->_eventManager->dispatchEvent([__METHOD__], [__METHOD__, $this->getAbsoluteSelector()]);
+        $this->_eventManager->dispatchEvent(['set_value'], [__METHOD__, $this->getAbsoluteSelector()]);
         $this->_getWrappedElement()->clear();
         $this->_getWrappedElement()->value($value);
     }
@@ -223,6 +224,7 @@ class Element implements ElementInterface
      */
     public function getValue()
     {
+        $this->_eventManager->dispatchEvent(['get_value'], [(string) $this->_locator]);
         return $this->_getWrappedElement()->value();
     }
 
@@ -246,7 +248,7 @@ class Element implements ElementInterface
      */
     public function find($selector, $strategy = Locator::SELECTOR_CSS, $typifiedElement = null)
     {
-        $this->_eventManager->dispatchEvent([__METHOD__], [__METHOD__, $this->getAbsoluteSelector()]);
+        $this->_eventManager->dispatchEvent(['find'], [__METHOD__, $this->getAbsoluteSelector()]);
         $locator = new Locator($selector, $strategy);
         $className = '\Mtf\Client\Driver\Selenium\Element';
 
@@ -358,6 +360,6 @@ class Element implements ElementInterface
      */
     public function getAbsoluteSelector()
     {
-        return $this->_absoluteSelector . ')';
+        return $this->_absoluteSelector;
     }
 }

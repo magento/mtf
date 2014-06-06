@@ -27,13 +27,6 @@ class Event
     public $tags;
 
     /**
-     * Custom event name given by user
-     *
-     * @var string
-     */
-    public $eventName;
-
-    /**
      * State of the application, containg testcase, testmethod etc of the application run
      *
      * @var State
@@ -44,26 +37,15 @@ class Event
      * @param State $state
      * @param array $tags
      * @param array $subjects
-     * @param string $eventName
      */
     public function __construct(
         State $state,
-        array $tags,
-        array $subjects,
-        $eventName
+        $tags,
+        array $subjects
     ) {
-        $this->tags = $tags;
+        $this->tag = $tag;
         $this->subjects = $subjects;
-        $this->eventName = $eventName;
         $this->state = $state;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEventName()
-    {
-        return $this->eventName;
     }
 
     /**

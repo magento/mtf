@@ -14,8 +14,7 @@ interface EventManagerInterface
      *
      * @param array $eventTags
      * @param array $subjects
-     * @param string $eventName
      * @return void
      */
-    public function dispatchEvent(array $eventTags, array $subjects = [], $eventName = '');
+    public function dispatchEvent(array $eventTags, array $subjects = []);
 }

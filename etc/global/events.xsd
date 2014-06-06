@@ -38,14 +38,14 @@
     <xs:complexType name="preset">
         <xs:sequence minOccurs="0" maxOccurs="unbounded">
             <xs:element type="observer" name="observer">
-                <xs:unique name="uniqueTagPattern">
+                <xs:unique name="uniqueTagName">
                     <xs:annotation>
                         <xs:documentation>
-                            Tag pattern must be unique.
+                            Tag name must be unique.
                         </xs:documentation>
                     </xs:annotation>
                     <xs:selector xpath="tag"/>
-                    <xs:field xpath="@pattern"/>
+                    <xs:field xpath="@name"/>
                 </xs:unique>
             </xs:element>
         </xs:sequence>
@@ -69,10 +69,10 @@
     <xs:complexType name="tag">
         <xs:annotation>
             <xs:documentation>
-                Tag with pattern to look for
+                Tag with name to look for
             </xs:documentation>
         </xs:annotation>
-        <xs:attribute type="xs:string" name="pattern" use="required"/>
+        <xs:attribute type="xs:string" name="name" use="required"/>
     </xs:complexType>
 
 </xs:schema>

@@ -93,9 +93,9 @@ class Browser implements \Mtf\Client\Browser
      */
     public function open($url)
     {
-        $this->_eventManager->dispatchEvent([__METHOD__ . '::before'], [__METHOD__, $url]);
+        $this->_eventManager->dispatchEvent(['open_before'], [__METHOD__, $url]);
         $this->_driver->url($url);
-        $this->_eventManager->dispatchEvent([__METHOD__ . '::after'], [__METHOD__, $url]);
+        $this->_eventManager->dispatchEvent(['open_after'], [__METHOD__, $url]);
     }
 
     /**
@@ -105,7 +105,7 @@ class Browser implements \Mtf\Client\Browser
     public function back()
     {
         $this->_driver->back();
-        $this->_eventManager->dispatchEvent([__METHOD__], [__METHOD__]);
+        $this->_eventManager->dispatchEvent(['back'], [__METHOD__]);
     }
 
     /**
@@ -115,7 +115,7 @@ class Browser implements \Mtf\Client\Browser
     public function forward()
     {
         $this->_driver->forward();
-        $this->_eventManager->dispatchEvent([__METHOD__], [__METHOD__]);
+        $this->_eventManager->dispatchEvent(['forward'], [__METHOD__]);
     }
 
     /**
@@ -134,6 +134,7 @@ class Browser implements \Mtf\Client\Browser
      */
     public function reopen()
     {
+        $this->_eventManager->dispatchEvent(['reopen'], [__METHOD__]);
         $this->_driver->stop();
         $this->_driver->setSessionStrategy('isolated');
         $this->_init();
@@ -152,10 +153,12 @@ class Browser implements \Mtf\Client\Browser
     public function switchToFrame($locator = null)
     {
         if ($locator) {
+            $this->_eventManager->dispatchEvent(['switch_to_frame'], [(string) $locator]);
             $criteria = new \PHPUnit_Extensions_Selenium2TestCase_ElementCriteria($locator['using']);
             $criteria->value($locator['value']);
             $element = $this->_driver->element($criteria);
         } else {
+            $this->_eventManager->dispatchEvent(['switch_to_frame'], ['Switch to main window']);
             $element = null;
         }
         $this->_driver->frame($element);
@@ -198,7 +201,7 @@ class Browser implements \Mtf\Client\Browser
     public function find($selector, $strategy = Locator::SELECTOR_CSS, $typifiedElement = null)
     {
         $locator = new Locator($selector, $strategy);
-        $this->_eventManager->dispatchEvent([__METHOD__], [__METHOD__, (string) $locator]);
+        $this->_eventManager->dispatchEvent(['find'], [__METHOD__, (string) $locator]);
         $className = '\Mtf\Client\Driver\Selenium\Element';
 
         if (null !== $typifiedElement) {
@@ -259,16 +262,16 @@ class Browser implements \Mtf\Client\Browser
     {
         $this->_driver->execute(
             [
-                'script' => 'window.onerror = function(e) {
-                    var errors = {};
-                    if (localStorage.getItem("errorsHistory")) {
-                        errors = JSON.parse(localStorage.getItem("errorsHistory"));
-                    }
-                    if (!(window.location.href in errors)) {
-                        errors[window.location.href] = [];
-                    }
-                    errors[window.location.href].push(e);
-                    localStorage.setItem("errorsHistory", JSON.stringify(errors));
+                'script' => 'window.onerror = function(msg, url, line) {
+                var errors = {};
+                if (localStorage.getItem("errorsHistory")) {
+                    errors = JSON.parse(localStorage.getItem("errorsHistory"));
+                }
+                if (!(window.location.href in errors)) {
+                    errors[window.location.href] = [];
+                }
+                errors[window.location.href].push("error: \'" + msg + "\' " + "file: " + url + " " + "line: " + line);
+                localStorage.setItem("errorsHistory", JSON.stringify(errors));
                 }',
                 'args' => []
             ]

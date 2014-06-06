@@ -116,7 +116,7 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
             try {
                 parent::run($result);
             } catch (\Exception $e) {
-                $this->eventManager->dispatchEvent(['Exception'], [$e]);
+                $this->eventManager->dispatchEvent(['exception'], [$e]);
                 throw $e;
             }
 

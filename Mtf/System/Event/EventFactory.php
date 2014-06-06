@@ -36,16 +36,14 @@ class EventFactory
      *
      * @param array $tags
      * @param array $subjects
-     * @param string $eventName
      * @return \Mtf\System\Event\Event
      */
-    public function create(array $tags, array $subjects, $eventName)
+    public function create(array $tags, array $subjects)
     {
         return $this->objectManager->create('Mtf\System\Event\Event',
             [
                 'tags' => $tags,
-                'subjects' => $subjects,
-                'eventName' => $eventName
+                'subjects' => $subjects
             ]
         );
     }

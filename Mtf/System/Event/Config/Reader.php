@@ -22,7 +22,7 @@ class Reader extends Filesystem
      * @var array
      */
     protected $_idAttributes = [
-        '/config/preset/observer/tag' => 'pattern',
+        '/config/preset/observer/tag' => 'name',
         '/config/preset/observer' => 'class',
         '/config/preset' => 'name'
     ];

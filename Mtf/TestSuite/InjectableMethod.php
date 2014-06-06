@@ -119,7 +119,7 @@ class InjectableMethod extends InjectableTestCase
         } catch (\Exception $e) {
             /** @var EventManager $eventManager */
             $eventManager = $objectManager->get('Mtf\System\Event\Event');
-            $eventManager->dispatchEvent(['Exception'], [$e]);
+            $eventManager->dispatchEvent(['exception'], [$e]);
 
             $message = sprintf(
                 'The data provider specified for %s::%s is invalid.',
