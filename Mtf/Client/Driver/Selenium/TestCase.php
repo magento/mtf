@@ -8,10 +8,8 @@
 
 namespace Mtf\Client\Driver\Selenium;
 
-use Magento\Framework\Exception;
-use Mtf\Client\Driver\Selenium\WaitUntil;
 use Mtf\System\Event\EventManager;
-
+use Mtf\System\Config;
 
 /**
  * Class TestCase
@@ -38,10 +36,10 @@ class TestCase extends \PHPUnit_Extensions_Selenium2TestCase
      * Constructor
      *
      * @constructor
-     * @param \Mtf\System\Config $config
+     * @param Config $config
      * @param EventManager $eventManager
      */
-    public function __construct(\Mtf\System\Config $config, EventManager $eventManager)
+    public function __construct(Config $config, EventManager $eventManager)
     {
         $this->timeout = $config->getConfigParam('server/selenium/seleniumServerRequestsTimeout', 10) * 1000;
         $this->eventManager = $eventManager;

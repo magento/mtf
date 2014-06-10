@@ -8,7 +8,7 @@
 
 namespace Mtf\Client\Driver\Selenium;
 
-use Mtf\System\Config;
+use Mtf\Client\Driver\Selenium\TestCase;
 
 /**
  * Class WaitUntil
@@ -23,7 +23,7 @@ class WaitUntil
     /**
      * PHPUnit Test Case instance
      *
-     * @var \Mtf\Client\Driver\Selenium\TestCase
+     * @var TestCase
      */
     private $testCase;
 
@@ -43,11 +43,11 @@ class WaitUntil
 
     /**
      * @constructor
-     * @param \Mtf\Client\Driver\Selenium\TestCase $testCase
+     * @param TestCase $testCase
      */
-    public function __construct(\Mtf\Client\Driver\Selenium\TestCase $testCase)
+    public function __construct(TestCase $testCase)
     {
-        $this->_testCase = $testCase;
+        $this->testCase = $testCase;
     }
 
     /**
