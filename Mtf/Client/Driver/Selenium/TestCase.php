@@ -29,45 +29,34 @@ class TestCase extends \PHPUnit_Extensions_Selenium2TestCase
     protected $eventManager;
 
     /**
-     * @var WaitUntil
+     * Timeout for wait until
+     * @var int
      */
-    protected $waitUntil;
+    protected $timeout;
 
     /**
      * Constructor
      *
      * @constructor
-     * @param WaitUntil $waitUntil
+     * @param \Mtf\System\Config $config
      * @param EventManager $eventManager
      */
-    public function __construct(
-        WaitUntil $waitUntil,
-        EventManager $eventManager
-    ) {
-        $this->waitUntil = $waitUntil;
-        $this->eventManager = $eventManager;
+    public function __construct(\Mtf\System\Config $config, EventManager $eventManager)
+    {
+        $this->timeout = $config->getConfigParam('server/selenium/seleniumServerRequestsTimeout', 10) * 1000;
     }
 
     /**
      * Wait until callback isn't null or timeout occurs
      *
-     * @param $callback
-     * @param null $timeout
-     * @throws \Exception
+     * @param callable $callback
+     * @param null|int $timeout
      * @return mixed
      */
     public function waitUntil($callback, $timeout = null)
     {
-        $implicitWait = $this->timeouts()->getLastImplicitWaitValue();
-        try {
-            $this->timeouts()->implicitWait(0);
-            $result = $this->waitUntil->run($callback, $timeout);
-            $this->timeouts()->implicitWait($implicitWait);
-            return $result;
-        } catch (\Exception $e) {
-            $this->timeouts()->implicitWait($implicitWait);
-            throw $e;
-        }
+        $waitUntil = new WaitUntil($this);
+        return $waitUntil->run($callback, $this->timeout);
     }
 
     /**

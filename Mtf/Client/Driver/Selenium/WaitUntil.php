@@ -21,9 +21,11 @@ use Mtf\System\Config;
 class WaitUntil
 {
     /**
-     * Request timeout config path
+     * PHPUnit Test Case instance
+     *
+     * @var \Mtf\Client\Driver\Selenium\TestCase
      */
-    const REQUEST_TIMEOUT_CONFIG_PATH = 'server/selenium/seleniumServerRequestsTimeout';
+    private $testCase;
 
     /**
      * Default timeout, ms
@@ -40,15 +42,12 @@ class WaitUntil
     private $defaultSleepInterval = 500;
 
     /**
-     * Constructor
-     *
      * @constructor
-     * @param Config $config
+     * @param \Mtf\Client\Driver\Selenium\TestCase $testCase
      */
-    public function __construct(
-        Config $config
-    ) {
-        $this->defaultTimeout = $config->getConfigParam(self::REQUEST_TIMEOUT_CONFIG_PATH, 10) * 1000;
+    public function __construct(\Mtf\Client\Driver\Selenium\TestCase $testCase)
+    {
+        $this->_testCase = $testCase;
     }
 
     /**
@@ -65,6 +64,12 @@ class WaitUntil
         if (!is_callable($callback)) {
             throw new \PHPUnit_Extensions_Selenium2TestCase_Exception('The valid callback is expected');
         }
+
+        // if there was an implicit timeout specified - remember it and temporarily turn it off
+        $implicitWait = $this->testCase->timeouts()->getLastImplicitWaitValue();
+        if ($implicitWait) {
+            $this->testCase->timeouts()->implicitWait(0);
+        }
         if (is_null($timeout)) {
             $timeout = $this->defaultTimeout;
         }
@@ -73,11 +78,20 @@ class WaitUntil
         $lastException = null;
         while (true) {
             try {
-                return call_user_func($callback);
+                $result = call_user_func($callback);
+                if (!is_null($result)) {
+                    if ($implicitWait) {
+                        $this->testCase->timeouts()->implicitWait($implicitWait);
+                    }
+                    return $result;
+                }
             } catch (\Exception $e) {
                 $lastException = $e;
             }
             if (microtime(true) > $endTime) {
+                if ($implicitWait) {
+                    $this->testCase->timeouts()->implicitWait($implicitWait);
+                }
                 $message = "Timed out after {$timeout} second" . ($timeout != 1 ? 's' : '');
                 throw new \PHPUnit_Extensions_Selenium2TestCase_WebDriverException(
                     $message,

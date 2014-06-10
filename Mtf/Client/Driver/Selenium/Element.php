@@ -298,23 +298,12 @@ class Element implements ElementInterface
      * Callback example: function() use ($element) {$element->isVisible();}
      * Timeout can be defined in configuration
      *
-     * @param callable $callback
-     * @return mixed|void
-     * @throws \Exception
+     * @param callback $callback
+     * @return mixed
      */
     public function waitUntil($callback)
     {
-        try {
-            return $this->_driver->waitUntil($callback);
-        } catch (\Exception $e) {
-            throw new \Exception(
-                sprintf(
-                    "Error occurred during waiting for an element %s with message (%s)",
-                    $this->getAbsoluteSelector(),
-                    $e->getMessage()
-                )
-            );
-        }
+        return $this->_driver->waitUntil($callback);
     }
     /**
      * Get the alert dialog text
