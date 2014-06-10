@@ -123,6 +123,7 @@ class InjectableFixture implements FixtureInterface
         $this->repositoryFactory = $repositoryFactory;
         $this->fixtureFactory = $fixtureFactory;
         $this->handlerFactory = $handlerFactory;
+        $this->eventManager = $eventManager;
 
         if ($dataSet) {
             $data = $this->getDataFromRepository($dataSet, $data);
