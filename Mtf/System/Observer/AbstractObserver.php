@@ -34,8 +34,6 @@ abstract class AbstractObserver implements ObserverInterface
         $this->state = $state;
     }
 
-
-
     /**
      * Create directories if not exists
      *
@@ -71,6 +69,7 @@ abstract class AbstractObserver implements ObserverInterface
             EventState::getTestSuiteName(),
             EventState::getTestClassName(),
             EventState::getTestMethodName(),
+            $this->state->getStageName(),
             $this->state->getPageUrl()
         );
     }

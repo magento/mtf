@@ -114,6 +114,7 @@ class InjectableFixture implements FixtureInterface
         RepositoryFactory $repositoryFactory,
         FixtureFactory $fixtureFactory,
         HandlerFactory $handlerFactory,
+        EventManagerInterface $eventManager,
         array $data = [],
         $dataSet = '',
         $persist = false
@@ -190,6 +191,7 @@ class InjectableFixture implements FixtureInterface
      */
     public function persist()
     {
+        $this->eventManager->dispatchEvent(['persist_before'], [get_class($this)]);
         if (!empty($this->handlerInterface)) {
             $result = $this->handlerFactory->get($this->handlerInterface)->persist($this);
             if (!empty($result)) {
@@ -198,6 +200,7 @@ class InjectableFixture implements FixtureInterface
                 }
             }
         }
+        $this->eventManager->dispatchEvent(['persist_after'], [get_class($this)]);
     }
 
     /**

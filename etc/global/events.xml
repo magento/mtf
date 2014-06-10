@@ -23,12 +23,18 @@
         <observer class="Mtf\System\Observer\Screenshot">
             <tag name="exception"/>
         </observer>
+        <observer class="Mtf\System\Observer\Fixture">
+            <tag name="persist_before"/>
+            <tag name="persist_after"/>
+        </observer>
     </preset>
     <preset name="detailed" extends="base">
         <observer class="Mtf\System\Observer\ClientError">
             <tag name="page_changed"/>
         </observer>
         <observer class="Mtf\System\Observer\Log">
+            <tag name="persist_before"/>
+            <tag name="persist_after"/>
             <tag name="exception"/>
             <tag name="click_before"/>
             <tag name="set_value"/>

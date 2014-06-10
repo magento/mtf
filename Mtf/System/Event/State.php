@@ -51,6 +51,11 @@ class State
     private $appStateName = 'No AppState Applied';
 
     /**
+     * @var string
+     */
+    private $stageName = 'Main Test Flow';
+
+    /**
      * @param EventManager $eventManager
      */
     public function __construct(EventManager $eventManager)
@@ -162,5 +167,25 @@ class State
     public function getAppStateName()
     {
         return $this->appStateName;
+    }
+
+    /**
+     * Set stage name (Currently persisting fixture class name or 'Main Test Flow')
+     *
+     * @param string $stageName
+     */
+    public function setStageName($stageName = null)
+    {
+        $this->stageName = $stageName ?: 'Main Test Flow';
+    }
+
+    /**
+     * Get current stage name
+     *
+     * @return string
+     */
+    public function getStageName()
+    {
+        return $this->stageName;
     }
 }
