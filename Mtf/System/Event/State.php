@@ -100,7 +100,7 @@ class State
      */
     public function setPageUrl($pageUrl)
     {
-        if ($this->pageUrl != $pageUrl) {
+        if ($pageUrl && $this->pageUrl != $pageUrl) {
             $this->eventManager->dispatchEvent(
                 ['page_changed'],
                 [sprintf('Page changed from url %s to url %s', $this->pageUrl, $pageUrl)]

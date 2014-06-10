@@ -235,13 +235,13 @@ class Browser implements \Mtf\Client\Browser
     public function getUrl()
     {
         try {
-            return $this->_driver->url();
+            if ($this->_driver->alertText()) {
+                return null;
+            }
         } catch (\PHPUnit_Extensions_Selenium2TestCase_WebDriverException $exception) {
-            $this->_eventManager->dispatchEvent(
-                ['exception', sprintf('Exception on attempt to getUrl: %s', $exception->getMessage())]
-            );
-            return null;
+            return $this->_driver->url();
         }
+        return $this->_driver->url();
     }
 
     /**
