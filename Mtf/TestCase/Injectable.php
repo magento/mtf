@@ -9,7 +9,6 @@
 namespace Mtf\TestCase;
 
 use Mtf\Constraint\AbstractConstraint;
-use Mtf\TestRunner\Process\ProcessManager;
 
 /**
  * Class Injectable
@@ -78,9 +77,6 @@ abstract class Injectable extends Functional
     {
         parent::__construct($name, $data, $dataName);
         $this->dataId = get_class($this) . '::' . $name;
-        if (!isset(static::$sharedArguments[$this->dataId]) && method_exists($this, '__prepare')) {
-            static::$sharedArguments[$this->dataId] = (array)$this->objectManager->invoke($this, '__prepare');
-        }
         $this->filePath = $path;
     }
 
@@ -113,6 +109,9 @@ abstract class Injectable extends Functional
      */
     public function run(\PHPUnit_Framework_TestResult $result = null)
     {
+        if (!isset(static::$sharedArguments[$this->dataId]) && method_exists($this, '__prepare')) {
+            static::$sharedArguments[$this->dataId] = (array)$this->objectManager->invoke($this, '__prepare');
+        }
         /** @var $testVariationIterator \Mtf\Util\Iterator\TestCaseVariation */
         $testVariationIterator = $this->objectManager->create(
             'Mtf\Util\Iterator\TestCaseVariation',
@@ -174,7 +173,7 @@ abstract class Injectable extends Functional
 
         if (isset($variation['constraint'])) {
             $this->constraint = $variation['constraint'];
-            $this->constraint->configure($this, $arguments);
+            $this->constraint->configure($this, array_merge($arguments, $this->localArguments));
         }
         parent::run($result);
     }

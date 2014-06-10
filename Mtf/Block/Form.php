@@ -8,8 +8,9 @@
 
 namespace Mtf\Block;
 
-use Mtf\Fixture\FixtureInterface;
 use Mtf\Client\Element;
+use Mtf\Fixture\FixtureInterface;
+use Mtf\Fixture\InjectableFixture;
 
 /**
  * Class Form
@@ -65,16 +66,18 @@ class Form extends Block
     /**
      * @constructor
      * @param Element $element
+     * @param BlockFactory $blockFactory
      * @param Mapper $mapper
      */
-    public function __construct(Element $element, Mapper $mapper)
+    public function __construct(Element $element, BlockFactory $blockFactory, Mapper $mapper)
     {
         $this->mapper = $mapper;
-        parent::__construct($element);
+        parent::__construct($element, $blockFactory);
     }
 
     /**
      * Initialize block
+     *
      * @return void
      */
     protected function _init()
@@ -90,6 +93,8 @@ class Form extends Block
     }
 
     /**
+     * Get path for form *.xml file with mapping
+     *
      * @return string
      */
     protected function getXmlFilePath()
@@ -98,6 +103,8 @@ class Form extends Block
     }
 
     /**
+     * Set wrapper value to the root form
+     *
      * @param string $wrapper
      * @return void
      */
@@ -107,6 +114,8 @@ class Form extends Block
     }
 
     /**
+     * Set mapping to the root form
+     *
      * @param array $mapping
      * @return void
      */
@@ -118,6 +127,7 @@ class Form extends Block
     /**
      * Apply placeholders to selectors.
      * Placeholder in .xml is specified via '%' sign from both side.
+     *
      * @return void
      */
     protected function applyPlaceholders()
@@ -135,29 +145,37 @@ class Form extends Block
     /**
      * Fixture mapping
      *
-     * @param array $fields
+     * @param array|null $fields
+     * @param string|null $parent
      * @return array
      */
-    protected function dataMapping(array $fields)
+    protected function dataMapping(array $fields = null, $parent = null)
     {
         $mapping = [];
-        $data = $this->mappingMode ? $this->mapping : $fields;
+        $mappingFields = ($parent !== null) ? $parent : $this->mapping;
+        $data = ($this->mappingMode || null === $fields) ? $mappingFields : $fields;
         foreach ($data as $key => $value) {
-            $mapping[$key]['selector'] = isset($this->mapping[$key]['selector'])
-                ? $this->mapping[$key]['selector']
-                : (($this->wrapper != '') ? "[name='{$this->wrapper}[{$key}]']" : "[name={$key}]");
-            $mapping[$key]['strategy'] = isset($this->mapping[$key]['strategy'])
-                ? $this->mapping[$key]['strategy']
-                : Element\Locator::SELECTOR_CSS;
-            $mapping[$key]['input'] = isset($this->mapping[$key]['input'])
-                ? $this->mapping[$key]['input']
-                : null;
-            $mapping[$key]['class'] = isset($this->mapping[$key]['class'])
-                ? $this->mapping[$key]['class']
-                : null;
-            $mapping[$key]['value'] = $this->mappingMode
-                ? (isset($fields[$key]['value']) ? $fields[$key]['value'] : $fields[$key])
-                : (isset($value['value']) ? $value['value'] : $value);
+            if (isset($value['value'])) {
+                $value = $value['value'];
+            }
+            if (!$this->mappingMode && is_array($value) && null !== $fields
+                && isset($mappingFields[$key]['composite'])
+            ) {
+                $mapping[$key] = $this->dataMapping($value, $mappingFields[$key]);
+            } else {
+                $mapping[$key]['selector'] = isset($mappingFields[$key]['selector'])
+                    ? $mappingFields[$key]['selector']
+                    : (($this->wrapper != '') ? "[name='{$this->wrapper}" . "[{$key}]']" : "[name={$key}]");
+                $mapping[$key]['strategy'] = isset($mappingFields[$key]['strategy'])
+                    ? $mappingFields[$key]['strategy']
+                    : Element\Locator::SELECTOR_CSS;
+                $mapping[$key]['input'] = isset($mappingFields[$key]['input'])
+                    ? $mappingFields[$key]['input']
+                    : null;
+                $mapping[$key]['value'] = $this->mappingMode
+                    ? (isset($fields[$key]['value']) ? $fields[$key]['value'] : $fields[$key])
+                    : $value;
+            }
         }
 
         return $mapping;
@@ -173,7 +191,7 @@ class Form extends Block
      */
     protected function getElement(Element $context, array $field)
     {
-        if ($field['class']) {
+        if (isset($field['class'])) {
             $element = $context->find($field['selector'], $field['strategy'], $field['class']);
             if (!$element instanceof Element) {
                 throw new \Exception('Wrong Element Class.');
@@ -190,16 +208,19 @@ class Form extends Block
      *
      * @param array $fields
      * @param Element $element
-     * @return void
      */
     protected function _fill(array $fields, Element $element = null)
     {
         $context = ($element === null) ? $this->_rootElement : $element;
         foreach ($fields as $name => $field) {
-            $element = $this->getElement($context, $field);
-            if ($this->mappingMode || ($element->isVisible() && !$element->isDisabled())) {
-                $element->setValue($field['value']);
-                $this->setFields[$name] = $field['value'];
+            if (!isset($field['value'])) {
+                $this->_fill($field);
+            } else {
+                $element = $this->getElement($context, $field);
+                if ($this->mappingMode || ($element->isVisible() && !$element->isDisabled())) {
+                    $element->setValue($field['value']);
+                    $this->setFields[$name] = $field['value'];
+                }
             }
         }
     }
@@ -208,7 +229,7 @@ class Form extends Block
      * Fill the root form
      *
      * @param FixtureInterface $fixture
-     * @param Element $element
+     * @param Element|null $element
      * @return $this
      */
     public function fill(FixtureInterface $fixture, Element $element = null)
@@ -222,41 +243,48 @@ class Form extends Block
     }
 
     /**
-     * Verify specified form data
+     * Get data of specified form data
      *
      * @param array $fields
-     * @param Element $element
-     * @return bool
+     * @param Element|null $element
+     * @return array
      */
-    protected function _verify(array $fields, Element $element = null)
+    protected function _getData(array $fields, Element $element = null)
     {
+        $data = [];
         $context = ($element === null) ? $this->_rootElement : $element;
-        foreach ($fields as $field) {
-            $element = $context->find($field['selector'], $field['strategy'], $field['input']);
-            if ($this->mappingMode || $element->isVisible()) {
-                $value = $element->getValue();
-                if ($field['value'] != $value) {
-                    return false;
+        foreach ($fields as $key => $field) {
+            if (!isset($field['value'])) {
+                $data[$key] = $this->_getData($field);
+            } else {
+                $element = $this->getElement($context, $field);
+                if ($this->mappingMode || $element->isVisible()) {
+                    $data[$key] = $element->getValue();
                 }
             }
         }
 
-        return true;
+        return $data;
     }
 
     /**
-     * Verify the root form
+     * Get data of the root form
      *
-     * @param FixtureInterface $fixture
-     * @param Element $element
-     * @return bool
+     * @param FixtureInterface|null $fixture
+     * @param Element|null $element
+     * @return array
      */
-    public function verify(FixtureInterface $fixture, Element $element = null)
+    public function getData(FixtureInterface $fixture = null, Element $element = null)
     {
-        $data = $fixture->getData();
-        $fields = isset($data['fields']) ? $data['fields'] : $data;
+        if (null === $fixture) {
+            $fields = null;
+        } else {
+            $isHasData = ($fixture instanceof InjectableFixture) ? $fixture->hasData() : true;
+            $data = $isHasData ? $fixture->getData() : [];
+            $fields = isset($data['fields']) ? $data['fields'] : $data;
+        }
         $mapping = $this->dataMapping($fields);
 
-        return $this->_verify($mapping, $element);
+        return $this->_getData($mapping, $element);
     }
 }

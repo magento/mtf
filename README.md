@@ -17,5 +17,5 @@ All Submissions you make to Magento is an eBay Inc. company ("Magento") through 
 
 ## User Documentation
 
-[Magento Testing Framework Guidline](https://wiki.magento.com/display/MAGE2DOC/Magento+Testing+Framework+Guidelines)
-
+* [Installing and Configuring the Magento Test Framework (MTF)](docs/install-config.md)
+* [Running the Magento Test Framework (MTF)](docs/running.md)
