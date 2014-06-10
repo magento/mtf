@@ -34,6 +34,13 @@ class Event
     public $state;
 
     /**
+     * Unique event identifier
+     *
+     * @var string
+     */
+    private $identifier;
+
+    /**
      * @param State $state
      * @param array $tags
      * @param array $subjects
@@ -71,13 +78,16 @@ class Event
      */
     public function getIdentifier()
     {
-        return sha1(
-            microtime(true)
-            . implode('', $this->tags)
-            . State::getTestSuiteName()
-            . State::getTestClassName()
-            . State::getTestMethodName()
-            . $this->state->getPageUrl()
-        );
+        if (!$this->identifier) {
+            $this->identifier = sha1(
+                microtime(true)
+                . implode('', $this->tags)
+                . State::getTestSuiteName()
+                . State::getTestClassName()
+                . State::getTestMethodName()
+                . $this->state->getPageUrl()
+            );
+        }
+        return $this->identifier;
     }
 }
