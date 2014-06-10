@@ -13,6 +13,8 @@
     <preset name="base">
         <observer class="Mtf\System\Observer\PageUrl">
             <tag name="click_after"/>
+            <tag name="accept_alert_after"/>
+            <tag name="dismiss_alert_after"/>
             <tag name="open_after"/>
             <tag name="forward"/>
             <tag name="back"/>

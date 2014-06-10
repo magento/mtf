@@ -230,11 +230,18 @@ class Browser implements \Mtf\Client\Browser
     /**
      * Get current page Url
      *
-     * @return string
+     * @return string|null
      */
     public function getUrl()
     {
-        return $this->_driver->url();
+        try {
+            return $this->_driver->url();
+        } catch (\PHPUnit_Extensions_Selenium2TestCase_WebDriverException $exception) {
+            $this->_eventManager->dispatchEvent(
+                ['exception', sprintf('Exception on attempt to getUrl: %s', $exception->getMessage())]
+            );
+            return null;
+        }
     }
 
     /**

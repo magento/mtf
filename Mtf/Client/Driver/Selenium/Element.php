@@ -345,6 +345,7 @@ class Element implements ElementInterface
     public function acceptAlert()
     {
         $this->_driver->acceptAlert();
+        $this->_eventManager->dispatchEvent(['accept_alert_after'], [__METHOD__]);
     }
 
     /**
@@ -354,6 +355,7 @@ class Element implements ElementInterface
     public function dismissAlert()
     {
         $this->_driver->dismissAlert();
+        $this->_eventManager->dispatchEvent(['dismiss_alert_after'], [__METHOD__]);
     }
 
     /**
