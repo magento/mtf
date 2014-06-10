@@ -44,6 +44,7 @@ class TestCase extends \PHPUnit_Extensions_Selenium2TestCase
     public function __construct(\Mtf\System\Config $config, EventManager $eventManager)
     {
         $this->timeout = $config->getConfigParam('server/selenium/seleniumServerRequestsTimeout', 10) * 1000;
+        $this->eventManager = $eventManager;
     }
 
     /**
