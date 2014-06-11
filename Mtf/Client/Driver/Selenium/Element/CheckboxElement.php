@@ -23,7 +23,7 @@ class CheckboxElement extends Element
     /**
      * Get value of the selected option of the element
      *
-     * @return bool
+     * @return string
      */
     public function getValue()
     {
