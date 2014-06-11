@@ -3,6 +3,7 @@
   * Added logger for html source code
   * Added screenshots capturing on events
   * Added logger for client js errors
+  * Added exception handler logger
 
 1.0.0-dev.2
 =============
