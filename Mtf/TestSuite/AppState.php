@@ -76,6 +76,9 @@ class AppState extends TestSuite
         /** @var $appState StateInterface */
         $appState = $this->appStateFactory->create($class, $arguments);
         $appState->apply();
+        /** @var \Mtf\System\Event\EventManager $eventManager */
+        $eventManager = $this->objectManager->get('Mtf\System\Event\EventManager');
+        $eventManager->dispatchEvent(['app_state_applied'], [$name]);
     }
 
     /**

@@ -10,6 +10,7 @@ namespace Mtf\Client\Driver\Selenium;
 
 use Mtf\Client\Element\Locator;
 use Mtf\System\Config;
+use Mtf\System\Event\EventManagerInterface;
 
 /**
  * Class Browser
@@ -44,17 +45,26 @@ class Browser implements \Mtf\Client\Browser
     protected $_configuration;
 
     /**
+     * Event manager to manage events
+     *
+     * @var \Mtf\System\Event\EventManager
+     */
+    protected $_eventManager;
+
+    /**
      * Constructor
      *
      * @constructor
      * @param TestCase $driver
+     * @param EventManagerInterface $eventManager
      * @param Config $configuration
      */
-    public function __construct(TestCase $driver, Config $configuration)
+    public function __construct(TestCase $driver, EventManagerInterface $eventManager, Config $configuration)
     {
         $this->_prototype = clone $driver;
         $this->_driver = $driver;
         $this->_configuration = $configuration;
+        $this->_eventManager = $eventManager;
 
         $this->_init();
     }
@@ -83,7 +93,9 @@ class Browser implements \Mtf\Client\Browser
      */
     public function open($url)
     {
+        $this->_eventManager->dispatchEvent(['open_before'], [__METHOD__, $url]);
         $this->_driver->url($url);
+        $this->_eventManager->dispatchEvent(['open_after'], [__METHOD__, $url]);
     }
 
     /**
@@ -93,6 +105,7 @@ class Browser implements \Mtf\Client\Browser
     public function back()
     {
         $this->_driver->back();
+        $this->_eventManager->dispatchEvent(['back'], [__METHOD__]);
     }
 
     /**
@@ -102,6 +115,7 @@ class Browser implements \Mtf\Client\Browser
     public function forward()
     {
         $this->_driver->forward();
+        $this->_eventManager->dispatchEvent(['forward'], [__METHOD__]);
     }
 
     /**
@@ -120,6 +134,7 @@ class Browser implements \Mtf\Client\Browser
      */
     public function reopen()
     {
+        $this->_eventManager->dispatchEvent(['reopen'], [__METHOD__]);
         $this->_driver->stop();
         $this->_driver->setSessionStrategy('isolated');
         $this->_init();
@@ -138,10 +153,12 @@ class Browser implements \Mtf\Client\Browser
     public function switchToFrame($locator = null)
     {
         if ($locator) {
+            $this->_eventManager->dispatchEvent(['switch_to_frame'], [(string) $locator]);
             $criteria = new \PHPUnit_Extensions_Selenium2TestCase_ElementCriteria($locator['using']);
             $criteria->value($locator['value']);
             $element = $this->_driver->element($criteria);
         } else {
+            $this->_eventManager->dispatchEvent(['switch_to_frame'], ['Switch to main window']);
             $element = null;
         }
         $this->_driver->frame($element);
@@ -184,6 +201,7 @@ class Browser implements \Mtf\Client\Browser
     public function find($selector, $strategy = Locator::SELECTOR_CSS, $typifiedElement = null)
     {
         $locator = new Locator($selector, $strategy);
+        $this->_eventManager->dispatchEvent(['find'], [__METHOD__, (string) $locator]);
         $className = '\Mtf\Client\Driver\Selenium\Element';
 
         if (null !== $typifiedElement) {
@@ -193,7 +211,7 @@ class Browser implements \Mtf\Client\Browser
             }
         }
 
-        return new $className($this->_driver, $locator);
+        return new $className($this->_driver, $this->_eventManager, $locator);
     }
 
     /**
@@ -212,10 +230,75 @@ class Browser implements \Mtf\Client\Browser
     /**
      * Get current page Url
      *
-     * @return string
+     * @return string|null
      */
     public function getUrl()
     {
+        try {
+            if ($this->_driver->alertText()) {
+                return null;
+            }
+        } catch (\PHPUnit_Extensions_Selenium2TestCase_WebDriverException $exception) {
+            return $this->_driver->url();
+        }
         return $this->_driver->url();
+    }
+
+    /**
+     * Get current page html source
+     *
+     * @return string
+     */
+    public function getHtmlSource()
+    {
+        return $this->_driver->source();
+    }
+
+    /**
+     * @return string Binary string of image
+     */
+    public function getScreenshotData()
+    {
+        return $this->_driver->currentScreenshot();
+    }
+
+    /**
+     * Inject Js Error collector
+     */
+    public function injectJsErrorCollector()
+    {
+        $this->_driver->execute(
+            [
+                'script' => 'window.onerror = function(msg, url, line) {
+                var errors = {};
+                if (localStorage.getItem("errorsHistory")) {
+                    errors = JSON.parse(localStorage.getItem("errorsHistory"));
+                }
+                if (!(window.location.href in errors)) {
+                    errors[window.location.href] = [];
+                }
+                errors[window.location.href].push("error: \'" + msg + "\' " + "file: " + url + " " + "line: " + line);
+                localStorage.setItem("errorsHistory", JSON.stringify(errors));
+                }',
+                'args' => []
+            ]
+        );
+    }
+
+    /**
+     * Get js errors
+     *
+     * @return string[][]
+     */
+    public function getJsErrors()
+    {
+        return $this->_driver->execute(
+            [
+                'script' => 'errors = JSON.parse(localStorage.getItem("errorsHistory"));
+                localStorage.removeItem("errorsHistory");
+                return errors;',
+                'args' => []
+            ]
+        );
     }
 }

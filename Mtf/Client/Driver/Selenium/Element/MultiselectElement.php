@@ -46,6 +46,7 @@ class MultiselectElement extends SelectElement
      */
     public function getValue()
     {
+        $this->_eventManager->dispatchEvent(['get_value'], [(string) $this->_locator]);
         return $this->_getWrappedElement()->selectedLabels();
     }
 
@@ -67,6 +68,7 @@ class MultiselectElement extends SelectElement
      */
     public function setValue($values)
     {
+        $this->_eventManager->dispatchEvent(['set_value'], [__METHOD__, $this->getAbsoluteSelector()]);
         $this->clearSelectedOptions();
         if (is_array($values)) {
             foreach ($values as $value) {

@@ -11,6 +11,7 @@ namespace Mtf\Fixture;
 use Mtf\Handler\HandlerFactory;
 use Mtf\Repository\RepositoryFactory;
 use Mtf\System\Config;
+use Mtf\System\Event\EventManagerInterface;
 
 /**
  * Class InjectableFixture
@@ -91,6 +92,11 @@ class InjectableFixture implements FixtureInterface
     protected $sourceParamsFallback = ['source', 'fixture'];
 
     /**
+     * @var \Mtf\System\Event\EventManagerInterface
+     */
+    protected $eventManager;
+
+    /**
      * Constructor
      *
      * @constructor
@@ -98,6 +104,7 @@ class InjectableFixture implements FixtureInterface
      * @param RepositoryFactory $repositoryFactory
      * @param FixtureFactory $fixtureFactory
      * @param HandlerFactory $handlerFactory
+     * @param EventManagerInterface $eventManager
      * @param array $data
      * @param string $dataSet
      * @param bool $persist
@@ -107,6 +114,7 @@ class InjectableFixture implements FixtureInterface
         RepositoryFactory $repositoryFactory,
         FixtureFactory $fixtureFactory,
         HandlerFactory $handlerFactory,
+        EventManagerInterface $eventManager,
         array $data = [],
         $dataSet = '',
         $persist = false
@@ -115,6 +123,7 @@ class InjectableFixture implements FixtureInterface
         $this->repositoryFactory = $repositoryFactory;
         $this->fixtureFactory = $fixtureFactory;
         $this->handlerFactory = $handlerFactory;
+        $this->eventManager = $eventManager;
 
         if ($dataSet) {
             $data = $this->getDataFromRepository($dataSet, $data);
@@ -183,6 +192,7 @@ class InjectableFixture implements FixtureInterface
      */
     public function persist()
     {
+        $this->eventManager->dispatchEvent(['persist_before'], [get_class($this)]);
         if (!empty($this->handlerInterface)) {
             $result = $this->handlerFactory->get($this->handlerInterface)->persist($this);
             if (!empty($result)) {
@@ -191,6 +201,7 @@ class InjectableFixture implements FixtureInterface
                 }
             }
         }
+        $this->eventManager->dispatchEvent(['persist_after'], [get_class($this)]);
     }
 
     /**

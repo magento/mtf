@@ -51,24 +51,40 @@ class Element implements ElementInterface
     protected $_wrappedElement;
 
     /**
+     * @var \Mtf\System\Event\EventManager
+     */
+    protected $_eventManager;
+
+    /**
+     * @var string
+     */
+    protected $_absoluteSelector;
+
+    /**
      * Initialization.
-     * Set driver, context and locator.
+     * Set driver, eventManager, context and locator.
      *
      * @constructor
      * @param \Mtf\Client\Driver\Selenium\TestCase $driver
+     * @param \Mtf\System\Event\EventManagerInterface $eventManager
      * @param Locator $locator
      * @param Element $context
      */
     final public function __construct(
         \Mtf\Client\Driver\Selenium\TestCase $driver,
+        \Mtf\System\Event\EventManagerInterface $eventManager,
         Locator $locator,
         Element $context = null
     ) {
         $this->_driver = $driver;
 
+        $this->_eventManager = $eventManager;
+
         $this->_context = $context;
 
         $this->_locator = $locator;
+
+        $this->_absoluteSelector = ($context ? $context->getAbsoluteSelector() . ' > ' : '') . $this->_locator;
     }
 
     /**
@@ -99,14 +115,14 @@ class Element implements ElementInterface
             $criteria = new \PHPUnit_Extensions_Selenium2TestCase_ElementCriteria($this->_locator['using']);
             $criteria->value($this->_locator['value']);
             if ($waitForElementPresent) {
-                $this->_wrappedElement = $this->_driver->waitUntil(
+                $this->_wrappedElement = $this->waitUntil(
                     function () use ($context, $criteria) {
                         return $context->element($criteria);
                     }
                 );
             } else {
                 $driver = $this->_driver;
-                $this->_driver->waitUntil(
+                $this->waitUntil(
                     function () use ($driver) {
                         $result = $driver->execute(
                             ['script' => "return document['readyState']", 'args' => []]
@@ -126,8 +142,10 @@ class Element implements ElementInterface
      */
     public function click()
     {
+        $this->_eventManager->dispatchEvent(['click_before'], [__METHOD__, $this->getAbsoluteSelector()]);
         $this->_driver->moveto($this->_getWrappedElement());
         $this->_driver->click();
+        $this->_eventManager->dispatchEvent(['click_after'], [__METHOD__, $this->getAbsoluteSelector()]);
     }
 
     /**
@@ -158,6 +176,7 @@ class Element implements ElementInterface
     public function isVisible()
     {
         try {
+            $this->_eventManager->dispatchEvent(['is_visible'], [__METHOD__, $this->getAbsoluteSelector()]);
             $visible = $this->_getWrappedElement(false)->displayed();
         } catch (\PHPUnit_Extensions_Selenium2TestCase_WebDriverException $e) {
             $visible = false;
@@ -193,6 +212,7 @@ class Element implements ElementInterface
      */
     public function setValue($value)
     {
+        $this->_eventManager->dispatchEvent(['set_value'], [__METHOD__, $this->getAbsoluteSelector()]);
         $this->_getWrappedElement()->clear();
         $this->_getWrappedElement()->value($value);
     }
@@ -204,6 +224,7 @@ class Element implements ElementInterface
      */
     public function getValue()
     {
+        $this->_eventManager->dispatchEvent(['get_value'], [(string) $this->_locator]);
         return $this->_getWrappedElement()->value();
     }
 
@@ -227,6 +248,7 @@ class Element implements ElementInterface
      */
     public function find($selector, $strategy = Locator::SELECTOR_CSS, $typifiedElement = null)
     {
+        $this->_eventManager->dispatchEvent(['find'], [__METHOD__, $this->getAbsoluteSelector()]);
         $locator = new Locator($selector, $strategy);
         $className = '\Mtf\Client\Driver\Selenium\Element';
 
@@ -241,7 +263,7 @@ class Element implements ElementInterface
             }
         }
 
-        return new $className($this->_driver, $locator, $this);
+        return new $className($this->_driver, $this->_eventManager, $locator, $this);
     }
 
     /**
@@ -276,12 +298,23 @@ class Element implements ElementInterface
      * Callback example: function() use ($element) {$element->isVisible();}
      * Timeout can be defined in configuration
      *
-     * @param callback $callback
-     * @return mixed
+     * @param callable $callback
+     * @return mixed|void
+     * @throws \Exception
      */
     public function waitUntil($callback)
     {
-        return $this->_driver->waitUntil($callback);
+        try {
+            return $this->_driver->waitUntil($callback);
+        } catch (\Exception $e) {
+            throw new \Exception(
+                sprintf(
+                    "Error occurred during waiting for an element %s with message (%s)",
+                    $this->getAbsoluteSelector(),
+                    $e->getMessage()
+                )
+            );
+        }
     }
 
     /**
@@ -312,6 +345,7 @@ class Element implements ElementInterface
     public function acceptAlert()
     {
         $this->_driver->acceptAlert();
+        $this->_eventManager->dispatchEvent(['accept_alert_after'], [__METHOD__]);
     }
 
     /**
@@ -321,6 +355,7 @@ class Element implements ElementInterface
     public function dismissAlert()
     {
         $this->_driver->dismissAlert();
+        $this->_eventManager->dispatchEvent(['dismiss_alert_after'], [__METHOD__]);
     }
 
     /**
@@ -331,5 +366,13 @@ class Element implements ElementInterface
     public function getUrl()
     {
         return $this->_driver->url();
+    }
+
+    /**
+     * @return string
+     */
+    public function getAbsoluteSelector()
+    {
+        return $this->_absoluteSelector;
     }
 }

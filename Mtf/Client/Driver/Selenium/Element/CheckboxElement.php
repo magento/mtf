@@ -27,6 +27,7 @@ class CheckboxElement extends Element
      */
     public function getValue()
     {
+        $this->_eventManager->dispatchEvent(['get_value'], [(string) $this->_locator]);
         return $this->isSelected() ? 'Yes' : 'No';
     }
 
@@ -38,6 +39,7 @@ class CheckboxElement extends Element
      */
     public function setValue($value)
     {
+        $this->_eventManager->dispatchEvent(['set_value'], [__METHOD__, $this->getAbsoluteSelector()]);
         if (($this->isSelected() && $value == 'No') || (!$this->isSelected() && $value == 'Yes')) {
             $this->click();
         }

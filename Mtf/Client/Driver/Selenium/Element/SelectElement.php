@@ -45,6 +45,7 @@ class SelectElement extends Element
      */
     public function setValue($value)
     {
+        $this->_eventManager->dispatchEvent(['set_value'], [__METHOD__, $this->getAbsoluteSelector()]);
         $criteria = new \PHPUnit_Extensions_Selenium2TestCase_ElementCriteria('xpath');
         $criteria->value('.//option[contains(text(), "' . $value . '")]');
         $this->_getWrappedElement()->selectOptionByCriteria($criteria);
@@ -72,6 +73,7 @@ class SelectElement extends Element
      */
     public function getValue()
     {
+        $this->_eventManager->dispatchEvent(['get_value'], [(string) $this->_locator]);
         return $this->_getWrappedElement(true)->selectedLabel();
     }
 
