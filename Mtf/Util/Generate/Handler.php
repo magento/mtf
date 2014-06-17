@@ -101,7 +101,7 @@ class Handler extends AbstractGenerate
         $content .= " * @copyright   {copyright}\n";
         $content .= " * @license     {license_link}\n";
         $content .= " */\n\n";
-        $content .= "namespace {$ns}; \n\n";
+        $content .= "namespace {$ns};\n\n";
         $content .= $useString . "\n\n";
         $content .= "/**\n";
         $content .= " * Class Ui\n";
@@ -152,7 +152,7 @@ class Handler extends AbstractGenerate
         $content .= " * @copyright   {copyright}\n";
         $content .= " * @license     {license_link}\n";
         $content .= " */\n\n";
-        $content .= "namespace {$ns}; \n\n";
+        $content .= "namespace {$ns};\n\n";
         $content .= $useString . "\n\n";
         $content .= "/**\n";
         $content .= " * Class Curl\n";
@@ -201,7 +201,7 @@ class Handler extends AbstractGenerate
         $content .= " * @copyright   {copyright}\n";
         $content .= " * @license     {license_link}\n";
         $content .= " */\n\n";
-        $content .= "namespace {$ns}; \n\n";
+        $content .= "namespace {$ns};\n\n";
         $content .= $useString . "\n\n";
         $content .= "/**\n";
         $content .= " * Interface {$classShortName}Interface\n";

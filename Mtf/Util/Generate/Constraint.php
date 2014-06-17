@@ -108,7 +108,7 @@ class Constraint extends AbstractGenerate
         $content .= " * @copyright   {copyright}\n";
         $content .= " * @license     {license_link}\n";
         $content .= " */\n\n";
-        $content .= "namespace {$ns}; \n\n";
+        $content .= "namespace {$ns};\n\n";
         $content .= $useString . "\n\n";
         $content .= "/**\n";
         $content .= " * Class {$classShortName}\n";
