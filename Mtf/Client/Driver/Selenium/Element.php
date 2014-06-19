@@ -56,6 +56,15 @@ class Element implements ElementInterface
     protected $_eventManager;
 
     /**
+     * Selenium elements
+     *
+     * @var \PHPUnit_Extensions_Selenium2TestCase_Element[]
+     */
+    protected $_wrappedElements = [];
+
+    /**
+     * Full selector path
+     *
      * @var string
      */
     protected $_absoluteSelector;
@@ -374,5 +383,61 @@ class Element implements ElementInterface
     public function getAbsoluteSelector()
     {
         return $this->_absoluteSelector;
+    }
+
+    /**
+     * Get all elements
+     *
+     * @return Element[]
+     */
+    public function getElements()
+    {
+        return $this->_getWrappedElements();
+    }
+
+    /**
+     * Return Wrapped Elements.
+     * If element was not created before:
+     * 1. Context is defined. If context was not passed to constructor - test case (all page) is taken as context
+     * 2. Attempt to get selenium elements is performed in loop
+     * that is terminated if elements is found or after timeout set in configuration
+     *
+     * @param bool $waitForElementPresent
+     * @throws \PHPUnit_Extensions_Selenium2TestCase_Exception|\PHPUnit_Extensions_Selenium2TestCase_WebDriverException
+     * @return \PHPUnit_Extensions_Selenium2TestCase_Element[]
+     */
+    protected function _getWrappedElements($waitForElementPresent = true)
+    {
+        if (!$this->_wrappedElements) {
+            $context = !empty($this->_context)
+                ? $this->_context->_getWrappedElement($waitForElementPresent)
+                : $this->_driver;
+            $criteria = new \PHPUnit_Extensions_Selenium2TestCase_ElementCriteria($this->_locator['using']);
+            $criteria->value($this->_locator['value']);
+            if ($waitForElementPresent) {
+                $wrappedElements = $this->_driver->waitUntil(
+                    function () use ($context, $criteria) {
+                        return $context->elements($criteria);
+                    }
+                );
+            } else {
+                $driver = $this->_driver;
+                $this->_driver->waitUntil(
+                    function () use ($driver) {
+                        $result = $driver->execute(
+                            ['script' => "return document['readyState']", 'args' => []]
+                        );
+                        return $result === 'complete' || $result === 'uninitialized';
+                    }
+                );
+                $wrappedElements = $context->elements($criteria);
+            }
+            foreach ($wrappedElements as $wrappedElement) {
+                $element = \Mtf\ObjectManager::getInstance()->create(get_class($this), ['locator' => $this->_locator]);
+                $element->_wrappedElement = $wrappedElement;
+                $this->_wrappedElements[] = $element;
+            }
+        }
+        return $this->_wrappedElements;
     }
 }
