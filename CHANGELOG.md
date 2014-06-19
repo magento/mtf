@@ -4,6 +4,9 @@
   * Added screenshots capturing on events
   * Added logger for client js errors
   * Added exception handler logger
+* Implement getElements() method
+* Fixed bugs:
+  * Fixed an issue with using specified class as typified element
 
 1.0.0-dev.2
 =============
