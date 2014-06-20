@@ -4,6 +4,9 @@
   * Added screenshots capturing on events
   * Added logger for client js errors
   * Added exception handler logger
+* Move to phpunit 4.x
+  * Set the version requirement to be >= 3.7, both 3.7.x and 4.x phpunit should be acceptable
+  * Add addRiskyTest function to StateListener, the phpunit 4.x interface PHPUnit_Framework_TestListener requires it
 
 1.0.0-dev.2
 =============
