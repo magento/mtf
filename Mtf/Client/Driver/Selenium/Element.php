@@ -409,9 +409,7 @@ class Element implements ElementInterface
     protected function _getWrappedElements($waitForElementPresent = true)
     {
         if (!$this->_wrappedElements) {
-            $context = !empty($this->_context)
-                ? $this->_context->_getWrappedElement($waitForElementPresent)
-                : $this->_driver;
+            $context = $this->getContext($waitForElementPresent);
             $criteria = new \PHPUnit_Extensions_Selenium2TestCase_ElementCriteria($this->_locator['using']);
             $criteria->value($this->_locator['value']);
             if ($waitForElementPresent) {
@@ -421,15 +419,7 @@ class Element implements ElementInterface
                     }
                 );
             } else {
-                $driver = $this->_driver;
-                $this->_driver->waitUntil(
-                    function () use ($driver) {
-                        $result = $driver->execute(
-                            ['script' => "return document['readyState']", 'args' => []]
-                        );
-                        return $result === 'complete' || $result === 'uninitialized';
-                    }
-                );
+                $this->waitPageToLoad();
                 $wrappedElements = $context->elements($criteria);
             }
             foreach ($wrappedElements as $wrappedElement) {
@@ -439,5 +429,36 @@ class Element implements ElementInterface
             }
         }
         return $this->_wrappedElements;
+    }
+
+    /**
+     * Get context for an element
+     *
+     * @param $waitForElementPresent
+     * @return TestCase|\PHPUnit_Extensions_Selenium2TestCase_Element
+     */
+    protected function getContext($waitForElementPresent)
+    {
+        return !empty($this->context)
+            ? $this->context->getWrappedElement($waitForElementPresent)
+            : $this->_driver;
+    }
+
+    /**
+     * Wait while page will be loaded to search an element
+     *
+     * @return void
+     */
+    protected function waitPageToLoad()
+    {
+        $driver = $this->_driver;
+        $this->_driver->waitUntil(
+            function () use ($driver) {
+                $result = $driver->execute(
+                    ['script' => "return document['readyState']", 'args' => []]
+                );
+                return $result === 'complete' || $result === 'uninitialized';
+            }
+        );
     }
 }

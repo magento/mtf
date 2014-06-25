@@ -4,7 +4,7 @@
   * Added screenshots capturing on events
   * Added logger for client js errors
   * Added exception handler logger
-* Implement getElements() method
+* Added getElements() method which returns an array of wrappedElements by specified locator
 * Fixed bugs:
   * Fixed an issue with using specified class as typified element
 
