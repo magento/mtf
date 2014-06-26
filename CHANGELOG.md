@@ -5,6 +5,7 @@
   * Added logger for client js errors
   * Added exception handler logger
 * Added getElements() method which returns an array of wrappedElements by specified locator
+* Added an ability to return objects from test case method
 * Fixed bugs:
   * Fixed an issue with using specified class as typified element
 

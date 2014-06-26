@@ -55,32 +55,16 @@ abstract class Curl implements HandlerInterface
     protected function replaceMappingData(array $data)
     {
         foreach ($data as $key => $value) {
-            if (!isset($this->mappingData[$key])) {
-                continue;
-            }
             if (is_array($value)) {
-                $data[$key] = $this->replaceMappingValues($value, $this->mappingData[$key]);
+                $data[$key] = $this->replaceMappingData($value);
             } else {
+                if (!isset($this->mappingData[$key])) {
+                    continue;
+                }
                 $data[$key] = isset($this->mappingData[$key][$value]) ? $this->mappingData[$key][$value] : $value;
             }
         }
-        return $data;
-    }
 
-    /**
-     * Replace mapping data in fixture values
-     *
-     * @param array $data
-     * @param array $mappingData
-     * @return array
-     */
-    private function replaceMappingValues(array $data, array $mappingData)
-    {
-        foreach ($data as $key => $value) {
-            if (isset($mappingData[$value])) {
-                $data[$key] = $mappingData[$value];
-            }
-        }
         return $data;
     }
 }
