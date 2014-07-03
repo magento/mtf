@@ -4,10 +4,13 @@
   * Added screenshots capturing on events
   * Added logger for client js errors
   * Added exception handler logger
-* Added getElements() method which returns an array of wrappedElements by specified locator
-* Added an ability to return objects from test case method
+* Move to phpunit 4.x
+  * Set the version requirement to be >= 3.7, both 3.7.x and 4.x phpunit should be acceptable
+  * Add addRiskyTest function to StateListener, the phpunit 4.x interface PHPUnit_Framework_TestListener requires it
 * Fixed bugs:
   * Fixed an issue with using specified class as typified element
+* Added getElements() method which returns an array of wrappedElements by specified locator
+* Added an ability to return objects from test case method
 
 1.0.0-dev.2
 =============
