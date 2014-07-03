@@ -148,4 +148,11 @@ interface Element
      * @return string
      */
     public function getUrl();
+
+    /**
+     * Get all elements by locator
+     *
+     * @return Element[]
+     */
+    public function getElements();
 }
