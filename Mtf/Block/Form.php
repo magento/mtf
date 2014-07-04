@@ -172,6 +172,9 @@ class Form extends Block
                 $mapping[$key]['input'] = isset($mappingFields[$key]['input'])
                     ? $mappingFields[$key]['input']
                     : null;
+                $mapping[$key]['class'] = isset($mappingFields[$key]['class'])
+                    ? $mappingFields[$key]['class']
+                    : null;
                 $mapping[$key]['value'] = $this->mappingMode
                     ? (isset($fields[$key]['value']) ? $fields[$key]['value'] : $fields[$key])
                     : $value;
