@@ -12,6 +12,7 @@
   * Fixed an issue with running Injectable tests on PHPUnit 4.1.0
 * Added getElements() method which returns an array of wrappedElements by specified locator
 * Added an ability to return objects from test case method
+* Added an ability to skip field in *.csv data set file for any array depth
 
 1.0.0-dev.2
 =============

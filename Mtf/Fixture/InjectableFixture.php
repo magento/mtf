@@ -131,40 +131,82 @@ class InjectableFixture implements FixtureInterface
         if (!$data) {
             $data = $this->defaultDataSet;
         }
-        foreach ($data as $key => $value) {
-            if (!isset($this->$key)) {
+
+        foreach ($data as $name => $value) {
+            if (!isset($this->$name)) {
                 continue;
             }
-            if ($value === '-') {
-                continue;
-            }
-            $params = & $this->$key;
+
+            $params = $this->$name;
             if ($value === null) {
                 $value = isset($params['default_value']) ? $params['default_value'] : null;
             }
+
             $source = $this->getSourceParam($params);
             if ($source) {
-                $fixture = $this->fixtureFactory->create(
-                    $source['source'],
-                    [
-                        'data' => $value,
-                        'params' => $params,
-                        'persist' => true
-                    ]
-                );
-                $params[$source['field']] = $fixture;
-                $value = $fixture->getData();
-                if ($value === null) {
-                    continue;
-                }
+                $value = $this->prepareSource($name, $value, $source);
+            } else {
+                $value = $this->skipEmptyValue($value);
             }
-            $this->data[$key] = $value;
+
+            if (null !== $value) {
+                $this->data[$name] = $value;
+            }
         }
 
         $this->_applyPlaceholders($this->data, ['isolation' => mt_rand()]);
         if ($persist === true) {
             $this->persist();
         }
+    }
+
+    /**
+     * Skip empty value of fixture data
+     *
+     * @param mixed $value
+     * @return mixed
+     */
+    protected function skipEmptyValue($value)
+    {
+        if ('-' == $value) {
+            return null;
+        }
+        if (is_array($value)) {
+            $result = [];
+            foreach ($value as $key => $subValue) {
+                $result[$key] = $this->skipEmptyValue($subValue);
+            }
+            $result = array_filter($result);
+            return empty($result) ? null : $result;
+        }
+        return $value;
+    }
+
+    /**
+     * Prepare source data
+     *
+     * @param string $fieldName
+     * @param mixed $value
+     * @param array $source
+     * @return mixed
+     */
+    protected function prepareSource($fieldName, $value, array $source)
+    {
+        $value = $this->skipEmptyValue($value);
+        if (null !== $value) {
+            $params = &$this->$fieldName;
+            $fixture = $this->fixtureFactory->create(
+                $source['source'],
+                [
+                    'data' => $value,
+                    'params' => $params,
+                    'persist' => true
+                ]
+            );
+            $params[$source['field']] = $fixture;
+            $value = $fixture->getData();
+        }
+        return $value;
     }
 
     /**
