@@ -169,4 +169,15 @@ class TestSuite extends \PHPUnit_Framework_TestSuite
 
         return $result;
     }
+
+    /**
+     * Check whether a test method is public
+     *
+     * @param \ReflectionMethod $method
+     * @return boolean
+     */
+    public static function isPublicTestMethod(\ReflectionMethod $method)
+    {
+        return (strpos($method->name, 'test') === 0 && $method->isPublic());
+    }
 }
