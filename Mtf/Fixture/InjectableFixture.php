@@ -168,15 +168,17 @@ class InjectableFixture implements FixtureInterface
      */
     protected function skipEmptyValue($value)
     {
-        if ('-' == $value) {
+        if ('-' === $value) {
             return null;
         }
         if (is_array($value)) {
             $result = [];
             foreach ($value as $key => $subValue) {
-                $result[$key] = $this->skipEmptyValue($subValue);
+                $data = $this->skipEmptyValue($subValue);
+                if ($data !== null) {
+                    $result[$key] = $data;
+                }
             }
-            $result = array_filter($result);
             return empty($result) ? null : $result;
         }
         return $value;
