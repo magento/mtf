@@ -107,7 +107,7 @@ class Process
         ];
 
         $this->_process = proc_open(
-            $this->getPhpUnitUtils()->getPhpBinary(),
+            PHP_BINARY,
             $descriptor,
             $this->_pipes
         );

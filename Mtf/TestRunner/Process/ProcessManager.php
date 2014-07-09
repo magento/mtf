@@ -209,7 +209,7 @@ class ProcessManager
         Environment $environment
     ) {
         if ($result === null) {
-            $result = new PHPUnit_Framework_TestResult;
+            $result = new \PHPUnit_Framework_TestResult();
         }
 
         $class = new \ReflectionClass($testcase);
@@ -226,12 +226,6 @@ class ProcessManager
             $coverage = 'TRUE';
         } else {
             $coverage = 'FALSE';
-        }
-
-        if ($result->isStrict()) {
-            $strict = 'TRUE';
-        } else {
-            $strict = 'FALSE';
         }
 
         if (defined('MTF_BOOT_FILE')) {
@@ -268,7 +262,6 @@ class ProcessManager
                 'data' => $data,
                 'dataName' => $params['dataName'],
                 'include_path' => $includePath,
-                'strict' => $strict,
                 'env' => $env
             )
         );

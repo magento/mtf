@@ -68,4 +68,14 @@ class TestCase extends \PHPUnit_Extensions_Selenium2TestCase
     {
         $this->setUpSessionStrategy(['sessionStrategy' => $strategy]);
     }
+
+    /**
+     * Avoid serialization of closure
+     * 
+     * @return array
+     */
+    public function __sleep()
+    {
+        return [];
+    }
 }

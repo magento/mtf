@@ -36,8 +36,6 @@ function __phpunit_run_isolated_test()
         $result->setCodeCoverage(new PHP_CodeCoverage);
     }
 
-    $result->strictMode({strict});
-
     $test = new {className}('{methodName}', unserialize('{data}'), '{dataName}');
     $test->setParallelRun(FALSE);
     $test->setInIsolation(TRUE);
