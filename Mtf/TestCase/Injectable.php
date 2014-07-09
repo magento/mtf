@@ -217,7 +217,7 @@ abstract class Injectable extends Functional
                 }
             }
             if ($includeData) {
-                $buffer .= sprintf(' (%s)', $this->dataToString($this->variationName));
+                $buffer .= sprintf(' (%s)', $this->variationName);
             }
         } else {
             $buffer = parent::getDataSetAsString($includeData);
