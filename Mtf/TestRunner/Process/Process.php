@@ -106,8 +106,10 @@ class Process
             2 => ['pipe', 'w']
         ];
 
+        $runtime = new \SebastianBergmann\Environment\Runtime();
+
         $this->_process = proc_open(
-            PHP_BINARY,
+            $runtime->getBinary(),
             $descriptor,
             $this->_pipes
         );
@@ -243,6 +245,10 @@ class Process
         /* Needs to start the test here because the result itself may be shared across processes, and it
            keeps track of the current test
         */
+        $stdout = $this->_stdout;
+        if (strpos($stdout, "#!/usr/bin/env php\n") === 0) {
+            $stdout = substr($stdout, 19);
+        }
         $this->_result->startTest($this->_test);
         $this->getPhpUnitUtils()->processChildResult($this->_test, $this->_result, $this->_stdout, $this->_stderr);
     }

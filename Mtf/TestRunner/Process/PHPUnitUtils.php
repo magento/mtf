@@ -47,19 +47,26 @@ class PHPUnitUtils extends \PHPUnit_Util_PHP
      * @param string $stderr
      * @return void
      */
-    public function processChildResult(\PHPUnit_Framework_Test $test, \PHPUnit_Framework_TestResult $result, $stdout, $stderr)
-    {
+    public function processChildResult(
+        \PHPUnit_Framework_Test $test,
+        \PHPUnit_Framework_TestResult $result,
+        $stdout,
+        $stderr
+    ) {
         $time = 0;
 
         if (!empty($stderr)) {
             $result->addError(
                 $test,
-                new \PHPUnit_Framework_Exception(trim($stderr)), $time
+                new \PHPUnit_Framework_Exception(trim($stderr)),
+                $time
             );
         } else {
-            set_error_handler(function ($errno, $errstr, $errfile, $errline) {
+            set_error_handler(
+                function ($errno, $errstr, $errfile, $errline) {
                     throw new \ErrorException($errstr, $errno, $errno, $errfile, $errline);
-                });
+                }
+            );
             try {
                 if (strpos($stdout, "#!/usr/bin/env php\n") === 0) {
                     $stdout = substr($stdout, 19);
@@ -72,7 +79,9 @@ class PHPUnitUtils extends \PHPUnit_Util_PHP
                 $childResult = false;
 
                 $result->addError(
-                    $test, new \PHPUnit_Framework_Exception(trim($stdout), 0, $e), $time
+                    $test,
+                    new \PHPUnit_Framework_Exception(trim($stdout), 0, $e),
+                    $time
                 );
             }
 
@@ -92,32 +101,42 @@ class PHPUnitUtils extends \PHPUnit_Util_PHP
                     );
                 }
 
-                $time           = $childResult->time();
+                $time = $childResult->time();
                 $notImplemented = $childResult->notImplemented();
-                $risky          = $childResult->risky();
-                $skipped        = $childResult->skipped();
-                $errors         = $childResult->errors();
-                $failures       = $childResult->failures();
+                $risky = $childResult->risky();
+                $skipped = $childResult->skipped();
+                $errors = $childResult->errors();
+                $failures = $childResult->failures();
 
                 if (!empty($notImplemented)) {
                     $result->addError(
-                        $test, $this->getException($notImplemented[0]), $time
+                        $test,
+                        $this->getException($notImplemented[0]),
+                        $time
                     );
                 } elseif (!empty($risky)) {
                     $result->addError(
-                        $test, $this->getException($risky[0]), $time
+                        $test,
+                        $this->getException($risky[0]),
+                        $time
                     );
                 } elseif (!empty($skipped)) {
                     $result->addError(
-                        $test, $this->getException($skipped[0]), $time
+                        $test,
+                        $this->getException($skipped[0]),
+                        $time
                     );
                 } elseif (!empty($errors)) {
                     $result->addError(
-                        $test, $this->getException($errors[0]), $time
+                        $test,
+                        $this->getException($errors[0]),
+                        $time
                     );
                 } elseif (!empty($failures)) {
                     $result->addFailure(
-                        $test, $this->getException($failures[0]), $time
+                        $test,
+                        $this->getException($failures[0]),
+                        $time
                     );
                 }
             }
@@ -140,7 +159,7 @@ class PHPUnitUtils extends \PHPUnit_Util_PHP
 
         if ($exception instanceof \__PHP_Incomplete_Class) {
             $exceptionArray = array();
-            foreach ((array) $exception as $key => $value) {
+            foreach ((array)$exception as $key => $value) {
                 $key = substr($key, strrpos($key, "\0") + 1);
                 $exceptionArray[$key] = $value;
             }
