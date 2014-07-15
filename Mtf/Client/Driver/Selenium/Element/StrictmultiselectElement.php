@@ -26,8 +26,7 @@ class StrictmultiselectElement extends MultiselectElement
     {
         $this->_eventManager->dispatchEvent(['set_value'], [__METHOD__, $this->getAbsoluteSelector()]);
         $this->clearSelectedOptions();
-        $values = is_array($values) ? $values : [$values];
-        foreach ($values as $label) {
+        foreach ((array)$values as $label) {
             $this->_getWrappedElement()->selectOptionByLabel($label);
         }
     }

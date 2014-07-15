@@ -40,6 +40,6 @@ class StrictselectElement extends SelectElement
         $optionLocator = ".//optgroup[@label='$optionGroup']/option[.=, '$value']";
         $criteria = new \PHPUnit_Extensions_Selenium2TestCase_ElementCriteria('xpath');
         $criteria->value($optionLocator);
-        $this->_getWrappedElement(true)->selectOptionByCriteria($criteria);
+        $this->_getWrappedElement()->selectOptionByCriteria($criteria);
     }
 }

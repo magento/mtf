@@ -70,8 +70,7 @@ class MultiselectElement extends SelectElement
     {
         $this->_eventManager->dispatchEvent(['set_value'], [__METHOD__, $this->getAbsoluteSelector()]);
         $this->clearSelectedOptions();
-        $values = is_array($values) ? $values : [$values];
-        foreach ($values as $label) {
+        foreach ((array)$values as $label) {
             $criteria = new \PHPUnit_Extensions_Selenium2TestCase_ElementCriteria('xpath');
             $criteria->value('.//option[contains(text(), "' . $label . '")]');
             $this->_getWrappedElement()->selectOptionByCriteria($criteria);
