@@ -13,6 +13,7 @@
 * Added getElements() method which returns an array of wrappedElements by specified locator
 * Added an ability to return objects from test case method
 * Added an ability to skip field in *.csv data set file for any array depth
+* Added an ability to select strict and nonstrict values for select and multiselect elements
 
 1.0.0-dev.2
 =============

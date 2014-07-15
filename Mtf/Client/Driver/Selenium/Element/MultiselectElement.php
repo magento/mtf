@@ -70,17 +70,17 @@ class MultiselectElement extends SelectElement
     {
         $this->_eventManager->dispatchEvent(['set_value'], [__METHOD__, $this->getAbsoluteSelector()]);
         $this->clearSelectedOptions();
-        if (is_array($values)) {
-            foreach ($values as $value) {
-                $this->_getWrappedElement()->selectOptionByLabel($value);
-            }
-        } else {
-            $this->_getWrappedElement()->selectOptionByLabel($values);
+        $values = is_array($values) ? $values : [$values];
+        foreach ($values as $label) {
+            $criteria = new \PHPUnit_Extensions_Selenium2TestCase_ElementCriteria('xpath');
+            $criteria->value('.//option[contains(text(), "' . $label . '")]');
+            $this->_getWrappedElement()->selectOptionByCriteria($criteria);
         }
     }
 
     /**
      * Clear selected options in multiple select
+     *
      * @return void
      */
     public function clearSelectedOptions()
