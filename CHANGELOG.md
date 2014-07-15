@@ -1,3 +1,21 @@
+1.0.0-dev.3
+=============
+* Created Event Management and observers structure
+  * Added logger to store errors and events
+  * Added logger for html source code
+  * Added screenshots capturing on events
+  * Added logger for client js errors
+  * Added exception handler logger
+* Move to phpunit 4.x
+  * Set the version requirement to be >= 3.7, both 3.7.x and 4.x phpunit should be acceptable
+  * Add addRiskyTest function to StateListener, the phpunit 4.x interface PHPUnit_Framework_TestListener requires it
+* Fixed bugs:
+  * Fixed an issue with using specified class as typified element
+  * Fixed an issue with running Injectable tests on PHPUnit 4.1.0
+* Added getElements() method which returns an array of wrappedElements by specified locator
+* Added an ability to return objects from test case method
+* Added an ability to skip field in *.csv data set file for any array depth
+
 1.0.0-dev.2
 =============
 * Added requirements section into a composer.json file

@@ -53,8 +53,8 @@ class Pages extends GenerateAbstract
         $className = implode('', $classNameArray) . ucfirst($mca['action_name']);
 
         $content = "<?php\n\n";
-        $content .= "namespace {$ns}; \n\n";
-        $content .= "use Mtf\\Page\\Page; \n\n";
+        $content .= "namespace {$ns};\n\n";
+        $content .= "use Mtf\\Page\\Page;\n\n";
         $content .= "class {$className} extends Page\n";
         $content .= "{\n";
         $content .= "    const MCA = '{$mca['mca']}';\n";

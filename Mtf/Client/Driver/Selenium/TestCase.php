@@ -8,6 +8,9 @@
 
 namespace Mtf\Client\Driver\Selenium;
 
+use Mtf\System\Event\EventManager;
+use Mtf\System\Config;
+
 /**
  * Class TestCase
  *
@@ -19,20 +22,27 @@ namespace Mtf\Client\Driver\Selenium;
 class TestCase extends \PHPUnit_Extensions_Selenium2TestCase
 {
     /**
-     * Timeout for waitUntil
+     * @var EventManager
+     */
+    protected $eventManager;
+
+    /**
+     * Timeout for wait until
      * @var int
      */
-    private $_timeout;
+    protected $timeout;
 
     /**
      * Constructor
      *
      * @constructor
-     * @param \Mtf\System\Config $config
+     * @param Config $config
+     * @param EventManager $eventManager
      */
-    public function __construct(\Mtf\System\Config $config)
+    public function __construct(Config $config, EventManager $eventManager)
     {
-        $this->_timeout = $config->getConfigParam('server/selenium/seleniumServerRequestsTimeout', 10) * 1000;
+        $this->timeout = $config->getConfigParam('server/selenium/seleniumServerRequestsTimeout', 10) * 1000;
+        $this->eventManager = $eventManager;
     }
 
     /**
@@ -45,7 +55,7 @@ class TestCase extends \PHPUnit_Extensions_Selenium2TestCase
     public function waitUntil($callback, $timeout = null)
     {
         $waitUntil = new WaitUntil($this);
-        return $waitUntil->run($callback, $this->_timeout);
+        return $waitUntil->run($callback, $this->timeout);
     }
 
     /**

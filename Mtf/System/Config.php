@@ -52,7 +52,7 @@ class Config
                 self::getEnvironmentValue('server_config_path', 'config/server.yml.dist'),
                 self::getEnvironmentValue('app_config_path', 'config/application.yml.dist'),
                 self::getEnvironmentValue('isolation_config_path', 'config/isolation.yml.dist'),
-                self::getEnvironmentValue('handlers_config_path', 'config/handler.yml.dist')
+                self::getEnvironmentValue('handlers_config_path', 'config/handler.yml.dist'),
             ];
         }
 

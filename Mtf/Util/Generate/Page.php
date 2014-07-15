@@ -238,8 +238,8 @@ class Page extends AbstractGenerate
         $content .= " * @copyright   {copyright}\n";
         $content .= " * @license     {license_link}\n";
         $content .= " */\n\n";
-        $content .= "namespace {$ns}; \n\n";
-        $content .= "use Mtf\\Page\\{$area}; \n\n";
+        $content .= "namespace {$ns};\n\n";
+        $content .= "use Mtf\\Page\\{$area};\n\n";
         $content .= "/**\n";
         $content .= " * Class {$className}\n";
         $content .= " *\n";

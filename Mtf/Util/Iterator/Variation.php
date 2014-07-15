@@ -155,13 +155,15 @@ class Variation extends AbstractIterator
     protected function setArrayPathValue(array &$data, $key, $value)
     {
         $keys = explode('/', $key);
-        while ($key = array_shift($keys)) {
+        $key = array_shift($keys);
+        while ($key !== null) {
             if (!isset($data[$key])) {
                 $data[$key] = null;
                 $data = & $data[$key];
             } else {
                 $data = & $data[$key];
             }
+            $key = array_shift($keys);
         }
         $data = $value;
     }

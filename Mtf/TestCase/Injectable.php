@@ -145,6 +145,7 @@ abstract class Injectable extends Functional
                 $this->executeTestVariation($result, $variation);
             }
             $testVariationIterator->next();
+            $this->localArguments = [];
         }
         self::$sharedArguments = [];
 
@@ -173,8 +174,9 @@ abstract class Injectable extends Functional
 
         if (isset($variation['constraint'])) {
             $this->constraint = $variation['constraint'];
-            $this->constraint->configure($this, array_merge($arguments, $this->localArguments));
+            $this->localArguments = array_merge($arguments, $this->localArguments);
         }
+
         parent::run($result);
     }
 
@@ -187,9 +189,12 @@ abstract class Injectable extends Functional
     protected function runTest()
     {
         $testResult = parent::runTest();
+        $this->localArguments = array_merge($this->localArguments, is_array($testResult) ? $testResult : []);
         if ($this->constraint) {
+            $this->constraint->configure($this, $this->localArguments);
             self::assertThat($this->getName(), $this->constraint);
         }
+
         return $testResult;
     }
 
@@ -212,7 +217,7 @@ abstract class Injectable extends Functional
                 }
             }
             if ($includeData) {
-                $buffer .= sprintf(' (%s)', $this->dataToString($this->variationName));
+                $buffer .= sprintf(' (%s)', $this->variationName);
             }
         } else {
             $buffer = parent::getDataSetAsString($includeData);

@@ -25,6 +25,7 @@
                 <object class="Mtf\System\Isolation\Driver\Base"/>
             </arguments>
         </listener>
+        <listener class="Mtf\System\Event\StateListener"/>
     </listeners>
 
     <php>
@@ -35,6 +36,8 @@
         <env name="isolation_config_path" value="config/isolation.yml.dist"/>
         <env name="handlers_config_path" value="config/handler.yml.dist"/>
         <env name="configuration:Magento/Mtf/TestSuite/MtfTests" value="basic"/>
+        <env name="log_directory" value="var/log"/>
+        <env name="events_preset" value="base"/>
     </php>
 
 </phpunit>

@@ -11,6 +11,7 @@ namespace Mtf\Fixture;
 use Mtf\Handler\HandlerFactory;
 use Mtf\Repository\RepositoryFactory;
 use Mtf\System\Config;
+use Mtf\System\Event\EventManagerInterface;
 
 /**
  * Class InjectableFixture
@@ -91,6 +92,11 @@ class InjectableFixture implements FixtureInterface
     protected $sourceParamsFallback = ['source', 'fixture'];
 
     /**
+     * @var \Mtf\System\Event\EventManagerInterface
+     */
+    protected $eventManager;
+
+    /**
      * Constructor
      *
      * @constructor
@@ -98,6 +104,7 @@ class InjectableFixture implements FixtureInterface
      * @param RepositoryFactory $repositoryFactory
      * @param FixtureFactory $fixtureFactory
      * @param HandlerFactory $handlerFactory
+     * @param EventManagerInterface $eventManager
      * @param array $data
      * @param string $dataSet
      * @param bool $persist
@@ -107,6 +114,7 @@ class InjectableFixture implements FixtureInterface
         RepositoryFactory $repositoryFactory,
         FixtureFactory $fixtureFactory,
         HandlerFactory $handlerFactory,
+        EventManagerInterface $eventManager,
         array $data = [],
         $dataSet = '',
         $persist = false
@@ -115,6 +123,7 @@ class InjectableFixture implements FixtureInterface
         $this->repositoryFactory = $repositoryFactory;
         $this->fixtureFactory = $fixtureFactory;
         $this->handlerFactory = $handlerFactory;
+        $this->eventManager = $eventManager;
 
         if ($dataSet) {
             $data = $this->getDataFromRepository($dataSet, $data);
@@ -122,40 +131,84 @@ class InjectableFixture implements FixtureInterface
         if (!$data) {
             $data = $this->defaultDataSet;
         }
-        foreach ($data as $key => $value) {
-            if (!isset($this->$key)) {
+
+        foreach ($data as $name => $value) {
+            if (!isset($this->$name)) {
                 continue;
             }
-            if ($value === '-') {
-                continue;
-            }
-            $params = & $this->$key;
+
+            $params = $this->$name;
             if ($value === null) {
                 $value = isset($params['default_value']) ? $params['default_value'] : null;
             }
+
             $source = $this->getSourceParam($params);
             if ($source) {
-                $fixture = $this->fixtureFactory->create(
-                    $source['source'],
-                    [
-                        'data' => $value,
-                        'params' => $params,
-                        'persist' => true
-                    ]
-                );
-                $params[$source['field']] = $fixture;
-                $value = $fixture->getData();
-                if ($value === null) {
-                    continue;
-                }
+                $value = $this->prepareSource($name, $value, $source);
+            } else {
+                $value = $this->skipEmptyValue($value);
             }
-            $this->data[$key] = $value;
+
+            if (null !== $value) {
+                $this->data[$name] = $value;
+            }
         }
 
         $this->_applyPlaceholders($this->data, ['isolation' => mt_rand()]);
         if ($persist === true) {
             $this->persist();
         }
+    }
+
+    /**
+     * Skip empty value of fixture data
+     *
+     * @param mixed $value
+     * @return mixed
+     */
+    protected function skipEmptyValue($value)
+    {
+        if ('-' === $value) {
+            return null;
+        }
+        if (is_array($value)) {
+            $result = [];
+            foreach ($value as $key => $subValue) {
+                $data = $this->skipEmptyValue($subValue);
+                if ($data !== null) {
+                    $result[$key] = $data;
+                }
+            }
+            return empty($result) ? null : $result;
+        }
+        return $value;
+    }
+
+    /**
+     * Prepare source data
+     *
+     * @param string $fieldName
+     * @param mixed $value
+     * @param array $source
+     * @return mixed
+     */
+    protected function prepareSource($fieldName, $value, array $source)
+    {
+        $value = $this->skipEmptyValue($value);
+        if (null !== $value) {
+            $params = &$this->$fieldName;
+            $fixture = $this->fixtureFactory->create(
+                $source['source'],
+                [
+                    'data' => $value,
+                    'params' => $params,
+                    'persist' => true
+                ]
+            );
+            $params[$source['field']] = $fixture;
+            $value = $fixture->getData();
+        }
+        return $value;
     }
 
     /**
@@ -183,6 +236,7 @@ class InjectableFixture implements FixtureInterface
      */
     public function persist()
     {
+        $this->eventManager->dispatchEvent(['persist_before'], [get_class($this)]);
         if (!empty($this->handlerInterface)) {
             $result = $this->handlerFactory->get($this->handlerInterface)->persist($this);
             if (!empty($result)) {
@@ -191,6 +245,7 @@ class InjectableFixture implements FixtureInterface
                 }
             }
         }
+        $this->eventManager->dispatchEvent(['persist_after'], [get_class($this)]);
     }
 
     /**

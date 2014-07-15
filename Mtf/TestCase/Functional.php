@@ -58,12 +58,16 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
     private $processManager;
 
     /**
+     * @var \Mtf\System\Event\EventManagerInterface
+     */
+    protected $eventManager;
+
+    /**
      * Constructs a test case with the given name.
      *
-     * @constructor
-     * @param  string $name
-     * @param  array $data
-     * @param  string $dataName
+     * @param null $name
+     * @param array $data
+     * @param string $dataName
      */
     public function __construct($name = null, array $data = [], $dataName = '')
     {
@@ -78,6 +82,7 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
         parent::__construct($name, $data, $dataName);
 
         $this->objectManager = \Mtf\ObjectManagerFactory::getObjectManager();
+        $this->eventManager = $this->objectManager->get('Mtf\System\Event\EventManagerInterface');
 
         $this->_construct();
     }
@@ -108,7 +113,15 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
             );
             $this->processManager->run($this, $result, $params);
         } else {
-            parent::run($result);
+            try {
+                parent::run($result);
+                if ($this->getStatus() == \PHPUnit_Runner_BaseTestRunner::STATUS_ERROR) {
+                    $this->eventManager->dispatchEvent(['exception'], [$this->getStatusMessage()]);
+                }
+            } catch (\Exception $e) {
+                $this->eventManager->dispatchEvent(['exception'], [$e->getMessage()]);
+                throw $e;
+            }
 
             if ($this->processManager->isParallelModeSupported()) {
                 $this->refineTestResult($result);

@@ -116,9 +116,9 @@ class HandlerFactory extends GenerateAbstract
     protected function _startFactory($type)
     {
         $this->_factoryContent = "<?php\n\n";
-        $this->_factoryContent .= "namespace Mtf\\{$type}; \n\n";
-        $this->_factoryContent .= "use Mtf\\System\\Config; \n\n";
-        $this->_factoryContent .= "use Mtf\\Fixture; \n\n";
+        $this->_factoryContent .= "namespace Mtf\\{$type};\n\n";
+        $this->_factoryContent .= "use Mtf\\System\\Config;\n\n";
+        $this->_factoryContent .= "use Mtf\\Fixture;\n\n";
         $this->_factoryContent .= "class {$type}Factory\n";
         $this->_factoryContent .= "{\n";
 
