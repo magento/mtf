@@ -59,13 +59,10 @@ class TestCase extends TestSuite
             $class = $arguments['class'];
 
             $factory = $this->testSuiteFactory;
-            $testCallback = $this->objectManager->create('Mtf\TestSuite\Callback', ['theClass' => $class]);
-            $callbackFunction = function ($result) use ($factory, $class, $arguments) {
-                $testSuite = $factory->create($class, $arguments);
-                $testSuite->run($result);
-            };
-
-            $testCallback->setCallback($callbackFunction);
+            $testCallback = $this->objectManager->create(
+                'Mtf\TestSuite\Callback',
+                ['factory' => $factory, 'arguments' => $arguments, 'theClass' => $class]
+            );
             $rule = $this->objectManager->get('Mtf\TestRunner\Rule\SuiteComposite');
             $testCaseSuite = $this->testSuiteFactory->get($class);
             $allow = $rule->filterSuite($testCaseSuite);

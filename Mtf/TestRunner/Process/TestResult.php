@@ -17,7 +17,6 @@ namespace Mtf\TestRunner\Process;
  */
 class TestResult extends \PHPUnit_Framework_TestResult
 {
-
     /**
      * Adds an error to the list of errors.
      *
@@ -28,8 +27,9 @@ class TestResult extends \PHPUnit_Framework_TestResult
      */
     public function addError(\PHPUnit_Framework_Test $test, \Exception $e, $time)
     {
+        $testResultException = new TestResultException($e);
         if ($e instanceof \PHPUnit_Framework_IncompleteTest) {
-            $this->notImplemented[] = new \PHPUnit_Framework_TestFailure($test, $e);
+            $this->notImplemented[] = new \PHPUnit_Framework_TestFailure($test, $testResultException);
 
             $notifyMethod = 'addIncompleteTest';
 
@@ -38,17 +38,14 @@ class TestResult extends \PHPUnit_Framework_TestResult
             }
         } else {
             if ($e instanceof \PHPUnit_Framework_SkippedTest) {
-                $this->skipped[] = new \PHPUnit_Framework_TestFailure($test, $e);
+                $this->skipped[] = new \PHPUnit_Framework_TestFailure($test, $testResultException);
                 $notifyMethod = 'addSkippedTest';
 
                 if ($this->stopOnSkipped) {
                     $this->stop();
                 }
             } else {
-                if ($e instanceof \PHPUnit_Extensions_Selenium2TestCase_Exception) {
-                    $e = new TestResultException($e);
-                }
-                $this->errors[] = new \PHPUnit_Framework_TestFailure($test, $e);
+                $this->errors[] = new \PHPUnit_Framework_TestFailure($test, $testResultException);
                 $notifyMethod = 'addError';
 
                 if ($this->stopOnError || $this->stopOnFailure) {

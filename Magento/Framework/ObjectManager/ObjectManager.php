@@ -83,4 +83,14 @@ class ObjectManager implements \Magento\Framework\ObjectManager
     {
         $this->_config->extend($configuration);
     }
+
+    /**
+     * Avoid to serialize Closure properties
+     *
+     * @return array
+     */
+    public function __sleep()
+    {
+        return [];
+    }
 }

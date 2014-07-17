@@ -18,4 +18,12 @@ class TestResultException extends \Exception
         $this->file = $e->getFile();
         $this->line = $e->getLine();
     }
+
+    /**
+     * @return array
+     */
+    public function __sleep()
+    {
+        return ['message', 'line', 'code', 'file'];
+    }
 }
