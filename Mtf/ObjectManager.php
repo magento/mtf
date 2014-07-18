@@ -108,4 +108,14 @@ class ObjectManager extends \Magento\Framework\ObjectManager\ObjectManager
         }
         return self::$_instance;
     }
+
+    /**
+     * Avoid to serialize Closure properties
+     *
+     * @return array
+     */
+    public function __sleep()
+    {
+        return [];
+    }
 }

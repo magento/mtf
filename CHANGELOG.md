@@ -1,3 +1,8 @@
+* Fixed bugs:
+  * Fixed exception while running functional tests in parallel mode
+
+1.0.0-dev.3
+=============
 * Created Event Management and observers structure
   * Added logger to store errors and events
   * Added logger for html source code

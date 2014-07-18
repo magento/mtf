@@ -28,16 +28,25 @@ class Callback extends \PHPUnit_Framework_TestSuite
     protected $arguments;
 
     /**
-     * Set callback
-     *
-     * @param Callable $callback
-     * @param array $arguments
-     * @return void
+     * @var \Mtf\TestSuite\TestSuiteFactory
      */
-    public function setCallback($callback, array $arguments = [])
-    {
-        $this->callback = $callback;
+    protected $factory;
+
+    /**
+     * @param TestSuiteFactory $factory
+     * @param array $arguments
+     * @param mixed $theClass
+     * @param string $name
+     */
+    public function __construct(
+        \Mtf\TestSuite\TestSuiteFactory $factory,
+        array $arguments = [],
+        $theClass = '',
+        $name = ''
+    ) {
+        $this->factory = $factory;
         $this->arguments = $arguments;
+        parent::__construct($theClass, $name);
     }
 
     /**
@@ -48,9 +57,7 @@ class Callback extends \PHPUnit_Framework_TestSuite
      */
     public function run(\PHPUnit_Framework_TestResult $result = null)
     {
-        if ($this->callback) {
-            $function = $this->callback;
-            return $function($result);
-        }
+        $testClass = $this->factory->create($this->getName(), $this->arguments);
+        return $testClass->run($result);
     }
 }

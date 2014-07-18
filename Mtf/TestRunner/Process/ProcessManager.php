@@ -209,7 +209,7 @@ class ProcessManager
         Environment $environment
     ) {
         if ($result === null) {
-            $result = new PHPUnit_Framework_TestResult;
+            $result = new \PHPUnit_Framework_TestResult();
         }
 
         $class = new \ReflectionClass($testcase);
@@ -228,16 +228,12 @@ class ProcessManager
             $coverage = 'FALSE';
         }
 
-        if ($result->isStrict()) {
-            $strict = 'TRUE';
+        if (defined('MTF_BOOT_FILE')) {
+            $bootstrap = var_export(MTF_BOOT_FILE, true);
+        } else if (defined('PHPUNIT_COMPOSER_INSTALL')) {
+            $bootstrap = var_export(PHPUNIT_COMPOSER_INSTALL, true);
         } else {
-            $strict = 'FALSE';
-        }
-
-        if (defined('PHPUNIT_COMPOSER_INSTALL')) {
-            $composerAutoload = var_export(PHPUNIT_COMPOSER_INSTALL, true);
-        } else {
-            $composerAutoload = '\'\'';
+            $bootstrap = '\'\'';
         }
 
         if (defined('__PHPUNIT_PHAR__')) {
@@ -257,7 +253,7 @@ class ProcessManager
 
         $template->setVar(
             array(
-                'composerAutoload' => $composerAutoload,
+                'bootstrap' => $bootstrap,
                 'phar' => $phar,
                 'filename' => $class->getFileName(),
                 'className' => $class->getName(),
@@ -266,7 +262,6 @@ class ProcessManager
                 'data' => $data,
                 'dataName' => $params['dataName'],
                 'include_path' => $includePath,
-                'strict' => $strict,
                 'env' => $env
             )
         );

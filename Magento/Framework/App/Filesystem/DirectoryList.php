@@ -16,6 +16,11 @@ use Magento\Framework\App\Filesystem;
 class DirectoryList extends \Magento\Framework\Filesystem\DirectoryList
 {
     /**
+     * Directory for dynamically generated public view files, relative to STATIC_VIEW_DIR
+     */
+    const CACHE_VIEW_REL_DIR = '_cache';
+
+    /**
      * Directories configurations
      *
      * @var array
@@ -25,7 +30,7 @@ class DirectoryList extends \Magento\Framework\Filesystem\DirectoryList
         Filesystem::APP_DIR => array('path' => 'app'),
         Filesystem::MODULES_DIR => array('path' => 'app/code'),
         Filesystem::CONFIG_DIR => array('path' => 'app/etc'),
-        Filesystem::LIB_DIR => array('path' => 'lib'),
+        Filesystem::LIB_INTERNAL => array('path' => 'lib/internal'),
         Filesystem::VAR_DIR => array(
             'path' => 'var',
             'read_only' => false,
