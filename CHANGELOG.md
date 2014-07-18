@@ -1,5 +1,6 @@
 * Fixed bugs:
   * Fixed exception while running functional tests in parallel mode
+  * Fixed an error in getElements() method with finding elements in specified context
 
 1.0.0-dev.3
 =============
