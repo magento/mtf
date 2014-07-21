@@ -425,7 +425,8 @@ class Element implements ElementInterface
             foreach ($wrappedElements as $wrappedElement) {
                 $element = \Mtf\ObjectManager::getInstance()->create(
                     get_class($this),
-                    ['locator' => $this->_locator, 'driver' => $this->_driver, 'context' => $this->_context]);
+                    ['locator' => $this->_locator, 'driver' => $this->_driver, 'context' => $this->_context]
+                );
                 $element->_wrappedElement = $wrappedElement;
                 $this->_wrappedElements[] = $element;
             }
