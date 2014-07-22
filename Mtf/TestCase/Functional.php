@@ -173,4 +173,14 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
             }
         }
     }
+
+    /**
+     * Avoid attempt to serialize a Closure
+     *
+     * @return array
+     */
+    public function __sleep()
+    {
+        return [];
+    }
 }

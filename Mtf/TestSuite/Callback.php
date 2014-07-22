@@ -60,4 +60,14 @@ class Callback extends \PHPUnit_Framework_TestSuite
         $testClass = $this->factory->create($this->getName(), $this->arguments);
         return $testClass->run($result);
     }
+
+    /**
+     * Avoid attempt to serialize callback
+     *
+     * @return array
+     */
+    public function __sleep()
+    {
+        return ['arguments'];
+    }
 }
