@@ -51,7 +51,7 @@ class ProcessManager
      *
      * @var int
      */
-    protected $processRunTimeout = 1200;
+    protected $processRunTimeout = 1800;
 
     /**
      * @param Environment[] $environments
