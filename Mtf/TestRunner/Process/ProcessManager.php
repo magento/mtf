@@ -47,7 +47,7 @@ class ProcessManager
     protected $isParallelRun = false;
 
     /**
-     * 20 minutes
+     * 30 minutes
      *
      * @var int
      */
@@ -56,7 +56,7 @@ class ProcessManager
     /**
      * @param Environment[] $environments
      */
-    public function __construct($environments)
+    public function __construct(array $environments)
     {
         $this->_environments = $environments;
         if (count($environments) > 1) {
