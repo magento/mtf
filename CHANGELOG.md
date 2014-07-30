@@ -1,5 +1,6 @@
 * Fixed bugs:
   * Fixed exception while running functional tests in parallel mode
+  * Fixed exception while running injectable tests in parallel mode
 
 1.0.0-dev.3
 =============

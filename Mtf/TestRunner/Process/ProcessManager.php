@@ -151,7 +151,7 @@ class ProcessManager
      *
      * @param Process $process
      * @return void
-     * @throws \Exception
+     * @throws \PHPUnit_Framework_Exception
      */
     private function removeDoneProcess($process)
     {
