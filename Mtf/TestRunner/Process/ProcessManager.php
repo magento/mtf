@@ -42,11 +42,26 @@ class ProcessManager
     protected $_environments = [];
 
     /**
+     * @var bool
+     */
+    protected $isParallelRun = false;
+
+    /**
+     * 30 minutes
+     *
+     * @var int
+     */
+    protected $processRunTimeout = 1800;
+
+    /**
      * @param Environment[] $environments
      */
-    public function __construct($environments)
+    public function __construct(array $environments)
     {
         $this->_environments = $environments;
+        if (count($environments) > 1) {
+            $this->isParallelRun = true;
+        }
     }
 
     /**
@@ -70,18 +85,21 @@ class ProcessManager
      * completes.
      *
      * @return void
+     * @throws \PHPUnit_Framework_Exception
      */
     public function waitForSingleProcessToComplete()
     {
         $originalProcessCount = count($this->_processes);
         if ($originalProcessCount === 0) {
-            return;
+            throw new \PHPUnit_Framework_Exception('Cannot wait for process to complete. No processes!');
         }
 
-        /* wait for 10 minutes */
-        $endTime = time() + (10 * 60);
-        while ((count($this->_processes) >= $originalProcessCount) && (time() < $endTime)) {
-            $this->runLoop(120);
+        $endTime = time() + $this->processRunTimeout;
+        while ((count($this->_processes) >= $originalProcessCount)) {
+            $this->runLoop();
+            if ((time() > $endTime)) {
+                throw new \PHPUnit_Framework_Exception('Timeout while waiting for single process to complete!');
+            }
         }
     }
 
@@ -92,10 +110,8 @@ class ProcessManager
      */
     public function waitForProcessesToComplete()
     {
-        /* wait for 10 minutes */
-        $endTime = time() + (10 * 60);
-        while ((count($this->_processes) > 0) && (time() < $endTime)) {
-            $this->runLoop(120);
+        while ((count($this->_processes) > 0)) {
+            $this->runLoop();
         }
     }
 
@@ -106,71 +122,26 @@ class ProcessManager
      */
     public function isParallelModeSupported()
     {
-        return count($this->_environments) > 1;
+        return $this->isParallelRun;
     }
 
     /**
-     * Iterates through the various processes and reads any output.
+     * Iterates through all processes, reads any output and removes inactive processes
      *
-     * @param int $timeoutInSecs The number of seconds to wait for any action to occur in a process. Default 0 seconds.
      * @return void
      */
-    protected function runLoop($timeoutInSecs = 0)
+    protected function runLoop()
     {
-        /* assemble all the streams that should be reading */
-        $readStreams = [];
-        foreach ($this->_processes as $p) {
-            $readStreams[] = $p->getStdoutStream();
-            $readStreams[] = $p->getStderrStream();
-        }
-        $writeStreams = null;
-        $exceptStreams = null;
+        foreach ($this->_processes as $process) {
+            $process->readStdout();
+            $process->readStderr();
 
-        if (count($readStreams) === 0) {
-            return;
-        }
+            if (!$process->isActive()) {
+                $process->processResults();
 
-        /* runs through stream_select */
-        $numChangedStreams = stream_select($readStreams, $writeStreams, $exceptStreams, $timeoutInSecs);
-        if (false === $numChangedStreams) {
-            /* error here */
-        } elseif ($numChangedStreams > 0) {
+                $process->close();
 
-            $doneProcesses = [];
-
-            /* loops through all the processes and find the one which has the stream
-               ready for reading */
-            foreach ($this->_processes as $p) {
-                $read = false;
-                if (in_array($p->getStdoutStream(), $readStreams)) {
-                    /* perform a read */
-                    $p->readStdout();
-                    $read = true;
-                }
-
-                if (in_array($p->getStderrStream(), $readStreams)) {
-                    /* perform a read */
-                    $p->readStderr();
-                    $read = true;
-                }
-
-                if ($read) {
-                    /* figure out if the process is done */
-                    if (!$p->isActive()) {
-                        /* if done, process the results */
-                        $p->processResults();
-
-                        /* if done, close the streams. */
-                        $p->close();
-
-                        /* if done, return process back to queue */
-                        $doneProcesses[] = $p;
-                    }
-                }
-            }
-
-            foreach ($doneProcesses as $p) {
-                $this->removeDoneProcess($p);
+                $this->removeDoneProcess($process);
             }
         }
     }
@@ -180,17 +151,19 @@ class ProcessManager
      *
      * @param Process $process
      * @return void
+     * @throws \PHPUnit_Framework_Exception
      */
     private function removeDoneProcess($process)
     {
         $key = array_search($process, $this->_processes);
-        if ($key !== false) {
-            /* Returns the environment to the list of available environments */
-            $environment = $process->getEnvironment();
-            $this->_environments[] = $environment;
-
-            unset($this->_processes[$key]);
+        if ($key === false) {
+            throw new \PHPUnit_Framework_Exception('Undefined process is completed!');
         }
+        /* Returns the environment to the list of available environments */
+        $environment = $process->getEnvironment();
+        $this->_environments[] = $environment;
+
+        unset($this->_processes[$key]);
     }
 
     /**
@@ -242,6 +215,12 @@ class ProcessManager
             $phar = '\'\'';
         }
 
+        if ($testcase instanceof \Mtf\TestCase\Injectable) {
+            $filePath = $testcase->getFilePath();
+        } else {
+            $filePath = false;
+        }
+
         $data = var_export(serialize($params['data']), true);
         $includePath = var_export(get_include_path(), true);
         $env = var_export(serialize($environment->getEnvironmentVariables()), true);
@@ -262,7 +241,8 @@ class ProcessManager
                 'data' => $data,
                 'dataName' => $params['dataName'],
                 'include_path' => $includePath,
-                'env' => $env
+                'env' => $env,
+                'filePath' => $filePath
             )
         );
         return $template->render();
@@ -292,11 +272,15 @@ class ProcessManager
 
     /**
      * @return Environment
+     * @throws \PHPUnit_Framework_Exception
      */
     private function popEnvironment()
     {
         if (count($this->_environments) == 0) {
             $this->waitForSingleProcessToComplete();
+        }
+        if (count($this->_environments) == 0) {
+            throw new \PHPUnit_Framework_Exception('No environment even after wait!');
         }
 
         return array_shift($this->_environments);

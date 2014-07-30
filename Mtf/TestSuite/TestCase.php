@@ -113,4 +113,14 @@ class TestCase extends TestSuite
             $this->objectManager = \Mtf\ObjectManager::getInstance();
         }
     }
+
+    /**
+     * Avoid attempt to serialize callback
+     *
+     * @return array
+     */
+    public function __sleep()
+    {
+        return [];
+    }
 }

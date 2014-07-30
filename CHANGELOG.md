@@ -2,6 +2,7 @@
   * Fixed exception while running functional tests in parallel mode
   * Fixed an error in getElements() method with finding elements in specified context
   * Added an ability to select strict and nonstrict values for select and multiselect elements
+  * Fixed exception while running injectable tests in parallel mode
 
 1.0.0-dev.3
 =============

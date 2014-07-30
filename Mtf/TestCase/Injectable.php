@@ -109,6 +109,9 @@ abstract class Injectable extends Functional
      */
     public function run(\PHPUnit_Framework_TestResult $result = null)
     {
+        if ($this->isParallelRun) {
+            parent::run($result);
+        }
         if (!isset(static::$sharedArguments[$this->dataId]) && method_exists($this, '__prepare')) {
             static::$sharedArguments[$this->dataId] = (array)$this->objectManager->invoke($this, '__prepare');
         }
@@ -120,30 +123,24 @@ abstract class Injectable extends Functional
             ]
         );
         while ($testVariationIterator->valid()) {
-            if ($this->isParallelRun) {
-                // Running this test instance in a new thread.  Arguments will be merged when test runs on new thread.
-                $this->setVariationName($testVariationIterator->key());
-                parent::run($result);
-            } else {
-                if (method_exists($this, '__inject')) {
-                    $this->localArguments = $this->objectManager->invoke(
-                        $this,
-                        '__inject',
-                        isset(self::$sharedArguments[$this->dataId]) ? self::$sharedArguments[$this->dataId] : []
-                    );
-                    if (!$this->localArguments || !is_array($this->localArguments)) {
-                        $this->localArguments = [];
-                    }
-                }
-                if (isset(static::$sharedArguments[$this->dataId])) {
-                    $this->localArguments = array_merge(static::$sharedArguments[$this->dataId], $this->localArguments);
-                }
-                $variation = $this->prepareVariation(
-                    $testVariationIterator->current(),
-                    $this->localArguments
+            if (method_exists($this, '__inject')) {
+                $this->localArguments = $this->objectManager->invoke(
+                    $this,
+                    '__inject',
+                    isset(self::$sharedArguments[$this->dataId]) ? self::$sharedArguments[$this->dataId] : []
                 );
-                $this->executeTestVariation($result, $variation);
+                if (!$this->localArguments || !is_array($this->localArguments)) {
+                    $this->localArguments = [];
+                }
             }
+            if (isset(static::$sharedArguments[$this->dataId])) {
+                $this->localArguments = array_merge(static::$sharedArguments[$this->dataId], $this->localArguments);
+            }
+            $variation = $this->prepareVariation(
+                $testVariationIterator->current(),
+                $this->localArguments
+            );
+            $this->executeTestVariation($result, $variation);
             $testVariationIterator->next();
             $this->localArguments = [];
         }
