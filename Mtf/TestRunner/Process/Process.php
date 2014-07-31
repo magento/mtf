@@ -106,8 +106,10 @@ class Process
             2 => ['pipe', 'w']
         ];
 
+        $runtime = new \SebastianBergmann\Environment\Runtime();
+
         $this->_process = proc_open(
-            $this->getPhpUnitUtils()->getPhpBinary(),
+            $runtime->getBinary(),
             $descriptor,
             $this->_pipes
         );
@@ -221,7 +223,7 @@ class Process
      */
     protected function readFromPipe($pipe)
     {
-        $buffer = "";
+        $buffer = '';
 
         while ($bytes = fgets($pipe, 1024)) {
             $buffer .= $bytes;
@@ -238,7 +240,7 @@ class Process
     public function processResults()
     {
         if ($this->_result === null) {
-            return array('stdout' => $this->_stdout, 'stderr' => $this->_stderr);
+            return;
         }
         /* Needs to start the test here because the result itself may be shared across processes, and it
            keeps track of the current test

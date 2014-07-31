@@ -423,7 +423,10 @@ class Element implements ElementInterface
                 $wrappedElements = $context->elements($criteria);
             }
             foreach ($wrappedElements as $wrappedElement) {
-                $element = \Mtf\ObjectManager::getInstance()->create(get_class($this), ['locator' => $this->_locator]);
+                $element = \Mtf\ObjectManager::getInstance()->create(
+                    get_class($this),
+                    ['locator' => $this->_locator, 'driver' => $this->_driver, 'context' => $this->_context]
+                );
                 $element->_wrappedElement = $wrappedElement;
                 $this->_wrappedElements[] = $element;
             }
@@ -434,13 +437,13 @@ class Element implements ElementInterface
     /**
      * Get context for an element
      *
-     * @param $waitForElementPresent
+     * @param bool $waitForElementPresent
      * @return TestCase|\PHPUnit_Extensions_Selenium2TestCase_Element
      */
     protected function getContext($waitForElementPresent)
     {
-        return !empty($this->context)
-            ? $this->context->getWrappedElement($waitForElementPresent)
+        return !empty($this->_context)
+            ? $this->_context->_getWrappedElement($waitForElementPresent)
             : $this->_driver;
     }
 
