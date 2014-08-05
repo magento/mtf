@@ -1,3 +1,5 @@
+* Added an ability to skip variation execution by specifying a value in 'issue' column in data set file
+
 1.0.0-dev.4
 =============
 * Fixed bugs:
