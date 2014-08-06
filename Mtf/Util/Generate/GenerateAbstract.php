@@ -2,10 +2,6 @@
 /**
  * {license_notice}
  *
- * @api
- * @category    Mtf
- * @package     Mtf
- * @subpackage  functional_tests
  * @copyright   {copyright}
  * @license     {license_link}
  */
@@ -16,10 +12,7 @@ use Mtf\Util\Config;
 
 /**
  * Class GenerateAbstract
- *
  * Generator's core
- *
- * @package Mtf\Util\Generate
  */
 class GenerateAbstract
 {

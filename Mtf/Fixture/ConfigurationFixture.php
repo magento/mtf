@@ -13,7 +13,6 @@ namespace Mtf\Fixture;
  *
  * Ensures that system under test configured accordingly to fixture.
  *
- * @package Mtf\Fixture
  * @api
  * @abstract
  */

@@ -12,10 +12,8 @@ use Mtf\System\Config;
 
 /**
  * Class Direct
- *
  * Abstract class for direct handlers
  *
- * @package Mtf\Handler
  * @api
  * @abstract
  */

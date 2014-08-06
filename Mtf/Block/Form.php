@@ -16,7 +16,6 @@ use Mtf\Fixture\InjectableFixture;
  * Class Form
  * Is used to represent any form on the page
  *
- * @package Mtf\Block
  * @api
  */
 class Form extends Block

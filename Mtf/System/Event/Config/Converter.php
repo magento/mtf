@@ -23,21 +23,21 @@ class Converter implements ConverterInterface
         $result = [];
         if ($node->nodeType == XML_TEXT_NODE) {
             $result = $node->nodeValue;
-        }
-        else {
+        } else {
             if ($node->hasChildNodes()) {
                 $children = $node->childNodes;
-                for($i=0; $i < $children->length; $i++) {
+                for ($i = 0; $i < $children->length; $i++) {
                     $child = $children->item($i);
 
                     if ($child->nodeName != '#text') {
                         $result[$child->nodeName][] = $this->convert($child);
-                    }
-                    else if ($child->nodeName == '#text') {
-                        $text = $this->convert($child);
+                    } else {
+                        if ($child->nodeName == '#text') {
+                            $text = $this->convert($child);
 
-                        if (trim($text) != '') {
-                            $result[$child->nodeName] = $this->convert($child);
+                            if (trim($text) != '') {
+                                $result[$child->nodeName] = $this->convert($child);
+                            }
                         }
                     }
                 }

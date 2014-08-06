@@ -16,7 +16,6 @@ namespace Mtf;
  * - class instances life style (singleton, transient)
  * - interface preferences
  *
- * @package Mtf
  * @api
  */
 class ObjectManager extends \Magento\Framework\ObjectManager\ObjectManager

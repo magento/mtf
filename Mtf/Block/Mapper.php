@@ -12,8 +12,6 @@ use Mtf\Util\XmlConverter;
 
 /**
  * Class Mapper
- *
- * @package Mtf\Block
  */
 class Mapper
 {

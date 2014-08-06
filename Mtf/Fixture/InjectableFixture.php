@@ -18,7 +18,6 @@ use Mtf\System\Event\EventManagerInterface;
  *
  * Ensures correct data representation between the system under test and testing framework
  *
- * @package Mtf\Fixture
  * @api
  */
 class InjectableFixture implements FixtureInterface
@@ -232,6 +231,7 @@ class InjectableFixture implements FixtureInterface
 
     /**
      * Persists Fixture Data into application
+     *
      * @return void
      */
     public function persist()

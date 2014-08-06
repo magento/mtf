@@ -11,7 +11,6 @@ namespace Mtf;
 /**
  * Interface for Factories
  *
- * @package Mtf
  * @deprecated
  */
 interface Factory

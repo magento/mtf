@@ -13,7 +13,6 @@ use Mtf\TestRunner\Process\ProcessManager;
 /**
  * Class TestSuite
  *
- * @package Mtf\TestSuite
  * @api
  */
 class TestSuite extends \PHPUnit_Framework_TestSuite

@@ -11,7 +11,6 @@ namespace Mtf\Page;
 /**
  * Class BackendPage
  *
- * @package Mtf\Page
  * @api
  */
 class BackendPage extends Page

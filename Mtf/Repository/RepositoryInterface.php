@@ -11,7 +11,6 @@ namespace Mtf\Repository;
 /**
  * Interface for Repository classes
  *
- * @package Mtf\Repository
  * @api
  */
 interface RepositoryInterface
@@ -25,7 +24,6 @@ interface RepositoryInterface
 
     /**
      * Get a Data Set from repository
-     *
      * Return all Data Sets if no data set name specified.
      *
      * @param string $dataSetName

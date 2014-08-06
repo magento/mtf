@@ -13,7 +13,6 @@ use Mtf\ObjectManager;
 /**
  * Class AbstractIterator
  *
- * @package Mtf\Util\Iterator
  * @api
  */
 abstract class AbstractIterator implements \Iterator, \Countable

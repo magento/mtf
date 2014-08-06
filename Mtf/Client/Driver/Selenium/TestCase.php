@@ -13,21 +13,22 @@ use Mtf\System\Config;
 
 /**
  * Class TestCase
- *
  * Entry point to selenium
  *
- * @package Mtf\Client\Driver\Selenium
  * @api
  */
 class TestCase extends \PHPUnit_Extensions_Selenium2TestCase
 {
     /**
+     * Event Manager instance
+     *
      * @var EventManager
      */
     protected $eventManager;
 
     /**
      * Timeout for wait until
+     *
      * @var int
      */
     protected $timeout;

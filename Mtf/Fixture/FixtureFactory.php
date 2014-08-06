@@ -15,7 +15,6 @@ use Mtf\ObjectManager;
 /**
  * Factory for Fixtures
  *
- * @package Mtf\Fixture
  * @api
  */
 class FixtureFactory extends AbstractFactory

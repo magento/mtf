@@ -13,7 +13,6 @@ use Mtf\ObjectManager;
 /**
  * Factory for Blocks
  *
- * @package Mtf\Block
  * @api
  */
 class BlockFactory

@@ -10,7 +10,7 @@ namespace Mtf\Util\Iterator;
 
 /**
  * Class File
- * @package Mtf\Util\Iterator
+ *
  * @api
  */
 class File extends AbstractIterator

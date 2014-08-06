@@ -11,7 +11,6 @@ namespace Mtf\App\State;
 /**
  * Abstract class AbstractState
  *
- * @package Mtf\App\State
  * @api
  */
 abstract class AbstractState implements StateInterface
@@ -24,7 +23,9 @@ abstract class AbstractState implements StateInterface
     protected $isCleanInstance = false;
 
     /**
-     * {@inheritdoc}
+     * Apply set up configuration profile
+     *
+     * @return void
      */
     public function apply()
     {
@@ -34,7 +35,9 @@ abstract class AbstractState implements StateInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Clear instance under test
+     *
+     * @return void
      */
     public function clearInstance()
     {

@@ -12,8 +12,6 @@ use Mtf\TestCase\Functional;
 
 /**
  * Class RegularTestCase
- *
- * @package Magento\Mtf\Test\TestCase
  */
 class RegularTestCase extends Functional
 {

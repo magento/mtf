@@ -14,7 +14,6 @@ use Mtf\Client\Driver\Selenium\Browser;
 
 /**
  * Class PageUrl
- * @package Mtf\System\Observer
  */
 class PageUrl implements ObserverInterface
 {

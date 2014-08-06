@@ -17,7 +17,6 @@ use Mtf\Configuration\Reader;
  * In general case constraints should be located by constraint code
  * (see method "getByCode")
  *
- * @package Mtf\Constraint
  * @api
  */
 class ConstraintFactory
@@ -67,6 +66,8 @@ class ConstraintFactory
     }
 
     /**
+     * Get class by code
+     *
      * @param string $code
      * @return ConstraintInterface
      * @throws \UnexpectedValueException
@@ -78,6 +79,8 @@ class ConstraintFactory
     }
 
     /**
+     * Resolve class name by code
+     *
      * @param string $code
      * @return string
      */

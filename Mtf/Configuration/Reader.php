@@ -14,7 +14,6 @@ use Mtf\Config\FileResolver\Module;
 /**
  * Class Reader
  *
- * @package Mtf\Fixture\Configuration
  * @internal
  */
 class Reader

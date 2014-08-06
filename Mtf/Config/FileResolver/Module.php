@@ -15,7 +15,6 @@ use Magento\Framework\Config\FileResolverInterface;
  * Class Module
  * Provides the list of configuration files collected through modules test folders
  *
- * @package Mtf\Config\FileResolver
  * @internal
  */
 class Module implements FileResolverInterface

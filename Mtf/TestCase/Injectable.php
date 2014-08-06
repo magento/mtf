@@ -16,7 +16,6 @@ use Mtf\Constraint\AbstractConstraint;
  * Class is extended from Functional
  * and is base test case class for functional testing
  *
- * @package Mtf\TestCase
  * @api
  * @abstract
  */

@@ -42,7 +42,8 @@ abstract class AbstractObserver implements ObserverInterface
      */
     protected function createDestinationDirectory($suffix = '')
     {
-        $directory = sprintf('%s/%s/%s/' . $suffix,
+        $directory = sprintf(
+            '%s/%s/%s/' . $suffix,
             strtolower(str_replace('\\', '-', EventState::getTestSuiteName())),
             strtolower(str_replace('\\', '-', EventState::getTestClassName())),
             EventState::getTestMethodName()

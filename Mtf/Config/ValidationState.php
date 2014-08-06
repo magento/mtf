@@ -14,7 +14,6 @@ use Magento\Framework\Config\ValidationStateInterface;
  * Class ValidationState
  * Used for Object Manager.
  *
- * @package Mtf\Config
  * @internal
  */
 class ValidationState implements ValidationStateInterface

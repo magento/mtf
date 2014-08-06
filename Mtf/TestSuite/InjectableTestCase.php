@@ -13,7 +13,6 @@ use Mtf\ObjectManager;
 /**
  * Class InjectableTestCase
  *
- * @package Mtf\TestSuite
  * @api
  */
 class InjectableTestCase extends TestSuite

@@ -14,7 +14,6 @@ namespace Mtf\Constraint;
  * Class for assertions composition
  * Does not perform own assertions
  *
- * @package Mtf
  * @api
  */
 class Composite extends AbstractConstraint
@@ -48,7 +47,9 @@ class Composite extends AbstractConstraint
     }
 
     /**
-     * {@inheritdoc}
+     * Returns a string representation of the object.
+     *
+     * @return string
      */
     public function toString()
     {
@@ -73,7 +74,10 @@ class Composite extends AbstractConstraint
     }
 
     /**
-     * {@inheritdoc}
+     * Evaluates the constraint for test case
+     *
+     * @param string $testCaseName
+     * @return bool
      */
     protected function matches($testCaseName)
     {

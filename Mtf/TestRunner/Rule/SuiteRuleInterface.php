@@ -11,7 +11,6 @@ namespace Mtf\TestRunner\Rule;
 /**
  * Class SuiteRuleInterface
  *
- * @package Mtf\TestRunner\Rule
  * @api
  */
 interface SuiteRuleInterface

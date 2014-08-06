@@ -13,12 +13,13 @@ namespace Mtf\Client\Driver\Selenium\Element;
  * Class provides ability to work with page element multiselect
  * (Such as setting/getting value, clicking, drag-n-drop element, etc)
  *
- * @package Mtf\Client\Driver\Selenium\Element
  * @api
  */
 class MultiselectElement extends SelectElement
 {
     /**
+     * Wrapped Selenium element
+     *
      * @var \PHPUnit_Extensions_Selenium2TestCase_Element_Select
      */
     protected $_wrappedElement;

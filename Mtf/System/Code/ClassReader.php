@@ -11,7 +11,6 @@ namespace Mtf\System\Code;
 /**
  * Class ClassReader
  *
- * @package Mtf\System\Code
  * @internal
  */
 class ClassReader

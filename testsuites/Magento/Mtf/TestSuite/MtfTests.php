@@ -14,8 +14,6 @@ use Mtf\TestRunner\Configuration;
 
 /**
  * Class MtfTests
- *
- * @package Magento\Mtf\TestSuite
  */
 class MtfTests extends \PHPUnit_Framework_TestSuite
 {

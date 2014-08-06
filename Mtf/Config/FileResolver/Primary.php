@@ -15,7 +15,6 @@ use Magento\Framework\Config\FileResolverInterface;
  * Class Primary
  * Provides the list of MTF global configuration files
  *
- * @package Mtf\Config\FileResolver
  * @internal
  */
 class Primary implements FileResolverInterface

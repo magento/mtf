@@ -17,7 +17,6 @@ use Magento\Framework\App\Arguments\Loader;
 /**
  * Class ObjectManagerFactory
  *
- * @package Mtf\System
  * @api
  */
 class ObjectManagerFactory

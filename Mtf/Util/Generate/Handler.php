@@ -13,10 +13,8 @@ use Mtf\Configuration\Reader;
 
 /**
  * Class Constraint
- *
  * Constraint files generator
  *
- * @package Mtf\Util\Generate
  * @internal
  */
 class Handler extends AbstractGenerate
@@ -105,8 +103,6 @@ class Handler extends AbstractGenerate
         $content .= $useString . "\n\n";
         $content .= "/**\n";
         $content .= " * Class Ui\n";
-        $content .= " *\n";
-        $content .= " * @package {$ns}\n";
         $content .= " */\n";
         $content .= "class Ui extends AbstractUi implements {$classShortName}Interface\n";
         $content .= "{\n";
@@ -156,8 +152,6 @@ class Handler extends AbstractGenerate
         $content .= $useString . "\n\n";
         $content .= "/**\n";
         $content .= " * Class Curl\n";
-        $content .= " *\n";
-        $content .= " * @package {$ns}\n";
         $content .= " */\n";
         $content .= "class Curl extends AbstractCurl implements {$classShortName}Interface\n";
         $content .= "{\n";
@@ -205,8 +199,6 @@ class Handler extends AbstractGenerate
         $content .= $useString . "\n\n";
         $content .= "/**\n";
         $content .= " * Interface {$classShortName}Interface\n";
-        $content .= " *\n";
-        $content .= " * @package {$ns}\n";
         $content .= " */\n";
         $content .= "interface {$classShortName}Interface extends HandlerInterface\n";
         $content .= "{\n";

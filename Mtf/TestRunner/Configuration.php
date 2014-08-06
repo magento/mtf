@@ -13,7 +13,6 @@ use Mtf\TestRunner\Configuration\Reader;
 /**
  * Class Configuration
  *
- * @package Mtf\TestRunner
  * @api
  */
 class Configuration

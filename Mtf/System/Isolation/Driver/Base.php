@@ -10,14 +10,11 @@ namespace Mtf\System\Isolation\Driver;
 
 use Mtf\System\Isolation\Driver;
 use Mtf\System\Config;
-use Mtf\Factory\Factory;
 
 /**
  * Class Base
- *
  * Base isolation driver
  *
- * @package Mtf\System\Isolation\Driver
  * @internal
  */
 class Base implements Driver
@@ -42,6 +39,7 @@ class Base implements Driver
 
     /**
      * Isolation by calling resetUrl
+     *
      * @return void
      */
     public function isolate()

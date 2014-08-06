@@ -18,7 +18,6 @@ use Mtf\System\Event\EventManagerInterface;
  * Class provides ability to perform browser actions such as navigation,
  * working with windows, alerts, prompts etc.
  *
- * @package \Mtf\Client\Driver\Selenium
  * @api
  */
 class Browser implements \Mtf\Client\Browser
@@ -100,6 +99,7 @@ class Browser implements \Mtf\Client\Browser
 
     /**
      * Back to previous page
+     *
      * @return void
      */
     public function back()
@@ -110,6 +110,7 @@ class Browser implements \Mtf\Client\Browser
 
     /**
      * Forward page
+     *
      * @return void
      */
     public function forward()
@@ -120,6 +121,7 @@ class Browser implements \Mtf\Client\Browser
 
     /**
      * Refresh page
+     *
      * @return void
      */
     public function refresh()
@@ -130,6 +132,7 @@ class Browser implements \Mtf\Client\Browser
     /**
      * Open new browser
      * This will lead to clean browser session
+     *
      * @return void
      */
     public function reopen()
@@ -166,6 +169,7 @@ class Browser implements \Mtf\Client\Browser
 
     /**
      * Close current window and change focus to previous opened window
+     *
      * @return void
      */
     public function closeWindow()
@@ -182,6 +186,7 @@ class Browser implements \Mtf\Client\Browser
 
     /**
      * Select last opened window
+     *
      * @return void
      */
     public function selectWindow()
@@ -255,7 +260,9 @@ class Browser implements \Mtf\Client\Browser
     }
 
     /**
-     * @return string Binary string of image
+     * Get binary string of image
+     *
+     * @return string
      */
     public function getScreenshotData()
     {
@@ -264,6 +271,8 @@ class Browser implements \Mtf\Client\Browser
 
     /**
      * Inject Js Error collector
+     *
+     * @return void
      */
     public function injectJsErrorCollector()
     {

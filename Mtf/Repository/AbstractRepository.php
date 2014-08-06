@@ -11,7 +11,6 @@ namespace Mtf\Repository;
 /**
  * Class Abstract Repository
  *
- * @package Mtf\Repository
  * @api
  * @abstract
  */

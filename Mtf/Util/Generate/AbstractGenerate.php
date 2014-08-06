@@ -15,7 +15,6 @@ use Magento\Framework\ObjectManager;
  *
  * Abstract Generate
  *
- * @package Mtf\Util
  * @api
  * @abstract
  */

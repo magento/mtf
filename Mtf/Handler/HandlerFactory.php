@@ -13,7 +13,6 @@ use Mtf\Factory\AbstractFactory;
 /**
  * Factory for Handlers
  *
- * @package Mtf\Handler
  * @api
  */
 class HandlerFactory extends AbstractFactory

@@ -2,10 +2,6 @@
 /**
  * {license_notice}
  *
- * @api
- * @category    Mtf
- * @package     Mtf
- * @subpackage  functional_tests
  * @copyright   {copyright}
  * @license     {license_link}
  */
@@ -14,15 +10,13 @@ namespace Mtf\Util\Generate;
 
 /**
  * Class HandlerFactory
- *
  * Handler Factory generator
- *
- * @package Mtf\Util\Generate
  */
 class HandlerFactory extends GenerateAbstract
 {
     /**
      * Generate Handlers
+     *
      * @return void
      */
     public function generate()
@@ -38,6 +32,7 @@ class HandlerFactory extends GenerateAbstract
 
     /**
      * Collect Handler items
+     *
      * @return void
      */
     protected function _generateHandlers()

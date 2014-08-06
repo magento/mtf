@@ -12,10 +12,8 @@ use Mtf\System\Config;
 
 /**
  * Class Curl handler
- *
  * Abstract class for curl handlers
  *
- * @package Mtf\Handler
  * @api
  * @abstract
  */
