@@ -21,7 +21,8 @@ class Test extends InjectableFixture
     protected $defaultDataSet = [
         'locator' => null,
         'strategy' => null,
-        'search' => null
+        'search' => null,
+        'type' => null,
     ];
 
     /**
@@ -56,6 +57,14 @@ class Test extends InjectableFixture
     ];
 
     /**
+     * @var array
+     */
+    protected $type = [
+        'attribute_code' => 'type',
+        'default_value' => 'test',
+    ];
+
+    /**
      * @return mixed
      */
     public function getLocator()
@@ -77,5 +86,13 @@ class Test extends InjectableFixture
     public function getSearch()
     {
         return $this->getData('search');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getType()
+    {
+        return $this->getData('type');
     }
 }

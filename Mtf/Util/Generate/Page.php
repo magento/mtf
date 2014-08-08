@@ -9,8 +9,9 @@
 namespace Mtf\Util\Generate;
 
 use Magento\Framework\ObjectManager;
-use Mtf\Configuration\Reader;
+use Mtf\Config\FileResolver\Module;
 use Mtf\Util\Generate\Fixture\FieldsProviderInterface;
+use Mtf\Util\XmlConverter;
 
 /**
  * Class Page
@@ -21,27 +22,37 @@ use Mtf\Util\Generate\Fixture\FieldsProviderInterface;
 class Page extends AbstractGenerate
 {
     /**
-     * @var Reader
-     */
-    protected $configReader;
-
-    /**
      * @var FieldsProviderInterface
      */
     protected $fieldsProvider;
 
     /**
+     * File Resolver
+     *
+     * @var Module
+     */
+    protected $fileResolver;
+
+    /**
+     * @var XmlConverter
+     */
+    protected $xmlConverter;
+
+    /**
      * @constructor
      * @param ObjectManager $objectManager
-     * @param Reader $configReader
+     * @param Module $fileResolver
+     * @param XmlConverter $xmlConverter
      */
     public function __construct(
         ObjectManager $objectManager,
-        Reader $configReader
+        Module $fileResolver,
+        XmlConverter $xmlConverter
     ) {
         parent::__construct($objectManager);
 
-        $this->configReader = $configReader;
+        $this->fileResolver = $fileResolver;
+        $this->xmlConverter = $xmlConverter;
     }
 
     /**
@@ -62,10 +73,22 @@ class Page extends AbstractGenerate
     {
         $this->cnt = 0;
 
-        $configuration = $this->configReader->read('page');
-        foreach ($configuration as $item) {
-            $this->generatePageXml($item);
+        $pages = $this->fileResolver->get('page.xml', 'etc');
+        foreach ($pages as $page) {
+            $configXml = simplexml_load_string($page);
+            if ($configXml instanceof \SimpleXMLElement) {
+                $config = $this->xmlConverter->convert($configXml);
+                $modulePath = $config['module'];
+                unset($config['module']);
+
+                foreach ($config as $class => $pageItem) {
+                    $pageItem['module_path'] = $modulePath;
+                    $pageItem['class'] = $class;
+                    $this->generatePageXml($pageItem);
+                }
+            }
         }
+
         \Mtf\Util\Generate\GenerateResult::addResult('Page XML Files', $this->cnt);
     }
 
@@ -77,11 +100,17 @@ class Page extends AbstractGenerate
      */
     private function generatePageXml(array $item)
     {
-        $className = $item['class'];
+        $className = ucfirst($item['class']);
+        $area = isset($item['area']) ? ('/' . ucfirst($item['area'])) : '';
+        $modulePath = str_replace('_', '/', $item['module_path']);
+        $path = '/' . $modulePath . '/Test/Page' . $area;
+        $newFilename = $className . '.xml';
+        $newFolderName = MTF_TESTS_PATH . $path;
 
-        $classNameArray = explode('\\', $className);
-        $fileName = array_pop($classNameArray);
-        $path = implode('/', $classNameArray);
+        if (file_exists($newFolderName . '/' . $newFilename)) {
+            //unlink($newFolderName . '/' . $newFilename);
+            return;
+        }
 
         $content = '<?xml version="1.0" ?>' . "\n";
         $content .= '<!--' . "\n";
@@ -93,27 +122,17 @@ class Page extends AbstractGenerate
         $content .= ' */' . "\n";
         $content .= '-->' . "\n";
 
-        $layoutMCA = $item['mca'];
-        $content .= '<page mca="' . $layoutMCA . '" >' . "\n";
+        $attrModule = empty($item['module']) ? '' : ' module="' . $item['module'] . '"';
+        $content .= '<page mca="' . $item['mca'] . '"' . $attrModule . ">\n";
 
         $blocks = $this->collectPageBlocks($item);
-        foreach ($blocks as $block) {
-            $content .= '    <block>' . "\n";
-            foreach ($block as $key => $value) {
-                $content .= "        <{$key}>{$value}</$key>\n";
-            }
-            $content .= '    </block>' . "\n";
+        foreach ($blocks as $blockName => $block) {
+            $content .= '    <blocks>' . "\n";
+            $content .= $this->generatePageXmlBlock($blockName, $block, '        ');
+            $content .= '    </blocks>' . "\n";
         }
 
         $content .= "</page>\n";
-
-        $newFolderName = MTF_TESTS_PATH . $path;
-        $newFilename = $fileName . '.xml';
-
-        if (file_exists($newFolderName . '/' . $newFilename)) {
-            //unlink($newFolderName . '/' . $newFilename);
-            return;
-        }
 
         if (!is_dir($newFolderName)) {
             mkdir($newFolderName, 0777, true);
@@ -125,6 +144,27 @@ class Page extends AbstractGenerate
     }
 
     /**
+     * Generate block for page xml
+     *
+     * @param string $blockName
+     * @param array $params
+     * @param string $indent [optional]
+     * @return string
+     */
+    private function generatePageXmlBlock($blockName, array $params, $indent = '')
+    {
+        $content = $indent . '<' . $blockName .'>' . "\n";
+        foreach ($params as $key => $value) {
+            $content .= is_array($value)
+                ? $this->generatePageXmlBlock($key, $value, $indent . '    ')
+                : ($indent . "    <{$key}>{$value}</$key>\n");
+        }
+        $content.= $indent . '</' . $blockName .'>' . "\n";
+
+        return $content;
+    }
+
+    /**
      * Collect all blocks for page
      *
      * @param array $mca
@@ -133,11 +173,17 @@ class Page extends AbstractGenerate
     private function collectPageBlocks(array $mca)
     {
         return [
-            [
-                'name' => 'testBlock',
+            'testBlock' => [
                 'class' => 'Magento\Mtf\Test\Block\TestBlock',
                 'locator' => 'body',
-                'strategy' => 'tag name'
+                'strategy' => 'tag name',
+                'renders' => [
+                    'simple' => [
+                        'class' => 'Magento\Mtf\Test\Block\TestBlockSimple',
+                        'locator' => '#viewport',
+                        'strategy' => 'css selector',
+                    ]
+                ]
             ]
         ];
     }
@@ -152,15 +198,18 @@ class Page extends AbstractGenerate
     {
         $this->cnt = 0;
 
-        $items = $this->collectPagesXml();
+        $pagesXml = $this->collectPagesXml();
+        $pages = $this->mergePagesXml($pagesXml);
 
-        foreach ($items as $item) {
-            $this->generatePageClass($item);
+        foreach ($pages as $page) {
+            $this->generatePageClass($page);
         }
         \Mtf\Util\Generate\GenerateResult::addResult('Page Classes', $this->cnt);
     }
 
     /**
+     * Collect all xml pages
+     *
      * @return array
      */
     private function collectPagesXml()
@@ -171,7 +220,6 @@ class Page extends AbstractGenerate
         foreach ($modules as $modulePath) {
             $modulePathArray = explode('/', $modulePath);
             $module = array_pop($modulePathArray);
-            $namespace = array_pop($modulePathArray);
 
             if (!is_readable($modulePath . '/Test/Page')) {
                 continue;
@@ -186,13 +234,17 @@ class Page extends AbstractGenerate
 
             foreach ($dirIterator as $fileInfo) {
                 /** @var $fileInfo \SplFileInfo */
-                $items[] = [
-                    'file_name' => $fileInfo->getBasename('.xml'),
-                    'module_path' => str_replace('\\', '/', $modulePath),
-                    'folder_path' => str_replace('\\', '/', $fileInfo->getPath()),
+                $fileName = $fileInfo->getBasename('.xml');
+                $modulePath = str_replace('\\', '/', $modulePath);
+                $folderPath = str_replace('\\', '/', $fileInfo->getPath());
+                $area = trim(str_replace($modulePath . '/Test/Page', '', $folderPath), '/');
+
+                $key = ($area ? "{$area}_" : '') . $fileName;
+                $items[$key][] = [
+                    'file_name' => $fileName,
+                    'area' => $area,
                     'real_path' => str_replace('\\', '/', $fileInfo->getRealPath()),
                     'module' => $module,
-                    'namespace' => $namespace
                 ];
             }
         }
@@ -201,7 +253,39 @@ class Page extends AbstractGenerate
     }
 
     /**
-     * Generate page classes from XML sources
+     * Merge xml pages
+     *
+     * @param array $pages
+     * @return array
+     */
+    private function mergePagesXml(array $pages)
+    {
+        $result = [];
+
+        foreach ($pages as $key => $page) {
+            $file = reset($page);
+            $pageConfig = [
+                'file_name' => $file['file_name'],
+                'area' => $file['area'],
+            ];
+
+            foreach ($page as $file) {
+                $content = file_get_contents($file['real_path']);
+                $configXml = simplexml_load_string($content);
+
+                if ($configXml instanceof \SimpleXMLElement) {
+                    $pageConfig = array_replace_recursive($pageConfig,$this->xmlConverter->convert($configXml));
+                }
+            }
+
+            $result[$key] = $pageConfig;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Generate page classes from sources
      *
      * @param array $item
      * @return void
@@ -209,26 +293,12 @@ class Page extends AbstractGenerate
     private function generatePageClass(array $item)
     {
         $className = $item['file_name'];
-        $modulePath = $item['module_path'];
-        $folderPath = $item['folder_path'];
-        $realPath = $item['real_path'];
-        $namespace = $item['namespace'];
-        $module = $item['module'];
-        $area = strpos($folderPath, 'Adminhtml') === false ? 'FrontendPage' : 'BackendPage';
+        $module =  str_replace('_', '/', $item['module']);
+        $folderPath = $module . '/Test/Page' . (empty($item['area']) ? '' : ('/' . $item['area']));
+        $realFolderPath = MTF_TESTS_PATH . '/' . $folderPath;
+        $namespace = str_replace('/', '\\', $folderPath);
+        $areaMtfPage = strpos($folderPath, 'Adminhtml') === false ? 'FrontendPage' : 'BackendPage';
 
-        $contentXml = simplexml_load_file($realPath);
-        $mTime = filemtime($realPath);
-
-        $mca = $contentXml['mca'];
-
-        $blocks = [];
-        $blocksXml = $contentXml->xpath('block');
-        foreach ($blocksXml as $blockXml) {
-            $blocks[] = (array)$blockXml;
-        }
-
-        $relativeFilePath = str_replace($modulePath . '/', '', $folderPath);
-        $ns = $namespace . '\\' . $module . '\\' . str_replace('/', '\\', $relativeFilePath);
         $content = "<?php\n";
         $content .= "/**\n";
         $content .= " * {license_notice}\n";
@@ -236,35 +306,31 @@ class Page extends AbstractGenerate
         $content .= " * @copyright   {copyright}\n";
         $content .= " * @license     {license_link}\n";
         $content .= " */\n\n";
-        $content .= "namespace {$ns};\n\n";
-        $content .= "use Mtf\\Page\\{$area};\n\n";
+        $content .= "namespace {$namespace};\n\n";
+        $content .= "use Mtf\\Page\\{$areaMtfPage};\n\n";
         $content .= "/**\n";
         $content .= " * Class {$className}\n";
         $content .= " */\n";
-        $content .= "class {$className} extends {$area}\n";
+        $content .= "class {$className} extends {$areaMtfPage}\n";
         $content .= "{\n";
-        $content .= "    const MCA = '{$mca}';\n\n";
+        $content .= "    const MCA = '{$item['mca']}';\n\n";
 
         $content .= "    /**\n";
         $content .= "     * @var array\n";
         $content .= "     */\n";
         $content .= "    protected \$_blocks = [\n";
-        foreach ($blocks as $block) {
-            $content .= "        '{$block['name']}' => [\n";
-            foreach ($block as $key => $value) {
-                $content .= "            '{$key}' => '{$value}',\n";
-            }
-            $content .= "        ],\n";
+        foreach ($item['blocks'] as $blockName => $block) {
+            $content .= $this->generatePageClassBlock($blockName, $block, '        ');
         }
         $content .= "    ];\n";
 
-        foreach ($blocks as $block) {
+        foreach ($item['blocks'] as $blockName => $block) {
             $content .= "\n    /**\n";
             $content .= "     * @return \\{$block['class']}\n";
             $content .= "     */\n";
-            $content .= '    public function get' . ucfirst($block['name']) . '()' . "\n";
+            $content .= '    public function get' . ucfirst($blockName) . '()' . "\n";
             $content .= "    {\n";
-            $content .= "        return \$this->getBlockInstance('{$block['name']}');\n";
+            $content .= "        return \$this->getBlockInstance('{$blockName}');\n";
             $content .= "    }\n";
         }
 
@@ -272,23 +338,37 @@ class Page extends AbstractGenerate
 
         $newFilename = $className . '.php';
 
-        if (file_exists($folderPath . '/' . $newFilename)) {
-            $mmTime = filemtime($folderPath . '/' . $newFilename);
-            if ($mTime > $mmTime) {
-                unlink($folderPath . '/' . $newFilename);
-            } else {
-                return;
-            }
+        if (file_exists($realFolderPath . '/' . $newFilename)) {
+            unlink($realFolderPath . '/' . $newFilename);
         }
 
-        if (!is_dir($folderPath)) {
-            mkdir($folderPath, 0777, true);
+        if (!is_dir($realFolderPath)) {
+            mkdir($realFolderPath, 0777, true);
         }
 
-        file_put_contents($folderPath . '/' . $newFilename, $content);
-
-        touch($folderPath . '/' . $newFilename, $mTime);
+        file_put_contents($realFolderPath . '/' . $newFilename, $content);
 
         $this->cnt++;
+    }
+
+    /**
+     * Generate block for page class
+     *
+     * @param string $blockName
+     * @param array $params
+     * @param string $indent
+     * @return string
+     */
+    private function generatePageClassBlock($blockName, array $params, $indent = '')
+    {
+        $content = $indent . "'{$blockName}' => [\n";
+        foreach ($params as $key => $value) {
+            $content .= is_array($value)
+                ? $this->generatePageClassBlock($key, $value, $indent . '    ')
+                : ($indent . "    '{$key}' => '{$value}',\n");
+        }
+        $content .= $indent . "],\n";
+
+        return $content;
     }
 }

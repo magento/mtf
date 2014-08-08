@@ -7,11 +7,12 @@
  * @license     {license_link}
  */
 -->
-<page mca="testPage">
-    <block>
-        <name>testBlock</name>
-        <class>Magento\Mtf\Test\Block\TestBlock</class>
-        <locator>body</locator>
-        <strategy>tag-selector</strategy>
-    </block>
+<page mca="/">
+    <blocks>
+        <testBlock>
+            <class>Magento\Mtf\Test\Block\TestBlock</class>
+            <locator>body</locator>
+            <strategy>tag name</strategy>
+        </testBlock>
+    </blocks>
 </page>

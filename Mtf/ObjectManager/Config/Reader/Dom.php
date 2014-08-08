@@ -49,7 +49,7 @@ class Dom extends \Magento\Framework\Config\Reader\Filesystem
         $fileName = 'di.xml',
         $idAttributes = array(),
         $domDocumentClass = 'Magento\Framework\Config\Dom',
-        $defaultScope = 'global'
+        $defaultScope = 'etc/global'
     ) {
         parent::__construct(
             $fileResolver,

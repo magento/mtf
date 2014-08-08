@@ -30,8 +30,8 @@ class Primary implements FileResolverInterface
     {
         $mtfDefaultPath = dirname(dirname(dirname(__DIR__)));
         $mtfDefaultPath = str_replace('\\', '/', $mtfDefaultPath);
-        $paths[$mtfDefaultPath] = $mtfDefaultPath . '/etc/' . $scope . '/' . $filename;
-        $paths[MTF_BP] = MTF_BP . '/etc/' . $scope . '/' . $filename;
+        $paths[$mtfDefaultPath] = $mtfDefaultPath . '/' . $scope . '/' . $filename;
+        $paths[MTF_BP] = MTF_BP . '/' . $scope . '/' . $filename;
 
         $iterator = new File($paths);
         return $iterator;

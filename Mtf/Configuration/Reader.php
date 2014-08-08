@@ -48,7 +48,7 @@ class Reader
      * @param string $scope
      * @return array
      */
-    public function read($entityName, $scope = 'global')
+    public function read($entityName, $scope = 'etc')
     {
         $result = [];
         $files = $this->fileResolver->get($entityName . '.xml', $scope);

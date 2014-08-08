@@ -168,10 +168,14 @@ class Page implements PageInterface
             $class = isset($blockMeta['class']) ? $blockMeta['class'] : false;
             if ($class) {
                 $element = $this->_browser->find($blockMeta['locator'], $blockMeta['strategy']);
+                $config = [
+                    'renders' => isset($blockMeta['renders']) ? $blockMeta['renders'] : []
+                ];
                 $block = $this->_blockFactory->create(
                     $class,
                     [
-                        'element' => $element
+                        'element' => $element,
+                        'config' => $config
                     ]
                 );
             } else {
