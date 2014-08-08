@@ -10,7 +10,7 @@ namespace Magento\Mtf\Test\TestCase;
 
 use Magento\Mtf\Test\Fixture\Test;
 use Mtf\TestCase\Injectable;
-use Magento\Mtf\Test\Page\Area\TestPage;
+use Magento\BlockRender\Test\Page\Area\TestPage;
 
 /**
  * Class InjectableTestCase

@@ -24,8 +24,8 @@ class RegularTestCase extends Functional
         /** @var $fixture \Magento\Mtf\Test\Fixture\Test */
         $fixture = $this->objectManager->create('Magento\Mtf\Test\Fixture\Test');
 
-        /** @var $page \Magento\Mtf\Test\Page\Area\TestPage */
-        $page = $this->objectManager->create('Magento\Mtf\Test\Page\Area\TestPage');
+        /** @var $page \Magento\BlockRender\Test\Page\Area\TestPage */
+        $page = $this->objectManager->create('Magento\BlockRender\Test\Page\Area\TestPage');
 
         $page->open();
         $page->getTestBlock()->click($fixture);
@@ -43,8 +43,8 @@ class RegularTestCase extends Functional
         /** @var $fixture \Magento\Mtf\Test\Fixture\Test */
         $fixture = $this->objectManager->create('Magento\Mtf\Test\Fixture\Test');
 
-        /** @var $page \Magento\Mtf\Test\Page\Area\TestPage */
-        $page = $this->objectManager->create('Magento\Mtf\Test\Page\Area\TestPage');
+        /** @var $page \Magento\BlockRender\Test\Page\Area\TestPage */
+        $page = $this->objectManager->create('Magento\BlockRender\Test\Page\Area\TestPage');
 
         $page->open();
         $page->getTestBlock()->click($fixture);

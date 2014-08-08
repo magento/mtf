@@ -14,6 +14,7 @@ use Magento\Mtf\Test\Fixture\Test;
 
 /**
  * Class BlockRender
+ * Block for manage render form
  */
 class BlockRender extends Form
 {

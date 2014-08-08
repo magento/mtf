@@ -18,9 +18,11 @@ class TestPage extends FrontendPage
     const MCA = '/';
 
     /**
+     * Blocks' config
+     *
      * @var array
      */
-    protected $_blocks = [
+    protected $blocks = [
         'blockRender' => [
             'class' => 'Magento\BlockRender\Test\Block\BlockRender',
             'locator' => 'body',

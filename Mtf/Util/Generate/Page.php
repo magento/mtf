@@ -98,7 +98,7 @@ class Page extends AbstractGenerate
      * @param array $item
      * @return void
      */
-    private function generatePageXml(array $item)
+    protected function generatePageXml(array $item)
     {
         $className = ucfirst($item['class']);
         $area = isset($item['area']) ? ('/' . ucfirst($item['area'])) : '';
@@ -108,7 +108,6 @@ class Page extends AbstractGenerate
         $newFolderName = MTF_TESTS_PATH . $path;
 
         if (file_exists($newFolderName . '/' . $newFilename)) {
-            //unlink($newFolderName . '/' . $newFilename);
             return;
         }
 
@@ -125,7 +124,7 @@ class Page extends AbstractGenerate
         $attrModule = empty($item['module']) ? '' : ' module="' . $item['module'] . '"';
         $content .= '<page mca="' . $item['mca'] . '"' . $attrModule . ">\n";
 
-        $blocks = $this->collectPageBlocks($item);
+        $blocks = $this->getExamplePageBlocks();
         foreach ($blocks as $blockName => $block) {
             $content .= '    <blocks>' . "\n";
             $content .= $this->generatePageXmlBlock($blockName, $block, '        ');
@@ -151,7 +150,7 @@ class Page extends AbstractGenerate
      * @param string $indent [optional]
      * @return string
      */
-    private function generatePageXmlBlock($blockName, array $params, $indent = '')
+    protected function generatePageXmlBlock($blockName, array $params, $indent = '')
     {
         $content = $indent . '<' . $blockName .'>' . "\n";
         foreach ($params as $key => $value) {
@@ -167,10 +166,9 @@ class Page extends AbstractGenerate
     /**
      * Collect all blocks for page
      *
-     * @param array $mca
      * @return array
      */
-    private function collectPageBlocks(array $mca)
+    protected function getExamplePageBlocks()
     {
         return [
             'testBlock' => [
@@ -212,7 +210,7 @@ class Page extends AbstractGenerate
      *
      * @return array
      */
-    private function collectPagesXml()
+    protected function collectPagesXml()
     {
         $items = [];
 
@@ -258,7 +256,7 @@ class Page extends AbstractGenerate
      * @param array $pages
      * @return array
      */
-    private function mergePagesXml(array $pages)
+    protected function mergePagesXml(array $pages)
     {
         $result = [];
 
@@ -274,7 +272,7 @@ class Page extends AbstractGenerate
                 $configXml = simplexml_load_string($content);
 
                 if ($configXml instanceof \SimpleXMLElement) {
-                    $pageConfig = array_replace_recursive($pageConfig,$this->xmlConverter->convert($configXml));
+                    $pageConfig = array_replace_recursive($pageConfig, $this->xmlConverter->convert($configXml));
                 }
             }
 
@@ -290,7 +288,7 @@ class Page extends AbstractGenerate
      * @param array $item
      * @return void
      */
-    private function generatePageClass(array $item)
+    protected function generatePageClass(array $item)
     {
         $className = $item['file_name'];
         $module =  str_replace('_', '/', $item['module']);
@@ -316,9 +314,11 @@ class Page extends AbstractGenerate
         $content .= "    const MCA = '{$item['mca']}';\n\n";
 
         $content .= "    /**\n";
+        $content .= "     * Blocks' config\n";
+        $content .= "     *\n";
         $content .= "     * @var array\n";
         $content .= "     */\n";
-        $content .= "    protected \$_blocks = [\n";
+        $content .= "    protected \$blocks = [\n";
         foreach ($item['blocks'] as $blockName => $block) {
             $content .= $this->generatePageClassBlock($blockName, $block, '        ');
         }
@@ -359,7 +359,7 @@ class Page extends AbstractGenerate
      * @param string $indent
      * @return string
      */
-    private function generatePageClassBlock($blockName, array $params, $indent = '')
+    protected function generatePageClassBlock($blockName, array $params, $indent = '')
     {
         $content = $indent . "'{$blockName}' => [\n";
         foreach ($params as $key => $value) {

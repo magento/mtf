@@ -11,8 +11,7 @@
     <module>Magento_BlockRender</module>
     <type>blank</type>
     <entity_type>test_fixture</entity_type>
-    <fields>
-    </fields>
+    <fields />
     <repository_class>Magento\BlockRender\Test\Repository\BlockRender</repository_class>
     <handler_interface>Magento\BlockRender\Test\Handler\BlockRender\BlockRenderInterface</handler_interface>
 </fixture>

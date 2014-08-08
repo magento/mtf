@@ -155,7 +155,7 @@ abstract class Block implements BlockInterface
      * @return BlockInterface
      * @throws \InvalidArgumentException
      */
-    public function getRenderInstance($renderName)
+    protected function getRenderInstance($renderName)
     {
         if (!isset($this->renderInstances[$renderName])) {
             $blockMeta = isset($this->config['renders'][$renderName]) ? $this->config['renders'][$renderName] : [];
@@ -180,7 +180,6 @@ abstract class Block implements BlockInterface
 
             $this->renderInstances[$renderName] = $block;
         }
-        // @todo fix to get link to new page if page reloaded
         return $this->renderInstances[$renderName];
     }
 }
