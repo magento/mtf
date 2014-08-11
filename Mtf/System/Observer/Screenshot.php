@@ -30,6 +30,7 @@ class Screenshot extends AbstractObserver
     /**
      * @param Logger $logger
      * @param EventState $state
+     * @param Browser $browser
      */
     public function __construct(Logger $logger, EventState $state, Browser $browser)
     {
@@ -37,7 +38,7 @@ class Screenshot extends AbstractObserver
         $this->browser = $browser;
     }
 
-     /*
+    /**
      * @param Event $event
      * @return void
      */
