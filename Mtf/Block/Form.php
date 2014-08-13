@@ -67,9 +67,9 @@ class Form extends Block
      * @param Element $element
      * @param BlockFactory $blockFactory
      * @param Mapper $mapper
-     * @param array $config
+     * @param array $config [optional]
      */
-    public function __construct(Element $element, BlockFactory $blockFactory, Mapper $mapper, array $config)
+    public function __construct(Element $element, BlockFactory $blockFactory, Mapper $mapper, array $config = [])
     {
         $this->mapper = $mapper;
         parent::__construct($element, $blockFactory, $config);

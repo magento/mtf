@@ -1,4 +1,5 @@
 * Added an ability to skip variation execution by specifying a value in 'issue' column in data set file
+* Rewrote page generator to collect related blocks from all modules
 
 1.0.0-dev.4
 =============

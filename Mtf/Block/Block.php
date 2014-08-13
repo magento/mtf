@@ -59,7 +59,7 @@ abstract class Block implements BlockInterface
      * @param BlockFactory $blockFactory
      * @param array $config
      */
-    public function __construct(Element $element, BlockFactory $blockFactory, array $config)
+    public function __construct(Element $element, BlockFactory $blockFactory, array $config = [])
     {
         $this->_rootElement = $element;
         $this->blockFactory = $blockFactory;
@@ -140,12 +140,16 @@ abstract class Block implements BlockInterface
      * @param string $type
      * @param string $method
      * @param array $arguments
-     * @return void
+     * @return bool
      */
     protected function callRender($type, $method, array $arguments = [])
     {
         $block = $this->getRenderInstance($type);
-        call_user_func_array([$block, $method], $arguments);
+        if ($block !== null) {
+            call_user_func_array([$block, $method], $arguments);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -153,7 +157,6 @@ abstract class Block implements BlockInterface
      *
      * @param string $renderName
      * @return BlockInterface
-     * @throws \InvalidArgumentException
      */
     protected function getRenderInstance($renderName)
     {
@@ -173,9 +176,7 @@ abstract class Block implements BlockInterface
                     ]
                 );
             } else {
-                throw new \InvalidArgumentException(
-                    sprintf('There is no such render "%s" declared for the block "%s" ', $renderName, $class)
-                );
+                return null;
             }
 
             $this->renderInstances[$renderName] = $block;
