@@ -238,7 +238,7 @@ class InjectableFixture implements FixtureInterface
     {
         $this->eventManager->dispatchEvent(['persist_before'], [get_class($this)]);
         if (!empty($this->handlerInterface)) {
-            $result = $this->handlerFactory->get($this->handlerInterface)->persist($this);
+            $result = $this->handlerFactory->create($this->handlerInterface)->persist($this);
             if (!empty($result)) {
                 foreach ($result as $key => $value) {
                     $this->data[$key] = $value;
