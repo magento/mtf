@@ -180,7 +180,6 @@ abstract class Injectable extends Functional
             $this->constraint = $variation['constraint'];
             $this->localArguments = array_merge($arguments, $this->localArguments);
         }
-
         parent::run($result);
     }
 
@@ -199,8 +198,9 @@ abstract class Injectable extends Functional
         }
         $testResult = parent::runTest();
         $this->localArguments = array_merge($this->localArguments, is_array($testResult) ? $testResult : []);
+        $arguments = array_merge($this->currentVariation['arguments'], $this->localArguments);
         if ($this->constraint) {
-            $this->constraint->configure($this, $this->localArguments);
+            $this->constraint->configure($arguments);
             self::assertThat($this->getName(), $this->constraint);
         }
 
