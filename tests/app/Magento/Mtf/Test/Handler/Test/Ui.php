@@ -13,8 +13,6 @@ use Mtf\Handler\Ui as AbstractUi;
 
 /**
  * Class Ui
- *
- * @package Magento\Mtf\Test\Handler\Test
  */
 class Ui extends AbstractUi implements TestInterface
 {

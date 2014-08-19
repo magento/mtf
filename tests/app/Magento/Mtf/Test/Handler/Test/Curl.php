@@ -13,8 +13,6 @@ use Mtf\Handler\Curl as AbstractCurl;
 
 /**
  * Class Curl
- *
- * @package Magento\Mtf\Test\Handler\Test
  */
 class Curl extends AbstractCurl implements TestInterface
 {

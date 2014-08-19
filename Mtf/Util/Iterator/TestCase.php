@@ -16,7 +16,6 @@ use Mtf\ObjectManager;
 /**
  * Class TestCase
  *
- * @package Mtf\Util\Iterator
  * @api
  */
 class TestCase extends AbstractIterator

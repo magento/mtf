@@ -16,7 +16,6 @@ use Mtf\ObjectManager;
  * so when need to call for assertions more then one time,
  * the object should be configured again (see method "configure")
  *
- * @package Mtf
  * @api
  * @abstract
  */

@@ -13,7 +13,6 @@ use Mtf\Factory\AbstractFactory;
 /**
  * Factory for Repositories
  *
- * @package Mtf\Fixture
  * @api
  */
 class RepositoryFactory extends AbstractFactory

@@ -12,10 +12,8 @@ use Mtf\System\Config;
 
 /**
  * Class Webapi
- *
  * Abstract class for webapi handlers
  *
- * @package Mtf\Handler
  * @api
  * @abstract
  */

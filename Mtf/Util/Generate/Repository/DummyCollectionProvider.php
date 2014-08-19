@@ -11,13 +11,15 @@ namespace Mtf\Util\Generate\Repository;
 /**
  * Class DummyCollectionProvider
  *
- * @package Mtf\Util\Generate\Repository
  * @internal
  */
 class DummyCollectionProvider implements CollectionProviderInterface
 {
     /**
-     * {@inheritdoc}
+     * Get fixture items collection from a source storage
+     *
+     * @param array $fixture
+     * @return array
      */
     public function getCollection(array $fixture)
     {

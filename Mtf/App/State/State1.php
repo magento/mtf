@@ -11,13 +11,13 @@ namespace Mtf\App\State;
 /**
  * Class State1
  * Example Application State class
- *
- * @package Mtf\App\State
  */
 class State1 extends AbstractState
 {
     /**
-     * {@inheritdoc}
+     * Apply set up configuration profile
+     *
+     * @return void
      */
     public function apply()
     {
@@ -25,7 +25,9 @@ class State1 extends AbstractState
     }
 
     /**
-     * {@inheritdoc}
+     * Get name of the Application State Profile
+     *
+     * @return string
      */
     public function getName()
     {

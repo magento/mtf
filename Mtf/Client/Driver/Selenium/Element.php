@@ -17,7 +17,6 @@ use Mtf\Client\Element\Locator;
  * Class provides ability to work with page element
  * (Such as setting/getting value, clicking, drag-n-drop element, etc)
  *
- * @package Mtf\Client\Driver\Selenium\Element
  * @api
  */
 class Element implements ElementInterface
@@ -98,6 +97,7 @@ class Element implements ElementInterface
 
     /**
      * Unset wrapped element
+     *
      * @return Element
      */
     public function __clone()
@@ -147,6 +147,7 @@ class Element implements ElementInterface
 
     /**
      * Click at the current element
+     *
      * @return void
      */
     public function click()
@@ -159,6 +160,7 @@ class Element implements ElementInterface
 
     /**
      * Double-clicks at the current element
+     *
      * @return void
      */
     public function doubleClick()
@@ -169,6 +171,7 @@ class Element implements ElementInterface
 
     /**
      * Right-clicks at the current element
+     *
      * @return void
      */
     public function rightClick()
@@ -180,6 +183,7 @@ class Element implements ElementInterface
     /**
      * Check whether element is visible.
      * Return false if element cannot be found
+     *
      * @return bool
      */
     public function isVisible()
@@ -349,6 +353,7 @@ class Element implements ElementInterface
 
     /**
      * Press OK on an alert or confirm a dialog
+     *
      * @return void
      */
     public function acceptAlert()
@@ -359,6 +364,7 @@ class Element implements ElementInterface
 
     /**
      * Press Cancel on alert or does not confirm a dialog
+     *
      * @return void
      */
     public function dismissAlert()

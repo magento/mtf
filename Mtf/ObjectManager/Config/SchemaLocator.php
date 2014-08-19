@@ -10,7 +10,7 @@ namespace Mtf\ObjectManager\Config;
 
 /**
  * Class SchemaLocator
- * @package Mtf\ObjectManager\Config
+ *
  * @internal
  */
 class SchemaLocator extends \Magento\Framework\ObjectManager\Config\SchemaLocator

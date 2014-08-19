@@ -10,11 +10,12 @@ namespace Mtf\System\Event;
 
 /**
  * Interface ObserverInterface
- * @package Mtf\System\Event
  */
 interface ObserverInterface
 {
     /**
+     * Process current event
+     *
      * @param Event $event
      * @return void
      */

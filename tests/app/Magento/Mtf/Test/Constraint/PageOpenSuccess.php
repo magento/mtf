@@ -14,8 +14,6 @@ use Magento\Mtf\Test\Fixture\Test;
 
 /**
  * Class PageOpenSuccess
- *
- * @package Magento\Mtf\Test\Constraint
  */
 class PageOpenSuccess extends AbstractConstraint
 {

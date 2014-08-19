@@ -15,7 +15,6 @@ namespace Mtf\App\State;
  * Each of Application State Classes responsible for applying required changes to prepare Application State
  * according to it's configuration.
  *
- * @package Mtf\App\State
  * @api
  */
 interface StateInterface

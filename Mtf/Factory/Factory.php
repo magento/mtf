@@ -17,7 +17,6 @@ use Mtf;
  *
  * Factory class is responsible for providing static access to entities factories
  *
- * @package Mtf\Factory
  * @api
  * @deprecated
  */
@@ -78,12 +77,15 @@ class Factory implements FactoryInterface
     protected static $_repositoryFactory;
 
     /**
+     * Object Manager instance
+     *
      * @var \Mtf\ObjectManager
      */
     protected static $_objectManager;
 
     /**
      * Init Object Manager
+     *
      * @return void
      */
     public static function initObjectManager()
@@ -93,6 +95,7 @@ class Factory implements FactoryInterface
 
     /**
      * Init configuration
+     *
      * @return void
      */
     public static function initConfig()
@@ -102,6 +105,7 @@ class Factory implements FactoryInterface
 
     /**
      * Init handler factory
+     *
      * @return void
      */
     public static function initApp()
@@ -111,6 +115,7 @@ class Factory implements FactoryInterface
 
     /**
      * Init client browser
+     *
      * @return void
      */
     public static function initClientBrowser()
@@ -120,6 +125,7 @@ class Factory implements FactoryInterface
 
     /**
      * Init page factory
+     *
      * @return void
      */
     public static function initPageFactory()
@@ -129,6 +135,7 @@ class Factory implements FactoryInterface
 
     /**
      * Init block factory
+     *
      * @return void
      */
     public static function initBlockFactory()
@@ -138,6 +145,7 @@ class Factory implements FactoryInterface
 
     /**
      * Init fixture factory
+     *
      * @return void
      */
     public static function initFixtureFactory()
@@ -147,6 +155,7 @@ class Factory implements FactoryInterface
 
     /**
      * Init repository factory
+     *
      * @return void
      */
     public static function initRepositoryFactory()

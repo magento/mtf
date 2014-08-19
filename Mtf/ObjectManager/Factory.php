@@ -13,7 +13,6 @@ use Mtf\System\Code\ClassReader;
 /**
  * Class Factory
  *
- * @package Mtf\ObjectManager
  * @internal
  */
 class Factory extends \Magento\Framework\ObjectManager\Factory\Factory

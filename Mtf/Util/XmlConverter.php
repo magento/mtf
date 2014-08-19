@@ -10,8 +10,6 @@ namespace Mtf\Util;
 
 /**
  * Class XmlConverter
- *
- * @package Mtf\Util
  */
 class XmlConverter
 {

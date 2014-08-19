@@ -16,7 +16,6 @@ use Mtf\Constraint\AbstractConstraint;
  * Class is extended from Functional
  * and is base test case class for functional testing
  *
- * @package Mtf\TestCase
  * @api
  * @abstract
  */
@@ -63,6 +62,13 @@ abstract class Injectable extends Functional
      * @var array
      */
     protected $localArguments = [];
+
+    /**
+     * Current variation data
+     *
+     * @var array
+     */
+    protected $currentVariation = [];
 
     /**
      * Constructs a test case with the given name
@@ -136,8 +142,9 @@ abstract class Injectable extends Functional
             if (isset(static::$sharedArguments[$this->dataId])) {
                 $this->localArguments = array_merge(static::$sharedArguments[$this->dataId], $this->localArguments);
             }
+            $this->currentVariation = $testVariationIterator->current();
             $variation = $this->prepareVariation(
-                $testVariationIterator->current(),
+                $this->currentVariation,
                 $this->localArguments
             );
             $this->executeTestVariation($result, $variation);
@@ -185,6 +192,11 @@ abstract class Injectable extends Functional
      */
     protected function runTest()
     {
+        if (isset($this->currentVariation['arguments']['issue'])
+            && !empty($this->currentVariation['arguments']['issue'])
+        ) {
+            $this->markTestIncomplete($this->currentVariation['arguments']['issue']);
+        }
         $testResult = parent::runTest();
         $this->localArguments = array_merge($this->localArguments, is_array($testResult) ? $testResult : []);
         if ($this->constraint) {

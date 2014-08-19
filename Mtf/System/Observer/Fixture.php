@@ -13,7 +13,6 @@ use Mtf\System\Event\ObserverInterface;
 
 /**
  * Class Fixture
- * @package Mtf\System\Observer
  */
 class Fixture implements ObserverInterface
 {

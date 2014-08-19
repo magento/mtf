@@ -16,11 +16,9 @@ use Mtf\System\Config;
 
 /**
  * Class Page
- *
  * Classes which implement this interface are expected to store all blocks of application page
  * and provide public getter methods to provide access to blocks
  *
- * @package Mtf\Page
  * @api
  */
 class Page implements PageInterface
@@ -66,6 +64,8 @@ class Page implements PageInterface
     protected $_blockInstances = [];
 
     /**
+     * Block Factory instance
+     *
      * @var BlockFactory
      */
     protected $_blockFactory;

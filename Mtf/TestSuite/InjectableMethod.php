@@ -14,7 +14,6 @@ use Mtf\System\Event\EventManager;
 /**
  * Class InjectableMethod
  *
- * @package Mtf\TestSuite
  * @api
  */
 class InjectableMethod extends InjectableTestCase

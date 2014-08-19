@@ -14,10 +14,8 @@ use Mtf\Util\Generate\Fixture\FieldsProviderInterface;
 
 /**
  * Class Page
- *
  * Page files generator
  *
- * @package Mtf\Util\Generate
  * @internal
  */
 class Page extends AbstractGenerate
@@ -242,13 +240,14 @@ class Page extends AbstractGenerate
         $content .= "use Mtf\\Page\\{$area};\n\n";
         $content .= "/**\n";
         $content .= " * Class {$className}\n";
-        $content .= " *\n";
-        $content .= " * @package {$ns}\n";
         $content .= " */\n";
         $content .= "class {$className} extends {$area}\n";
         $content .= "{\n";
         $content .= "    const MCA = '{$mca}';\n\n";
 
+        $content .= "    /**\n";
+        $content .= "     * @var array\n";
+        $content .= "     */\n";
         $content .= "    protected \$_blocks = [\n";
         foreach ($blocks as $block) {
             $content .= "        '{$block['name']}' => [\n";

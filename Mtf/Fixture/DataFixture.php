@@ -16,7 +16,6 @@ use Mtf\System\Config;
  *
  * Ensures correct data representation between the system under test and testing framework
  *
- * @package Mtf\Fixture
  * @api
  * @abstract
  * @deprecated
@@ -86,12 +85,14 @@ abstract class DataFixture implements FixtureInterface
 
     /**
      * Initialize fixture data
+     *
      * @return void
      */
     abstract protected function _initData();
 
     /**
      * Persists prepared data into application
+     *
      * @return void
      */
     public function persist()
@@ -102,7 +103,7 @@ abstract class DataFixture implements FixtureInterface
     /**
      * Return prepared data set.
      *
-     * @param $key [optional]
+     * @param string $key [optional]
      * @return mixed
      * @throws \RuntimeException
      */

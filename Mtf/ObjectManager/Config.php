@@ -14,7 +14,6 @@ use Magento\Framework\ObjectManager\Config\Config as ObjectManagerConfig;
  * Class Config
  * Filesystem configuration loader. Loads configuration from XML files, split by scopes
  *
- * @package Mtf\ObjectManager
  * @internal
  */
 class Config extends ObjectManagerConfig

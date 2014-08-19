@@ -13,7 +13,6 @@ use Mtf\ObjectManager;
 /**
  * Class InjectableDataProvider
  *
- * @package Mtf\TestSuite
  * @api
  */
 class InjectableDataProvider extends InjectableMethod

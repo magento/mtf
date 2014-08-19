@@ -15,7 +15,6 @@ use Mtf\ObjectManager;
  * This Test Suite class uses Test Case Iterator to collect appropriate Test Cases
  * as defined in TestCase Configuration
  *
- * @package Mtf\TestSuite
  * @api
  */
 class TestCase extends TestSuite

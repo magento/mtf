@@ -14,8 +14,6 @@ use Mtf\Fixture\FixtureInterface;
 
 /**
  * Class TestBlock
- *
- * @package Magento\Mtf\Test\Block
  */
 class TestBlock extends Form
 {

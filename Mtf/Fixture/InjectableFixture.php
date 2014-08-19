@@ -18,7 +18,6 @@ use Mtf\System\Event\EventManagerInterface;
  *
  * Ensures correct data representation between the system under test and testing framework
  *
- * @package Mtf\Fixture
  * @api
  */
 class InjectableFixture implements FixtureInterface
@@ -232,13 +231,14 @@ class InjectableFixture implements FixtureInterface
 
     /**
      * Persists Fixture Data into application
+     *
      * @return void
      */
     public function persist()
     {
         $this->eventManager->dispatchEvent(['persist_before'], [get_class($this)]);
         if (!empty($this->handlerInterface)) {
-            $result = $this->handlerFactory->get($this->handlerInterface)->persist($this);
+            $result = $this->handlerFactory->create($this->handlerInterface)->persist($this);
             if (!empty($result)) {
                 foreach ($result as $key => $value) {
                     $this->data[$key] = $value;

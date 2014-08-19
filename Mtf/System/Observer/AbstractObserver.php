@@ -12,6 +12,9 @@ use Mtf\System\Event\Event;
 use Mtf\System\Logger;
 use Mtf\System\Event\State as EventState;
 
+/**
+ * Class AbstractObserver
+ */
 abstract class AbstractObserver implements ObserverInterface
 {
     /**
@@ -42,13 +45,14 @@ abstract class AbstractObserver implements ObserverInterface
      */
     protected function createDestinationDirectory($suffix = '')
     {
-        $directory = sprintf('%s/%s/%s/' . $suffix,
+        $directory = sprintf(
+            '%s/%s/%s/' . $suffix,
             strtolower(str_replace('\\', '-', EventState::getTestSuiteName())),
             strtolower(str_replace('\\', '-', EventState::getTestClassName())),
             EventState::getTestMethodName()
         );
         if (!is_dir($this->logger->getLogDirectoryPath() . '/' . $directory)) {
-            mkdir($this->logger->getLogDirectoryPath() . '/' . $directory, 0777, true);
+            mkdir(MTF_BP . '/' . $this->logger->getLogDirectoryPath() . '/' . $directory, 0777, true);
         }
         return $directory;
     }

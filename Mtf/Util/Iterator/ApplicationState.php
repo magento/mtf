@@ -13,7 +13,7 @@ use Mtf\TestRunner\Configuration;
 
 /**
  * Class ApplicationState
- * @package Mtf\Util\Iterator
+ *
  * @api
  */
 class ApplicationState extends AbstractIterator

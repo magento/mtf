@@ -10,13 +10,13 @@ namespace Mtf\Constraint;
 
 /**
  * Dummy Constraint
- *
- * @package Mtf\Constraint
  */
 class Dummy extends AbstractConstraint
 {
     /**
-     * {@inheritdoc}
+     * Process assert actions
+     *
+     * @return bool
      */
     public function processAssert()
     {
@@ -24,7 +24,9 @@ class Dummy extends AbstractConstraint
     }
 
     /**
-     * {@inheritdoc}
+     * Returns a string representation of the object.
+     *
+     * @return string
      */
     public function toString()
     {

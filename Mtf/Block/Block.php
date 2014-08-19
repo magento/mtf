@@ -20,7 +20,6 @@ use Mtf\Client\Element\Locator;
  * Blocks provide additional level of granularity of tests for business logic encapsulation
  * (extending Page Object concept).
  *
- * @package Mtf\Block
  * @abstract
  * @api
  */

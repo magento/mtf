@@ -12,7 +12,6 @@ namespace Mtf\TestSuite;
  * Class Callback
  * Simple wrapper over regular Test Suite to provide ability for callbacks prior Test Suite run
  *
- * @package Mtf\TestCase
  * @api
  */
 class Callback extends \PHPUnit_Framework_TestSuite

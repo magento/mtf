@@ -13,7 +13,6 @@ use Magento\Framework\ObjectManager;
 /**
  * Class GenerateResult
  *
- * @package Mtf\Util
  * @api
  * @abstract
  */

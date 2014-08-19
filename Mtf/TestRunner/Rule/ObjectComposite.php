@@ -13,7 +13,6 @@ use Mtf\TestCase\Injectable;
 /**
  * Class Rule
  *
- * @package Mtf\TestRunner
  * @api
  */
 class ObjectComposite extends AbstractRule implements ObjectRuleInterface
