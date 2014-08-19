@@ -165,11 +165,11 @@ class ObjectManagerFactory
         );
 
         $objectManager->configure(
-            $objectManager->get('Mtf\ObjectManager\ConfigLoader\Module')->load('etc\\ui')
+            $objectManager->get('Mtf\ObjectManager\ConfigLoader\Module')->load('etc/ui')
         );
 
         $objectManager->configure(
-            $objectManager->get('Mtf\ObjectManager\ConfigLoader\Module')->load('etc\\curl')
+            $objectManager->get('Mtf\ObjectManager\ConfigLoader\Module')->load('etc/curl')
         );
     }
 }
