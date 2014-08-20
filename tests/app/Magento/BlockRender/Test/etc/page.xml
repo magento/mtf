@@ -7,10 +7,10 @@
 * @license     {license_link}
 */
 -->
-<page>
+<page module="Magento_BlockRender">
     <testPage>
-        <mca>testPage</mca>
+        <module>Magento_BlockRender</module>
+        <mca>/</mca>
         <area>area</area>
-        <class>Magento\Mtf\Test\Page\Area\TestPage</class>
     </testPage>
 </page>

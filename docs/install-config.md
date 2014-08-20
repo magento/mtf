@@ -60,7 +60,7 @@ For more information about web browser support, see <a href="http://docs.seleniu
 
 2.	Follow the instructions on that page to install Composer.
 
-2.	Run Composer from the `[your Magento install dir]/dev/tests/functional` directory as follows:
+3.	Run Composer from the `[your Magento install dir]/dev/tests/functional` directory as follows:
 
 	```
 	composer install
@@ -87,8 +87,16 @@ For more information about web browser support, see <a href="http://docs.seleniu
    <li><tt>phpunit</tt></li>
    <li><tt>symfony</tt> </li>
    <li><tt>autoload.php</tt> (file)</li></ul>
-	
-3.	Run the generator from `[your Magento install dir]/dev/tests/functional/utils/generate/factory.php` or `[your Magento install dir]/dev/tests/functional/utils/generate.php`
+
+4.	Run the page generator from `[your Magento install dir]/dev/tests/functional/utils/generate/page.php`
+
+	```
+	php utils/generate/page.php
+	```
+
+	The generator creates php classes for pages considering Magento modularity.
+
+5.	Run the generator from `[your Magento install dir]/dev/tests/functional/utils/generate/factory.php`
 
 	```
 	php utils/generate/factory.php
@@ -97,7 +105,7 @@ For more information about web browser support, see <a href="http://docs.seleniu
 	**Note**: The generator tool creates factories for fixtures, handlers, repositories, page objects, and block objects. After the MTF is initialized, the factories are pre-generated to facilitate creating and running the tests.
 	
 	The generator creates generated directories containing factories for pages, blocks, handlers, fixtures and repositories.
-	
+
 ## Configuring the MTF
 
 This section discusses how to configure the MTF. 

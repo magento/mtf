@@ -48,7 +48,7 @@ class Reader extends Filesystem
         $fileName = 'events.xml',
         $idAttributes = array(),
         $domDocumentClass = 'Magento\Framework\Config\Dom',
-        $defaultScope = 'global'
+        $defaultScope = 'etc/global'
     ) {
         parent::__construct(
             $fileResolver,
