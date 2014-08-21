@@ -54,14 +54,14 @@ class Page implements PageInterface
      *
      * @var array
      */
-    protected $_blocks = [];
+    protected $blocks = [];
 
     /**
      * Page blocks instances
      *
      * @var BlockInterface[]
      */
-    protected $_blockInstances = [];
+    protected $blockInstances = [];
 
     /**
      * Block Factory instance
@@ -163,15 +163,19 @@ class Page implements PageInterface
      */
     public function getBlockInstance($blockName)
     {
-        if (!isset($this->_blockInstances[$blockName])) {
-            $blockMeta = isset($this->_blocks[$blockName]) ? $this->_blocks[$blockName] : [];
+        if (!isset($this->blockInstances[$blockName])) {
+            $blockMeta = isset($this->blocks[$blockName]) ? $this->blocks[$blockName] : [];
             $class = isset($blockMeta['class']) ? $blockMeta['class'] : false;
             if ($class) {
                 $element = $this->_browser->find($blockMeta['locator'], $blockMeta['strategy']);
+                $config = [
+                    'renders' => isset($blockMeta['renders']) ? $blockMeta['renders'] : []
+                ];
                 $block = $this->_blockFactory->create(
                     $class,
                     [
-                        'element' => $element
+                        'element' => $element,
+                        'config' => $config
                     ]
                 );
             } else {
@@ -180,9 +184,9 @@ class Page implements PageInterface
                 );
             }
 
-            $this->_blockInstances[$blockName] = $block;
+            $this->blockInstances[$blockName] = $block;
         }
         // @todo fix to get link to new page if page reloaded
-        return $this->_blockInstances[$blockName]->reinitRootElement();
+        return $this->blockInstances[$blockName]->reinitRootElement();
     }
 }

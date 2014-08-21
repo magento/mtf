@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<!--
+/**
+* {license_notice}
+*
+* @copyright   {copyright}
+* @license     {license_link}
+*/
+-->
+<fixture>
+    <blockRender module="Magento_BlockRender">
+        <type>blank</type>
+        <entity_type>test_fixture</entity_type>
+    </blockRender>
+</fixture>

@@ -48,16 +48,32 @@ abstract class Block implements BlockInterface
     protected $browser;
 
     /**
+     * Block config
+     *
+     * @var array
+     */
+    protected $config;
+
+    /**
+     * Block render instances
+     *
+     * @var array
+     */
+    protected $renderInstances = [];
+
+    /**
      * @constructor
      * @param Element $element
      * @param BlockFactory $blockFactory
      * @param Browser $browser
+     * @param array $config
      */
-    public function __construct(Element $element, BlockFactory $blockFactory, Browser $browser)
+    public function __construct(Element $element, BlockFactory $blockFactory, Browser $browser, array $config = [])
     {
         $this->_rootElement = $element;
         $this->blockFactory = $blockFactory;
         $this->browser = $browser;
+        $this->config = $config;
 
         $this->_init();
     }
@@ -126,5 +142,55 @@ abstract class Block implements BlockInterface
                 return $productSavedMessage->isVisible() == false ? true : null;
             }
         );
+    }
+
+    /**
+     * Call render block
+     *
+     * @param string $type
+     * @param string $method
+     * @param array $arguments
+     * @return bool
+     */
+    protected function callRender($type, $method, array $arguments = [])
+    {
+        $block = $this->getRenderInstance($type);
+        if ($block !== null) {
+            call_user_func_array([$block, $method], $arguments);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Get render instance by name
+     *
+     * @param string $renderName
+     * @return BlockInterface
+     */
+    protected function getRenderInstance($renderName)
+    {
+        if (!isset($this->renderInstances[$renderName])) {
+            $blockMeta = isset($this->config['renders'][$renderName]) ? $this->config['renders'][$renderName] : [];
+            $class = isset($blockMeta['class']) ? $blockMeta['class'] : false;
+            if ($class) {
+                $element = $this->_rootElement->find($blockMeta['locator'], $blockMeta['strategy']);
+                $config = [
+                    'renders' => isset($blockMeta['renders']) ? $blockMeta['renders'] : []
+                ];
+                $block = $this->blockFactory->create(
+                    $class,
+                    [
+                        'element' => $element,
+                        'config' => $config
+                    ]
+                );
+            } else {
+                return null;
+            }
+
+            $this->renderInstances[$renderName] = $block;
+        }
+        return $this->renderInstances[$renderName];
     }
 }

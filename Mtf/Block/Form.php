@@ -69,11 +69,17 @@ class Form extends Block
      * @param BlockFactory $blockFactory
      * @param Mapper $mapper
      * @param Browser $browser
+     * @param array $config [optional]
      */
-    public function __construct(Element $element, BlockFactory $blockFactory, Mapper $mapper, Browser $browser)
-    {
+    public function __construct(
+        Element $element,
+        BlockFactory $blockFactory,
+        Mapper $mapper,
+        Browser $browser,
+        array $config = []
+    ) {
         $this->mapper = $mapper;
-        parent::__construct($element, $blockFactory, $browser);
+        parent::__construct($element, $blockFactory, $browser, $config);
     }
 
     /**
@@ -218,7 +224,7 @@ class Form extends Block
         $context = ($element === null) ? $this->_rootElement : $element;
         foreach ($fields as $name => $field) {
             if (!isset($field['value'])) {
-                $this->_fill($field);
+                $this->_fill($field, $context);
             } else {
                 $element = $this->getElement($context, $field);
                 if ($this->mappingMode || ($element->isVisible() && !$element->isDisabled())) {
