@@ -11,6 +11,7 @@ namespace Mtf\Block;
 use Mtf\Client\Element;
 use Mtf\Fixture\FixtureInterface;
 use Mtf\Fixture\InjectableFixture;
+use Mtf\Client\Driver\Selenium\Browser;
 
 /**
  * Class Form
@@ -67,11 +68,12 @@ class Form extends Block
      * @param Element $element
      * @param BlockFactory $blockFactory
      * @param Mapper $mapper
+     * @param Browser $browser
      */
-    public function __construct(Element $element, BlockFactory $blockFactory, Mapper $mapper)
+    public function __construct(Element $element, BlockFactory $blockFactory, Mapper $mapper, Browser $browser)
     {
         $this->mapper = $mapper;
-        parent::__construct($element, $blockFactory);
+        parent::__construct($element, $blockFactory, $browser);
     }
 
     /**

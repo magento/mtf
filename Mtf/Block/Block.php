@@ -10,6 +10,7 @@ namespace Mtf\Block;
 
 use Mtf\Client\Element;
 use Mtf\Client\Element\Locator;
+use Mtf\Client\Driver\Selenium\Browser;
 
 /**
  * Class Block
@@ -40,14 +41,23 @@ abstract class Block implements BlockInterface
     protected $blockFactory;
 
     /**
+     * Provides ability to perform browser actions
+     *
+     * @var Browser
+     */
+    protected $browser;
+
+    /**
      * @constructor
      * @param Element $element
      * @param BlockFactory $blockFactory
+     * @param Browser $browser
      */
-    public function __construct(Element $element, BlockFactory $blockFactory)
+    public function __construct(Element $element, BlockFactory $blockFactory, Browser $browser)
     {
         $this->_rootElement = $element;
         $this->blockFactory = $blockFactory;
+        $this->browser = $browser;
 
         $this->_init();
     }
