@@ -12,6 +12,7 @@ use Mtf\TestStep\TestStepFactory;
 
 /**
  * Class Step
+ * Step iterator
  */
 class Step extends AbstractIterator
 {

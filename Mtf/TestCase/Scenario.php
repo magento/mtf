@@ -10,7 +10,7 @@ namespace Mtf\TestCase;
 
 /**
  * Class Scenario
- * Base test case class for functional testing using scenario
+ * Base test case class for functional test using scenario
  *
  * @api
  * @abstract
