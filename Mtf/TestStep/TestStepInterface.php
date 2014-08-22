@@ -15,7 +15,7 @@ namespace Mtf\TestStep;
 interface TestStepInterface
 {
     /**
-     * Logic of step
+     * Run step flow
      *
      * @return mixed
      */

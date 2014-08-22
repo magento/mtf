@@ -10,9 +10,7 @@ namespace Mtf\TestCase;
 
 /**
  * Class Scenario
- *
- * Class is extended from Injectable
- * and is base test case class for functional testing using scenario
+ * Base test case class for functional testing using scenario
  *
  * @api
  * @abstract

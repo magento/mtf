@@ -68,14 +68,13 @@ abstract class AbstractConstraint extends \PHPUnit_Framework_Constraint implemen
     }
 
     /**
-     * Set Test Case and it's DI Arguments to Constraint
+     * Set DI Arguments to Constraint
      *
      * @param array $arguments
      * @return void
      */
-    public function configure(
-        array $arguments = []
-    ) {
+    public function configure(array $arguments = [])
+    {
         $this->result = null;
         $this->arguments = $arguments;
     }

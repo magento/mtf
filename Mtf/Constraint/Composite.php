@@ -57,14 +57,13 @@ class Composite extends AbstractConstraint
     }
 
     /**
-     * Set Test Case and it's DI Arguments to Constraint
+     * Set DI Arguments to Constraint
      *
      * @param array $arguments
      * @return void
      */
-    public function configure(
-        array $arguments = []
-    ) {
+    public function configure(array $arguments = [])
+    {
         foreach ($this->constraints as $constraint) {
             $constraint->configure($arguments);
         }
