@@ -13,10 +13,8 @@ use Mtf\System\Config;
 
 /**
  * Class Listener
- *
  * Listener which provides framework with isolation capability
  *
- * @package Mtf\System\Isolation
  * @internal
  */
 class Listener implements \PHPUnit_Framework_TestListener
@@ -96,7 +94,10 @@ class Listener implements \PHPUnit_Framework_TestListener
     }
 
     /**
-     * {@inheritdoc}
+     * A test suite started
+     *
+     * @param \PHPUnit_Framework_TestSuite $suite
+     * @return void
      */
     public function startTestSuite(\PHPUnit_Framework_TestSuite $suite)
     {
@@ -110,7 +111,10 @@ class Listener implements \PHPUnit_Framework_TestListener
     }
 
     /**
-     * {@inheritdoc}
+     * A test suite ended
+     *
+     * @param \PHPUnit_Framework_TestSuite $suite
+     * @return void
      */
     public function endTestSuite(\PHPUnit_Framework_TestSuite $suite)
     {
@@ -123,7 +127,10 @@ class Listener implements \PHPUnit_Framework_TestListener
     }
 
     /**
-     * {@inheritdoc}
+     * A test started
+     *
+     * @param \PHPUnit_Framework_Test $test
+     * @return void
      */
     public function startTest(\PHPUnit_Framework_Test $test)
     {
@@ -132,7 +139,11 @@ class Listener implements \PHPUnit_Framework_TestListener
     }
 
     /**
-     * {@inheritdoc}
+     * A test ended
+     *
+     * @param \PHPUnit_Framework_Test $test
+     * @param float $time
+     * @return void
      */
     public function endTest(\PHPUnit_Framework_Test $test, $time)
     {
@@ -216,6 +227,7 @@ class Listener implements \PHPUnit_Framework_TestListener
 
     /**
      * Do isolation checks after scope
+     *
      * @return void
      */
     private function _processAfterScope()
@@ -228,47 +240,77 @@ class Listener implements \PHPUnit_Framework_TestListener
     }
 
     /**
-     * {@inheritdoc}
+     * An error occurred
+     *
+     * @param \PHPUnit_Framework_Test $test
+     * @param \Exception $e
+     * @param float $time
+     * @return void
      * @SuppressWarnings(PHPMD.ShortVariable)
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function addError(\PHPUnit_Framework_Test $test, \Exception $e, $time)
     {
+        //
     }
 
     /**
-     * {@inheritdoc}
+     * A failure occurred
+     *
+     * @param \PHPUnit_Framework_Test $test
+     * @param \PHPUnit_Framework_AssertionFailedError $e
+     * @param float $time
+     * @return void
      * @SuppressWarnings(PHPMD.ShortVariable)
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function addFailure(\PHPUnit_Framework_Test $test, \PHPUnit_Framework_AssertionFailedError $e, $time)
     {
+        //
     }
 
     /**
-     * {@inheritdoc}
+     * Incomplete test
+     *
+     * @param \PHPUnit_Framework_Test $test
+     * @param \Exception $e
+     * @param float $time
+     * @return void
      * @SuppressWarnings(PHPMD.ShortVariable)
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function addIncompleteTest(\PHPUnit_Framework_Test $test, \Exception $e, $time)
     {
+        //
     }
 
     /**
-     * {@inheritdoc}
+     * Risky test
+     *
+     * @param \PHPUnit_Framework_Test $test
+     * @param \Exception $e
+     * @param float $time
+     * @return void
      * @SuppressWarnings(PHPMD.ShortVariable)
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function addRiskyTest(\PHPUnit_Framework_Test $test, \Exception $e, $time)
     {
+        //
     }
 
     /**
-     * {@inheritdoc}
+     * Skipped test
+     *
+     * @param \PHPUnit_Framework_Test $test
+     * @param \Exception $e
+     * @param float $time
+     * @return void
      * @SuppressWarnings(PHPMD.ShortVariable)
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function addSkippedTest(\PHPUnit_Framework_Test $test, \Exception $e, $time)
     {
+        //
     }
 }

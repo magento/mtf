@@ -13,7 +13,6 @@ use Mtf\Util\XmlConverter;
 /**
  * Class Reader
  *
- * @package Mtf\TestRunner\Configuration
  * @internal
  */
 class Reader

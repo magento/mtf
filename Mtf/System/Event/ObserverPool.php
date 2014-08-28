@@ -11,7 +11,6 @@ use Mtf\ObjectManager;
 
 /**
  * Class ObserverPool
- * @package Mtf\System\Event
  */
 class ObserverPool
 {

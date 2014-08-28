@@ -2,10 +2,6 @@
 /**
  * {license_notice}
  *
- * @spi
- * @category    Mtf
- * @package     Mtf
- * @subpackage  functional_tests
  * @copyright   {copyright}
  * @license     {license_link}
  */
@@ -16,8 +12,6 @@ use Mtf\Fixture;
 
 /**
  * Interface for Handlers
- *
- * @package Mtf
  */
 interface Handler
 {

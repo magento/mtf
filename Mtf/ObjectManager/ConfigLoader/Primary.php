@@ -12,7 +12,6 @@ namespace Mtf\ObjectManager\ConfigLoader;
  * Class Primary
  * MTF Primary DI configuration loader
  *
- * @package Mtf\ObjectManager\ConfigLoader
  * @internal
  */
 class Primary

@@ -14,7 +14,6 @@ use Mtf\TestCase\Injectable;
 /**
  * Class Variation
  *
- * @package Mtf\Util\Iterator
  * @api
  */
 class Variation extends AbstractIterator

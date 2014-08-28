@@ -8,14 +8,10 @@
 
 namespace Mtf\Client\Driver\Selenium;
 
-use Mtf\Client\Driver\Selenium\TestCase;
-
 /**
  * Class WaitUntil
- *
  * Implements waitUntil method functionality
  *
- * @package Mtf\Client\Driver\Selenium
  * @api
  */
 class WaitUntil

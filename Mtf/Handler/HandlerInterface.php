@@ -13,7 +13,6 @@ use Mtf\Fixture\FixtureInterface;
 /**
  * Interface for Handlers
  *
- * @package Mtf
  * @api
  */
 interface HandlerInterface

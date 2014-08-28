@@ -12,7 +12,6 @@ namespace Mtf\ObjectManager\ConfigLoader;
  * Class Module
  * MTF Modular configuration loader. Loads configuration from XML files, located in modules' directories
  *
- * @package Mtf\ObjectManager\ConfigLoader
  * @internal
  */
 class Module

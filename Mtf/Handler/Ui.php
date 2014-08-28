@@ -15,7 +15,6 @@ use Mtf\System\Config;
  *
  * Abstract class for Ui handlers
  *
- * @package Mtf\Handler
  * @api
  * @abstract
  */

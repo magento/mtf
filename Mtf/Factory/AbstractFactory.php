@@ -8,17 +8,16 @@
 
 namespace Mtf\Factory;
 
-use Mtf\Fixture\FixtureInterface;
 use Mtf\ObjectManager;
 
 /**
  * Class AbstractFactory
- *
- * @package Mtf\Factory
  */
 abstract class AbstractFactory
 {
     /**
+     * Object Manager instance
+     *
      * @var ObjectManager
      */
     protected $objectManager;

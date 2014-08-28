@@ -13,7 +13,6 @@ use Mtf\TestSuite\InjectableTestCase;
 /**
  * Class SuiteComposite
  *
- * @package Mtf\TestRunner\Rule
  * @api
  */
 class SuiteComposite extends AbstractRule implements SuiteRuleInterface

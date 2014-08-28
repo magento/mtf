@@ -10,7 +10,7 @@ namespace Mtf\Util;
 
 /**
  * Class TestClassResolver
- * @package Mtf\Util
+ *
  * @api
  */
 class TestClassResolver

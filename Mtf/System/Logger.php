@@ -83,7 +83,7 @@ class Logger implements LoggerInterface
     /**
      * Create log directory if not exists
      *
-     * @param $path
+     * @param string $path
      * @throws \RuntimeException
      */
     protected function checkDirectory($path)
@@ -119,6 +119,6 @@ class Logger implements LoggerInterface
      */
     public function log($message, $filename, $context = FILE_APPEND)
     {
-        return file_put_contents($this->getLogDirectoryPath() . '/' . $filename, $message, $context);
+        return file_put_contents(MTF_BP . '/' . $this->getLogDirectoryPath() . '/' . $filename, $message, $context);
     }
 }

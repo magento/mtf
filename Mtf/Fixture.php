@@ -2,9 +2,6 @@
 /**
  * {license_notice}
  *
- * @category    Mtf
- * @package     Mtf
- * @subpackage  functional_tests
  * @copyright   {copyright}
  * @license     {license_link}
  */
@@ -13,8 +10,6 @@ namespace Mtf;
 
 /**
  * Interface for Fixture classes
- *
- * @package Mtf
  */
 interface Fixture
 {
@@ -29,7 +24,7 @@ interface Fixture
     /**
      * Return prepared data set
      *
-     * @param $key [optional]
+     * @param string $key [optional]
      * @return mixed
      */
     public function getData($key = null);

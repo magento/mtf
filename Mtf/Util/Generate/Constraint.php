@@ -13,10 +13,8 @@ use Mtf\Configuration\Reader;
 
 /**
  * Class Constraint
- *
  * Constraint files generator
  *
- * @package Mtf\Util\Generate
  * @internal
  */
 class Constraint extends AbstractGenerate
@@ -112,8 +110,6 @@ class Constraint extends AbstractGenerate
         $content .= $useString . "\n\n";
         $content .= "/**\n";
         $content .= " * Class {$classShortName}\n";
-        $content .= " *\n";
-        $content .= " * @package {$ns}\n";
         $content .= " */\n";
         $content .= "class {$classShortName} extends AbstractConstraint\n";
         $content .= "{\n";

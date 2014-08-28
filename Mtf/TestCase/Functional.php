@@ -17,7 +17,6 @@ use Mtf\TestRunner\Process\ProcessManager;
  * Used for test cases based on old specification
  * "Injectable" abstract Class should be used instead
  *
- * @package Mtf\TestCase
  * @api
  * @abstract
  */
@@ -102,6 +101,7 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
      *
      * @param \PHPUnit_Framework_TestResult $result
      * @return \PHPUnit_Framework_TestResult
+     * @throws \Exception
      */
     public function run(\PHPUnit_Framework_TestResult $result = null)
     {
@@ -117,6 +117,10 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
                 parent::run($result);
                 if ($this->getStatus() == \PHPUnit_Runner_BaseTestRunner::STATUS_ERROR) {
                     $this->eventManager->dispatchEvent(['exception'], [$this->getStatusMessage()]);
+                }
+                /** @var \PHPUnit_Framework_TestFailure $failure */
+                foreach ($result->failures() as $failure) {
+                    $this->eventManager->dispatchEvent(['failure'], [$failure->exceptionMessage()]);
                 }
             } catch (\Exception $e) {
                 $this->eventManager->dispatchEvent(['exception'], [$e->getMessage()]);

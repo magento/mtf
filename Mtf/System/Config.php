@@ -13,7 +13,6 @@ use Symfony\Component\Yaml\Yaml;
 /**
  * Class Config
  *
- * @package Mtf\System
  * @api
  */
 class Config

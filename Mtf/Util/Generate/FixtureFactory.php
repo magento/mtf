@@ -2,10 +2,6 @@
 /**
  * {license_notice}
  *
- * @api
- * @category    Mtf
- * @package     Mtf
- * @subpackage  functional_tests
  * @copyright   {copyright}
  * @license     {license_link}
  */
@@ -14,10 +10,7 @@ namespace Mtf\Util\Generate;
 
 /**
  * Class FixtureFactory
- *
  * Fixture Factory generator
- *
- * @package Mtf\Util\Generate
  */
 class FixtureFactory extends GenerateAbstract
 {
@@ -30,6 +23,7 @@ class FixtureFactory extends GenerateAbstract
 
     /**
      * Generate Fixtures
+     *
      * @return void
      */
     public function generate()
@@ -45,6 +39,7 @@ class FixtureFactory extends GenerateAbstract
 
     /**
      * Collect Fixture items
+     *
      * @return void
      */
     protected function _generateFixtures()

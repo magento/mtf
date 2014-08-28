@@ -14,10 +14,8 @@ use Magento\Framework\ObjectManager;
 
 /**
  * Class Repository
- *
  * Repository files generator
  *
- * @package Mtf\Util\Generate
  * @internal
  */
 class Repository extends AbstractGenerate
@@ -50,6 +48,7 @@ class Repository extends AbstractGenerate
 
     /**
      * Launch Repository generators
+     *
      * @return void
      */
     public function launch()
@@ -62,6 +61,7 @@ class Repository extends AbstractGenerate
 
     /**
      * Generate Repositories XML
+     *
      * @return void
      */
     protected function generateXml()
@@ -166,6 +166,7 @@ class Repository extends AbstractGenerate
 
     /**
      * Generate Repositories Classes
+     *
      * @return void
      */
     protected function generateClasses()
@@ -261,8 +262,6 @@ class Repository extends AbstractGenerate
         $content .= "use Mtf\\Repository\\AbstractRepository;\n\n";
         $content .= "/**\n";
         $content .= " * Class {$className}\n";
-        $content .= " *\n";
-        $content .= " * @package {$ns}\n";
         $content .= " */\n";
         $content .= "class {$className} extends AbstractRepository\n";
         $content .= "{\n";

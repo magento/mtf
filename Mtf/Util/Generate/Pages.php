@@ -2,10 +2,6 @@
 /**
  * {license_notice}
  *
- * @api
- * @category    Mtf
- * @package     Mtf
- * @subpackage  functional_tests
  * @copyright   {copyright}
  * @license     {license_link}
  */
@@ -14,15 +10,13 @@ namespace Mtf\Util\Generate;
 
 /**
  * Class Pages
- *
  * Pages generator
- *
- * @package Mtf\Util\Generate
  */
 class Pages extends GenerateAbstract
 {
     /**
      * Generate Pages
+     *
      * @return void
      */
     public function generate()

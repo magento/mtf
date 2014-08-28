@@ -10,7 +10,7 @@ namespace Mtf\ObjectManager\Config\Reader;
 
 /**
  * Class Dom
- * @package Mtf\ObjectManager\Config\Reader
+ *
  * @internal
  */
 class Dom extends \Magento\Framework\Config\Reader\Filesystem
@@ -66,7 +66,9 @@ class Dom extends \Magento\Framework\Config\Reader\Filesystem
     /**
      * Create and return a config merger instance that takes into account types of arguments
      *
-     * {@inheritdoc}
+     * @param string $mergerClass
+     * @param string $initialContents
+     * @return \Magento\Framework\Config\Dom
      */
     protected function _createConfigMerger($mergerClass, $initialContents)
     {

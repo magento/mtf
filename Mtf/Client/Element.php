@@ -15,25 +15,27 @@ use Mtf\Client\Element\Locator;
  *
  * Classes that implement this interface represents element of a page and provide ability to interact with this element.
  *
- * @package Mtf\Client
  * @api
  */
 interface Element
 {
     /**
      * Click
+     *
      * @return void
      */
     public function click();
 
     /**
      * Double click
+     *
      * @return void
      */
     public function doubleClick();
 
     /**
      * Right click
+     *
      * @return void
      */
     public function rightClick();
@@ -117,12 +119,14 @@ interface Element
 
     /**
      * Press OK on an alert, or confirms a dialog
+     *
      * @return void
      */
     public function acceptAlert();
 
     /**
      * Press Cancel on an alert, or does not confirm a dialog
+     *
      * @return void
      */
     public function dismissAlert();

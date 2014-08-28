@@ -10,10 +10,8 @@ namespace Mtf\Client\Element;
 
 /**
  * Class Locator
- *
  * Locator class is responsible for keeping selector/location data of element on the page.
  *
- * @package Mtf\Client\Element
  * @api
  */
 class Locator implements \ArrayAccess

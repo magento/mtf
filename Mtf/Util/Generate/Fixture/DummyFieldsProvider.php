@@ -11,13 +11,15 @@ namespace Mtf\Util\Generate\Fixture;
 /**
  * Class DummyFieldsProvider
  *
- * @package Mtf\Util\Generate\Fixture
  * @internal
  */
 class DummyFieldsProvider implements FieldsProviderInterface
 {
     /**
-     * {@inheritdoc}
+     * Collect fields for given fixture
+     *
+     * @param array $fixture
+     * @return array
      */
     public function getFields(array $fixture)
     {

@@ -15,10 +15,8 @@ use Mtf\Util\XmlConverter;
 
 /**
  * Class Fixture
- *
  * Fixture files generator
  *
- * @package Mtf\Util\Generate
  * @internal
  */
 class Fixture extends AbstractGenerate
@@ -59,6 +57,7 @@ class Fixture extends AbstractGenerate
 
     /**
      * Launch Fixture generators
+     *
      * @return void
      */
     public function launch()
@@ -69,6 +68,7 @@ class Fixture extends AbstractGenerate
 
     /**
      * Generate Fixtures XML
+     *
      * @return void
      */
     protected function generateXml()
@@ -139,6 +139,7 @@ class Fixture extends AbstractGenerate
 
     /**
      * Generate Fixtures Classes
+     *
      * @return void
      */
     protected function generateClasses()
@@ -226,8 +227,6 @@ class Fixture extends AbstractGenerate
         $content .= "use Mtf\\Fixture\\InjectableFixture;\n\n";
         $content .= "/**\n";
         $content .= " * Class {$className}\n";
-        $content .= " *\n";
-        $content .= " * @package {$ns}\n";
         $content .= " */\n";
         $content .= "class {$className} extends InjectableFixture\n";
         $content .= "{\n";

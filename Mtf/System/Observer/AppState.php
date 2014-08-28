@@ -14,7 +14,6 @@ use Mtf\Client\Driver\Selenium\Browser;
 
 /**
  * Class AppState
- * @package Mtf\System\Observer
  */
 class AppState implements ObserverInterface
 {

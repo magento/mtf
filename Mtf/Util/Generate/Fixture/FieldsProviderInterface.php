@@ -10,7 +10,7 @@ namespace Mtf\Util\Generate\Fixture;
 
 /**
  * Class FieldsProviderInterface
- * @package Mtf\Util\Generate\Fixture
+ *
  * @api
  */
 interface FieldsProviderInterface

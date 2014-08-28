@@ -11,7 +11,6 @@ use Mtf\System\Event\Config;
 
 /**
  * Class EventManager
- * @package Mtf\System\Event
  */
 class EventManager implements EventManagerInterface
 {

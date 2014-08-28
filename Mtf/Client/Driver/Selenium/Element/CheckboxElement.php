@@ -15,7 +15,6 @@ use Mtf\Client\Driver\Selenium\Element;
  * Class provides ability to work with page element checkbox
  * (Such as setting/getting value)
  *
- * @package Mtf\Client\Driver\Selenium\Element
  * @api
  */
 class CheckboxElement extends Element

@@ -16,7 +16,6 @@ use Mtf\Client\Element\Locator;
  * Class SelectElement
  * Typified element class for Select elements
  *
- * @package Mtf\Client\Element
  * @api
  */
 class SelectElement extends Element

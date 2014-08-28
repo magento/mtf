@@ -11,7 +11,6 @@ namespace Mtf\Constraint;
 /**
  * Interface for Constraint classes
  *
- * @package Mtf\Constraint
  * @api
  */
 interface ConstraintInterface

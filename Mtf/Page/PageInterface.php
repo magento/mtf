@@ -14,7 +14,6 @@ use Mtf\Block\BlockInterface;
 /**
  * Interface for Pages
  *
- * @package Mtf\Page
  * @api
  */
 interface PageInterface

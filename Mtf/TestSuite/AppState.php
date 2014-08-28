@@ -17,7 +17,6 @@ use Mtf\ObjectManager;
  * This Test Suite class uses Application State Iterator to repeat "Test Case Suite"
  * as many times as defined in AppState Configuration
  *
- * @package Mtf\TestSuite
  * @api
  */
 class AppState extends TestSuite

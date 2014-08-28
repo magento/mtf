@@ -14,8 +14,6 @@ use Magento\Mtf\Test\Page\Area\TestPage;
 
 /**
  * Class InjectableTestCase
- *
- * @package Magento\Mtf\Test\TestCase
  */
 class InjectableTestCase extends Injectable
 {

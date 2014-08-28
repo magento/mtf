@@ -10,7 +10,7 @@ namespace Mtf\Util\Generate\Repository;
 
 /**
  * Class CollectionProviderInterface
- * @package Mtf\Util\Generate\Repository
+ *
  * @api
  */
 interface CollectionProviderInterface

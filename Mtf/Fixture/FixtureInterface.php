@@ -13,7 +13,6 @@ use Mtf\Fixture;
 /**
  * Interface for Fixture classes
  *
- * @package Mtf\Fixture
  * @api
  */
 interface FixtureInterface
@@ -27,7 +26,7 @@ interface FixtureInterface
     /**
      * Return prepared data set
      *
-     * @param $key [optional]
+     * @param string $key [optional]
      * @return mixed
      */
     public function getData($key = null);

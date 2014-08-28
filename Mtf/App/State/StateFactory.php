@@ -13,7 +13,6 @@ use Mtf\ObjectManager;
 /**
  * Factory for States
  *
- * @package Mtf\Block
  * @api
  */
 class StateFactory

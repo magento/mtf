@@ -14,7 +14,6 @@ use Mtf\ObjectManager;
 /**
  * Class AbstractRule
  *
- * @package Mtf\TestRunner\Rule
  * @api
  */
 abstract class AbstractRule

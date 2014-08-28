@@ -15,7 +15,6 @@ use Mtf\TestSuite\RegularTestCase;
 /**
  * Class TestCaseFactory
  *
- * @package Mtf\TestCase
  * @api
  */
 class TestCaseFactory

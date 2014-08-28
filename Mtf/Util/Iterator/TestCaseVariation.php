@@ -15,7 +15,6 @@ use Mtf\TestRunner\Configuration;
 /**
  * Class TestCaseVariation
  *
- * @package Mtf\Util\Iterator
  * @api
  */
 class TestCaseVariation extends AbstractIterator

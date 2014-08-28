@@ -12,8 +12,6 @@ use Mtf\Fixture\FixtureInterface;
 
 /**
  * Class Curl
- *
- * @package Magento\Mtf\Test\Handler\Test
  */
 class Strategy implements FixtureInterface
 {
@@ -49,7 +47,7 @@ class Strategy implements FixtureInterface
     /**
      * Return prepared data set
      *
-     * @param $key [optional]
+     * @param string $key [optional]
      * @return mixed
      */
     public function getData($key = null)

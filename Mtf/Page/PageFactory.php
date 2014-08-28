@@ -13,7 +13,6 @@ use Mtf\Factory\AbstractFactory;
 /**
  * Factory for Pages
  *
- * @package Mtf
  * @api
  */
 class PageFactory extends AbstractFactory

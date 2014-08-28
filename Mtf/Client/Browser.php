@@ -16,7 +16,6 @@ use Mtf\Client\Element\Locator;
  * Interface provides declaration of methods to perform browser actions such as navigation,
  * working with windows, alerts, prompts etc.
  *
- * @package Mtf\Client
  * @api
  */
 interface Browser
@@ -37,18 +36,21 @@ interface Browser
 
     /**
      * Forward page
+     *
      * @return void
      */
     public function forward();
 
     /**
      * Refresh page
+     *
      * @return void
      */
     public function refresh();
 
     /**
      * Reopen browser
+     *
      * @return void
      */
     public function reopen();
@@ -63,12 +65,14 @@ interface Browser
 
     /**
      * Close the current window
+     *
      * @return void
      */
     public function closeWindow();
 
     /**
      * Select window by its name
+     *
      * @return void
      */
     public function selectWindow();
@@ -99,11 +103,15 @@ interface Browser
     public function getUrl();
 
     /**
+     * Get Html page source
+     *
      * @return string
      */
     public function getHtmlSource();
 
     /**
+     * Get binary string of image
+     *
      * @return string
      */
     public function getScreenshotData();

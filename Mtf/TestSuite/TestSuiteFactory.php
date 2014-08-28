@@ -13,7 +13,6 @@ use Mtf\ObjectManager;
 /**
  * Class TestSuiteFactory
  *
- * @package Mtf\TestSuite
  * @api
  */
 class TestSuiteFactory

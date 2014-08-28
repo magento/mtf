@@ -13,7 +13,6 @@ use Mtf\ObjectManager;
 /**
  * Class RegularTestCase
  *
- * @package Mtf\TestSuite
  * @api
  */
 class RegularTestCase extends TestSuite

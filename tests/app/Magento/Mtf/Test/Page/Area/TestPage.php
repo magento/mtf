@@ -12,8 +12,6 @@ use Mtf\Page\Page;
 
 /**
  * Class TestPage
- *
- * @package Magento\Mtf\Test\Page\Area
  */
 class TestPage extends Page
 {
@@ -41,6 +39,7 @@ class TestPage extends Page
 
     /**
      * Init page. Set page url
+     *
      * @return void
      */
     protected function _init()

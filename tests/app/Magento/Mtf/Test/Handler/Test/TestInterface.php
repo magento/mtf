@@ -12,8 +12,6 @@ use Mtf\Handler\HandlerInterface;
 
 /**
  * Class TestFixtureInterface
- *
- * @package Magento\Mtf\Test\Handler
  */
 interface TestInterface extends HandlerInterface
 {

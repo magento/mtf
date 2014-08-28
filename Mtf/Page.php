@@ -2,9 +2,6 @@
 /**
  * {license_notice}
  *
- * @category    Mtf
- * @package     Mtf
- * @subpackage  functional_tests
  * @copyright   {copyright}
  * @license     {license_link}
  */
@@ -13,8 +10,6 @@ namespace Mtf;
 
 /**
  * Interface for Pages
- *
- * @package Mtf
  */
 interface Page
 {

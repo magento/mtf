@@ -12,8 +12,6 @@ use Mtf\Repository\AbstractRepository;
 
 /**
  * Class TestRepository
- *
- * @package Magento\Mtf\Test\Repository
  */
 class TestRepository extends AbstractRepository
 {
