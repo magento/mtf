@@ -145,28 +145,39 @@ abstract class Block implements BlockInterface
     }
 
     /**
+     * Check exist render type
+     *
+     * @param string $renderName
+     * @return bool
+     */
+    protected function hasRender($renderName)
+    {
+        return isset($this->config['renders'][$renderName]);
+    }
+
+    /**
      * Call render block
      *
      * @param string $type
      * @param string $method
      * @param array $arguments
-     * @return bool
+     * @return mixed
+     * @throws \Exception
      */
     protected function callRender($type, $method, array $arguments = [])
     {
         $block = $this->getRenderInstance($type);
-        if ($block !== null) {
-            call_user_func_array([$block, $method], $arguments);
-            return true;
+        if (null === $block) {
+            throw new \Exception("Wrong render instance: \"{$type}\"");
         }
-        return false;
+        return call_user_func([$block, $method], $arguments);
     }
 
     /**
      * Get render instance by name
      *
      * @param string $renderName
-     * @return BlockInterface
+     * @return BlockInterface|null
      */
     protected function getRenderInstance($renderName)
     {
@@ -174,7 +185,9 @@ abstract class Block implements BlockInterface
             $blockMeta = isset($this->config['renders'][$renderName]) ? $this->config['renders'][$renderName] : [];
             $class = isset($blockMeta['class']) ? $blockMeta['class'] : false;
             if ($class) {
-                $element = $this->_rootElement->find($blockMeta['locator'], $blockMeta['strategy']);
+                $element = (isset($blockMeta['locator']) && isset($blockMeta['strategy']))
+                    ? $this->_rootElement->find($blockMeta['locator'], $blockMeta['strategy'])
+                    : $this->_rootElement;
                 $config = [
                     'renders' => isset($blockMeta['renders']) ? $blockMeta['renders'] : []
                 ];
