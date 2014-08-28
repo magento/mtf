@@ -170,7 +170,7 @@ abstract class Block implements BlockInterface
         if (null === $block) {
             throw new \Exception("Wrong render instance: \"{$type}\"");
         }
-        return call_user_func([$block, $method], $arguments);
+        return call_user_func_array([$block, $method], $arguments);
     }
 
     /**
