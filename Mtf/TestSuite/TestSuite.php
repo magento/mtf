@@ -41,7 +41,7 @@ class TestSuite extends \PHPUnit_Framework_TestSuite
 
         $result->startTestSuite($this);
 
-        $doSetup = true;
+        $doSetup = false;
 
         if (!empty($excludeGroups)) {
             foreach ($this->groups as $_group => $_tests) {
@@ -146,10 +146,12 @@ class TestSuite extends \PHPUnit_Framework_TestSuite
             }
         }
 
-        /* Unique lines for TestSuite */
-        /** @var ProcessManager $processManager */
-        $processManager = ProcessManager::factory();
-        $processManager->waitForProcessesToComplete();
+        if ($this instanceof \Mtf\TestSuite\TestCase) {
+            /* Unique lines for TestSuite */
+            /** @var ProcessManager $processManager */
+            $processManager = ProcessManager::factory();
+            $processManager->waitForProcessesToComplete();
+        }
 
         if ($doSetup) {
             if ($this->testCase
