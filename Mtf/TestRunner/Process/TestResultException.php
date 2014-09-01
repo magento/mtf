@@ -7,7 +7,7 @@
  */
 namespace Mtf\TestRunner\Process;
 
-class TestResultException extends \Exception
+class TestResultException extends \PHPUnit_Framework_AssertionFailedError
 {
     /**
      * @param \Exception $e
