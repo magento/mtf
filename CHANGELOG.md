@@ -1,3 +1,5 @@
+1.0.0-dev.5
+=============
 * Added an ability to skip variation execution by specifying a value in 'issue' column in data set file
 * Updated block/fixture/page/handler generators to created file without @package annotation
 * Updated 'base' event preset configuration to take screenshots on failures
