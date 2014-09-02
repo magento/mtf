@@ -134,6 +134,9 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
                 foreach ($result->failures() as $failure) {
                     $this->eventManager->dispatchEvent(['failure'], [$failure->exceptionMessage()]);
                 }
+            } catch (\PHPUnit_Framework_Exception $phpUnitException) {
+                $this->eventManager->dispatchEvent(['exception'], [$phpUnitException->getMessage()]);
+                throw $phpUnitException;
             } catch (\Exception $exception) {
                 $this->eventManager->dispatchEvent(['exception'], [$exception->getMessage()]);
                 $this->fail($exception->getMessage());

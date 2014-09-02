@@ -150,10 +150,12 @@ abstract class Injectable extends Functional
                 $testVariationIterator->next();
                 $this->localArguments = [];
             }
+        } catch (\PHPUnit_Framework_Exception $phpUnitException) {
+            throw $phpUnitException;
         } catch (\Exception $exception) {
             $this->fail(
                 sprintf(
-                    'Failed to run %s: %s in %s on line %s',
+                    'Failed to run %s: %s in %s on line %d',
                     get_class($this),
                     $exception->getMessage(),
                     $exception->getFile(),

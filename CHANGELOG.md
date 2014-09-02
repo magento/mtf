@@ -1,3 +1,6 @@
+* Fixed issues with injectable tests parallel run
+* Added exception handling to prevent build interruption
+
 1.0.0-dev.5
 =============
 * Added an ability to skip variation execution by specifying a value in 'issue' column in data set file

@@ -41,6 +41,7 @@ class TestSuite extends \PHPUnit_Framework_TestSuite
 
         $result->startTestSuite($this);
 
+        //@TODO setUpBeforeClass and tearDownAfterClass are not supported for parallel run
         $doSetup = false;
 
         if (!empty($excludeGroups)) {
