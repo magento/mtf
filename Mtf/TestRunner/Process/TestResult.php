@@ -27,38 +27,29 @@ class TestResult extends \PHPUnit_Framework_TestResult
      */
     public function addError(\PHPUnit_Framework_Test $test, \Exception $e, $time)
     {
-        $testResultException = new TestResultException($e);
-        if ($e instanceof \PHPUnit_Framework_IncompleteTest) {
-            $this->notImplemented[] = new \PHPUnit_Framework_TestFailure($test, $testResultException);
+        parent::addError($test, new TestResultException($e), $time);
+    }
 
-            $notifyMethod = 'addIncompleteTest';
+    /**
+     * Adds a failure to the list of failures.
+     * The passed in exception caused the failure.
+     *
+     * @param \PHPUnit_Framework_Test                 $test
+     * @param \PHPUnit_Framework_AssertionFailedError $e
+     * @param float                                  $time
+     */
+    public function addFailure(\PHPUnit_Framework_Test $test, \PHPUnit_Framework_AssertionFailedError $e, $time)
+    {
+        parent::addFailure($test, new TestResultException($e), $time);
+    }
 
-            if ($this->stopOnIncomplete) {
-                $this->stop();
-            }
-        } else {
-            if ($e instanceof \PHPUnit_Framework_SkippedTest) {
-                $this->skipped[] = new \PHPUnit_Framework_TestFailure($test, $testResultException);
-                $notifyMethod = 'addSkippedTest';
-
-                if ($this->stopOnSkipped) {
-                    $this->stop();
-                }
-            } else {
-                $this->errors[] = new \PHPUnit_Framework_TestFailure($test, $testResultException);
-                $notifyMethod = 'addError';
-
-                if ($this->stopOnError || $this->stopOnFailure) {
-                    $this->stop();
-                }
-            }
-        }
-
-        foreach ($this->listeners as $listener) {
-            $listener->$notifyMethod($test, $e, $time);
-        }
-
-        $this->lastTestFailed = true;
-        $this->time += $time;
+    /**
+     * Serialize only required information
+     *
+     * @return array
+     */
+    public function __sleep()
+    {
+        return ['time', 'notImplemented', 'risky', 'skipped', 'errors', 'failures', 'codeCoverage'];
     }
 }
