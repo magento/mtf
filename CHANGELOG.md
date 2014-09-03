@@ -1,8 +1,13 @@
+* Fixed issues with injectable tests parallel run
+* Added exception handling to prevent build interruption
+* Rewrote page generator to collect related blocks from all modules
+* Created mechanism for running test cases using scenario approach
+
+1.0.0-dev.5
+=============
 * Added an ability to skip variation execution by specifying a value in 'issue' column in data set file
 * Updated block/fixture/page/handler generators to created file without @package annotation
 * Updated 'base' event preset configuration to take screenshots on failures
-* Rewrote page generator to collect related blocks from all modules
-* Created mechanism for running test cases using scenario approach
 * Fixed bugs:
   * Fixed an issue with second test case failure if for a fixture persist the same UI handler is used
 
