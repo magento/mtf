@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<!--
+/**
+ * {license_notice}
+ *
+ * @copyright   {copyright}
+ * @license     {license_link}
+ */
+-->
+<page mca="/" module="Magento_BlockRender">
+    <blocks>
+        <blockRender>
+            <class>Magento\BlockRender\Test\Block\BlockRender</class>
+            <locator>body</locator>
+            <strategy>tag name</strategy>
+            <renders>
+                <test>
+                    <class>Magento\Mtf\Test\Block\TestBlock</class>
+                    <locator>#viewport</locator>
+                    <strategy>css selector</strategy>
+                </test>
+                <render>
+                    <class>Magento\BlockRender\Test\Block\BlockRenderForm</class>
+                    <locator>#viewport</locator>
+                    <strategy>css selector</strategy>
+                </render>
+            </renders>
+        </blockRender>
+    </blocks>
+</page>

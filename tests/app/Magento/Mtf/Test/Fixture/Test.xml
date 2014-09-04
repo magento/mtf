@@ -27,5 +27,8 @@
         <search>
             <attribute_code>search</attribute_code>
         </search>
+        <type>
+            <attribute_code>type</attribute_code>
+        </type>
     </fields>
 </fixture>

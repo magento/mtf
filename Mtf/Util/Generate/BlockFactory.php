@@ -58,10 +58,11 @@ class BlockFactory extends GenerateAbstract
         $realClass = $this->_resolveClass($item);
         $fallbackComment = $this->_buildFallbackComment($item, '$element');
 
+        $arguments = "\$element, \$driver = null, \$config = []";
         $this->_factoryContent .= "\n    /**\n";
         $this->_factoryContent .= "     * @return \\{$item['class']}\n";
         $this->_factoryContent .= "     */\n";
-        $this->_factoryContent .= "    public function get{$methodNameSuffix}(\$element, \$driver = null)\n";
+        $this->_factoryContent .= "    public function get{$methodNameSuffix}({$arguments})\n";
         $this->_factoryContent .= "    {";
 
         if (!empty($fallbackComment)) {
@@ -70,7 +71,7 @@ class BlockFactory extends GenerateAbstract
             $this->_factoryContent .= "\n";
         }
 
-        $this->_factoryContent .= '        return new \\' . $realClass . '($element, $driver);';
+        $this->_factoryContent .= '        return new \\' . $realClass . '($element, $driver, $config);';
         $this->_factoryContent .= "\n    }\n";
 
         $this->_cnt++;

@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<!--
+/**
+* {license_notice}
+*
+* @copyright   {copyright}
+* @license     {license_link}
+*/
+-->
+<page module="Magento_Mtf">
+    <testPage>
+        <mca>/</mca>
+        <area>area</area>
+    </testPage>
+</page>

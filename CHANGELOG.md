@@ -1,5 +1,7 @@
 * Fixed issues with injectable tests parallel run
 * Added exception handling to prevent build interruption
+* Rewrote page generator to collect related blocks from all modules
+* Created mechanism for running test cases using scenario approach
 
 1.0.0-dev.5
 =============
