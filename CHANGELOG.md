@@ -2,6 +2,7 @@
 * Added exception handling to prevent build interruption
 * Rewrote page generator to collect related blocks from all modules
 * Created mechanism for running test cases using scenario approach
+* Implemented recursive re-initialization for Block
 
 1.0.0-dev.5
 =============
