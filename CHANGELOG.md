@@ -1,3 +1,4 @@
+* Changed path to generated page classes
 * Fixed issues with injectable tests parallel run
 * Added exception handling to prevent build interruption
 * Rewrote page generator to collect related blocks from all modules
