@@ -47,7 +47,11 @@ class ClientError extends AbstractObserver
      */
     public function process(Event $event)
     {
-        $errors = $this->browser->getJsErrors();
+        try {
+            $errors = $this->browser->getJsErrors();
+        } catch (\Exception $exception) {
+            $this->logger->log("Unable to get Js Errors. Exception: \n" . $exception . "\n", $this->filename);
+        }
         if (!empty($errors)) {
             $this->logger->log($this->getMessagePrefix($event) . "\n", $this->filename);
             foreach ($errors as $url => $jsErrors) {

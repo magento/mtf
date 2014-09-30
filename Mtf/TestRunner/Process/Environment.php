@@ -46,17 +46,19 @@ class Environment
     public static function getEnvironments()
     {
         $instanceSpecificKeys = [
-            "app_frontend_url",
-            "app_backend_url"
+            'app_frontend_url',
+            'app_backend_url'
         ];
 
         $globalKeys = [
-            "app_config_path",
-            "server_config_path",
-            "isolation_config_path",
-            "handlers_config_path",
-            "configuration:Magento/Mtf/TestSuite/MtfTests",
-            "app_instances"
+            'app_config_path',
+            'server_config_path',
+            'isolation_config_path',
+            'handlers_config_path',
+            'configuration:Magento/Mtf/TestSuite/MtfTests',
+            'app_instances',
+            'events_preset',
+            'log_directory'
         ];
 
         $globalEnvironmentVariables = [];
@@ -67,8 +69,8 @@ class Environment
         }
 
         $environments = [];
-        if (isset($_ENV["app_instances"])) {
-            $instancesCount = $_ENV["app_instances"];
+        if (isset($_ENV['app_instances'])) {
+            $instancesCount = $_ENV['app_instances'];
 
             for ($x = 0; $x < $instancesCount; $x++) {
                 $environmentVariables = [];

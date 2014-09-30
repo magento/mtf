@@ -9,6 +9,7 @@
 namespace Mtf\TestSuite;
 
 use Mtf\ObjectManager;
+use Mtf\TestRunner\Process\ProcessManager;
 
 /**
  * Class TestCase
@@ -83,7 +84,12 @@ class TestCase extends TestSuite
     public function run(\PHPUnit_Framework_TestResult $result = null)
     {
         if ($this->callback) {
-            call_user_func_array($this->callback, $this->callbackArguments);
+            $processManager = ProcessManager::factory();
+            if ($processManager->isParallelModeSupported()) {
+                $processManager->applyAppState($this->callback, $this->callbackArguments);
+            } else {
+                call_user_func_array($this->callback, $this->callbackArguments);
+            }
         }
 
         return parent::run($result);

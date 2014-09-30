@@ -185,6 +185,33 @@ class ProcessManager
             $result = new \PHPUnit_Framework_TestResult();
         }
 
+        $configFile = false;
+        if (isset($_SERVER['argv']['--configuration'])) {
+            for ($index = 0; $index <= (count($_SERVER['argv'])); $index++) {
+                if ($_SERVER['argv'][$index] == '--configuration') {
+                    $configFile = $_SERVER['argv'][$index + 1];
+                    break;
+                }
+            }
+        } else {
+        $phpunitPath = MTF_BP . '/phpunit.xml';
+            if (file_exists($phpunitPath)) {
+                $configFile = realpath($phpunitPath);
+            } else {
+                if (file_exists($phpunitPath . '.dist')) {
+                    $configFile = realpath($phpunitPath . '.dist');
+                }
+            }
+        }
+
+        if (!$configFile) {
+            throw new \Exception('Cannot define phpunit configuration path');
+        }
+
+        $configuration = \PHPUnit_Util_Configuration::getInstance($configFile);
+
+        $listenerConfiguration = var_export(serialize($configuration->getListenerConfiguration()), true);
+
         $class = new \ReflectionClass($testcase);
 
         $template = new \Text_Template(
@@ -229,6 +256,7 @@ class ProcessManager
         $data = "'." . $data . ".'";
         $includePath = "'." . $includePath . ".'";
         $env = "'." . $env . ".'";
+        $listenerConfiguration = "'." . $listenerConfiguration . ".'";
 
         $template->setVar(
             array(
@@ -242,7 +270,8 @@ class ProcessManager
                 'dataName' => $params['dataName'],
                 'include_path' => $includePath,
                 'env' => $env,
-                'filePath' => $filePath
+                'filePath' => $filePath,
+                'listenerConfiguration' => $listenerConfiguration
             )
         );
         return $template->render();
@@ -284,5 +313,25 @@ class ProcessManager
         }
 
         return array_shift($this->_environments);
+    }
+
+    /**
+     * Apply app state to all environments
+     *
+     * @param Callable $callback
+     * @param array $arguments
+     */
+    public function applyAppState($callback, array $arguments = [])
+    {
+        $originalFrontendUrl = $_ENV['app_frontend_url'];
+        $originalBackendUrl = $_ENV['app_backend_url'];
+        foreach ($this->_environments as $environment) {
+            $variables = $environment->getEnvironmentVariables();
+            $_ENV['app_frontend_url'] = $variables['app_frontend_url'];
+            $_ENV['app_backend_url'] = $variables['app_backend_url'];
+            call_user_func_array($callback, $arguments);
+        }
+        $_ENV['app_frontend_url'] = $originalFrontendUrl;
+        $_ENV['app_backend_url'] = $originalBackendUrl;
     }
 }
