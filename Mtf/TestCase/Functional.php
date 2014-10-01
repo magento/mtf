@@ -139,7 +139,7 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
                 throw $phpUnitException;
             } catch (\Exception $exception) {
                 $this->eventManager->dispatchEvent(['exception'], [$exception->getMessage()]);
-                $this->fail($exception->getMessage());
+                $this->fail($exception);
             }
         }
         return $result;

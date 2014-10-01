@@ -1,3 +1,4 @@
+* Added support of MTF Reporting while parallel run
 * Fixed issues with injectable tests parallel run
 * Added exception handling to prevent build interruption
 * Rewrote page generator to collect related blocks from all modules
