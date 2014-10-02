@@ -153,15 +153,7 @@ abstract class Injectable extends Functional
         } catch (\PHPUnit_Framework_Exception $phpUnitException) {
             throw $phpUnitException;
         } catch (\Exception $exception) {
-            $this->fail(
-                sprintf(
-                    'Failed to run %s: %s in %s on line %d',
-                    get_class($this),
-                    $exception->getMessage(),
-                    $exception->getFile(),
-                    $exception->getLine()
-                )
-            );
+            $this->fail($exception);
         }
         self::$sharedArguments = [];
 

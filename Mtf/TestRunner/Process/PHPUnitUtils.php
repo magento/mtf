@@ -127,17 +127,21 @@ class PHPUnitUtils extends \PHPUnit_Util_PHP
                         $time
                     );
                 } elseif (!empty($errors)) {
-                    $result->addError(
-                        $test,
-                        $this->getException($errors[0]),
-                        $time
-                    );
+                    foreach ($errors as $error) {
+                        $result->addError(
+                            $test,
+                            $this->getException($error),
+                            $time
+                        );
+                    }
                 } elseif (!empty($failures)) {
-                    $result->addFailure(
-                        $test,
-                        $this->getException($failures[0]),
-                        $time
-                    );
+                    foreach ($failures as $failure) {
+                        $result->addFailure(
+                            $test,
+                            $this->getException($failure),
+                            $time
+                        );
+                    }
                 }
             }
         }
