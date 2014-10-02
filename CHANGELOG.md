@@ -1,3 +1,4 @@
+* Changed path to generated page classes
 * Added support of MTF Reporting while parallel run
 * Fixed issues with injectable tests parallel run
 * Added exception handling to prevent build interruption
