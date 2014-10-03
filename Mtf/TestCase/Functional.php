@@ -35,7 +35,7 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
     /**
      * @var array
      */
-    private $data = array();
+    private $data = [];
 
     /**
      * @var string
@@ -80,10 +80,22 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
 
         parent::__construct($name, $data, $dataName);
 
-        $this->objectManager = \Mtf\ObjectManagerFactory::getObjectManager();
-        $this->eventManager = $this->objectManager->get('Mtf\System\Event\EventManagerInterface');
+        $this->eventManager = $this->getObjectManager()->get('Mtf\System\Event\EventManagerInterface');
 
         $this->_construct();
+    }
+
+    /**
+     * Get Object Manager instance
+     *
+     * @return \Mtf\ObjectManager
+     */
+    protected function getObjectManager()
+    {
+        if (!$this->objectManager) {
+            $this->objectManager = \Mtf\ObjectManagerFactory::getObjectManager();
+        }
+        return $this->objectManager;
     }
 
     /**
@@ -106,11 +118,11 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
     public function run(\PHPUnit_Framework_TestResult $result = null)
     {
         if ($this->isParallelRun) {
-            $params = array(
+            $params = [
                 'name' => $this->getName(false),
                 'data' => $this->data,
                 'dataName' => $this->dataName
-            );
+            ];
             $this->processManager->run($this, $result, $params);
         } else {
             try {
@@ -122,13 +134,12 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
                 foreach ($result->failures() as $failure) {
                     $this->eventManager->dispatchEvent(['failure'], [$failure->exceptionMessage()]);
                 }
-            } catch (\Exception $e) {
-                $this->eventManager->dispatchEvent(['exception'], [$e->getMessage()]);
-                throw $e;
-            }
-
-            if ($this->processManager->isParallelModeSupported()) {
-                $this->refineTestResult($result);
+            } catch (\PHPUnit_Framework_Exception $phpUnitException) {
+                $this->eventManager->dispatchEvent(['exception'], [$phpUnitException->getMessage()]);
+                throw $phpUnitException;
+            } catch (\Exception $exception) {
+                $this->eventManager->dispatchEvent(['exception'], [$exception->getMessage()]);
+                $this->fail($exception);
             }
         }
         return $result;
@@ -143,39 +154,6 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
     public function setParallelRun($isParallelRun)
     {
         $this->isParallelRun = $isParallelRun;
-    }
-
-    /**
-     * Helper method to clear object manager from test results so that results can be serialized.
-     *
-     * @return void
-     */
-    protected function clearObjectManager()
-    {
-        $this->objectManager = null;
-    }
-
-    /**
-     * Remove object manager from errors and failures so that results can be serialized.
-     *
-     * @param \PHPUnit_Framework_TestResult $result
-     * @return void
-     */
-    private function refineTestResult(\PHPUnit_Framework_TestResult $result)
-    {
-        if (!$result->wasSuccessful()) {
-            foreach ($result->failures() as $failure) {
-                $failure->failedTest()->clearObjectManager();
-            }
-            foreach ($result->errors() as $error) {
-                $error->failedTest()->clearObjectManager();
-            }
-        }
-        if ($result->skippedCount() > 0) {
-            foreach ($result->skipped() as $skipped) {
-                $skipped->failedTest()->clearObjectManager();
-            }
-        }
     }
 
     /**

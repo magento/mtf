@@ -28,7 +28,7 @@ class Module implements FileResolverInterface
      */
     public function get($filename, $scope)
     {
-        $paths = glob(MTF_TESTS_PATH . '*/*/Test/etc/' . $scope . '/' . $filename);
+        $paths = glob(MTF_TESTS_PATH . '*/*/Test/' . $scope . '/' . $filename);
         $iterator = new File($paths);
         return $iterator;
     }

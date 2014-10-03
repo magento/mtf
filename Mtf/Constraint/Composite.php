@@ -57,19 +57,15 @@ class Composite extends AbstractConstraint
     }
 
     /**
-     * Set Test Case and it's DI Arguments to Constraint
+     * Set DI Arguments to Constraint
      *
-     * @param \PHPUnit_Framework_TestCase $testCase
      * @param array $arguments
      * @return void
      */
-    public function configure(
-        \PHPUnit_Framework_TestCase $testCase,
-        array $arguments = []
-    ) {
-        $this->testCase = $testCase;
+    public function configure(array $arguments = [])
+    {
         foreach ($this->constraints as $constraint) {
-            $constraint->configure($testCase, $arguments);
+            $constraint->configure($arguments);
         }
     }
 
@@ -83,7 +79,7 @@ class Composite extends AbstractConstraint
     {
         $result = true;
         foreach ($this->constraints as $constraint) {
-            \PHPUnit_Framework_Assert::assertThat($this->testCase->getName(), $constraint);
+            \PHPUnit_Framework_Assert::assertThat("", $constraint);
             $result = $result && $constraint->getResult();
         }
         return $result;

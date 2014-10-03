@@ -7,16 +7,14 @@
  */
 namespace Mtf\TestRunner\Process;
 
-class TestResultException extends \Exception
+class TestResultException extends \PHPUnit_Framework_AssertionFailedError
 {
     /**
-     * @param \Exception $e
+     * @param \Exception $exception
      */
-    public function __construct(\Exception $e)
+    public function __construct(\Exception $exception)
     {
-        parent::__construct($e->getMessage(), $e->getCode());
-        $this->file = $e->getFile();
-        $this->line = $e->getLine();
+        parent::__construct($exception);
     }
 
     /**
@@ -24,6 +22,6 @@ class TestResultException extends \Exception
      */
     public function __sleep()
     {
-        return ['message', 'line', 'code', 'file'];
+        return ['message'];
     }
 }

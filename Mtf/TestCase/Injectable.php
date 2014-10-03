@@ -116,40 +116,44 @@ abstract class Injectable extends Functional
     public function run(\PHPUnit_Framework_TestResult $result = null)
     {
         if ($this->isParallelRun) {
-            parent::run($result);
+            return parent::run($result);
         }
-        if (!isset(static::$sharedArguments[$this->dataId]) && method_exists($this, '__prepare')) {
-            static::$sharedArguments[$this->dataId] = (array)$this->objectManager->invoke($this, '__prepare');
-        }
-        /** @var $testVariationIterator \Mtf\Util\Iterator\TestCaseVariation */
-        $testVariationIterator = $this->objectManager->create(
-            'Mtf\Util\Iterator\TestCaseVariation',
-            [
-                'testCase' => $this
-            ]
-        );
-        while ($testVariationIterator->valid()) {
-            if (method_exists($this, '__inject')) {
-                $this->localArguments = $this->objectManager->invoke(
-                    $this,
-                    '__inject',
-                    isset(self::$sharedArguments[$this->dataId]) ? self::$sharedArguments[$this->dataId] : []
-                );
-                if (!$this->localArguments || !is_array($this->localArguments)) {
-                    $this->localArguments = [];
-                }
+        try {
+            if (!isset(static::$sharedArguments[$this->dataId]) && method_exists($this, '__prepare')) {
+                static::$sharedArguments[$this->dataId] = (array) $this->getObjectManager()->invoke($this, '__prepare');
             }
-            if (isset(static::$sharedArguments[$this->dataId])) {
-                $this->localArguments = array_merge(static::$sharedArguments[$this->dataId], $this->localArguments);
-            }
-            $this->currentVariation = $testVariationIterator->current();
-            $variation = $this->prepareVariation(
-                $this->currentVariation,
-                $this->localArguments
+            /** @var $testVariationIterator \Mtf\Util\Iterator\TestCaseVariation */
+            $testVariationIterator = $this->getObjectManager()->create(
+                'Mtf\Util\Iterator\TestCaseVariation',
+                ['testCase' => $this]
             );
-            $this->executeTestVariation($result, $variation);
-            $testVariationIterator->next();
-            $this->localArguments = [];
+            while ($testVariationIterator->valid()) {
+                if (method_exists($this, '__inject')) {
+                    $this->localArguments = $this->getObjectManager()->invoke(
+                        $this,
+                        '__inject',
+                        isset(self::$sharedArguments[$this->dataId]) ? self::$sharedArguments[$this->dataId] : []
+                    );
+                    if (!$this->localArguments || !is_array($this->localArguments)) {
+                        $this->localArguments = [];
+                    }
+                }
+                if (isset(static::$sharedArguments[$this->dataId])) {
+                    $this->localArguments = array_merge(static::$sharedArguments[$this->dataId], $this->localArguments);
+                }
+                $this->currentVariation = $testVariationIterator->current();
+                $variation = $this->prepareVariation(
+                    $this->currentVariation,
+                    $this->localArguments
+                );
+                $this->executeTestVariation($result, $variation);
+                $testVariationIterator->next();
+                $this->localArguments = [];
+            }
+        } catch (\PHPUnit_Framework_Exception $phpUnitException) {
+            throw $phpUnitException;
+        } catch (\Exception $exception) {
+            $this->fail($exception);
         }
         self::$sharedArguments = [];
 
@@ -180,7 +184,6 @@ abstract class Injectable extends Functional
             $this->constraint = $variation['constraint'];
             $this->localArguments = array_merge($arguments, $this->localArguments);
         }
-
         parent::run($result);
     }
 
@@ -199,8 +202,9 @@ abstract class Injectable extends Functional
         }
         $testResult = parent::runTest();
         $this->localArguments = array_merge($this->localArguments, is_array($testResult) ? $testResult : []);
+        $arguments = array_merge($this->currentVariation['arguments'], $this->localArguments);
         if ($this->constraint) {
-            $this->constraint->configure($this, $this->localArguments);
+            $this->constraint->configure($arguments);
             self::assertThat($this->getName(), $this->constraint);
         }
 
@@ -247,11 +251,11 @@ abstract class Injectable extends Functional
         if (isset($variation['arguments'])) {
             $arguments = array_merge($variation['arguments'], $arguments);
         }
-        $resolvedArguments = $this->objectManager
+        $resolvedArguments = $this->getObjectManager()
             ->prepareArguments($this, $this->getName(false), $arguments);
 
         if (isset($arguments['constraint'])) {
-            $parameters = $this->objectManager->getParameters($this, $this->getName(false));
+            $parameters = $this->getObjectManager()->getParameters($this, $this->getName(false));
             if (isset($parameters['constraint'])) {
                 $resolvedArguments['constraint'] = $this->prepareConstraintObject($arguments['constraint']);
             } else {
@@ -273,6 +277,6 @@ abstract class Injectable extends Functional
     protected function prepareConstraintObject($constraints)
     {
         $constraintsArray = array_map('trim', explode(',', $constraints));
-        return $this->objectManager->create('Mtf\Constraint\Composite', ['constraints' => $constraintsArray]);
+        return $this->getObjectManager()->create('Mtf\Constraint\Composite', ['constraints' => $constraintsArray]);
     }
 }
