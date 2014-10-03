@@ -1,8 +1,10 @@
-* Added support of MTF Reporting while parallel run
-* Fixed issues with injectable tests parallel run
+1.0.0-dev.6
+=============
+* Added support for MTF Reporting for the parallel running mode
+* Fixed issues with running injectable tests in the parallel mode
 * Added exception handling to prevent build interruption
-* Rewrote page generator to collect related blocks from all modules
-* Created mechanism for running test cases using scenario approach
+* Rewrote the page generator to collect related blocks from all modules
+* Created mechanism for running test cases using the scenario approach
 
 1.0.0-dev.5
 =============
