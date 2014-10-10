@@ -1,3 +1,6 @@
+* Changed path to generated page classes
+* Implemented recursive re-initialization for Block
+
 1.0.0-dev.6
 =============
 * Added support for MTF Reporting for the parallel running mode

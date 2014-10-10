@@ -102,6 +102,9 @@ class Element implements ElementInterface
      */
     public function __clone()
     {
+        if ($this->_context) {
+            $this->_context = clone $this->_context;
+        }
         $this->_wrappedElement = null;
     }
 
