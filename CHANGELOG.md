@@ -1,10 +1,13 @@
 * Changed path to generated page classes
-* Added support of MTF Reporting while parallel run
-* Fixed issues with injectable tests parallel run
-* Added exception handling to prevent build interruption
-* Rewrote page generator to collect related blocks from all modules
-* Created mechanism for running test cases using scenario approach
 * Implemented recursive re-initialization for Block
+
+1.0.0-dev.6
+=============
+* Added support for MTF Reporting for the parallel running mode
+* Fixed issues with running injectable tests in the parallel mode
+* Added exception handling to prevent build interruption
+* Rewrote the page generator to collect related blocks from all modules
+* Created mechanism for running test cases using the scenario approach
 
 1.0.0-dev.5
 =============
