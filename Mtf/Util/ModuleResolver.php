@@ -130,7 +130,7 @@ class ModuleResolver
         $allModulePaths = glob( MTF_TESTS_PATH . '*/*');
         if (empty($enabledModules)) {
             $this->enabledModulePaths = $allModulePaths;
-            $this->enabledModulePaths;
+            return $this->enabledModulePaths;
         }
         $enabledDirectories = [];
         foreach ($enabledModules as $module) {
