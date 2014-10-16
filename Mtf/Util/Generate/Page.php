@@ -12,6 +12,7 @@ use Magento\Framework\ObjectManager;
 use Mtf\Config\FileResolver\Module;
 use Mtf\Util\Generate\Fixture\FieldsProviderInterface;
 use Mtf\Util\XmlConverter;
+use Mtf\Util\ModuleResolver;
 
 /**
  * Class Page
@@ -39,6 +40,11 @@ class Page extends AbstractGenerate
     protected $xmlConverter;
 
     /**
+     * @var ModuleResolver
+     */
+    protected $moduleResolver;
+
+    /**
      * @constructor
      * @param ObjectManager $objectManager
      * @param Module $fileResolver
@@ -47,12 +53,18 @@ class Page extends AbstractGenerate
     public function __construct(
         ObjectManager $objectManager,
         Module $fileResolver,
-        XmlConverter $xmlConverter
+        XmlConverter $xmlConverter,
+        ModuleResolver $moduleResolver = null
     ) {
         parent::__construct($objectManager);
 
         $this->fileResolver = $fileResolver;
         $this->xmlConverter = $xmlConverter;
+        if ($moduleResolver) {
+            $this->moduleResolver = $moduleResolver;
+        } else {
+            $this->moduleResolver = ModuleResolver::getInstance();
+        }
     }
 
     /**
@@ -214,7 +226,7 @@ class Page extends AbstractGenerate
     {
         $items = [];
 
-        $modules = glob(MTF_TESTS_PATH . '*/*');
+        $modules = $this->moduleResolver->getModulesPath();
         foreach ($modules as $modulePath) {
             $modulePathArray = explode('/', $modulePath);
             $module = array_pop($modulePathArray);

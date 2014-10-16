@@ -11,16 +11,21 @@ namespace Mtf\Util;
 use Mtf\System\Config;
 
 /**
- * Class ModulePathResolver, resolve module path based on enabled modules of target Magento instance
+ * Class ModuleResolver, resolve module path based on enabled modules of target Magento instance
  *
  * @api
  */
 class ModuleResolver
 {
     /**
-     * @var array
+     * @var array|null
      */
-    protected $enabledModules;
+    protected $enabledModules = null;
+
+    /**
+     * @var array|null
+     */
+    protected $enabledModulePaths = null;
 
     /**
      * @var \Mtf\System\Config
@@ -38,11 +43,34 @@ class ModuleResolver
     protected $moduleUrl = "rest/V1/modules";
 
     /**
+     * List of known directory that does not map to a Magento module
+     *
+     * @var array
+     */
+    protected $knownDirectories = ['SampleData' => 1];
+
+    /**
+     * @var ModuleResolver
+     */
+    private static $instance = null;
+
+    /**
+     * @return ModuleResolver
+     */
+    public static function getInstance()
+    {
+        if (!self::$instance) {
+            self::$instance = new ModuleResolver();
+        }
+        return self::$instance;
+    }
+
+    /**
      * Constructor
      *
      * @param Config $configuration
      */
-    public function __construct(Config $configuration = null)
+    private function __construct(Config $configuration = null)
     {
         if ($configuration) {
             $this->configuration = $configuration;
@@ -58,11 +86,16 @@ class ModuleResolver
      */
     public function getEnabledModules()
     {
-        if (!empty($this->enabledModules)) {
+        if (isset($this->enabledModules)) {
             return $this->enabledModules;
         }
 
         $token = $this->getAdminToken();
+        if (!$token) {
+            $this->enabledModules = [];
+            return $this->enabledModules;
+        }
+
         $url = $_ENV['app_frontend_url'] . $this->moduleUrl;
 
         $headers = [
@@ -74,7 +107,11 @@ class ModuleResolver
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         $response = curl_exec($ch);
 
-        $this->enabledModules = json_decode($response);
+        if (!$response) {
+            $this->enabledModules = [];
+        } else {
+            $this->enabledModules = json_decode($response);
+        }
         return $this->enabledModules;
     }
 
@@ -85,27 +122,43 @@ class ModuleResolver
      */
     public function getModulesPath()
     {
+        if (isset($this->enabledModulePaths)) {
+            return $this->enabledModulePaths;
+        }
+
         $enabledModules = $this->getEnabledModules();
-        $directories = '{';
+        $allModulePaths = glob( MTF_TESTS_PATH . '*/*');
+        if (empty($enabledModules)) {
+            $this->enabledModulePaths = $allModulePaths;
+            $this->enabledModulePaths;
+        }
+        $enabledDirectories = [];
         foreach ($enabledModules as $module) {
             $directoryName = explode('_', $module)[1];
-            $directories = $directories . $directoryName;
-            $directories = $directories . ',';
+            $enabledDirectories[$directoryName] = $directoryName;
         }
-        $directories = rtrim($directories, ',');
-        $directories = $directories . '}';
-        $pattern = MTF_TESTS_PATH . '*/' . $directories ;
-        return glob($pattern, GLOB_BRACE);
+        foreach ($allModulePaths as $index => $modulePath) {
+            $moduleShortName = basename($modulePath);
+            if (!isset($enabledDirectories[$moduleShortName]) && !isset($this->knownDirectories[$moduleShortName])) {
+                unset($allModulePaths[$index]);
+            }
+        }
+        $this->enabledModulePaths = $allModulePaths;
+        return $this->enabledModulePaths;
     }
 
     /**
      * Get the API token for admin
      *
-     * @return string
+     * @return string|bool
      */
     protected function getAdminToken()
     {
         $credentials = $this->configuration->getConfigParam('application/backend_user_credentials');
+        if (!$credentials || !isset($_ENV['app_frontend_url'])) {
+            return false;
+        }
+
         $url = $_ENV['app_frontend_url'] . $this->adminTokenUrl;
         $data = [
             'username' => $credentials['login'],
@@ -122,6 +175,9 @@ class ModuleResolver
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
         $response = curl_exec($ch);
+        if (!$response) {
+            return $response;
+        }
         return json_decode($response);
     }
 }

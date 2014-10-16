@@ -35,7 +35,7 @@ class Module implements FileResolverInterface
         if ($moduleResolver) {
             $this->moduleResolver = $moduleResolver;
         } else {
-            $this->moduleResolver = new ModuleResolver();
+            $this->moduleResolver = ModuleResolver::getInstance();
         }
     }
 
