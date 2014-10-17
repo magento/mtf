@@ -9,6 +9,7 @@ namespace Mtf\Config;
 
 /**
  * Class Converter
+ * Convert scenario configuration.
  */
 class Converter implements \Magento\Framework\Config\ConverterInterface
 {
@@ -26,7 +27,6 @@ class Converter implements \Magento\Framework\Config\ConverterInterface
      * Convert xml to array.
      *
      * @param \DOMDocument $source
-     * @throws \InvalidArgumentException
      * @return array
      */
     public function convert($source)

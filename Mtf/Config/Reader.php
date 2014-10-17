@@ -7,6 +7,11 @@
  */
 namespace Mtf\Config;
 
+use Magento\Framework\Config\FileResolverInterface;
+use Magento\Framework\Config\ConverterInterface;
+use Magento\Framework\Config\SchemaLocatorInterface;
+use Magento\Framework\Config\ValidationStateInterface;
+
 /**
  * Class Reader
  * Module declaration reader. Reads scenario.xml declaration files from module /etc directories.
@@ -14,7 +19,7 @@ namespace Mtf\Config;
 class Reader extends \Magento\Framework\Config\Reader\Filesystem
 {
     /**
-     * List of name attributes for merge
+     * List of name attributes for merge.
      *
      * @var array
      */
@@ -26,20 +31,20 @@ class Reader extends \Magento\Framework\Config\Reader\Filesystem
 
     /**
      * @constructor
-     * @param \Magento\Framework\Config\FileResolverInterface $fileResolver
-     * @param \Magento\Framework\Config\ConverterInterface $converter
-     * @param \Magento\Framework\Config\SchemaLocatorInterface $schemaLocator
-     * @param \Magento\Framework\Config\ValidationStateInterface $validationState
-     * @param string $fileName
-     * @param array $idAttributes
-     * @param string $domDocumentClass
-     * @param string $defaultScope
+     * @param FileResolverInterface $fileResolver
+     * @param ConverterInterface $converter
+     * @param SchemaLocatorInterface $schemaLocator
+     * @param ValidationStateInterface $validationState
+     * @param string $fileName [optional]
+     * @param array $idAttributes [optional]
+     * @param string $domDocumentClass [optional]
+     * @param string $defaultScope [optional]
      */
     public function __construct(
-        \Magento\Framework\Config\FileResolverInterface $fileResolver,
-        \Magento\Framework\Config\ConverterInterface $converter,
-        \Magento\Framework\Config\SchemaLocatorInterface $schemaLocator,
-        \Magento\Framework\Config\ValidationStateInterface $validationState,
+        FileResolverInterface $fileResolver,
+        ConverterInterface $converter,
+        SchemaLocatorInterface $schemaLocator,
+        ValidationStateInterface $validationState,
         $fileName = 'scenario.xml',
         $idAttributes = [],
         $domDocumentClass = 'Magento\Framework\Config\Dom',

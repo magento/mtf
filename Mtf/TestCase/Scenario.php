@@ -28,10 +28,10 @@ abstract class Scenario extends Injectable
 
     /**
      * @constructor
-     * @param null $name
-     * @param array $data
-     * @param string $dataName
-     * @param string $path
+     * @param null $name [optional]
+     * @param array $data [optional]
+     * @param string $dataName [optional]
+     * @param string $path [optional]
      */
     public function __construct($name = null, array $data = [], $dataName = '', $path = '')
     {
