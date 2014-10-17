@@ -26,4 +26,13 @@
             <argument name="rule" xsi:type="object">Mtf\TestRunner\Rule\SuiteComposite</argument>
         </arguments>
     </type>
+    <preference for="Magento\Framework\Config\FileResolverInterface" type="Mtf\Config\FileResolver\Module"/>
+    <preference for="Magento\Framework\Config\ConverterInterface" type="Mtf\Config\Converter"/>
+    <preference for="Magento\Framework\Config\SchemaLocatorInterface" type="Mtf\Config\SchemaLocator"/>
+    <preference for="Magento\Framework\Config\ValidationStateInterface" type="Mtf\Config\ValidationState"/>
+    <type name="Mtf\Config\ValidationState">
+        <arguments>
+            <argument name="appMode" xsi:type="string">developer</argument>
+        </arguments>
+    </type>
 </config>
