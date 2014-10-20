@@ -53,7 +53,7 @@ abstract class Scenario extends Injectable
         $config = $this->reader->read('etc');
 
         if (!empty($config['scenarios'][$testCaseName]['methods'][$testMethodName]['steps'])) {
-            $steps = $this->sortSteps($config['scenarios'][$testCaseName]['methods'][$testMethodName]['steps']);
+            $steps = $this->prepareSteps($config['scenarios'][$testCaseName]['methods'][$testMethodName]['steps']);
             /** @var \Mtf\Util\Iterator\Step $stepIterator */
             $stepIterator = $this->objectManager->create(
                 'Mtf\Util\Iterator\Step',
@@ -77,7 +77,7 @@ abstract class Scenario extends Injectable
      * @throws \Exception
      * @return array
      */
-    protected function sortSteps(array $steps)
+    protected function prepareSteps(array $steps)
     {
         if (!isset($steps['first'])) {
             throw new \Exception("First step hadn't being declared.\n");

@@ -1,5 +1,6 @@
 * Changed path to generated page classes
 * Implemented recursive re-initialization for Block
+* Implemented scenario configuration reader
 
 1.0.0-dev.6
 =============
