@@ -1,6 +1,7 @@
 * Changed path to generated page classes
 * Implemented recursive re-initialization for Block
 * Implemented scenario configuration reader
+* Implemented recursive merge for injectable fixture data from repository and variations(*.csv file)
 
 1.0.0-dev.6
 =============
