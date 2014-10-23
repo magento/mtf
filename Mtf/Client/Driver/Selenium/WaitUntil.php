@@ -21,7 +21,7 @@ class WaitUntil
      *
      * @var TestCase
      */
-    private $testCase;
+//    private $testCase;
 
     /**
      * Default timeout, ms
@@ -37,14 +37,14 @@ class WaitUntil
      */
     private $defaultSleepInterval = 500;
 
-    /**
-     * @constructor
-     * @param TestCase $testCase
-     */
-    public function __construct(TestCase $testCase)
-    {
-        $this->testCase = $testCase;
-    }
+//    /**
+//     * @constructor
+//     * @param TestCase $testCase
+//     */
+//    public function __construct(TestCase $testCase)
+//    {
+//        $this->testCase = $testCase;
+//    }
 
     /**
      * Run timeout waiting script
@@ -62,10 +62,10 @@ class WaitUntil
         }
 
         // if there was an implicit timeout specified - remember it and temporarily turn it off
-        $implicitWait = $this->testCase->timeouts()->getLastImplicitWaitValue();
-        if ($implicitWait) {
-            $this->testCase->timeouts()->implicitWait(0);
-        }
+//        $implicitWait = $this->testCase->timeouts()->getLastImplicitWaitValue();
+//        if ($implicitWait) {
+//            $this->testCase->timeouts()->implicitWait(0);
+//        }
         if (is_null($timeout)) {
             $timeout = $this->defaultTimeout;
         }
@@ -76,18 +76,18 @@ class WaitUntil
             try {
                 $result = call_user_func($callback);
                 if (!is_null($result)) {
-                    if ($implicitWait) {
-                        $this->testCase->timeouts()->implicitWait($implicitWait);
-                    }
+//                    if ($implicitWait) {
+//                        $this->testCase->timeouts()->implicitWait($implicitWait);
+//                    }
                     return $result;
                 }
             } catch (\Exception $e) {
                 $lastException = $e;
             }
             if (microtime(true) > $endTime) {
-                if ($implicitWait) {
-                    $this->testCase->timeouts()->implicitWait($implicitWait);
-                }
+//                if ($implicitWait) {
+//                    $this->testCase->timeouts()->implicitWait($implicitWait);
+//                }
                 $message = "Timed out after {$timeout} second" . ($timeout != 1 ? 's' : '');
                 throw new \PHPUnit_Extensions_Selenium2TestCase_WebDriverException(
                     $message,

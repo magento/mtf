@@ -55,7 +55,7 @@ class TestCase extends \PHPUnit_Extensions_Selenium2TestCase
      */
     public function waitUntil($callback, $timeout = null)
     {
-        $waitUntil = new WaitUntil($this);
+        $waitUntil = new WaitUntil(/*$this*/);
         return $waitUntil->run($callback, $this->timeout);
     }
 
