@@ -83,51 +83,91 @@ abstract class Scenario extends Injectable
             throw new \Exception("First step hadn't being declared.\n");
         }
 
-        $result = [];
         $first = $steps['first'];
-        $steps = array_diff_assoc($steps, ['first' => $first]);
-
-        foreach ($steps as $key => $step) {
-            if (isset($step['prev'])) {
-                $this->checkStepExistence($steps, $step['prev']);
-                $prevStepKey = $step['prev'];
-                $step['next'] = isset($steps[$prevStepKey]['next']) && !empty($steps[$prevStepKey]['next'])
-                    ? $steps[$prevStepKey]['next']
-                    : null;
-                $steps[$prevStepKey]['next'] = $key;
-                $result[$prevStepKey] = $steps[$prevStepKey];
-            }
-            if (isset($step['next'])) {
-                $this->checkStepExistence($steps, $step['next']);
-                if ($step['next'] === $first) {
-                    $first = $key;
-                } else {
-                    $prevStep = $this->getPreviousStep($result, $key);
-                    foreach ($result as $k => $value) {
-                        if (isset($value['next']) && $value['next'] === $step['next']) {
-                            $result[$k]['next'] = $prevStep !== null ? key($prevStep) : $key;
-                        }
-                    }
-                }
-            }
-            $result[$key] = $step;
-        }
-        $result['first'] = $first;
+        $result = $this->prepareStepSequence($steps, $first);
+        $result = array_merge(['first' => $first], $result);
+        $steps = array_diff_key($steps, $result);
+        $result = empty($steps) ?: $this->interposeSteps($steps, $result);
 
         return $result;
     }
 
     /**
-     * Returns previous step from current step.
+     * Put steps from other modules into base scenario.
      *
      * @param array $steps
-     * @param string $step
+     * @param array $result
+     * @return array
+     */
+    protected function interposeSteps(array $steps, array $result)
+    {
+        $stepKey = key($steps);
+        $temp = $this->prepareStepSequence($steps, $stepKey);
+        $firstStepKey = key($temp);
+        end($temp);
+        $lastStepKey = key($temp);
+
+        if (isset($temp[$firstStepKey]['prev'])) {
+            $this->checkStepExistence($result, $temp[$firstStepKey]['prev']);
+            $prevStepKey = $temp[$firstStepKey]['prev'];
+            $temp[$lastStepKey]['next'] = isset($result[$prevStepKey]['next']) && !empty($result[$prevStepKey]['next'])
+                ? $result[$prevStepKey]['next']
+                : null;
+            $result[$prevStepKey]['next'] = $firstStepKey;
+        }
+        if (isset($temp[$lastStepKey]['next'])) {
+            $this->checkStepExistence($result, $temp[$lastStepKey]['next']);
+            if ($temp[$lastStepKey]['next'] === $result['first']) {
+                $result['first'] = $firstStepKey;
+            } else {
+                $prevStep = $this->getStepWithSameNext($result, $temp[$lastStepKey]['next']);
+                if ($prevStep !== null) {
+                    $prevStepKey = key($prevStep);
+                    $temp[$lastStepKey]['next'] = $result[$prevStepKey]['next'];
+                    $result[$prevStepKey]['next'] = $firstStepKey;
+                }
+            }
+        }
+        $result = array_merge($result, $temp);
+
+        $steps = array_diff_key($steps, $temp);
+        if (empty($steps)) {
+            return $result;
+        }
+        return $this->interposeSteps($steps, $result);
+    }
+
+    /**
+     * Prepare steps by existed sequence.
+     *
+     * @param array $steps
+     * @param $stepKey
+     * @param array $result
+     * @return array
+     */
+    protected function prepareStepSequence(array $steps, $stepKey, array $result = [])
+    {
+        if (isset($steps[$stepKey])) {
+            $result[$stepKey] = $steps[$stepKey];
+        }
+        if (!isset($steps[$stepKey]) || !isset($steps[$stepKey]['next']) || empty($steps[$stepKey]['next'])) {
+            return $result;
+        }
+
+        return $this->prepareStepSequence($steps, $steps[$stepKey]['next'], $result);
+    }
+
+    /**
+     * Returns step with same next.
+     *
+     * @param array $steps
+     * @param string $stepKey
      * @return array|null
      */
-    protected function getPreviousStep(array $steps, $step)
+    protected function getStepWithSameNext(array $steps, $stepKey)
     {
         foreach ($steps as $key => $value) {
-            if (isset($value['next']) && $value['next'] === $step) {
+            if (isset($value['next']) && $value['next'] === $stepKey) {
                 return [$key => $value];
             }
         }
