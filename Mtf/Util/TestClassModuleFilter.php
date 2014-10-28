@@ -89,16 +89,12 @@ class TestClassModuleFilter extends Common
      */
     protected function init()
     {
-        if (empty($_ENV[self::MODULE_FILTER])) {
+        $moduleFilter = getenv(self::MODULE_FILTER);
+        if (empty($moduleFilter)) {
             $this->moduleFilters = [];
             return;
         }
-        if (isset($_ENV[self::MODULE_FILTER])) {
-            $this->moduleFilters = array_map('trim', explode(',', $_ENV[self::MODULE_FILTER]));
-
-        } else {
-            $this->moduleFilters = [];
-        }
+        $this->moduleFilters = array_map('trim', explode(',', $moduleFilter));
 
         if (empty($this->moduleFilters)) {
             return;

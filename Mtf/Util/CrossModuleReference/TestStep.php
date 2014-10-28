@@ -34,11 +34,11 @@ class TestStep extends Common implements CheckerInterface
     public function getCrossModuleReference($moduleName)
     {
         $testCases = [];
-        if (!isset($this->$testStepCrossModuleMap)) {
+        if (!isset($this->testStepCrossModuleMap)) {
             $this->initialize();
         }
 
-        if (empty($this->$testStepCrossModuleMap)) {
+        if (empty($this->testStepCrossModuleMap)) {
             return $testCases;
         }
 
