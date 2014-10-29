@@ -17,32 +17,39 @@ use Mtf\TestStep\TestStepFactory;
 class Step extends AbstractIterator
 {
     /**
-     * Factory of steps
+     * Factory of steps.
      *
      * @var TestStepFactory
      */
     protected $factory;
 
     /**
-     * Holds result of previous executed steps
+     * Holds result of previous executed steps.
      *
      * @var array
      */
     protected $result = [];
 
     /**
-     * Array with local test run arguments
+     * Array with local test run arguments.
      *
      * @var array
      */
     protected $localArguments = [];
 
     /**
-     * Current variation data
+     * Current variation data.
      *
      * @var array
      */
     protected $currentVariation = [];
+
+    /**
+     * First step.
+     *
+     * @var string
+     */
+    protected $firstStep;
 
     /**
      * @constructor
@@ -58,6 +65,7 @@ class Step extends AbstractIterator
         array $localArguments
     ) {
         $this->data = $steps;
+        $this->firstStep = $steps['first'];
         $this->factory = $factory;
         $this->currentVariation = $currentVariation;
         $this->localArguments = $localArguments;
@@ -66,18 +74,18 @@ class Step extends AbstractIterator
     }
 
     /**
-     * Initialize Data Array
+     * Initialize Data Array.
      *
      * @return void
      */
     public function rewind()
     {
-        $this->current = reset($this->data);
-        $this->key = $this->key();
+        $this->current = $this->data[$this->firstStep];
+        $this->key = $this->firstStep;
     }
 
     /**
-     * Get current element
+     * Get current element.
      *
      * @return mixed
      */
@@ -87,7 +95,7 @@ class Step extends AbstractIterator
     }
 
     /**
-     * Check if current element is valid
+     * Check if current element is valid.
      *
      * @return boolean
      */
@@ -97,14 +105,14 @@ class Step extends AbstractIterator
     }
 
     /**
-     * Seek to next valid row
-     * If current step have next key, iterate $this->data, while array cursor != next step
+     * Seek to next valid row.
+     * If current step have next key, iterate $this->data, while array cursor != next step.
      *
      * @return void
      */
     public function next()
     {
-        if (isset($this->current['next'])) {
+        if (isset($this->current['next']) && !empty($this->current['next'])) {
             $this->key = $this->current['next'];
             $this->current = $this->data[$this->key];
         } else {
@@ -114,7 +122,7 @@ class Step extends AbstractIterator
     }
 
     /**
-     * Prepare step for execute
+     * Prepare step for execute.
      *
      * @param array $step
      * @return mixed
@@ -139,7 +147,7 @@ class Step extends AbstractIterator
     }
 
     /**
-     * Iterate steps and returns result of step execution
+     * Iterate steps and returns result of step execution.
      *
      * @return array
      */

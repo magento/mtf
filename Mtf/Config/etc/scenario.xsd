@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Schema for scenario configuration
+ *
+ * {license_notice}
+ *
+ * @copyright   {copyright}
+ * @license     {license_link}
+ */
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="scenarios">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="scenario" maxOccurs="unbounded" minOccurs="0" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="scenario">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="methods" />
+            </xs:sequence>
+            <xs:attribute type="xs:string" name="name" use="required" />
+            <xs:attribute type="xs:string" name="module" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="methods">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="method" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="method">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="steps" />
+            </xs:sequence>
+            <xs:attribute type="xs:string" name="name" use="required" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="steps">
+        <xs:complexType mixed="true">
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element ref="first" maxOccurs="1" minOccurs="0" />
+                <xs:element ref="step" />
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="first" type="xs:string" />
+
+    <xs:element name="step">
+        <xs:complexType mixed="true">
+            <xs:sequence>
+                <xs:element ref="arguments" maxOccurs="1" minOccurs="0" />
+                <xs:element ref="prev" maxOccurs="1" minOccurs="0" />
+                <xs:element ref="next" maxOccurs="1" minOccurs="0" />
+            </xs:sequence>
+            <xs:attribute type="xs:string" name="name" use="required" />
+            <xs:attribute type="xs:string" name="module" use="required" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="prev" type="xs:string" />
+
+    <xs:element name="next" type="xs:string" />
+
+    <xs:element name="arguments">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="items" maxOccurs="unbounded" minOccurs="0" />
+                <xs:element ref="item" maxOccurs="unbounded" minOccurs="0" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="items">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="item" maxOccurs="unbounded" minOccurs="0" />
+            </xs:sequence>
+            <xs:attribute type="xs:string" name="name" use="required" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="item">
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:extension base="xs:string">
+                    <xs:attribute type="xs:string" name="name" use="required" />
+                </xs:extension>
+            </xs:simpleContent>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
