@@ -16,35 +16,20 @@ namespace Mtf\Client\Driver\Selenium;
  */
 class WaitUntil
 {
-    /**
-     * PHPUnit Test Case instance
-     *
-     * @var TestCase
-     */
-//    private $testCase;
 
     /**
      * Default timeout, ms
      *
      * @var int
      */
-    private $defaultTimeout = 40000;
+    const DEFAULT_TIMEOUT = 40000;
 
     /**
      * The sleep interval between iterations, ms
      *
      * @var int
      */
-    private $defaultSleepInterval = 500;
-
-//    /**
-//     * @constructor
-//     * @param TestCase $testCase
-//     */
-//    public function __construct(TestCase $testCase)
-//    {
-//        $this->testCase = $testCase;
-//    }
+    const DEFAULT_SLEEP_INTERVAL = 500;
 
     /**
      * Run timeout waiting script
@@ -55,19 +40,19 @@ class WaitUntil
      * @throws \PHPUnit_Extensions_Selenium2TestCase_Exception
      * @throws \PHPUnit_Extensions_Selenium2TestCase_WebDriverException
      */
-    public function run($callback, $timeout = null)
+    public static function run($callback, $testCase, $timeout = null)
     {
         if (!is_callable($callback)) {
             throw new \PHPUnit_Extensions_Selenium2TestCase_Exception('The valid callback is expected');
         }
 
         // if there was an implicit timeout specified - remember it and temporarily turn it off
-//        $implicitWait = $this->testCase->timeouts()->getLastImplicitWaitValue();
-//        if ($implicitWait) {
-//            $this->testCase->timeouts()->implicitWait(0);
-//        }
+        $implicitWait = $testCase->timeouts()->getLastImplicitWaitValue();
+        if ($implicitWait) {
+            $testCase->timeouts()->implicitWait(0);
+        }
         if (is_null($timeout)) {
-            $timeout = $this->defaultTimeout;
+            $timeout = self::DEFAULT_TIMEOUT;
         }
         $timeout /= 1000;
         $endTime = microtime(true) + $timeout;
@@ -76,18 +61,18 @@ class WaitUntil
             try {
                 $result = call_user_func($callback);
                 if (!is_null($result)) {
-//                    if ($implicitWait) {
-//                        $this->testCase->timeouts()->implicitWait($implicitWait);
-//                    }
+                    if ($implicitWait) {
+                        $testCase->timeouts()->implicitWait($implicitWait);
+                    }
                     return $result;
                 }
             } catch (\Exception $e) {
                 $lastException = $e;
             }
             if (microtime(true) > $endTime) {
-//                if ($implicitWait) {
-//                    $this->testCase->timeouts()->implicitWait($implicitWait);
-//                }
+                if ($implicitWait) {
+                    $testCase->timeouts()->implicitWait($implicitWait);
+                }
                 $message = "Timed out after {$timeout} second" . ($timeout != 1 ? 's' : '');
                 throw new \PHPUnit_Extensions_Selenium2TestCase_WebDriverException(
                     $message,
@@ -95,7 +80,7 @@ class WaitUntil
                     $lastException
                 );
             }
-            usleep($this->defaultSleepInterval * 1000);
+            usleep(self::DEFAULT_SLEEP_INTERVAL * 1000);
         }
     }
 }
