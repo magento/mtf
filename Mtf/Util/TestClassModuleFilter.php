@@ -111,6 +111,7 @@ class TestClassModuleFilter extends Common
         $pageCrossReference = $this->objectManager->create(
             '\\Mtf\\Util\\CrossModuleReference\\Page',
             [
+                'constraintChecker' => $constraintCrossReference,
                 'modules' => $this->moduleFilters,
             ]
         );

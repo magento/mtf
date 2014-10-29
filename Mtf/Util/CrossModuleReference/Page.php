@@ -18,15 +18,26 @@ class Page extends Common implements CheckerInterface
      */
     protected $modules;
 
+    /**
+     * @var array
+     */
     protected $affectedTestCasesByModule;
 
     /**
+     * @var Constraint
+     */
+    protected $constraintChecker;
+
+    /**
      * @constructor
+     * @param Constraint $constraintChecker
      * @param array $modules
      */
     public function __construct(
+        Constraint $constraintChecker,
         array $modules
     ) {
+        $this->constraintChecker = $constraintChecker;
         $this->modules = $modules;
         $this->init();
     }
@@ -50,13 +61,68 @@ class Page extends Common implements CheckerInterface
                         if ($moduleName != $module) {
                             $this->affectedTestCasesByModule[$module] = array_merge(
                                 $this->affectedTestCasesByModule[$module],
-                                $this->getTestClassesByType(self::CLASS_TYPE_TESTCASE, $moduleName)
+                                $this->getTestClassesByCrossModulePageReference($moduleName, $module)
                             );
                         }
                     }
                 }
             }
         }
+    }
+
+    /**
+     * Search in $scopeModule for test cases that uses page class in $pageModule
+     * Only check classes in TestCase and Constraint
+     *
+     * @param $scopeModule
+     * @param $pageModule
+     * @return array
+     */
+    protected function getTestClassesByCrossModulePageReference($scopeModule, $pageModule)
+    {
+        $affectedTestCases = [];
+        $testCases = $this->getTestClassesByType(self::CLASS_TYPE_TESTCASE, $scopeModule);
+        $constraints = $this->getTestClassesByType(self::CLASS_TYPE_CONSTRAINT, $scopeModule);
+
+        $pattern = str_replace('_', '\\', $pageModule) . '\\Test\\Page';
+        /** @var $testCaseClass \ReflectionClass */
+        foreach ($testCases as $testCaseClassName => $testCaseClass) {
+            $testClassFileName = $testCaseClass->getFileName();
+            if ($this->matchFileContentIgnoreCase($testClassFileName, $pattern)) {
+                $affectedTestCases[$testCaseClassName] = $testCaseClassName;
+            }
+        }
+
+        /** @var $constraintClass \ReflectionClass */
+        foreach ($constraints as $constraintClassName => $constraintClass) {
+            $constraintClassFileName = $constraintClass->getFileName();
+            if ($this->matchFileContentIgnoreCase($constraintClassFileName, $pattern)) {
+                $constraintName = lcfirst($constraintClass->getShortName());
+                $testCases = $this->constraintChecker->getTestCasesByConstraintReference($constraintName);
+                foreach ($testCases as $testCase) {
+                    $moduleName = $this->mapClassNameToModule($testCase);
+                    if ($moduleName == $scopeModule) {
+                        $affectedTestCases[$testCase] = $testCase;
+                    }
+                }
+            }
+        }
+
+        return $affectedTestCases;
+    }
+
+    /**
+     * Check whether a given file contains specified text
+     *
+     * @param string $fileName
+     * @param string $text
+     * @return int
+     */
+    protected function matchFileContentIgnoreCase($fileName, $text)
+    {
+        $content = file_get_contents($fileName);
+        $pattern = '/.*' . str_replace('\\', '\\\\', $text) . '.*/i';
+        return preg_match($pattern, $content);
     }
 
     /**

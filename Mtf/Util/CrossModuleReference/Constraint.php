@@ -77,6 +77,25 @@ class Constraint extends Common implements CheckerInterface
     }
 
     /**
+     * Return an array of test cases that uses the specified constraint
+     *
+     * @param $constraint
+     * @return array
+     */
+    public function getTestCasesByConstraintReference($constraint)
+    {
+        if (!isset($this->constraintConfig)) {
+            $this->initConstraintConfig();
+        }
+
+        if (empty($this->constraintToTestCasesMap[$constraint])) {
+            return [];
+        } else {
+            return $this->constraintToTestCasesMap[$constraint];
+        }
+    }
+
+    /**
      * Initialize constraint configuration
      *
      * @return void

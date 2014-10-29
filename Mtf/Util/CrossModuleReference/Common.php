@@ -15,6 +15,7 @@ class Common
 {
     const CLASS_TYPE_PAGE = 'Page';
     const CLASS_TYPE_TESTCASE = 'TestCase';
+    const CLASS_TYPE_CONSTRAINT = 'Constraint';
     const XML_TYPE_PAGE = 'Page';
 
     /**
