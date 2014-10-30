@@ -2,6 +2,7 @@
 * Implemented recursive re-initialization for Block
 * Implemented scenario configuration reader
 * Implemented recursive merge for injectable fixture data from repository and variations(*.csv file)
+* Updated scenario configuration reader and fixed issues with preparing step sequence
 
 1.0.0-dev.6
 =============

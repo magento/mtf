@@ -85,7 +85,7 @@ abstract class Scenario extends Injectable
 
         $first = $steps['first'];
         $result = $this->prepareStepSequence($steps, $first);
-        $result = array_merge(['first' => $first], $result);
+        $result['first'] = $first;
         $steps = array_diff_key($steps, $result);
         $result = empty($steps) ?: $this->interposeSteps($steps, $result);
 
@@ -95,53 +95,53 @@ abstract class Scenario extends Injectable
     /**
      * Put steps from other modules into base scenario.
      *
-     * @param array $steps
-     * @param array $result
+     * @param array $additionalSteps
+     * @param array $baseSteps
      * @return array
      */
-    protected function interposeSteps(array $steps, array $result)
+    protected function interposeSteps(array $additionalSteps, array $baseSteps)
     {
-        $stepKey = key($steps);
-        $temp = $this->prepareStepSequence($steps, $stepKey);
-        $firstStepKey = key($temp);
-        end($temp);
-        $lastStepKey = key($temp);
+        $stepKey = key($additionalSteps);
+        $chunkOfSteps = $this->prepareStepSequence($additionalSteps, $stepKey);
+        $firstStepKey = key($chunkOfSteps);
+        end($chunkOfSteps);
+        $lastStepKey = key($chunkOfSteps);
 
-        if (isset($temp[$firstStepKey]['prev'])) {
-            $this->checkStepExistence($result, $temp[$firstStepKey]['prev']);
-            $prevStepKey = $temp[$firstStepKey]['prev'];
-            $temp[$lastStepKey]['next'] = isset($result[$prevStepKey]['next']) && !empty($result[$prevStepKey]['next'])
-                ? $result[$prevStepKey]['next']
+        if (isset($chunkOfSteps[$firstStepKey]['prev'])) {
+            $this->checkStepExistence($baseSteps, $chunkOfSteps[$firstStepKey]['prev']);
+            $prevStepKey = $chunkOfSteps[$firstStepKey]['prev'];
+            $chunkOfSteps[$lastStepKey]['next'] = !empty($baseSteps[$prevStepKey]['next'])
+                ? $baseSteps[$prevStepKey]['next']
                 : null;
             $result[$prevStepKey]['next'] = $firstStepKey;
         }
-        if (isset($temp[$lastStepKey]['next'])) {
-            $this->checkStepExistence($result, $temp[$lastStepKey]['next']);
-            if ($temp[$lastStepKey]['next'] === $result['first']) {
-                $result['first'] = $firstStepKey;
+        if (isset($chunkOfSteps[$lastStepKey]['next'])) {
+            $this->checkStepExistence($baseSteps, $chunkOfSteps[$lastStepKey]['next']);
+            if ($chunkOfSteps[$lastStepKey]['next'] === $baseSteps['first']) {
+                $baseSteps['first'] = $firstStepKey;
             } else {
-                $prevStep = $this->getStepWithSameNext($result, $temp[$lastStepKey]['next']);
+                $prevStep = $this->getStepWithSameNext($baseSteps, $chunkOfSteps[$lastStepKey]['next']);
                 if ($prevStep !== null) {
                     $prevStepKey = key($prevStep);
-                    $temp[$lastStepKey]['next'] = $result[$prevStepKey]['next'];
-                    $result[$prevStepKey]['next'] = $firstStepKey;
+                    $chunkOfSteps[$lastStepKey]['next'] = $baseSteps[$prevStepKey]['next'];
+                    $baseSteps[$prevStepKey]['next'] = $firstStepKey;
                 }
             }
         }
-        $result = array_merge($result, $temp);
+        $baseSteps = array_merge($baseSteps, $chunkOfSteps);
 
-        $steps = array_diff_key($steps, $temp);
-        if (empty($steps)) {
-            return $result;
+        $additionalSteps = array_diff_key($additionalSteps, $chunkOfSteps);
+        if (empty($additionalSteps)) {
+            return $baseSteps;
         }
-        return $this->interposeSteps($steps, $result);
+        return $this->interposeSteps($additionalSteps, $baseSteps);
     }
 
     /**
      * Prepare steps by existed sequence.
      *
      * @param array $steps
-     * @param $stepKey
+     * @param string $stepKey
      * @param array $result
      * @return array
      */
@@ -150,7 +150,7 @@ abstract class Scenario extends Injectable
         if (isset($steps[$stepKey])) {
             $result[$stepKey] = $steps[$stepKey];
         }
-        if (!isset($steps[$stepKey]) || !isset($steps[$stepKey]['next']) || empty($steps[$stepKey]['next'])) {
+        if (!isset($steps[$stepKey]) || empty($steps[$stepKey]['next'])) {
             return $result;
         }
 
