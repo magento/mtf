@@ -87,7 +87,7 @@ abstract class Scenario extends Injectable
         $result = $this->prepareStepSequence($steps, $first);
         $result['first'] = $first;
         $steps = array_diff_key($steps, $result);
-        $result = empty($steps) ?: $this->interposeSteps($steps, $result);
+        $result = empty($steps) ? $result : $this->interposeSteps($steps, $result);
 
         return $result;
     }
