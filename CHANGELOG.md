@@ -1,3 +1,4 @@
+* Added logic to run a subset of tests based on affected modules
 * Added logic to get a list of enabled modules in target Magento instance
 * Changed module file resolver to only search files in modules that are enabled in target Magento instance
 * Added dynamic generation of page classes based on enabled modules in target Magento instance

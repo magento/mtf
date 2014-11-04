@@ -95,4 +95,14 @@ class ConstraintFactory
 
         return $class;
     }
+
+    /**
+     * Return constraint configuration
+     *
+     * @return array
+     */
+    public function getConfiguration()
+    {
+        return $this->configuration;
+    }
 }
