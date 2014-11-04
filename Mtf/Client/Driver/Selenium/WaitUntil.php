@@ -35,6 +35,7 @@ class WaitUntil
      * Run timeout waiting script
      *
      * @param callback $callback Callback to run until it returns not null or timeout occurs
+     * @param $testCase
      * @param null|int $timeout
      * @return mixed
      * @throws \PHPUnit_Extensions_Selenium2TestCase_Exception
