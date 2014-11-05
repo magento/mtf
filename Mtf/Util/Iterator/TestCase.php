@@ -8,6 +8,7 @@
 
 namespace Mtf\Util\Iterator;
 
+use Mtf\Util\TestClassModuleFilter;
 use Mtf\TestRunner\Rule\SuiteRuleInterface;
 use Mtf\TestRunner\Configuration;
 use Mtf\Util\TestClassResolver;
@@ -41,24 +42,33 @@ class TestCase extends AbstractIterator
     protected $rule;
 
     /**
+     * @var TestClassModuleFilter
+     */
+    protected $moduleFilter;
+
+    /**
      * @constructor
      * @param ObjectManager $objectManager
      * @param Configuration $testRunnerConfig
      * @param TestClassResolver $testClassResolver
+     * @param TestClassModuleFilter $moduleFilter
      * @param SuiteRuleInterface $rule
      */
     public function __construct(
         ObjectManager $objectManager,
         Configuration $testRunnerConfig,
         TestClassResolver $testClassResolver,
+        TestClassModuleFilter $moduleFilter,
         SuiteRuleInterface $rule
     ) {
         $this->objectManager = $objectManager;
         $this->testRunnerConfig = $testRunnerConfig;
         $this->testClassResolver = $testClassResolver;
+        $this->moduleFilter = $moduleFilter;
         $this->rule = $rule;
 
         $this->data = $this->collectTestCases();
+        $this->data = $this->moduleFilter->applyFilter($this->data);
         $this->initFirstElement();
     }
 

@@ -62,6 +62,11 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
     protected $eventManager;
 
     /**
+     * @var bool
+     */
+    private static $codeGenerationFlag = false;
+
+    /**
      * Constructs a test case with the given name.
      *
      * @param null $name
@@ -81,6 +86,8 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
         parent::__construct($name, $data, $dataName);
 
         $this->eventManager = $this->getObjectManager()->get('Mtf\System\Event\EventManagerInterface');
+
+        $this->generateCode();
 
         $this->_construct();
     }
@@ -164,5 +171,23 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
     public function __sleep()
     {
         return [];
+    }
+
+    /**
+     * Run code generator if necessary
+     *
+     * @return void
+     */
+    protected function generateCode()
+    {
+        if (self::$codeGenerationFlag) {
+            return;
+        }
+        self::$codeGenerationFlag = true;
+
+        /** @var $generate \Mtf\Util\Generate\Page */
+        $generator = $this->objectManager->get('Mtf\Util\Generate\Page');
+        $generator->generateClasses();
+        return;
     }
 }

@@ -16,6 +16,25 @@ namespace Mtf\Util;
 class TestClassResolver
 {
     /**
+     * @var ModuleResolver
+     */
+    protected $moduleResolver;
+
+    /**
+     * Constructor
+     *
+     * @param ModuleResolver $moduleResolver
+     */
+    public function __construct(ModuleResolver $moduleResolver = null)
+    {
+        if ($moduleResolver) {
+            $this->moduleResolver = $moduleResolver;
+        } else {
+            $this->moduleResolver = ModuleResolver::getInstance();
+        }
+    }
+
+    /**
      * Collect test classes of the given type from Modules'
      *
      * @param string $classType
@@ -25,7 +44,7 @@ class TestClassResolver
     {
         $classes = [];
 
-        $modules = glob(MTF_TESTS_PATH . '*/*');
+        $modules = $this->moduleResolver->getModulesPath();
         foreach ($modules as $modulePath) {
             if (!is_readable($modulePath . '/Test/' . $classType)) {
                 continue;

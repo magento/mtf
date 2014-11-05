@@ -120,8 +120,8 @@ abstract class Block implements BlockInterface
         $browser = $this->_rootElement;
         return $browser->waitUntil(
             function () use ($browser, $selector, $strategy) {
-                $productSavedMessage = $browser->find($selector, $strategy);
-                return $productSavedMessage->isVisible() ? true : null;
+                $element = $browser->find($selector, $strategy);
+                return $element->isVisible() ? true : null;
             }
         );
     }
@@ -138,8 +138,8 @@ abstract class Block implements BlockInterface
         $browser = $this->_rootElement;
         return $browser->waitUntil(
             function () use ($browser, $selector, $strategy) {
-                $productSavedMessage = $browser->find($selector, $strategy);
-                return $productSavedMessage->isVisible() == false ? true : null;
+                $element = $browser->find($selector, $strategy);
+                return $element->isVisible() == false ? true : null;
             }
         );
     }
