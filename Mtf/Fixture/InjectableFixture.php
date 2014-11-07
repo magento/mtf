@@ -331,7 +331,7 @@ class InjectableFixture implements FixtureInterface
             return $result = $data;
         } else {
             $repository = $this->repositoryFactory->get($this->repositoryClass);
-            return $result = array_replace($repository->get($dataSet), $data);
+            return $result = array_replace_recursive($repository->get($dataSet), $data);
         }
     }
 
