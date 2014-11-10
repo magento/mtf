@@ -306,7 +306,10 @@ class Element implements ElementInterface
      */
     public function keys(array $keys)
     {
-        $this->_getWrappedElement()->value(['value' => $keys]);
+        $this->_getWrappedElement()->click();
+        foreach ($keys as $key) {
+            $this->_driver->keys($key);
+        }
     }
 
     /**
