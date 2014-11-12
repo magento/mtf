@@ -1,3 +1,5 @@
+* Added environment variable module_filter_strict to limit test cases to specified modules
+
 1.0.0-dev.7
 =============
 * Fixed issues with waiting for element in parallel mode
