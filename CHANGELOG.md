@@ -1,3 +1,6 @@
+1.0.0-dev.7
+=============
+* Fixed issues with waiting for element in parallel mode
 * Added logic to run a subset of tests based on affected modules
 * Added logic to get a list of enabled modules in target Magento instance
 * Changed module file resolver to only search files in modules that are enabled in target Magento instance
