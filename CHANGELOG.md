@@ -1,3 +1,4 @@
+* Fixed an issue where the test will crash when user name and password is incorrect 
 * Added environment variable module_filter_strict to limit test cases to specified modules
 
 1.0.0-dev.7
