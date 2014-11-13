@@ -17,6 +17,7 @@ use Mtf\Util\CrossModuleReference\Common;
 class TestClassModuleFilter extends Common
 {
     const MODULE_FILTER = 'module_filter';
+    const MODULE_FILTER_STRICT = 'module_filter_strict';
 
     /**
      * @var string[]
@@ -90,6 +91,7 @@ class TestClassModuleFilter extends Common
     protected function init()
     {
         $moduleFilter = getenv(self::MODULE_FILTER);
+        $moduleFilterStrict = getenv(self::MODULE_FILTER_STRICT);
         if (empty($moduleFilter)) {
             $this->moduleFilters = [];
             return;
@@ -100,8 +102,12 @@ class TestClassModuleFilter extends Common
             return;
         }
 
-        //
         $this->affectedModules = array_flip($this->moduleFilters);
+
+        $this->affectedTestCases = [];
+        if ($moduleFilterStrict) {
+            return;
+        }
 
         /** @var $constraintCrossReference \Mtf\Util\CrossModuleReference\Constraint */
         $constraintCrossReference = $this->objectManager->get('\\Mtf\\Util\\CrossModuleReference\\Constraint');
@@ -121,7 +127,6 @@ class TestClassModuleFilter extends Common
             $testStepCrossReference,
             $pageCrossReference,
         ];
-        $this->affectedTestCases = [];
         foreach ($crossModuleReferenceCheckers as $crossModuleReferenceChecker) {
             foreach ($this->moduleFilters as $module) {
                 $affectedTestCases = $crossModuleReferenceChecker->getCrossModuleReference($module);

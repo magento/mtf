@@ -91,7 +91,7 @@ class ModuleResolver
         }
 
         $token = $this->getAdminToken();
-        if (!$token) {
+        if (!$token || !is_string($token)) {
             $this->enabledModules = [];
             return $this->enabledModules;
         }
