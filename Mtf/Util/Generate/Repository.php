@@ -115,12 +115,7 @@ class Repository extends AbstractGenerate
         }
         $content = '<?xml version="1.0" ?>' . "\n";
         $content .= '<!--' . "\n";
-        $content .= '/**' . "\n";
-        $content .= ' * {license_notice}' . "\n";
-        $content .= ' *' . "\n";
-        $content .= ' * @copyright   {copyright}' . "\n";
-        $content .= ' * @license     {license_link}' . "\n";
-        $content .= ' */' . "\n";
+        $content .= $this->getFilePhpDoc();
         $content .= '-->' . "\n";
 
         $content .= '<repository class="' . $className . '" >' . "\n";
@@ -268,12 +263,7 @@ class Repository extends AbstractGenerate
         $relativeFilePath = str_replace($modulePath . '/', '', $folderPath);
         $ns = $namespace . '\\' . $module . '\\' . str_replace('/', '\\', $relativeFilePath);
         $content = "<?php\n";
-        $content .= "/**\n";
-        $content .= " * {license_notice}\n";
-        $content .= " *\n";
-        $content .= " * @copyright   {copyright}\n";
-        $content .= " * @license     {license_link}\n";
-        $content .= " */\n\n";
+        $content .= $this->getFilePhpDoc();
         $content .= "namespace {$ns};\n\n";
         $content .= "use Mtf\\Repository\\AbstractRepository;\n\n";
         $content .= "/**\n";

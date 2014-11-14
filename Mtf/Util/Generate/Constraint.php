@@ -116,12 +116,7 @@ class Constraint extends AbstractGenerate
         $useString = implode("\n", $use);
 
         $content = "<?php\n";
-        $content .= "/**\n";
-        $content .= " * {license_notice}\n";
-        $content .= " *\n";
-        $content .= " * @copyright   {copyright}\n";
-        $content .= " * @license     {license_link}\n";
-        $content .= " */\n\n";
+        $content .= $this->getFilePhpDoc();
         $content .= "namespace {$ns};\n\n";
         $content .= $useString . "\n\n";
         $content .= "/**\n";

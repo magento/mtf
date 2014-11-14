@@ -141,12 +141,7 @@ class Page extends AbstractGenerate
 
         $content = '<?xml version="1.0" ?>' . "\n";
         $content .= '<!--' . "\n";
-        $content .= '/**' . "\n";
-        $content .= ' * {license_notice}' . "\n";
-        $content .= ' *' . "\n";
-        $content .= ' * @copyright   {copyright}' . "\n";
-        $content .= ' * @license     {license_link}' . "\n";
-        $content .= ' */' . "\n";
+        $content .= $this->getFilePhpDoc();
         $content .= '-->' . "\n";
 
         $attrModule = empty($item['module']) ? '' : ' module="' . $item['module'] . '"';
@@ -326,12 +321,7 @@ class Page extends AbstractGenerate
         $areaMtfPage = strpos($folderPath, 'Adminhtml') === false ? 'FrontendPage' : 'BackendPage';
 
         $content = "<?php\n";
-        $content .= "/**\n";
-        $content .= " * {license_notice}\n";
-        $content .= " *\n";
-        $content .= " * @copyright   {copyright}\n";
-        $content .= " * @license     {license_link}\n";
-        $content .= " */\n\n";
+        $content .= $this->getFilePhpDoc();
         $content .= "namespace {$namespace};\n\n";
         $content .= "use Mtf\\Page\\{$areaMtfPage};\n\n";
         $content .= "/**\n";
