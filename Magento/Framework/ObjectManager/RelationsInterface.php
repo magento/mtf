@@ -18,37 +18,26 @@
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magentocommerce.com for more information.
  *
- * @category    Magento
- * @package     Magento_ObjectManager
  * @copyright   Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-namespace Magento\Framework;
+namespace Magento\Framework\ObjectManager;
 
-interface ObjectManager
+interface RelationsInterface
 {
     /**
-     * Create new object instance
+     * Check whether requested type is available for read
      *
      * @param string $type
-     * @param array $arguments
-     * @return mixed
+     * @return bool
      */
-    public function create($type, array $arguments = array());
+    public function has($type);
 
     /**
-     * Retrieve cached object instance
+     * Retrieve list of parents
      *
      * @param string $type
-     * @return mixed
+     * @return array
      */
-    public function get($type);
-
-    /**
-     * Configure object manager
-     *
-     * @param array $configuration
-     * @return void
-     */
-    public function configure(array $configuration);
+    public function getParents($type);
 }
