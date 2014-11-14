@@ -136,7 +136,7 @@ EOT;
     protected function getFilePhpDoc()
     {
         $content = "/**\n";
-        $content .= " * " . $this->getLicenseNotice() . "\n";
+        $content .= $this->getLicenseNotice() . "\n";
         $content .= " *\n";
         $content .= " * @copyright   " . $this->getCopyright() . "\n";
         $content .= " * @license     " . $this->getLicenseLink() .  "\n";
