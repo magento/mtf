@@ -1,3 +1,5 @@
+* Fixed issue with applying placeholders to selectors in fixture data mapping
+
 1.0.0-dev.8
 =============
 * Replaced license and copyright placeholders with appropriate license information
