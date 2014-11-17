@@ -1,3 +1,5 @@
+* Fixed an issue with method keys() in \Mtf\Client\Driver\Selenium\Element
+
 1.0.0-dev.8
 =============
 * Replaced license and copyright placeholders with appropriate license information
