@@ -1,3 +1,9 @@
+1.0.0-dev.8
+=============
+* Replaced license and copyright placeholders with appropriate license information
+* Fixed an issue where the test will crash when user name and password is incorrect
+* Added environment variable module_filter_strict to limit test cases to specified modules
+
 1.0.0-dev.7
 =============
 * Fixed issues with waiting for element in parallel mode
