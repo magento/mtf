@@ -24,7 +24,7 @@
 
 namespace Mtf\Util\Generate;
 
-use Magento\Framework\ObjectManager;
+use Magento\Framework\ObjectManagerInterface;
 use Mtf\Config\FileResolver\Module;
 use Mtf\Util\Generate\Fixture\FieldsProviderInterface;
 use Mtf\Util\XmlConverter;
@@ -62,12 +62,12 @@ class Page extends AbstractGenerate
 
     /**
      * @constructor
-     * @param ObjectManager $objectManager
+     * @param ObjectManagerInterface $objectManager
      * @param Module $fileResolver
      * @param XmlConverter $xmlConverter
      */
     public function __construct(
-        ObjectManager $objectManager,
+        ObjectManagerInterface $objectManager,
         Module $fileResolver,
         XmlConverter $xmlConverter,
         ModuleResolver $moduleResolver = null

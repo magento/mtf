@@ -24,7 +24,7 @@
 
 namespace Mtf\Util\Generate;
 
-use Magento\Framework\ObjectManager;
+use Magento\Framework\ObjectManagerInterface;
 use Mtf\Configuration\Reader;
 
 /**
@@ -42,11 +42,11 @@ class Constraint extends AbstractGenerate
 
     /**
      * @constructor
-     * @param ObjectManager $objectManager
+     * @param ObjectManagerInterface $objectManager
      * @param Reader $configReader
      */
     public function __construct(
-        ObjectManager $objectManager,
+        ObjectManagerInterface $objectManager,
         Reader $configReader
     ) {
         parent::__construct($objectManager);

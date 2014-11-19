@@ -28,7 +28,7 @@ namespace Magento\Framework\ObjectManager;
 
 use Magento\Framework\Filesystem\DriverInterface;
 use Magento\Framework\ObjectManager\Definition\Runtime;
-use Magento\Framework\ObjectManager\Relations;
+use Magento\Framework\ObjectManager\RelationsInterface;
 use Magento\Framework\ObjectManager\Code\Generator;
 use Magento\Interception\Code\Generator as InterceptionGenerator;
 
@@ -153,7 +153,7 @@ class DefinitionFactory
     /**
      * Create relations
      *
-     * @return Relations
+     * @return RelationsInterface
      */
     public function createRelations()
     {

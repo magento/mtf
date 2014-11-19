@@ -1,5 +1,6 @@
 * Fixed issue with applying placeholders to selectors in fixture data mapping
 * Fixed an issue with method keys() in \Mtf\Client\Driver\Selenium\Element
+* Added 'Interface' suffix to all interface names within Magento/Framework directory
 
 1.0.0-dev.8
 =============

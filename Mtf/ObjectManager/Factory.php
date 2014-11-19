@@ -41,15 +41,15 @@ class Factory extends \Magento\Framework\ObjectManager\Factory\Factory
     /**
      * @constructor
      *
-     * @param \Magento\Framework\ObjectManager\Config $config
-     * @param \Magento\Framework\ObjectManager $objectManager
-     * @param \Magento\Framework\ObjectManager\Definition $definitions
+     * @param \Magento\Framework\ObjectManager\ConfigInterface $config
+     * @param \Magento\Framework\ObjectManagerInterface $objectManager
+     * @param \Magento\Framework\ObjectManager\DefinitionInterface $definitions
      * @param array $globalArguments
      */
     public function __construct(
-        \Magento\Framework\ObjectManager\Config $config,
-        \Magento\Framework\ObjectManager $objectManager = null,
-        \Magento\Framework\ObjectManager\Definition $definitions = null,
+        \Magento\Framework\ObjectManager\ConfigInterface $config,
+        \Magento\Framework\ObjectManagerInterface $objectManager = null,
+        \Magento\Framework\ObjectManager\DefinitionInterface $definitions = null,
         $globalArguments = array()
     ) {
         parent::__construct($config, $objectManager, $definitions, $globalArguments);

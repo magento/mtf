@@ -24,7 +24,7 @@
 
 namespace Mtf\Util\Generate;
 
-use Magento\Framework\ObjectManager;
+use Magento\Framework\ObjectManagerInterface;
 
 /**
  * Class Generate
@@ -50,10 +50,10 @@ abstract class AbstractGenerate
 
     /**
      * @constructor
-     * @param ObjectManager $objectManager
+     * @param ObjectManagerInterface $objectManager
      */
     public function __construct(
-        ObjectManager $objectManager
+        ObjectManagerInterface $objectManager
     ) {
         $this->objectManager = $objectManager;
     }

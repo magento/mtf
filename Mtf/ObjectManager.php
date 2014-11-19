@@ -49,12 +49,12 @@ class ObjectManager extends \Magento\Framework\ObjectManager\ObjectManager
     /**
      * @constructor
      * @param \Mtf\ObjectManager\Factory $factory
-     * @param \Magento\Framework\ObjectManager\Config $config
+     * @param \Magento\Framework\ObjectManager\ConfigInterface $config
      * @param array $sharedInstances
      */
     public function __construct(
         \Mtf\ObjectManager\Factory $factory = null,
-        \Magento\Framework\ObjectManager\Config $config = null,
+        \Magento\Framework\ObjectManager\ConfigInterface $config = null,
         array $sharedInstances = []
     ) {
         parent::__construct($factory, $config, $sharedInstances);
