@@ -167,10 +167,10 @@ class ObjectManagerFactory
      * Configure Object Manager
      * This method is static to have the ability to configure multiple instances of Object manager when needed
      *
-     * @param \Magento\Framework\ObjectManager $objectManager
+     * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @return void
      */
-    public static function configure(\Magento\Framework\ObjectManager $objectManager)
+    public static function configure(\Magento\Framework\ObjectManagerInterface $objectManager)
     {
         $objectManager->configure(
             $objectManager->get('Mtf\ObjectManager\ConfigLoader\Primary')->load()

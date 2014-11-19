@@ -26,7 +26,7 @@ namespace Mtf\Util\Generate;
 
 use Mtf\Util\Generate\Repository\CollectionProviderInterface;
 use Mtf\Configuration\Reader;
-use Magento\Framework\ObjectManager;
+use Magento\Framework\ObjectManagerInterface;
 
 /**
  * Class Repository
@@ -48,12 +48,12 @@ class Repository extends AbstractGenerate
 
     /**
      * @constructor
-     * @param ObjectManager $objectManager
+     * @param ObjectManagerInterface $objectManager
      * @param Reader $configReader
      * @param CollectionProviderInterface $collectionProvider
      */
     public function __construct(
-        ObjectManager $objectManager,
+        ObjectManagerInterface $objectManager,
         Reader $configReader,
         CollectionProviderInterface $collectionProvider
     ) {

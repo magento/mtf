@@ -18,69 +18,37 @@
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magentocommerce.com for more information.
  *
+ * @category    Magento
+ * @package     Magento_ObjectManager
  * @copyright   Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-namespace Magento\Framework\ObjectManager;
+namespace Magento\Framework;
 
-interface Config
+interface ObjectManagerInterface
 {
     /**
-     * Set class relations
-     *
-     * @param Relations $relations
-     *
-     * @return void
-     */
-    public function setRelations(Relations $relations);
-
-    /**
-     * Set configuration cache instance
-     *
-     * @param ConfigCache $cache
-     *
-     * @return void
-     */
-    public function setCache(ConfigCache $cache);
-
-    /**
-     * Retrieve list of arguments per type
+     * Create new object instance
      *
      * @param string $type
-     * @return array
-     */
-    public function getArguments($type);
-
-    /**
-     * Check whether type is shared
-     *
-     * @param string $type
-     * @return bool
-     */
-    public function isShared($type);
-
-    /**
-     * Retrieve instance type
-     *
-     * @param string $instanceName
+     * @param array $arguments
      * @return mixed
      */
-    public function getInstanceType($instanceName);
+    public function create($type, array $arguments = array());
 
     /**
-     * Retrieve preference for type
+     * Retrieve cached object instance
      *
      * @param string $type
-     * @return string
-     * @throws \LogicException
+     * @return mixed
      */
-    public function getPreference($type);
+    public function get($type);
 
     /**
-     * Extend configuration
+     * Configure object manager
      *
      * @param array $configuration
      * @return void
      */
-    public function extend(array $configuration);
+    public function configure(array $configuration);
 }

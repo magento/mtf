@@ -23,21 +23,64 @@
  */
 namespace Magento\Framework\ObjectManager;
 
-interface Relations
+interface ConfigInterface
 {
     /**
-     * Check whether requested type is available for read
+     * Set class relations
      *
-     * @param string $type
-     * @return bool
+     * @param RelationsInterface $relations
+     *
+     * @return void
      */
-    public function has($type);
+    public function setRelations(RelationsInterface $relations);
 
     /**
-     * Retrieve list of parents
+     * Set configuration cache instance
+     *
+     * @param ConfigCacheInterface $cache
+     *
+     * @return void
+     */
+    public function setCache(ConfigCacheInterface $cache);
+
+    /**
+     * Retrieve list of arguments per type
      *
      * @param string $type
      * @return array
      */
-    public function getParents($type);
+    public function getArguments($type);
+
+    /**
+     * Check whether type is shared
+     *
+     * @param string $type
+     * @return bool
+     */
+    public function isShared($type);
+
+    /**
+     * Retrieve instance type
+     *
+     * @param string $instanceName
+     * @return mixed
+     */
+    public function getInstanceType($instanceName);
+
+    /**
+     * Retrieve preference for type
+     *
+     * @param string $type
+     * @return string
+     * @throws \LogicException
+     */
+    public function getPreference($type);
+
+    /**
+     * Extend configuration
+     *
+     * @param array $configuration
+     * @return void
+     */
+    public function extend(array $configuration);
 }

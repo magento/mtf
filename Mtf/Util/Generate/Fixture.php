@@ -26,7 +26,7 @@ namespace Mtf\Util\Generate;
 
 use Mtf\Util\Generate\Fixture\FieldsProviderInterface;
 use Mtf\Configuration\Reader;
-use Magento\Framework\ObjectManager;
+use Magento\Framework\ObjectManagerInterface;
 use Mtf\Util\XmlConverter;
 
 /**
@@ -54,13 +54,13 @@ class Fixture extends AbstractGenerate
 
     /**
      * @constructor
-     * @param ObjectManager $objectManager
+     * @param ObjectManagerInterface $objectManager
      * @param Reader $configReader
      * @param FieldsProviderInterface $fieldsProvider
      * @param XmlConverter $xmlConverter
      */
     public function __construct(
-        ObjectManager $objectManager,
+        ObjectManagerInterface $objectManager,
         Reader $configReader,
         FieldsProviderInterface $fieldsProvider,
         XmlConverter $xmlConverter

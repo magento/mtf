@@ -1,3 +1,5 @@
+* Added 'Interface' suffix to all interface names within Magento/Framework directory
+
 1.0.0-dev.8
 =============
 * Replaced license and copyright placeholders with appropriate license information

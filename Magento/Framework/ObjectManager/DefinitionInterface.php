@@ -1,5 +1,7 @@
 <?php
 /**
+ * Object Manager class definition interface
+ *
  * Magento
  *
  * NOTICE OF LICENSE
@@ -23,16 +25,30 @@
  */
 namespace Magento\Framework\ObjectManager;
 
-interface Factory
+interface DefinitionInterface
 {
     /**
-     * Create instance with call time arguments
+     * Get list of method parameters
      *
-     * @param string $requestedType
-     * @param array $arguments
-     * @return object
-     * @throws \LogicException
-     * @throws \BadMethodCallException
+     * Retrieve an ordered list of constructor parameters.
+     * Each value is an array with following entries:
+     *
+     * array(
+     *     0, // string: Parameter name
+     *     1, // string|null: Parameter type
+     *     2, // bool: whether this param is required
+     *     3, // mixed: default value
+     * );
+     *
+     * @param string $className
+     * @return array|null
      */
-    public function create($requestedType, array $arguments = array());
+    public function getParameters($className);
+
+    /**
+     * Retrieve list of all classes covered with definitions
+     *
+     * @return array
+     */
+    public function getClasses();
 }
