@@ -158,7 +158,7 @@ class Form extends Block
         foreach ($this->placeholders as $placeholder => $replacement) {
             $pattern = '%' . $placeholder . '%';
             foreach ($this->mapping as $key => $locator) {
-                if (strpos($locator['selector'], $pattern) !== false) {
+                if (isset($locator['selector']) && strpos($locator['selector'], $pattern) !== false) {
                     $this->mapping[$key]['selector'] = str_replace($pattern, $replacement, $locator['selector']);
                 }
             }
