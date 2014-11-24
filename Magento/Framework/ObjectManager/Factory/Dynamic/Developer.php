@@ -21,9 +21,9 @@
  * @copyright   Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-namespace Magento\Framework\ObjectManager\Factory;
+namespace Magento\Framework\ObjectManager\Factory\Dynamic;
 
-class Factory implements \Magento\Framework\ObjectManager\FactoryInterface
+class Developer implements \Magento\Framework\ObjectManager\FactoryInterface
 {
     /**
      * Object manager
@@ -67,7 +67,7 @@ class Factory implements \Magento\Framework\ObjectManager\FactoryInterface
     ) {
         $this->config = $config;
         $this->objectManager = $objectManager;
-        $this->definitions = $definitions ? : new \Magento\Framework\ObjectManager\Definition\Runtime();
+        $this->definitions = $definitions ?: new \Magento\Framework\ObjectManager\Definition\Runtime();
         $this->globalArguments = $globalArguments;
     }
 
@@ -104,24 +104,22 @@ class Factory implements \Magento\Framework\ObjectManager\FactoryInterface
         foreach ($parameters as $parameter) {
             list($paramName, $paramType, $paramRequired, $paramDefault) = $parameter;
             $argument = null;
-            if (array_key_exists($paramName, $arguments)) {
+            if (!empty($arguments) && (isset($arguments[$paramName]) || array_key_exists($paramName, $arguments))) {
                 $argument = $arguments[$paramName];
-            } else {
-                if ($paramRequired) {
-                    if ($paramType) {
-                        $argument = array('instance' => $paramType);
-                    } else {
-                        $this->creationStack = array();
-                        throw new \BadMethodCallException(
-                            'Missing required argument $' . $paramName . ' of ' . $requestedType . '.'
-                        );
-                    }
+            } else if ($paramRequired) {
+                if ($paramType) {
+                    $argument = array('instance' => $paramType);
                 } else {
-                    $argument = $paramDefault;
+                    $this->creationStack = array();
+                    throw new \BadMethodCallException(
+                        'Missing required argument $' . $paramName . ' of ' . $requestedType . '.'
+                    );
                 }
+            } else {
+                $argument = $paramDefault;
             }
-            if ($paramType && !is_object($argument) && $argument !== $paramDefault) {
-                if (!is_array($argument) || !isset($argument['instance'])) {
+            if ($paramType && $argument !== $paramDefault && !is_object($argument)) {
+                if (!isset($argument['instance']) || !is_array($argument)) {
                     throw new \UnexpectedValueException(
                         'Invalid parameter configuration provided for $' . $paramName . ' argument of ' . $requestedType
                     );
@@ -131,16 +129,13 @@ class Factory implements \Magento\Framework\ObjectManager\FactoryInterface
                 $argument = $isShared
                     ? $this->objectManager->get($argumentType)
                     : $this->objectManager->create($argumentType);
-            } else {
-                if (is_array($argument)) {
-                    if (isset($argument['argument'])) {
-                        $argKey = $argument['argument'];
-                        $argument = isset($this->globalArguments[$argKey])
-                            ? $this->globalArguments[$argKey]
-                            : $paramDefault;
-                    } else {
-                        $this->parseArray($argument);
-                    }
+            } else if (is_array($argument)) {
+                if (isset($argument['argument'])) {
+                    $argument = isset($this->globalArguments[$argument['argument']])
+                        ? $this->globalArguments[$argument['argument']]
+                        : $paramDefault;
+                } else if (!empty($argument)) {
+                    $this->parseArray($argument);
                 }
             }
             $resolvedArguments[] = $argument;
@@ -169,7 +164,7 @@ class Factory implements \Magento\Framework\ObjectManager\FactoryInterface
                         ? $this->globalArguments[$item['argument']]
                         : null;
                 } else {
-                    $this->parseArray($item);
+                    $this->parseArray($array[$key]);
                 }
             }
         }
@@ -209,6 +204,7 @@ class Factory implements \Magento\Framework\ObjectManager\FactoryInterface
         $reflection = new \ReflectionClass($type);
 
         return $reflection->newInstanceArgs($args);
+
     }
 
     /**
