@@ -71,7 +71,8 @@ class TestCase extends \PHPUnit_Extensions_Selenium2TestCase
      */
     public function waitUntil($callback, $timeout = null)
     {
-        return \Mtf\Client\Driver\Selenium\WaitUntil::run($callback, $this, $this->timeout);
+        $timeout = $this->timeout !== null ? $this->timeout : $timeout;
+        return \Mtf\Client\Driver\Selenium\WaitUntil::run($callback, $this, $timeout);
     }
 
     /**
