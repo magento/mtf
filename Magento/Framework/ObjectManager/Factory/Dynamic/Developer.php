@@ -204,7 +204,6 @@ class Developer implements \Magento\Framework\ObjectManager\FactoryInterface
         $reflection = new \ReflectionClass($type);
 
         return $reflection->newInstanceArgs($args);
-
     }
 
     /**
