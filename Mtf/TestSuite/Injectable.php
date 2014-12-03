@@ -24,24 +24,21 @@
 
 namespace Mtf\TestSuite;
 
-use Mtf\ObjectManager;
+use Mtf\TestRunner\Process\ProcessManager;
 
 /**
- * Class RegularTestCase
- *
- * @api
+ * Class Functional
+ * Test suite to handle parallel run process completion for injectable tests
  */
-class RegularTestCase extends Injectable
+class Injectable extends \Mtf\TestSuite\TestSuite
 {
     /**
-     * To accept $class argument name instead of $theClass
-     *
-     * @constructor
-     * @param string $class
-     * @param string $name
+     * Wait for parallel processes to complete (for parallel run)
      */
-    public function __construct($class = '', $name = '')
+    protected function waitForProcessesToComplete()
     {
-        parent::__construct($class, $name);
+        if ($this instanceof \Mtf\TestSuite\TestCase) {
+            parent::waitForProcessesToComplete();
+        }
     }
 }
