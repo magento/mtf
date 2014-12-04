@@ -21,18 +21,13 @@
  * @copyright   Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-namespace Mtf\TestRunner\Process;
+namespace Mtf\TestRunner\Process\Exception;
 
-class TestResultException extends \PHPUnit_Framework_AssertionFailedError
+/**
+ * Serializable exception for parallel run
+ */
+class Skipped extends \PHPUnit_Framework_SkippedTestError
 {
-    /**
-     * @param \Exception $exception
-     */
-    public function __construct(\Exception $exception)
-    {
-        parent::__construct($exception);
-    }
-
     /**
      * @return array
      */
