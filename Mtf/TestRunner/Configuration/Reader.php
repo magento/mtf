@@ -24,69 +24,65 @@
 
 namespace Mtf\TestRunner\Configuration;
 
-use Mtf\Util\XmlConverter;
+use Mtf\TestRunner\Configuration\FileResolver\Primary;
 
 /**
- * Class Reader
- *
- * @internal
+ * Reader for test runner configuration.
  */
-class Reader
+class Reader extends \Magento\Framework\Config\Reader\Filesystem
 {
     /**
-     * Read .xml file
+     * List of name attributes for merge.
      *
-     * @param string $configFilePath
-     * @return array|string
+     * @var array
      */
-    public function read($configFilePath)
-    {
-        $result = [];
-        $presetXml = simplexml_load_file($configFilePath);
-        if ($presetXml instanceof \SimpleXMLElement) {
-            $result = $this->convert($presetXml);
-        }
-
-        return $result;
-    }
+    protected $_idAttributes = [
+        '/config/rule' => 'scope',
+        '/config/rule/allow/namespace' => 'value',
+        '/config/rule/allow/type' => 'value',
+        '/config/rule/allow/module' => 'value',
+        '/config/rule/deny/namespace' => 'value',
+        '/config/rule/deny/type' => 'value',
+        '/config/rule/deny/module' => 'value',
+        '/config/rule/allow/tag' => 'value',
+        '/config/rule/deny/tag' => 'value',
+    ];
 
     /**
-     * Convert \SimpleXMLElement to array
-     *
-     * @param \SimpleXMLElement $element
-     * @return array|string
+     * @constructor
+     * @param Primary $fileResolver
+     * @param Converter $converter
+     * @param SchemaLocator $schemaLocator
+     * @param ValidationState $validationState
+     * @param string $fileName [optional]
+     * @param array $idAttributes [optional]
+     * @param string $domDocumentClass [optional]
+     * @param string $defaultScope [optional]
      */
-    private function convert(\SimpleXMLElement $element)
-    {
-        $result = [];
+    public function __construct(
+        Primary $fileResolver,
+        Converter $converter,
+        SchemaLocator $schemaLocator,
+        ValidationState $validationState,
+        $fileName = '',
+        $idAttributes = array(),
+        $domDocumentClass = 'Magento\Framework\Config\Dom',
+        $defaultScope = 'global'
+    ) {
+        $fileName = isset($_ENV['configuration:Mtf/TestSuite/MtfTests'])
+            ? $_ENV['configuration:Mtf/TestSuite/MtfTests']
+            : $fileName;
+        $fileName .= '.xml';
 
-        // add children values
-        $xmlConverter = new XmlConverter();
-        if ($xmlConverter->hasChildren($element)) {
-            foreach ($element->children() as $childName => $child) {
-                if ($childName === 'suiteRule') {
-                    $result['suiteRule'] = $this->convert($child);
-                } elseif ($childName === 'objectRule') {
-                    $class = (string)$child['for'];
-                    $result['objectRules'][$class] = $this->convert($child);
-                } elseif ($childName === 'allow') {
-                    $result[$childName] = $this->convert($child);
-                } elseif ($childName === 'deny') {
-                    $result[$childName] = $this->convert($child);
-                } else {
-                    $result[$childName] = $this->convert($child);
-                }
-            }
-        } else {
-            if (empty($result)) {
-                // return as string, if nothing was found
-                $result = (string)$element;
-            } else {
-                // value has zero key element
-                $result[0] = (string)$element;
-            }
-        }
-
-        return $result;
+        parent::__construct(
+            $fileResolver,
+            $converter,
+            $schemaLocator,
+            $validationState,
+            $fileName,
+            $idAttributes,
+            $domDocumentClass,
+            $defaultScope
+        );
     }
 }

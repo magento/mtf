@@ -27,31 +27,51 @@ namespace Mtf\TestRunner;
 use Mtf\TestRunner\Configuration\Reader;
 
 /**
- * Class Configuration
+ * Loader test runner configuration.
  *
  * @api
  */
 class Configuration
 {
     /**
+     * Configuration data.
+     *
      * @var array
      */
     protected $data = [];
 
     /**
-     * Load configuration
+     * Configuration reader.
      *
-     * @param string $configFilePath
-     * @return void
+     * @var Reader
      */
-    public function load($configFilePath)
+    protected $reader;
+
+    /**
+     * @constructor
+     * @param Reader $reader
+     */
+    public function __construct(Reader $reader)
     {
-        $reader = new Reader();
-        $this->data = $reader->read($configFilePath);
+        $this->reader = $reader;
     }
 
     /**
-     * Get configuration value
+     * Load configuration.
+     *
+     * @param string $configFolderPath
+     * @return void
+     */
+    public function load($configFolderPath)
+    {
+        $this->data = $this->reader->read($configFolderPath);
+        if (isset($this->data['rule'])) {
+            $this->data['rule'] = $this->prepareRule($this->data['rule']);
+        }
+    }
+
+    /**
+     * Get configuration value.
      *
      * @param null|string $key
      * @param null|string $default
@@ -73,7 +93,7 @@ class Configuration
     }
 
     /**
-     * Get parameters by path
+     * Get parameters by path.
      *
      * Method consider the path as chain of keys: a/b/c => ['a']['b']['c']
      *
@@ -94,5 +114,28 @@ class Configuration
             }
         }
         return $data;
+    }
+
+    /**
+     * Prepare rule configuration.
+     *
+     * Swaps "access"(allow, deny) and "filter name" level
+     *
+     * @param array $rules
+     * @return array
+     */
+    protected function prepareRule(array $rules)
+    {
+        $result = [];
+
+        foreach ($rules as $ruleName => $rule) {
+            foreach ($rule as $accessName => $access) {
+                foreach ($access as $filterName => $filter) {
+                    $result[$ruleName][$filterName][$accessName] = $filter;
+                }
+            }
+        }
+
+        return $result;
     }
 }

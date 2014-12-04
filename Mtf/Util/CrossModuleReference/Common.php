@@ -25,7 +25,7 @@
 namespace Mtf\Util\CrossModuleReference;
 
 /**
- * Class Common contains utility functions that can be used by subclasses
+ * Class Common contains utility functions that can be used by subclasses.
  */
 class Common
 {
@@ -35,7 +35,23 @@ class Common
     const XML_TYPE_PAGE = 'Page';
 
     /**
-     * Map class name to module name
+     * Map class name to namespace.
+     *
+     * @param string $className
+     * @return string
+     */
+    protected function mapClassNameToNamespace($className)
+    {
+        $pieces = explode('\\', $className);
+
+        if (strpos($className, '\\') == 0) {
+            return $pieces[1];
+        }
+        return $pieces[0];
+    }
+
+    /**
+     * Map class name to module name.
      *
      * @param string $className
      * @return string
@@ -97,7 +113,7 @@ class Common
     }
 
     /**
-     * Get specific type of XML files under test directory
+     * Get specific type of XML files under test directory.
      *
      * @param string $type
      * @return array

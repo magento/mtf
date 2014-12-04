@@ -22,43 +22,29 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Magento\BlockRender\Test\TestCase;
+namespace Mtf\TestRunner\Configuration\FileResolver;
 
-use Mtf\TestCase\Injectable;
-use Magento\Mtf\Test\Fixture\Test;
-use Magento\BlockRender\Test\Page\Area\TestPage;
-use Magento\BlockRender\Test\Fixture\BlockRender;
+use Mtf\Util\Iterator\File;
+use Magento\Framework\Config\FileResolverInterface;
 
 /**
- * Class BlockRenderTestCase
+ * Provides the list of test runner configuration files.
  */
-class BlockRenderTestCase extends Injectable
+class Primary implements FileResolverInterface
 {
     /**
-     * Test proxy render #1
+     * Retrieve the configuration files with given name that relate to test suite configuration.
      *
-     * @param TestPage $testPage
-     * @param Test $test
-     * @return void
+     * @param string $filename
+     * @param string $scope
+     * @return array
      */
-    public function test1(TestPage $testPage, Test $test)
+    public function get($filename, $scope)
     {
-        $testPage->open();
-        $testPage->getBlockRender()->render($test);
-        sleep(3);
-    }
+        $scope = str_replace('\\', DIRECTORY_SEPARATOR, $scope) . $filename;
+        $paths[$scope] = $scope;
 
-    /**
-     * Test proxy render #2
-     *
-     * @param TestPage $testPage
-     * @param BlockRender $blockRender
-     * @return void
-     */
-    public function test2(TestPage $testPage, BlockRender $blockRender)
-    {
-        $testPage->open();
-        $testPage->getBlockRender()->render($blockRender);
-        sleep(3);
+        $iterator = new File($paths);
+        return $iterator;
     }
 }

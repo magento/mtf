@@ -28,9 +28,8 @@ use Mtf\ObjectManager;
 use Mtf\TestRunner\Process\ProcessManager;
 
 /**
- * Class TestCase
  * This Test Suite class uses Test Case Iterator to collect appropriate Test Cases
- * as defined in TestCase Configuration
+ * as defined in TestCase Configuration.
  *
  * @api
  */
@@ -79,12 +78,8 @@ class TestCase extends TestSuite
                 'Mtf\TestSuite\Callback',
                 ['factory' => $factory, 'arguments' => $arguments, 'theClass' => $class]
             );
-            $rule = $this->objectManager->get('Mtf\TestRunner\Rule\SuiteComposite');
-            $testCaseSuite = $this->testSuiteFactory->get($class);
-            $allow = $rule->filterSuite($testCaseSuite);
-            if ($allow) {
-                $this->addTest($testCallback, \PHPUnit_Util_Test::getGroups($class));
-            }
+            $this->addTest($testCallback, \PHPUnit_Util_Test::getGroups($class));
+
             $testIterator->next();
         }
 
@@ -92,7 +87,7 @@ class TestCase extends TestSuite
     }
 
     /**
-     * To execute callback if specified
+     * To execute callback if specified.
      *
      * @param \PHPUnit_Framework_TestResult $result
      * @return \PHPUnit_Framework_TestResult
@@ -112,7 +107,7 @@ class TestCase extends TestSuite
     }
 
     /**
-     * Set callback
+     * Set callback.
      *
      * @param array $callback
      * @param array $arguments
@@ -125,7 +120,8 @@ class TestCase extends TestSuite
     }
 
     /**
-     * Initialize Object Manager
+     * Initialize Object Manager.
+     *
      * @return void
      */
     protected function initObjectManager()
@@ -136,7 +132,7 @@ class TestCase extends TestSuite
     }
 
     /**
-     * Avoid attempt to serialize callback
+     * Avoid attempt to serialize callback.
      *
      * @return array
      */

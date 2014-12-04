@@ -22,43 +22,31 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Magento\BlockRender\Test\TestCase;
+namespace Magento\Tag\Test\TestCase;
 
 use Mtf\TestCase\Injectable;
 use Magento\Mtf\Test\Fixture\Test;
 use Magento\BlockRender\Test\Page\Area\TestPage;
-use Magento\BlockRender\Test\Fixture\BlockRender;
 
-/**
- * Class BlockRenderTestCase
- */
-class BlockRenderTestCase extends Injectable
+class TagTestCase extends Injectable
 {
-    /**
-     * Test proxy render #1
-     *
-     * @param TestPage $testPage
-     * @param Test $test
-     * @return void
-     */
-    public function test1(TestPage $testPage, Test $test)
-    {
-        $testPage->open();
-        $testPage->getBlockRender()->render($test);
-        sleep(3);
-    }
+    /* tags */
+    const SEVERITY = 'middle';
+    const BAMBOO_PLAN = '';
+    const APPLICATION_STATE = '';
+    /* end tags */
 
     /**
-     * Test proxy render #2
+     * Run test.
      *
-     * @param TestPage $testPage
-     * @param BlockRender $blockRender
+     * @param TestPage $page
+     * @param Test $fixture
      * @return void
      */
-    public function test2(TestPage $testPage, BlockRender $blockRender)
+    public function test(TestPage $page, Test $fixture)
     {
-        $testPage->open();
-        $testPage->getBlockRender()->render($blockRender);
-        sleep(3);
+        $page->open();
+        $page->getTestBlock()->search($fixture);
+        sleep(2);
     }
 }

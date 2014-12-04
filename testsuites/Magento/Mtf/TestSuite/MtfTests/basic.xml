@@ -25,15 +25,32 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="../../../../../Mtf/TestRunner/etc/testRunner.xsd">
-    <suiteRule>
+    <rule scope="testsuite">
         <allow>
-            <namespace>Magento</namespace>
-            <module>Magento_Mtf</module>
+            <namespace value="Magento" />
+            <type value="injectable" />
+            <module value="Magento_BlockRender" />
+            <module value="Magento_Tag" />
+            <class value="Magento\Tag\Test\TestCase\TagTestCase" />
         </allow>
-    </suiteRule>
-    <objectRule for="Mtf\TestCase\Injectable">
+    </rule>
+    <rule scope="testcase">
+        <allow>
+            <tag group="severity" value="middle" />
+            <tag group="application_state" value="UNDEFINED" />
+        </allow>
         <deny>
-            <object>Mtf\ObjectManager</object>
+            <tag group="bamboo_plan" value="BAT" />
         </deny>
-    </objectRule>
+    </rule>
+    <rule scope="variation">
+        <deny>
+            <tag group="priority" value="low" />
+        </deny>
+    </rule>
+    <rule scope="constraint">
+        <deny>
+            <tag group="severity" value="low" />
+        </deny>
+    </rule>
 </config>

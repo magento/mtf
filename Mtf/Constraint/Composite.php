@@ -24,8 +24,10 @@
 
 namespace Mtf\Constraint;
 
+use Mtf\TestRunner\Rule\Constraint;
+
 /**
- * Composite Constraint
+ * Composite Constraint.
  *
  * Class for assertions composition
  * Does not perform own assertions
@@ -35,29 +37,36 @@ namespace Mtf\Constraint;
 class Composite extends AbstractConstraint
 {
     /**
-     * Constraint Objects
+     * Constraint Objects.
      *
      * @var AbstractConstraint[]
      */
     protected $constraints = [];
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @constructor
      * @param ConstraintFactory $factory
      * @param array $constraints
      */
-    public function __construct(ConstraintFactory $factory, array $constraints)
+    public function __construct(ConstraintFactory $factory, Constraint $constraintRule, array $constraints)
     {
         $this->factory = $factory;
 
         foreach ($constraints as $code) {
-            if ($code) {
-                $constraint = $this->factory->getByCode($code);
-                if ($constraint) {
-                    $this->constraints[] = $constraint;
-                }
+            if (!$code) {
+                continue;
+            }
+
+            $constraintClass = $this->factory->resolveClassName($code);
+            if (!$constraintRule->apply($constraintClass)) {
+                continue;
+            }
+
+            $constraint = $this->factory->getByCode($code);
+            if ($constraint) {
+                $this->constraints[] = $constraint;
             }
         }
     }
@@ -73,7 +82,7 @@ class Composite extends AbstractConstraint
     }
 
     /**
-     * Set DI Arguments to Constraint
+     * Set DI Arguments to Constraint.
      *
      * @param array $arguments
      * @return void
@@ -86,7 +95,7 @@ class Composite extends AbstractConstraint
     }
 
     /**
-     * Evaluates the constraint for test case
+     * Evaluates the constraint for test case.
      *
      * @param string $testCaseName
      * @return bool

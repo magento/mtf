@@ -26,60 +26,76 @@ namespace Mtf\Util\Iterator;
 
 use Mtf\ObjectManager;
 use Mtf\TestCase\Injectable;
+use Mtf\Util\TestClassResolver;
+use Mtf\TestRunner\Rule\Variation as VariationRule;
 
 /**
- * Class Variation
+ * Test Case variations iterator.
  *
  * @api
  */
 class Variation extends AbstractIterator
 {
     /**
-     * Column Names
+     * Column Names.
      *
      * @var array
      */
     protected $header = [];
 
     /**
-     * Parent Test Case Object
+     * Parent Test Case Object.
      *
      * @var Injectable
      */
     protected $testCase;
 
     /**
-     * @var \Mtf\Util\TestClassResolver
+     * Test class resolver.
+     *
+     * @var TestClassResolver
      */
     protected $resolver;
 
     /**
-     * Constructor
+     * Filtering rule.
      *
+     * @var VariationRule
+     */
+    protected $variationRule;
+
+    /**
      * @constructor
      * @param Injectable $testCase
-     * @param \Mtf\Util\TestClassResolver $resolver
+     * @param TestClassResolver $resolver
      */
-    public function __construct(Injectable $testCase, \Mtf\Util\TestClassResolver $resolver)
+    public function __construct(Injectable $testCase, TestClassResolver $resolver, VariationRule $variationRule)
     {
         $this->testCase = $testCase;
         $this->resolver = $resolver;
+        $this->variationRule = $variationRule;
+
         $this->data = $this->getTestCaseMethodVariations();
         $this->initFirstElement();
     }
 
     /**
-     * Check if current element is valid
+     * Check if current element is valid.
      *
      * @return boolean
      */
     protected function isValid()
     {
+        $cellTag = isset($this->current['tag']) ? $this->current['tag'] : '';
+
+        if (!$this->variationRule->apply($cellTag)) {
+            return false;
+        }
         return true;
     }
 
     /**
-     * Return current data row
+     * Return current data row.
      *
      * @return array
      */
@@ -89,7 +105,7 @@ class Variation extends AbstractIterator
     }
 
     /**
-     * Get Test Case Method Variations
+     * Get Test Case Method Variations.
      *
      * @return array
      */
@@ -117,7 +133,7 @@ class Variation extends AbstractIterator
     }
 
     /**
-     * Parse source file, extract column names information and prepare data array
+     * Parse source file, extract column names information and prepare data array.
      *
      * @param string $variationFilePath
      * @return array
@@ -140,7 +156,7 @@ class Variation extends AbstractIterator
     }
 
     /**
-     * Convert source variation format into normal array
+     * Convert source variation format into normal array.
      *
      * @return array
      */
@@ -160,7 +176,7 @@ class Variation extends AbstractIterator
     }
 
     /**
-     * Transform 'a/b/c' key reference to normal array structure
+     * Transform 'a/b/c' key reference to normal array structure.
      *
      * @param array $data
      * @param string $key

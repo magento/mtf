@@ -22,43 +22,45 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Magento\BlockRender\Test\TestCase;
-
-use Mtf\TestCase\Injectable;
-use Magento\Mtf\Test\Fixture\Test;
-use Magento\BlockRender\Test\Page\Area\TestPage;
-use Magento\BlockRender\Test\Fixture\BlockRender;
+namespace Mtf\Util\Filter;
 
 /**
- * Class BlockRenderTestCase
+ * Class filters out variations that are affected by specified tag.
  */
-class BlockRenderTestCase extends Injectable
+class VariationTag extends AbstractFilterTag
 {
     /**
-     * Test proxy render #1
+     * Filters out variation.
      *
-     * @param TestPage $testPage
-     * @param Test $test
-     * @return void
+     * @param string $subject
+     * @return bool
      */
-    public function test1(TestPage $testPage, Test $test)
+    public function apply($subject)
     {
-        $testPage->open();
-        $testPage->getBlockRender()->render($test);
-        sleep(3);
+        $tags = $this->convertTags($subject);
+        return $this->processApply($tags);
     }
 
     /**
-     * Test proxy render #2
+     * Convert tags from string to array.
      *
-     * @param TestPage $testPage
-     * @param BlockRender $blockRender
-     * @return void
+     * @param string $subject
+     * @return array
      */
-    public function test2(TestPage $testPage, BlockRender $blockRender)
+    protected function convertTags($subject)
     {
-        $testPage->open();
-        $testPage->getBlockRender()->render($blockRender);
-        sleep(3);
+        $compositeTags = $subject ? array_map('trim', explode(',', $subject)) : [];
+        $result = [];
+
+        foreach ($compositeTags as $compositeTag) {
+            list($group, $tag) = explode(':', $compositeTag);
+
+            if (!isset($result[$group])) {
+                $result[$group] = [];
+            }
+            $result[$group][] = $tag;
+        }
+
+        return $result;
     }
 }

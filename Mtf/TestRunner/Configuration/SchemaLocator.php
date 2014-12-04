@@ -22,28 +22,30 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Mtf\TestRunner\Rule;
+namespace Mtf\TestRunner\Configuration;
 
 /**
- * Class SuiteRuleInterface
- *
- * @api
+ * Test runner configuration schema locator.
  */
-interface SuiteRuleInterface
+class SchemaLocator implements \Magento\Framework\Config\SchemaLocatorInterface
 {
     /**
-     * Apply Test Runner Configuration rules to check if Test Case is eligible for execution within Test Suite
+     * Get path to merged config schema.
      *
-     * @param string $class
-     * @return mixed
+     * @return string
      */
-    public function apply($class);
+    public function getSchema()
+    {
+        return realpath(__DIR__ . '/../etc') . '/testRunner.xsd';
+    }
 
     /**
-     * Apply filter to test suite according to rules
+     * Get path to pre file validation schema.
      *
-     * @param \PHPUnit_Framework_TestSuite $testSuite
-     * @return mixed
+     * @return null
      */
-    public function filterSuite(\PHPUnit_Framework_TestSuite $testSuite);
+    public function getPerFileSchema()
+    {
+        return null;
+    }
 }

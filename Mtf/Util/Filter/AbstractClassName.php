@@ -22,20 +22,27 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Magento\Mtf\Test\Repository;
-
-use Mtf\Repository\AbstractRepository;
+namespace Mtf\Util\Filter;
 
 /**
- * Class TestRepository
+ * Base class filters out classes that are affected by specified class name.
  */
-class TestRepository extends AbstractRepository
+class AbstractClassName extends AbstractFilter implements FilterInterface
 {
     /**
-     * @param array $defaultConfig
-     * @param array $defaultData
+     * Filters out class.
+     *
+     * @param string $class
+     * @return bool
      */
-    public function __construct(array $defaultConfig, array $defaultData)
+    public function apply($class)
     {
+        if ($this->allow && !in_array($class, $this->allow)) {
+            return false;
+        }
+        if ($this->deny && in_array($class, $this->deny)) {
+            return false;
+        }
+        return true;
     }
 }

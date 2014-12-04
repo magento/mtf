@@ -28,103 +28,86 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xs:element name="config">
         <xs:complexType>
-            <xs:choice maxOccurs="unbounded">
-                <xs:element name="suiteRule" type="suiteRuleType" minOccurs="0" maxOccurs="unbounded">
-
-                </xs:element>
-                <xs:element name="objectRule" type="objectRuleType" minOccurs="0" maxOccurs="unbounded">
-                    <xs:unique name="uniqueObjectRuleParam">
-                        <xs:annotation>
-                            <xs:documentation>
-                                Param `for` should be unique
-                            </xs:documentation>
-                        </xs:annotation>
-                        <xs:selector xpath="for"/>
-                        <xs:field xpath="@for"/>
-                    </xs:unique>
-                </xs:element>
-            </xs:choice>
+            <xs:sequence>
+                <xs:element ref="rule" maxOccurs="unbounded" minOccurs="0"/>
+            </xs:sequence>
         </xs:complexType>
-
-        <xs:unique name="uniquePreference">
-            <xs:annotation>
-                <xs:documentation>
-                    Preference for each class should be unique in scope of file
-                </xs:documentation>
-            </xs:annotation>
-            <xs:selector xpath="preference"/>
-            <xs:field xpath="@for"/>
-        </xs:unique>
-        <xs:unique name="uniqueType">
-            <xs:annotation>
-                <xs:documentation>
-                    Type name should be unique in scope of file
-                </xs:documentation>
-            </xs:annotation>
-            <xs:selector xpath="type"/>
-            <xs:field xpath="@name"/>
-        </xs:unique>
-        <xs:unique name="uniqueVirtualType">
-            <xs:annotation>
-                <xs:documentation>
-                    Virtual type name should be unique in scope of file
-                </xs:documentation>
-            </xs:annotation>
-            <xs:selector xpath="virtualType"/>
-            <xs:field xpath="@name"/>
-        </xs:unique>
     </xs:element>
-
-    <xs:complexType name="suiteRuleType">
-        <xs:annotation>
-            <xs:documentation>
-                With 'suiteRule' tag you can point allow and deny directives
-            </xs:documentation>
-        </xs:annotation>
-        <xs:choice maxOccurs="unbounded">
-            <xs:element name="allow" type="suiteAllowType" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="deny" type="suiteDenyType" minOccurs="0" maxOccurs="unbounded"/>
-        </xs:choice>
-    </xs:complexType>
-    <xs:complexType name="suiteAllowType" mixed="true">
-        <xs:choice maxOccurs="unbounded">
-            <xs:element name="class" type="xs:string" maxOccurs="1"/>
-            <xs:element name="module" type="xs:string" maxOccurs="1"/>
-            <xs:element name="namespace" type="xs:string" maxOccurs="1"/>
-            <xs:element name="type" type="xs:string" maxOccurs="1"/>
-        </xs:choice>
-    </xs:complexType>
-    <xs:complexType name="suiteDenyType" mixed="true">
-        <xs:choice maxOccurs="unbounded">
-            <xs:element name="class" type="xs:string" maxOccurs="1"/>
-            <xs:element name="module" type="xs:string" maxOccurs="1"/>
-            <xs:element name="namespace" type="xs:string" maxOccurs="1"/>
-            <xs:element name="type" type="xs:string" maxOccurs="1"/>
-        </xs:choice>
-    </xs:complexType>
-
-    <xs:complexType name="objectRuleType">
-        <xs:annotation>
-            <xs:documentation>
-                With 'objectRule' tag you can point allow and deny directives
-            </xs:documentation>
-        </xs:annotation>
-        <xs:choice maxOccurs="unbounded">
-            <xs:element name="allow" type="objectAllowType" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="deny" type="objectDenyType" minOccurs="0" maxOccurs="unbounded"/>
-        </xs:choice>
-        <xs:attribute name="for" type="xs:string" use="required"/>
-    </xs:complexType>
-    <xs:complexType name="objectAllowType" mixed="true">
-        <xs:choice maxOccurs="unbounded">
-            <xs:element name="type" type="xs:string" maxOccurs="1"/>
-            <xs:element name="object" type="xs:string" maxOccurs="1"/>
-        </xs:choice>
-    </xs:complexType>
-    <xs:complexType name="objectDenyType" mixed="true">
-        <xs:choice maxOccurs="unbounded">
-            <xs:element name="type" type="xs:string" maxOccurs="1"/>
-            <xs:element name="object" type="xs:string" maxOccurs="1"/>
-        </xs:choice>
-    </xs:complexType>
+    <xs:element name="rule">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="allow" maxOccurs="1" minOccurs="0"/>
+                <xs:element ref="deny" maxOccurs="1" minOccurs="0"/>
+            </xs:sequence>
+            <xs:attribute type="xs:string" name="scope" use="required"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="allow">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="namespace" minOccurs="0"/>
+                <xs:element ref="type" minOccurs="0"/>
+                <xs:element ref="module" maxOccurs="unbounded" minOccurs="0"/>
+                <xs:element ref="class" maxOccurs="unbounded" minOccurs="0"/>
+                <xs:element ref="tag" maxOccurs="unbounded" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="deny">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="namespace" minOccurs="0"/>
+                <xs:element ref="type" minOccurs="0"/>
+                <xs:element ref="module" maxOccurs="unbounded" minOccurs="0"/>
+                <xs:element ref="class" maxOccurs="unbounded" minOccurs="0"/>
+                <xs:element ref="tag" maxOccurs="unbounded" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="tag">
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:extension base="xs:string">
+                    <xs:attribute type="xs:string" name="group" use="required"/>
+                    <xs:attribute type="xs:string" name="value" use="required"/>
+                </xs:extension>
+            </xs:simpleContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="class">
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:extension base="xs:string">
+                    <xs:attribute type="xs:string" name="value" use="required"/>
+                </xs:extension>
+            </xs:simpleContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="module">
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:extension base="xs:string">
+                    <xs:attribute type="xs:string" name="value" use="required"/>
+                </xs:extension>
+            </xs:simpleContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="namespace">
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:extension base="xs:string">
+                    <xs:attribute type="xs:string" name="value"/>
+                </xs:extension>
+            </xs:simpleContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="type">
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:extension base="xs:string">
+                    <xs:attribute type="xs:string" name="value"/>
+                </xs:extension>
+            </xs:simpleContent>
+        </xs:complexType>
+    </xs:element>
 </xs:schema>

@@ -51,4 +51,44 @@
             <argument name="appMode" xsi:type="string">developer</argument>
         </arguments>
     </type>
+    <type name="Mtf\TestRunner\Configuration\Reader">
+        <arguments>
+            <argument name="fileName" xsi:type="string">basic</argument>
+        </arguments>
+    </type>
+    <type name="Mtf\Util\Filter\TestSuiteNamespace">
+        <arguments>
+            <argument name="pathConfig" xsi:type="string">rule/testsuite/namespace</argument>
+        </arguments>
+    </type>
+    <type name="Mtf\Util\Filter\TestSuiteModule">
+        <arguments>
+            <argument name="pathConfig" xsi:type="string">rule/testsuite/module</argument>
+        </arguments>
+    </type>
+    <type name="Mtf\Util\Filter\TestSuiteType">
+        <arguments>
+            <argument name="pathConfig" xsi:type="string">rule/testsuite/type</argument>
+        </arguments>
+    </type>
+    <type name="Mtf\Util\Filter\TestSuiteClass">
+        <arguments>
+            <argument name="pathConfig" xsi:type="string">rule/testsuite/class</argument>
+        </arguments>
+    </type>
+    <type name="Mtf\Util\Filter\TestCaseTag">
+        <arguments>
+            <argument name="pathConfig" xsi:type="string">rule/testcase/tag</argument>
+        </arguments>
+    </type>
+    <type name="Mtf\Util\Filter\VariationTag">
+        <arguments>
+            <argument name="pathConfig" xsi:type="string">rule/variation/tag</argument>
+        </arguments>
+    </type>
+    <type name="Mtf\Util\Filter\ConstraintTag">
+        <arguments>
+            <argument name="pathConfig" xsi:type="string">rule/constraint/tag</argument>
+        </arguments>
+    </type>
 </config>

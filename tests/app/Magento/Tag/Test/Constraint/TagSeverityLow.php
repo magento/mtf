@@ -22,43 +22,46 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Magento\BlockRender\Test\TestCase;
+namespace Magento\Tag\Test\Constraint;
 
-use Mtf\TestCase\Injectable;
+use Mtf\Fixture\FixtureFactory;
 use Magento\Mtf\Test\Fixture\Test;
+use Mtf\Constraint\AbstractConstraint;
 use Magento\BlockRender\Test\Page\Area\TestPage;
-use Magento\BlockRender\Test\Fixture\BlockRender;
 
 /**
- * Class BlockRenderTestCase
+ * Test filtering constraint by tags.
  */
-class BlockRenderTestCase extends Injectable
+class TagSeverityLow extends AbstractConstraint
 {
+    /* tags */
+    const SEVERITY = 'low';
+    /* end tags */
+
     /**
-     * Test proxy render #1
+     * Test filtering constraint by tags.
      *
-     * @param TestPage $testPage
-     * @param Test $test
      * @return void
      */
-    public function test1(TestPage $testPage, Test $test)
+    public function processAssert(TestPage $page, Test $fixture, FixtureFactory $fixtureFactory)
     {
-        $testPage->open();
-        $testPage->getBlockRender()->render($test);
+        $data = $fixture->getData();
+
+        $data['search'] .= sprintf(' constraint:severity:%s', self::SEVERITY);
+        $reinitedFixture = $fixtureFactory->create('Magento\Mtf\Test\Fixture\Test', ['data' => $data]);
+
+        $page->open();
+        $page->getTestBlock()->fill($reinitedFixture);
         sleep(3);
     }
 
     /**
-     * Test proxy render #2
+     * Text run constraint.
      *
-     * @param TestPage $testPage
-     * @param BlockRender $blockRender
-     * @return void
+     * @return string
      */
-    public function test2(TestPage $testPage, BlockRender $blockRender)
+    public function toString()
     {
-        $testPage->open();
-        $testPage->getBlockRender()->render($blockRender);
-        sleep(3);
+        return 'Run constraint with low severeness.';
     }
 }

@@ -22,43 +22,47 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Magento\BlockRender\Test\TestCase;
+namespace Mtf\Util\Filter;
 
-use Mtf\TestCase\Injectable;
-use Magento\Mtf\Test\Fixture\Test;
-use Magento\BlockRender\Test\Page\Area\TestPage;
-use Magento\BlockRender\Test\Fixture\BlockRender;
+use Mtf\TestRunner\Configuration;
+use Mtf\Util\CrossModuleReference\Common;
 
 /**
- * Class BlockRenderTestCase
+ * Base class filters out classes that are affected by some parameters.
  */
-class BlockRenderTestCase extends Injectable
+abstract class AbstractFilter extends Common
 {
     /**
-     * Test proxy render #1
+     * List of allow parameters.
      *
-     * @param TestPage $testPage
-     * @param Test $test
-     * @return void
+     * @var array
      */
-    public function test1(TestPage $testPage, Test $test)
-    {
-        $testPage->open();
-        $testPage->getBlockRender()->render($test);
-        sleep(3);
-    }
+    protected $allow;
 
     /**
-     * Test proxy render #2
+     * List of deny parameters.
      *
-     * @param TestPage $testPage
-     * @param BlockRender $blockRender
-     * @return void
+     * @var array
      */
-    public function test2(TestPage $testPage, BlockRender $blockRender)
-    {
-        $testPage->open();
-        $testPage->getBlockRender()->render($blockRender);
-        sleep(3);
+    protected $deny;
+
+    /**
+     * @constructor
+     * @param Configuration $testRunnerConfig
+     * @param string $pathConfig
+     */
+    public function __construct(
+        Configuration $testRunnerConfig,
+        $pathConfig
+    ) {
+        $this->allow = $testRunnerConfig->getValue($pathConfig. '/allow');
+        if (!$this->allow) {
+            $this->allow = [];
+        }
+
+        $this->deny = $testRunnerConfig->getValue($pathConfig. '/deny');
+        if (!$this->deny) {
+            $this->deny = [];
+        }
     }
 }

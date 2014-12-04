@@ -22,43 +22,22 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Magento\BlockRender\Test\TestCase;
+namespace Mtf\TestRunner\Configuration;
 
-use Mtf\TestCase\Injectable;
-use Magento\Mtf\Test\Fixture\Test;
-use Magento\BlockRender\Test\Page\Area\TestPage;
-use Magento\BlockRender\Test\Fixture\BlockRender;
+use Magento\Framework\Config\ValidationStateInterface;
 
 /**
- * Class BlockRenderTestCase
+ * Used for Object Manager.
  */
-class BlockRenderTestCase extends Injectable
+class ValidationState implements ValidationStateInterface
 {
     /**
-     * Test proxy render #1
+     * Retrieve current validation state.
      *
-     * @param TestPage $testPage
-     * @param Test $test
-     * @return void
+     * @return bool
      */
-    public function test1(TestPage $testPage, Test $test)
+    public function isValidated()
     {
-        $testPage->open();
-        $testPage->getBlockRender()->render($test);
-        sleep(3);
-    }
-
-    /**
-     * Test proxy render #2
-     *
-     * @param TestPage $testPage
-     * @param BlockRender $blockRender
-     * @return void
-     */
-    public function test2(TestPage $testPage, BlockRender $blockRender)
-    {
-        $testPage->open();
-        $testPage->getBlockRender()->render($blockRender);
-        sleep(3);
+        return true;
     }
 }
