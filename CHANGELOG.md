@@ -1,3 +1,5 @@
+* Fixed getting configuration path from environment variable
+* Fixed an issue with default timeout
 * Sync factory class from Magento/Framework/ObjectManager/Factory
 * Fixed issue with applying placeholders to selectors in fixture data mapping
 * Fixed an issue with method keys() in \Mtf\Client\Driver\Selenium\Element
