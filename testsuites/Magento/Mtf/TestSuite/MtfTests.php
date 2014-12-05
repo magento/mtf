@@ -116,6 +116,7 @@ class MtfTests extends \PHPUnit_Framework_TestSuite
             /** @var \Mtf\TestRunner\Configuration $testRunnerConfiguration */
             $testRunnerConfiguration = $objectManagerFactory->getObjectManager()->get('\Mtf\TestRunner\Configuration');
             $testRunnerConfiguration->load($confFolderPath);
+            $testRunnerConfiguration->loadEnvConfig();
 
             $shared = ['Mtf\TestRunner\Configuration' => $testRunnerConfiguration];
             $this->objectManager = $objectManagerFactory->create($shared);

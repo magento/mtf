@@ -102,6 +102,7 @@ class Common
                     $nameSpace = str_replace('/', '\\', str_replace($generatedClassesTopDirectory, '', $path));
                 }
 
+                $nameSpace = trim($nameSpace, '\\');
                 $className = $nameSpace . '\\' . $baseName;
 
                 $class = new \ReflectionClass($className);

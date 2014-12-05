@@ -29,8 +29,8 @@
         <allow>
             <namespace value="Magento" />
             <type value="injectable" />
-            <module value="Magento_BlockRender" />
-            <module value="Magento_Tag" />
+            <module value="Magento_BlockRender" strict="1"/>
+            <module value="Magento_Tag" strict="1"/>
             <class value="Magento\Tag\Test\TestCase\TagTestCase" />
         </allow>
     </rule>

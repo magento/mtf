@@ -176,6 +176,8 @@ class Constraint extends Common implements CheckerInterface
                 $testMethodName = $fileInfo->getBasename('.csv');
                 $path = $fileInfo->getPath();
                 $testClassName = str_replace('/', '\\', str_replace(MTF_TESTS_PATH, '', $path));
+
+                $testClassName = trim($testClassName, '\\');
                 $dataSets[$testClassName][$testMethodName] = $this->readCsv($fileInfo->getRealPath());
             }
         }

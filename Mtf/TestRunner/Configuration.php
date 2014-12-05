@@ -34,6 +34,16 @@ use Mtf\TestRunner\Configuration\Reader;
 class Configuration
 {
     /**
+     * Environment field name for allow module list
+     */
+    const MODULE_FILTER = 'module_filter';
+
+    /**
+     * Environment field name for type filtering modules.
+     */
+    const MODULE_FILTER_STRICT = 'module_filter_strict';
+
+    /**
      * Configuration data.
      *
      * @var array
@@ -67,6 +77,27 @@ class Configuration
         $this->data = $this->reader->read($configFolderPath);
         if (isset($this->data['rule'])) {
             $this->data['rule'] = $this->prepareRule($this->data['rule']);
+        }
+    }
+
+    /**
+     * Load configuration from environment.
+     *
+     * @return void
+     */
+    public function loadEnvConfig()
+    {
+        $modules = getenv(self::MODULE_FILTER);
+        $strict = getenv(self::MODULE_FILTER_STRICT);
+
+        if ($modules) {
+            $this->data['rule']['testsuite']['module'] = [];
+
+            $modules = array_map('trim', explode(',', $modules));
+            foreach ($modules as $module) {
+                $this->data['rule']['testsuite']['module']['allow'][$module] = $strict;
+            }
+
         }
     }
 

@@ -38,63 +38,128 @@ class Converter implements \Magento\Framework\Config\ConverterInterface
     public function convert($source)
     {
         $config = $source->getElementsByTagName('config');
-        return $this->convertXml($config->item(0));
+        $convertedNode =  $this->convertElement($config->item(0));
+
+        return $convertedNode['value'];
     }
 
     /**
-     * Convert xml node to array.
+     * Convert element node to array.
      *
-     * @param \DOMElement $config
+     * @param \DOMElement $element
      * @return array|string
      */
-    protected function convertXml(\DOMElement $config)
+    protected function convertElement(\DOMElement $element)
     {
-        $result = [];
+        if ($element->hasChildNodes()) {
+            $data = [];
 
-        foreach ($config->childNodes as $node) {
-            if ($node instanceof \DOMElement) {
-                $tag = $node->nodeName;
-                $convertMethod = 'convert' . ucfirst($tag);
+            foreach ($element->childNodes as $node) {
+                if ($node instanceof \DOMElement) {
+                    $tag = $node->nodeName;
+                    $convertMethod = 'convert' . ucfirst($tag);
 
-                if (!isset($result[$tag])) {
-                    $result[$tag] = [];
+                    $convertMethod = method_exists($this, $convertMethod) ? $convertMethod : 'convertElement';
+                    $convertedNode = $this->$convertMethod($node);
+
+                    $isSingle = $convertedNode['isSingle'];
+                    $key = $convertedNode['key'];
+                    $value = $convertedNode['value'];
+
+                    if ($key) {
+                        $data[$tag][$key] = isset($data[$tag][$key]) ? $data[$tag][$key] : [];
+                        $data[$tag][$key] = $isSingle ? $value : array_merge($data[$tag][$key], [$value]);
+                    } else {
+                        $data[$tag] = isset($data[$tag]) ? $data[$tag] : [];
+                        $data[$tag] = $isSingle ? $value : array_merge($data[$tag], [$value]);
+                    }
                 }
-                $result[$tag] += $this->$convertMethod($node);
             }
+        } else {
+            $data = $element->getAttribute('value');
         }
 
-        return $result;
+        return [
+            'isSingle' => false,
+            'key' => null,
+            'value' => $data
+        ];
     }
 
     /**
-     * Convert rule node to array.
+     * Convert "rule" node to array.
      *
      * @param \DOMElement $rule
      * @return array
      */
     function convertRule(\DOMElement $rule)
     {
+        $data = $this->convertElement($rule);
         $scope = $rule->getAttribute('scope');
-        $result = [];
 
-        foreach ($rule->childNodes as $access) {
-            if ($access instanceof \DOMElement) {
-                foreach ($access->childNodes as $filter) {
-                    if ($filter instanceof \DOMElement) {
-                        $tag = $filter->nodeName;
-                        $group = $filter->hasAttribute('group') ? $filter->getAttribute('group') : null;
-                        $value = $filter->getAttribute('value');
+        $data['isSingle'] = true;
+        $data['key'] = $scope;
+        return $data;
+    }
 
-                        if ($group) {
-                            $result[$access->nodeName][$tag][$group][] = $value;
-                        } else {
-                            $result[$access->nodeName][$tag][] = $value;
-                        }
-                    }
-                }
-            }
-        }
+    /**
+     * Convert "allow" node to array.
+     *
+     * @param \DOMElement $allow
+     * @return array
+     */
+    protected function convertAllow(\DOMElement $allow)
+    {
+        $data = $this->convertElement($allow);
 
-        return [$scope => $result];
+        $data['isSingle'] = true;
+        return $data;
+    }
+
+    /**
+     * Convert "deny" node to array.
+     *
+     * @param \DOMElement $deny
+     * @return array
+     */
+    protected function convertDeny(\DOMElement $deny)
+    {
+        $data = $this->convertElement($deny);
+
+        $data['isSingle'] = true;
+        return $data;
+    }
+
+    /**
+     * Convert "module" node to array.
+     *
+     * @param \DOMElement $module
+     * @return array
+     */
+    protected function convertModule(\DOMElement $module)
+    {
+        $data = $this->convertElement($module);
+        $strict = $module->getAttribute('strict');
+
+        return [
+            'isSingle' => true,
+            'key' => $data['value'],
+            'value' => $strict
+        ];
+    }
+
+    /**
+     * Convert "tag" node to array.
+     *
+     * @param \DOMElement $tag
+     * @return array
+     */
+    protected function convertTag(\DOMElement $tag)
+    {
+        $data = $this->convertElement($tag);
+        $group = $tag->getAttribute('group');
+
+        $data['key'] = $group;
+        return $data;
     }
 }
