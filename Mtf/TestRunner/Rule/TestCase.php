@@ -37,8 +37,7 @@ class TestCase extends AbstractRule implements RuleInterface
      */
     public function __construct(
         TestCaseTag $testCaseTag
-    )
-    {
+    ) {
         $this->filters[] = $testCaseTag;
     }
 }

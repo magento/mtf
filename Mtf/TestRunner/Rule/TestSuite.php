@@ -46,8 +46,7 @@ class TestSuite extends AbstractRule implements RuleInterface
         TestSuiteModule $testSuiteModule,
         TestSuiteType $testSuiteType,
         TestSuiteClass $testSuiteClass
-    )
-    {
+    ) {
         $this->filters[] = $testSuiteNamespace;
         $this->filters[] = $testSuiteModule;
         $this->filters[] = $testSuiteType;

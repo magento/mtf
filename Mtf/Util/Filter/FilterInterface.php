@@ -24,7 +24,11 @@
 
 namespace Mtf\Util\Filter;
 
-interface FilterInterface {
+/**
+ * Interface for filter subject.
+ */
+interface FilterInterface
+{
     /**
      * Apply filter to check if subject is eligible for execution.
      *

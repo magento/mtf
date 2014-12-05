@@ -65,14 +65,13 @@ class Reader extends \Magento\Framework\Config\Reader\Filesystem
         SchemaLocator $schemaLocator,
         ValidationState $validationState,
         $fileName = '',
-        $idAttributes = array(),
+        $idAttributes = [],
         $domDocumentClass = 'Magento\Framework\Config\Dom',
         $defaultScope = 'global'
     ) {
         $fileName = isset($_ENV['configuration:Mtf/TestSuite/MtfTests'])
             ? $_ENV['configuration:Mtf/TestSuite/MtfTests']
             : $fileName;
-        $fileName .= '.xml';
 
         parent::__construct(
             $fileResolver,

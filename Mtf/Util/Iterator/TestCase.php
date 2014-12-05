@@ -36,16 +36,22 @@ use Mtf\TestRunner\Rule\Testsuite as TestSuiteRule;
 class TestCase extends AbstractIterator
 {
     /**
+     * Resolver for collect classes of test case.
+     *
      * @var TestClassResolver
      */
     protected $testClassResolver;
 
     /**
+     * Filtering rule of "testsuite" scope.
+     *
      * @var TestSuiteRule
      */
     protected $testSuiteRule;
 
     /**
+     * Filtering rule of "testcase" scope.
+     *
      * @var TestCaseRule
      */
     protected $testCaseRule;

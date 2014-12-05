@@ -37,8 +37,7 @@ class Variation extends AbstractRule implements RuleInterface
      */
     public function __construct(
         VariationTag $variationTag
-    )
-    {
+    ) {
         $this->filters[] = $variationTag;
     }
 }

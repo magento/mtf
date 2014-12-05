@@ -41,6 +41,9 @@ class TagSeverityHigh extends AbstractConstraint
     /**
      * Test filtering constraint by tags.
      *
+     * @param TestPage $page
+     * @param Test $fixture
+     * @param FixtureFactory $fixtureFactory
      * @return void
      */
     public function processAssert(TestPage $page, Test $fixture, FixtureFactory $fixtureFactory)

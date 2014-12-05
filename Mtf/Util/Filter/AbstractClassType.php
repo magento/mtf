@@ -87,7 +87,7 @@ class AbstractClassType extends AbstractFilterTag implements FilterInterface
         $parent = $reflectionClass->getParentClass();
         $isInstance = false;
 
-        while($parent && !$isInstance) {
+        while ($parent && !$isInstance) {
             $isInstance = $className == $parent->getName();
             $parent = $parent->getParentClass();
         }

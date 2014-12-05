@@ -28,7 +28,10 @@ use Mtf\TestCase\Injectable;
 use Magento\Mtf\Test\Fixture\Test;
 use Magento\BlockRender\Test\Page\Area\TestPage;
 
-class TagTestCase extends Injectable
+/**
+ * Test for check tagging functional.
+ */
+class TagTest extends Injectable
 {
     /* tags */
     const SEVERITY = 'middle';

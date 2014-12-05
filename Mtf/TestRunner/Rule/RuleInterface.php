@@ -24,6 +24,9 @@
 
 namespace Mtf\TestRunner\Rule;
 
+/**
+ * Interface for filtering rule.
+ */
 interface RuleInterface
 {
     /**

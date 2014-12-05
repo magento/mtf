@@ -37,8 +37,7 @@ class Constraint extends AbstractRule implements RuleInterface
      */
     public function __construct(
         ConstraintTag $constraintTag
-    )
-    {
+    ) {
         $this->filters[] = $constraintTag;
     }
 }

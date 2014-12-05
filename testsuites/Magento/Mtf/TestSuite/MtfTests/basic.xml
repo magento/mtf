@@ -25,32 +25,10 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="../../../../../Mtf/TestRunner/etc/testRunner.xsd">
-    <rule scope="testsuite">
+    <rule scope="namespace">
         <allow>
             <namespace value="Magento" />
             <type value="injectable" />
-            <module value="Magento_BlockRender" strict="1"/>
-            <module value="Magento_Tag" strict="1"/>
-            <class value="Magento\Tag\Test\TestCase\TagTestCase" />
         </allow>
-    </rule>
-    <rule scope="testcase">
-        <allow>
-            <tag group="severity" value="middle" />
-            <tag group="application_state" value="UNDEFINED" />
-        </allow>
-        <deny>
-            <tag group="bamboo_plan" value="BAT" />
-        </deny>
-    </rule>
-    <rule scope="variation">
-        <deny>
-            <tag group="priority" value="low" />
-        </deny>
-    </rule>
-    <rule scope="constraint">
-        <deny>
-            <tag group="severity" value="low" />
-        </deny>
     </rule>
 </config>
