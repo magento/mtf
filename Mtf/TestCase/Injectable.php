@@ -293,6 +293,6 @@ abstract class Injectable extends Functional
     protected function prepareConstraintObject($constraints)
     {
         $constraintsArray = array_map('trim', explode(',', $constraints));
-        return $this->getObjectManager()->create('Mtf\Constraint\Composite', ['constraints' => $constraintsArray]);
+        return $this->getObjectManager()->create('Mtf\Constraint\Composite', ['codeConstraints' => $constraintsArray]);
     }
 }
