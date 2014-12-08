@@ -35,8 +35,6 @@ class TagTest extends Injectable
 {
     /* tags */
     const SEVERITY = 'middle';
-    const BAMBOO_PLAN = '';
-    const APPLICATION_STATE = '';
     /* end tags */
 
     /**

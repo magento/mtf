@@ -25,10 +25,9 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="../../../../../Mtf/TestRunner/etc/testRunner.xsd">
-    <rule scope="namespace">
+    <rule scope="testsuite">
         <allow>
             <namespace value="Magento" />
-            <type value="injectable" />
         </allow>
     </rule>
 </config>

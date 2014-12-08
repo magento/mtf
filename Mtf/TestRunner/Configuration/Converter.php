@@ -47,7 +47,7 @@ class Converter implements \Magento\Framework\Config\ConverterInterface
      * Convert element node to array.
      *
      * @param \DOMElement $element
-     * @return array|string
+     * @return array
      */
     protected function convertElement(\DOMElement $element)
     {

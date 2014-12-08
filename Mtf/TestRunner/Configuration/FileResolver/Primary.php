@@ -37,7 +37,7 @@ class Primary implements FileResolverInterface
      *
      * @param string $filename
      * @param string $scope
-     * @return array
+     * @return File
      */
     public function get($filename, $scope)
     {

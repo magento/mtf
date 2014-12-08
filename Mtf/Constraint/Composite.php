@@ -37,6 +37,20 @@ use Mtf\TestRunner\Rule\Constraint;
 class Composite extends AbstractConstraint
 {
     /**
+     * Constraint factory.
+     *
+     * @var ConstraintFactory
+     */
+    protected $factory;
+
+    /**
+     * Filtering rule.
+     *
+     * @var Constraint
+     */
+    protected $constraintRule;
+
+    /**
      * Constraint Objects.
      *
      * @var AbstractConstraint[]
@@ -48,37 +62,42 @@ class Composite extends AbstractConstraint
      *
      * @constructor
      * @param ConstraintFactory $factory
-     * @param array $constraints
+     * @param array $codeConstraints
      */
-    public function __construct(ConstraintFactory $factory, Constraint $constraintRule, array $constraints)
+    public function __construct(ConstraintFactory $factory, Constraint $constraintRule, array $codeConstraints)
     {
         $this->factory = $factory;
+        $this->constraintRule = $constraintRule;
+        $this->constraints = $this->createConstraints($codeConstraints);
+    }
 
-        foreach ($constraints as $code) {
+    /**
+     * Create constraints by list code.
+     *
+     * @param array $codes
+     * @return AbstractConstraint[]
+     */
+    protected function createConstraints(array $codes)
+    {
+        $constraints = [];
+
+        foreach ($codes as $code) {
             if (!$code) {
                 continue;
             }
 
             $constraintClass = $this->factory->resolveClassName($code);
-            if (!$constraintRule->apply($constraintClass)) {
+            if (!$this->constraintRule->apply($constraintClass)) {
                 continue;
             }
 
             $constraint = $this->factory->getByCode($code);
             if ($constraint) {
-                $this->constraints[] = $constraint;
+                $constraints[] = $constraint;
             }
         }
-    }
 
-    /**
-     * Returns a string representation of the object.
-     *
-     * @return string
-     */
-    public function toString()
-    {
-        return 'Composite Constraint (' . implode(', ', $this->constraints) . ')';
+        return $constraints;
     }
 
     /**
@@ -108,5 +127,15 @@ class Composite extends AbstractConstraint
             $result = $result && $constraint->getResult();
         }
         return $result;
+    }
+
+    /**
+     * Returns a string representation of the object.
+     *
+     * @return string
+     */
+    public function toString()
+    {
+        return 'Composite Constraint (' . implode(', ', $this->constraints) . ')';
     }
 }

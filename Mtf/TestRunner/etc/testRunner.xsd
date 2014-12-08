@@ -27,6 +27,11 @@
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xs:element name="config">
+        <xs:annotation>
+            <xs:documentation>
+                Root element of configuration.
+            </xs:documentation>
+        </xs:annotation>
         <xs:complexType>
             <xs:sequence>
                 <xs:element ref="rule" maxOccurs="unbounded" minOccurs="0"/>
@@ -35,6 +40,11 @@
     </xs:element>
 
     <xs:element name="rule">
+        <xs:annotation>
+            <xs:documentation>
+                Type of filtering rule. Type determined by attribute "scope"
+            </xs:documentation>
+        </xs:annotation>
         <xs:complexType>
             <xs:sequence>
                 <xs:element ref="allow" maxOccurs="1" minOccurs="0"/>
@@ -43,7 +53,7 @@
             <xs:attribute name="scope" use="required">
                 <xs:simpleType>
                     <xs:restriction base="xs:string">
-                        <xs:enumeration value="namespace"/>
+                        <xs:enumeration value="testsuite"/>
                         <xs:enumeration value="testcase"/>
                         <xs:enumeration value="variation"/>
                         <xs:enumeration value="constraint"/>
@@ -54,6 +64,11 @@
     </xs:element>
 
     <xs:element name="allow">
+        <xs:annotation>
+            <xs:documentation>
+                List of allow filters.
+            </xs:documentation>
+        </xs:annotation>
         <xs:complexType>
             <xs:sequence>
                 <xs:element ref="namespace" minOccurs="0"/>
@@ -66,6 +81,11 @@
     </xs:element>
 
     <xs:element name="deny">
+        <xs:annotation>
+            <xs:documentation>
+                List of deny filters.
+            </xs:documentation>
+        </xs:annotation>
         <xs:complexType>
             <xs:sequence>
                 <xs:element ref="namespace" minOccurs="0"/>
@@ -78,6 +98,11 @@
     </xs:element>
 
     <xs:element name="namespace">
+        <xs:annotation>
+            <xs:documentation>
+                Filter subject by namespace.
+            </xs:documentation>
+        </xs:annotation>
         <xs:complexType>
             <xs:simpleContent>
                 <xs:extension base="xs:string">
@@ -88,16 +113,29 @@
     </xs:element>
 
     <xs:element name="type">
+        <xs:annotation>
+            <xs:documentation>
+                Filter subject by type.
+            </xs:documentation>
+        </xs:annotation>
         <xs:complexType>
-            <xs:simpleContent>
-                <xs:extension base="xs:string">
-                    <xs:attribute type="xs:string" name="value"/>
-                </xs:extension>
-            </xs:simpleContent>
+            <xs:attribute name="value" use="required">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="injectable"/>
+                        <xs:enumeration value="functional"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
         </xs:complexType>
     </xs:element>
 
     <xs:element name="module">
+        <xs:annotation>
+            <xs:documentation>
+                Filter subject by module.
+            </xs:documentation>
+        </xs:annotation>
         <xs:complexType>
             <xs:simpleContent>
                 <xs:extension base="xs:string">
@@ -109,6 +147,11 @@
     </xs:element>
 
     <xs:element name="class">
+        <xs:annotation>
+            <xs:documentation>
+                Filter subject by class name.
+            </xs:documentation>
+        </xs:annotation>
         <xs:complexType>
             <xs:simpleContent>
                 <xs:extension base="xs:string">
@@ -119,6 +162,11 @@
     </xs:element>
 
     <xs:element name="tag">
+        <xs:annotation>
+            <xs:documentation>
+                Filter subject by tag.
+            </xs:documentation>
+        </xs:annotation>
         <xs:complexType>
             <xs:simpleContent>
                 <xs:extension base="xs:string">
