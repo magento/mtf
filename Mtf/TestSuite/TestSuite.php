@@ -186,6 +186,7 @@ class TestSuite extends \PHPUnit_Framework_TestSuite
 
     /**
      * Wait for parallel processes to complete (for parallel run)
+     * @return void
      */
     protected function waitForProcessesToComplete()
     {

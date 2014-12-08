@@ -34,6 +34,7 @@ class Injectable extends \Mtf\TestSuite\TestSuite
 {
     /**
      * Wait for parallel processes to complete (for parallel run)
+     * @return void
      */
     protected function waitForProcessesToComplete()
     {
