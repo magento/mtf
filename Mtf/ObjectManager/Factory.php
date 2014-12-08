@@ -31,7 +31,7 @@ use Mtf\System\Code\ClassReader;
  *
  * @internal
  */
-class Factory extends \Magento\Framework\ObjectManager\Factory\Factory
+class Factory extends \Magento\Framework\ObjectManager\Factory\Dynamic\Developer
 {
     /**
      * @var \Mtf\System\Code\ClassReader
