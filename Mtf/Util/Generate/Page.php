@@ -65,6 +65,7 @@ class Page extends AbstractGenerate
      * @param ObjectManagerInterface $objectManager
      * @param Module $fileResolver
      * @param XmlConverter $xmlConverter
+     * @param ModuleResolver $moduleResolver
      */
     public function __construct(
         ObjectManagerInterface $objectManager,
@@ -319,6 +320,8 @@ class Page extends AbstractGenerate
         $realFolderPath = MTF_BP . '/generated/' . $folderPath;
         $namespace = str_replace('/', '\\', $folderPath);
         $areaMtfPage = strpos($folderPath, 'Adminhtml') === false ? 'FrontendPage' : 'BackendPage';
+        $mca = isset($item['mca']) ? $item['mca'] : '';
+        $blocks = isset($item['blocks']) ? $item['blocks'] : [];
 
         $content = "<?php\n";
         $content .= $this->getFilePhpDoc();
@@ -329,7 +332,7 @@ class Page extends AbstractGenerate
         $content .= " */\n";
         $content .= "class {$className} extends {$areaMtfPage}\n";
         $content .= "{\n";
-        $content .= "    const MCA = '{$item['mca']}';\n\n";
+        $content .= "    const MCA = '{$mca}';\n\n";
 
         $content .= "    /**\n";
         $content .= "     * Blocks' config\n";
@@ -337,12 +340,12 @@ class Page extends AbstractGenerate
         $content .= "     * @var array\n";
         $content .= "     */\n";
         $content .= "    protected \$blocks = [\n";
-        foreach ($item['blocks'] as $blockName => $block) {
+        foreach ($blocks as $blockName => $block) {
             $content .= $this->generatePageClassBlock($blockName, $block, '        ');
         }
         $content .= "    ];\n";
 
-        foreach ($item['blocks'] as $blockName => $block) {
+        foreach ($blocks as $blockName => $block) {
             $content .= "\n    /**\n";
             $content .= "     * @return \\{$block['class']}\n";
             $content .= "     */\n";

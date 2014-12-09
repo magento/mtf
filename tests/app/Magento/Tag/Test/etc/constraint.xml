@@ -25,7 +25,7 @@
 -->
 <constraint>
     <tagSeverityHigh module="Magento_Tag">
-        <severeness>high</severeness>
+        <severity>high</severity>
         <require>
             <page class="Magento\BlockRender\Test\Page\Area\TestPage"/>
             <fixture class="Magento\Mtf\Test\Fixture\Test"/>
@@ -33,7 +33,7 @@
         </require>
     </tagSeverityHigh>
     <tagSeverityMiddle module="Magento_Tag">
-        <severeness>middle</severeness>
+        <severity>middle</severity>
         <require>
             <page class="Magento\BlockRender\Test\Page\Area\TestPage"/>
             <fixture class="Magento\Mtf\Test\Fixture\Test"/>
@@ -41,7 +41,7 @@
         </require>
     </tagSeverityMiddle>
     <tagSeverityLow module="Magento_Tag">
-        <severeness>low</severeness>
+        <severity>low</severity>
         <require>
             <page class="Magento\BlockRender\Test\Page\Area\TestPage"/>
             <fixture class="Magento\Mtf\Test\Fixture\Test"/>

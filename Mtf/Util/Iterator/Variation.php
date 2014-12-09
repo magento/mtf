@@ -68,6 +68,7 @@ class Variation extends AbstractIterator
      * @constructor
      * @param Injectable $testCase
      * @param TestClassResolver $resolver
+     * @param VariationRule $variationRule
      */
     public function __construct(Injectable $testCase, TestClassResolver $resolver, VariationRule $variationRule)
     {
@@ -112,7 +113,26 @@ class Variation extends AbstractIterator
     protected function getTestCaseMethodVariations()
     {
         $data = [];
+        $variationFilePath = $this->getTestCaseMethodVariationFilePath();
+
+        if ($variationFilePath && is_readable($variationFilePath)) {
+            $data = $this->readCsv($variationFilePath);
+        } else {
+            $data['Default'] = [];
+        }
+
+        return $data;
+    }
+
+    /**
+     * Return file path of test case method variations.
+     *
+     * @return string|null
+     */
+    protected function getTestCaseMethodVariationFilePath()
+    {
         $testFilePath = $this->testCase->getFilePath();
+        $variationFilePath = null;
 
         if (!$testFilePath) {
             $testCaseData = $this->resolver->get('TestCase', [get_class($this->testCase)]);
@@ -124,12 +144,9 @@ class Variation extends AbstractIterator
         if ($testFilePath) {
             $testMethodName = $this->testCase->getName(false);
             $variationFilePath = str_replace('.php', "/{$testMethodName}.csv", $testFilePath);
-            if (is_readable($variationFilePath)) {
-                $data = $this->readCsv($variationFilePath);
-            }
         }
 
-        return $data;
+        return $variationFilePath;
     }
 
     /**

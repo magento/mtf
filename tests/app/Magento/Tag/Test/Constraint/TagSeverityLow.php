@@ -65,6 +65,6 @@ class TagSeverityLow extends AbstractConstraint
      */
     public function toString()
     {
-        return 'Run constraint with low severeness.';
+        return 'Run constraint with low severity.';
     }
 }

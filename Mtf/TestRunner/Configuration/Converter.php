@@ -38,7 +38,7 @@ class Converter implements \Magento\Framework\Config\ConverterInterface
     public function convert($source)
     {
         $config = $source->getElementsByTagName('config');
-        $convertedNode =  $this->convertElement($config->item(0));
+        $convertedNode = $this->convertElement($config->item(0));
 
         return $convertedNode['value'];
     }
@@ -139,7 +139,7 @@ class Converter implements \Magento\Framework\Config\ConverterInterface
     protected function convertModule(\DOMElement $module)
     {
         $data = $this->convertElement($module);
-        $strict = $module->getAttribute('strict');
+        $strict = $module->hasAttribute('strict') ? $module->getAttribute('strict') : 1;
 
         return [
             'isSingle' => true,

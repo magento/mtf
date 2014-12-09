@@ -150,6 +150,7 @@ class ModuleResolver
         }
         return array_map('trim', explode(',', $moduleWhitelist));
     }
+
     /**
      * Return the modules path based on which modules are enabled in the target Magento instance
      *

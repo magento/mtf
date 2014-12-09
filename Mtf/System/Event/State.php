@@ -83,6 +83,7 @@ class State
      * Setter for testSuiteName
      *
      * @param string $testSuiteName
+     * @return void
      */
     public static function setTestSuiteName($testSuiteName)
     {
@@ -93,6 +94,7 @@ class State
      * Setter for testClassName
      *
      * @param string $testClassName
+     * @return void
      */
     public static function setTestClassName($testClassName)
     {
@@ -103,6 +105,7 @@ class State
      * Setter for testMethodName
      *
      * @param string $testMethodName
+     * @return void
      */
     public static function setTestMethodName($testMethodName)
     {
@@ -113,6 +116,7 @@ class State
      * Setter for pageUrl
      *
      * @param string $pageUrl
+     * @return void
      */
     public function setPageUrl($pageUrl)
     {
@@ -169,6 +173,7 @@ class State
      * Set application state name
      *
      * @param string $appStateName
+     * @return void
      */
     public function setAppStateName($appStateName)
     {
@@ -189,6 +194,7 @@ class State
      * Set stage name (Currently persisting fixture class name or 'Main Test Flow')
      *
      * @param string $stageName
+     * @return void
      */
     public function setStageName($stageName = null)
     {

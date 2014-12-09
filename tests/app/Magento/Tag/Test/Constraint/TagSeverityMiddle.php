@@ -65,6 +65,6 @@ class TagSeverityMiddle extends AbstractConstraint
      */
     public function toString()
     {
-        return 'Run constraint with middle severeness.';
+        return 'Run constraint with middle severity.';
     }
 }

@@ -71,11 +71,13 @@
         </xs:annotation>
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="namespace" minOccurs="0"/>
-                <xs:element ref="type" minOccurs="0"/>
-                <xs:element ref="module" maxOccurs="unbounded" minOccurs="0"/>
-                <xs:element ref="class" maxOccurs="unbounded" minOccurs="0"/>
-                <xs:element ref="tag" maxOccurs="unbounded" minOccurs="0"/>
+                <xs:choice minOccurs="0" maxOccurs="unbounded">
+                    <xs:element ref="namespace" />
+                    <xs:element ref="type" />
+                    <xs:element ref="module" />
+                    <xs:element ref="class" />
+                    <xs:element ref="tag" />
+                </xs:choice>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -88,11 +90,13 @@
         </xs:annotation>
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="namespace" minOccurs="0"/>
-                <xs:element ref="type" minOccurs="0"/>
-                <xs:element ref="module" maxOccurs="unbounded" minOccurs="0"/>
-                <xs:element ref="class" maxOccurs="unbounded" minOccurs="0"/>
-                <xs:element ref="tag" maxOccurs="unbounded" minOccurs="0"/>
+                <xs:choice minOccurs="0" maxOccurs="unbounded">
+                    <xs:element ref="namespace" />
+                    <xs:element ref="type" />
+                    <xs:element ref="module" />
+                    <xs:element ref="class" />
+                    <xs:element ref="tag" />
+                </xs:choice>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -140,7 +144,14 @@
             <xs:simpleContent>
                 <xs:extension base="xs:string">
                     <xs:attribute type="xs:string" name="value" use="required"/>
-                    <xs:attribute type="xs:string" name="strict" use="required"/>
+                    <xs:attribute name="strict">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:enumeration value="1"/>
+                                <xs:enumeration value="0"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:attribute>
                 </xs:extension>
             </xs:simpleContent>
         </xs:complexType>

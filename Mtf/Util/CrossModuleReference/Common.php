@@ -71,6 +71,7 @@ class Common
      * Get php classes in tests directory by given type, e.g, TestStep, Page, etc.
      *
      * @param string $type
+     * @param string|null $moduleName
      * @return array
      */
     protected function getTestClassesByType($type, $moduleName = null)

@@ -50,9 +50,10 @@ class TestResult extends \PHPUnit_Framework_TestResult
      * Adds a failure to the list of failures.
      * The passed in exception caused the failure.
      *
-     * @param \PHPUnit_Framework_Test                 $test
+     * @param \PHPUnit_Framework_Test $test
      * @param \PHPUnit_Framework_AssertionFailedError $e
-     * @param float                                  $time
+     * @param float $time
+     * @return void
      */
     public function addFailure(\PHPUnit_Framework_Test $test, \PHPUnit_Framework_AssertionFailedError $e, $time)
     {

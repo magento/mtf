@@ -94,6 +94,7 @@ class Configuration
             $this->data['rule']['testsuite']['module'] = [];
 
             $modules = array_map('trim', explode(',', $modules));
+            $strict = (false === $strict) ? 1 : $strict;
             foreach ($modules as $module) {
                 $this->data['rule']['testsuite']['module']['allow'][$module] = $strict;
             }

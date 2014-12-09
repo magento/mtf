@@ -62,6 +62,7 @@ class Composite extends AbstractConstraint
      *
      * @constructor
      * @param ConstraintFactory $factory
+     * @param Constraint $constraintRule
      * @param array $codeConstraints
      */
     public function __construct(ConstraintFactory $factory, Constraint $constraintRule, array $codeConstraints)

@@ -34,7 +34,7 @@ interface CheckerInterface
      * The moduleName should be in the form of Prefix_Shortname, e.g., Magento_Checkout
      * The returned array has test case class name as array keys.
      *
-     * @param $moduleName
+     * @param string $moduleName
      * @return array
      */
     public function getCrossModuleReference($moduleName);

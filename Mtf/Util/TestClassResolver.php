@@ -54,6 +54,7 @@ class TestClassResolver
      * Collect test classes of the given type from Modules'
      *
      * @param string $classType
+     * @param array $includeOnly
      * @return array
      */
     public function get($classType, array $includeOnly = [])

@@ -336,6 +336,7 @@ class ProcessManager
      *
      * @param Callable $callback
      * @param array $arguments
+     * @return void
      */
     public function applyAppState($callback, array $arguments = [])
     {
