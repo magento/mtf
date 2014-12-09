@@ -1,3 +1,5 @@
+* Fixed handling for Incomplete and Skipped tests in parallel mode
+* Fixed issues when final tests were missed in report in parallel mode
 * Sync factory class from Magento/Framework/ObjectManager/Factory
 * Fixed issue with applying placeholders to selectors in fixture data mapping
 * Fixed an issue with method keys() in \Mtf\Client\Driver\Selenium\Element
