@@ -92,7 +92,7 @@ class Converter implements \Magento\Framework\Config\ConverterInterface
      * @param \DOMElement $rule
      * @return array
      */
-    function convertRule(\DOMElement $rule)
+    protected function convertRule(\DOMElement $rule)
     {
         $data = $this->convertElement($rule);
         $scope = $rule->getAttribute('scope');

@@ -162,7 +162,7 @@ class ModuleResolver
         }
 
         $enabledModules = array_merge($this->getEnabledModules(), $this->getModuleWhitelist());
-        $allModulePaths = glob( MTF_TESTS_PATH . '*/*');
+        $allModulePaths = glob(MTF_TESTS_PATH . '*/*');
         if (empty($enabledModules)) {
             $this->enabledModulePaths = $allModulePaths;
             return $this->enabledModulePaths;
