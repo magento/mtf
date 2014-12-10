@@ -51,11 +51,6 @@
             <argument name="appMode" xsi:type="string">developer</argument>
         </arguments>
     </type>
-    <type name="Mtf\TestRunner\Configuration\Reader">
-        <arguments>
-            <argument name="fileName" xsi:type="string">basic.xml</argument>
-        </arguments>
-    </type>
     <type name="Mtf\Util\Filter\TestSuiteNamespace">
         <arguments>
             <argument name="pathConfig" xsi:type="string">rule/testsuite/namespace</argument>

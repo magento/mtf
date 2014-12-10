@@ -69,10 +69,6 @@ class Reader extends \Magento\Framework\Config\Reader\Filesystem
         $domDocumentClass = 'Magento\Framework\Config\Dom',
         $defaultScope = 'global'
     ) {
-        $fileName = isset($_ENV['configuration:Mtf/TestSuite/MtfTests'])
-            ? $_ENV['configuration:Mtf/TestSuite/MtfTests']
-            : $fileName;
-
         parent::__construct(
             $fileResolver,
             $converter,
