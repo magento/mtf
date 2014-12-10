@@ -25,8 +25,8 @@
 namespace Mtf\Util\Iterator;
 
 use Mtf\Util\TestClassResolver;
-use Mtf\TestRunner\Rule\Testcase as TestCaseRule;
-use Mtf\TestRunner\Rule\Testsuite as TestSuiteRule;
+use Mtf\TestRunner\Rule\TestCase as TestCaseRule;
+use Mtf\TestRunner\Rule\TestSuite as TestSuiteRule;
 
 /**
  * Test cases iterator.
