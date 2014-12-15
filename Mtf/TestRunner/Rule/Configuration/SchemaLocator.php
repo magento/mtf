@@ -22,34 +22,30 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Mtf\TestRunner\Rule;
-
-use Mtf\Util\Filter\TestSuiteType;
-use Mtf\Util\Filter\TestSuiteClass;
-use Mtf\Util\Filter\TestSuiteModule;
-use Mtf\Util\Filter\TestSuiteNamespace;
+namespace Mtf\TestRunner\Rule\Configuration;
 
 /**
- * Applying Test Runner rule of "testsuite" scope.
+ * Test runner configuration schema locator.
  */
-class TestSuite extends AbstractRule implements RuleInterface
+class SchemaLocator implements \Magento\Framework\Config\SchemaLocatorInterface
 {
     /**
-     * @construct
-     * @param TestSuiteNamespace $testSuiteNamespace
-     * @param TestSuiteModule $testSuiteModule
-     * @param TestSuiteType $testSuiteType
-     * @param TestSuiteClass $testSuiteClass
+     * Get path to merged config schema.
+     *
+     * @return string
      */
-    public function __construct(
-        TestSuiteNamespace $testSuiteNamespace,
-        TestSuiteModule $testSuiteModule,
-        TestSuiteType $testSuiteType,
-        TestSuiteClass $testSuiteClass
-    ) {
-        $this->filters[] = $testSuiteNamespace;
-        $this->filters[] = $testSuiteModule;
-        $this->filters[] = $testSuiteType;
-        $this->filters[] = $testSuiteClass;
+    public function getSchema()
+    {
+        return  realpath(__DIR__ . '/../etc') . '/rule.xsd';
+    }
+
+    /**
+     * Get path to pre file validation schema.
+     *
+     * @return null
+     */
+    public function getPerFileSchema()
+    {
+        return null;
     }
 }

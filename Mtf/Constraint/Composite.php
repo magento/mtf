@@ -24,7 +24,8 @@
 
 namespace Mtf\Constraint;
 
-use Mtf\TestRunner\Rule\Constraint;
+use Mtf\TestRunner\Rule\RuleFactory;
+use Mtf\TestRunner\Rule\RuleInterface;
 
 /**
  * Composite Constraint.
@@ -46,9 +47,9 @@ class Composite extends AbstractConstraint
     /**
      * Filtering rule.
      *
-     * @var Constraint
+     * @var RuleInterface
      */
-    protected $constraintRule;
+    protected $rule;
 
     /**
      * Constraint Objects.
@@ -62,13 +63,13 @@ class Composite extends AbstractConstraint
      *
      * @constructor
      * @param ConstraintFactory $factory
-     * @param Constraint $constraintRule
+     * @param RuleFactory $ruleFactory
      * @param array $codeConstraints
      */
-    public function __construct(ConstraintFactory $factory, Constraint $constraintRule, array $codeConstraints)
+    public function __construct(ConstraintFactory $factory, RuleFactory $ruleFactory, array $codeConstraints)
     {
         $this->factory = $factory;
-        $this->constraintRule = $constraintRule;
+        $this->rule = $ruleFactory->create('constraint');
         $this->constraints = $this->createConstraints($codeConstraints);
     }
 
@@ -88,7 +89,7 @@ class Composite extends AbstractConstraint
             }
 
             $constraintClass = $this->factory->resolveClassName($code);
-            if (!$this->constraintRule->apply($constraintClass)) {
+            if (!$this->rule->apply($constraintClass)) {
                 continue;
             }
 

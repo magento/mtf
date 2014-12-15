@@ -22,22 +22,29 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Mtf\TestRunner\Rule;
+namespace Mtf\TestRunner\Rule\Configuration\FileResolver;
 
-use Mtf\Util\Filter\ConstraintTag;
+use Mtf\Util\Iterator\File;
+use Magento\Framework\Config\FileResolverInterface;
 
 /**
- * Applying Test Runner rule of "constraint" scope.
+ * Provides the list of rule configuration files.
  */
-class Constraint extends AbstractRule implements RuleInterface
+class Primary implements FileResolverInterface
 {
     /**
-     * @construct
-     * @param ConstraintTag $constraintTag
+     * Retrieve the configuration files with given name that relate to test suite configuration.
+     *
+     * @param string $filename
+     * @param string $scope
+     * @return File
      */
-    public function __construct(
-        ConstraintTag $constraintTag
-    ) {
-        $this->filters[] = $constraintTag;
+    public function get($filename, $scope)
+    {
+        $scope = str_replace('\\', DIRECTORY_SEPARATOR, $scope) . $filename;
+        $paths[$scope] = $scope;
+
+        $iterator = new File($paths);
+        return $iterator;
     }
 }

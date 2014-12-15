@@ -25,8 +25,8 @@
 namespace Mtf\Util\Iterator;
 
 use Mtf\Util\TestClassResolver;
-use Mtf\TestRunner\Rule\TestCase as TestCaseRule;
-use Mtf\TestRunner\Rule\TestSuite as TestSuiteRule;
+use Mtf\TestRunner\Rule\RuleFactory;
+use Mtf\TestRunner\Rule\RuleInterface;
 
 /**
  * Test cases iterator.
@@ -43,33 +43,25 @@ class TestCase extends AbstractIterator
     protected $testClassResolver;
 
     /**
-     * Filtering rule of "testsuite" scope.
+     * Filtering rules.
      *
-     * @var TestSuiteRule
+     * @var RuleInterface[]
      */
-    protected $testSuiteRule;
-
-    /**
-     * Filtering rule of "testcase" scope.
-     *
-     * @var TestCaseRule
-     */
-    protected $testCaseRule;
+    protected $rules = [];
 
     /**
      * @constructor
      * @param TestClassResolver $testClassResolver
-     * @param TestSuiteRule $testSuiteRule
-     * @param TestCaseRule $testCaseRule
+     * @param RuleFactory $ruleFactory
      */
     public function __construct(
         TestClassResolver $testClassResolver,
-        TestSuiteRule $testSuiteRule,
-        TestCaseRule $testCaseRule
+        RuleFactory $ruleFactory
     ) {
         $this->testClassResolver = $testClassResolver;
-        $this->testSuiteRule = $testSuiteRule;
-        $this->testCaseRule = $testCaseRule;
+
+        $this->rules[] = $ruleFactory->create('testsuite');
+        $this->rules[] = $ruleFactory->create('testcase');
 
         $this->data = $this->collectTestCases();
         $this->initFirstElement();
@@ -94,12 +86,12 @@ class TestCase extends AbstractIterator
     {
         $class = $this->current['class'];
 
-        if (!$this->testSuiteRule->apply($class)) {
-            return false;
+        foreach ($this->rules as $rule) {
+            if (!$rule->apply($class)) {
+                return false;
+            }
         }
-        if (!$this->testCaseRule->apply($class)) {
-            return false;
-        }
+
         return true;
     }
 

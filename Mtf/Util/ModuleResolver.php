@@ -162,13 +162,14 @@ class ModuleResolver
             return $this->enabledModulePaths;
         }
 
-        $enabledModules = array_merge($this->getEnabledModules(), $this->getModuleWhitelist());
+        $enabledModules = $this->getEnabledModules();
         $allModulePaths = glob(MTF_TESTS_PATH . '*/*');
         if (empty($enabledModules)) {
             $this->enabledModulePaths = $allModulePaths;
             return $this->enabledModulePaths;
         }
 
+        $enabledModules = array_merge($enabledModules, $this->getModuleWhitelist());
         $enabledDirectories = [];
         foreach ($enabledModules as $module) {
             $directoryName = explode('_', $module)[1];

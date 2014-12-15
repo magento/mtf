@@ -27,11 +27,9 @@ namespace Mtf\TestRunner\Rule;
 use Mtf\Util\Filter\FilterInterface;
 
 /**
- * Base class for applying Test Runner Configuration rules.
- *
- * @api
+ * Base class for applying Test Runner Configuration rule.
  */
-abstract class AbstractRule
+class Rule
 {
     /**
      * List applying filters.
@@ -41,7 +39,18 @@ abstract class AbstractRule
     protected $filters = [];
 
     /**
-     * Apply filtering.
+     * Add filter to rule.
+     *
+     * @param FilterInterface $filter
+     * @return void
+     */
+    public function addFilter(FilterInterface $filter)
+    {
+        $this->filters[] = $filter;
+    }
+
+    /**
+     * Apply rule.
      *
      * @param string $class
      * @return bool

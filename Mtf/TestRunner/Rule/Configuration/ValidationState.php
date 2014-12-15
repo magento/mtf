@@ -22,22 +22,22 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Mtf\TestRunner\Rule;
+namespace Mtf\TestRunner\Rule\Configuration;
 
-use Mtf\Util\Filter\TestCaseTag;
+use Magento\Framework\Config\ValidationStateInterface;
 
 /**
- * Applying Test Runner rule of "testcase" scope.
+ * Used for Object Manager.
  */
-class TestCase extends AbstractRule implements RuleInterface
+class ValidationState implements ValidationStateInterface
 {
     /**
-     * @construct
-     * @param TestCaseTag $testCaseTag
+     * Retrieve current validation state.
+     *
+     * @return bool
      */
-    public function __construct(
-        TestCaseTag $testCaseTag
-    ) {
-        $this->filters[] = $testCaseTag;
+    public function isValidated()
+    {
+        return true;
     }
 }

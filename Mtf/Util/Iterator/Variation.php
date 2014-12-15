@@ -27,7 +27,8 @@ namespace Mtf\Util\Iterator;
 use Mtf\ObjectManager;
 use Mtf\TestCase\Injectable;
 use Mtf\Util\TestClassResolver;
-use Mtf\TestRunner\Rule\Variation as VariationRule;
+use Mtf\TestRunner\Rule\RuleFactory;
+use Mtf\TestRunner\Rule\RuleInterface;
 
 /**
  * Test Case variations iterator.
@@ -60,21 +61,21 @@ class Variation extends AbstractIterator
     /**
      * Filtering rule.
      *
-     * @var VariationRule
+     * @var RuleInterface
      */
-    protected $variationRule;
+    protected $rule;
 
     /**
      * @constructor
      * @param Injectable $testCase
      * @param TestClassResolver $resolver
-     * @param VariationRule $variationRule
+     * @param RuleFactory $ruleFactory
      */
-    public function __construct(Injectable $testCase, TestClassResolver $resolver, VariationRule $variationRule)
+    public function __construct(Injectable $testCase, TestClassResolver $resolver, RuleFactory $ruleFactory)
     {
         $this->testCase = $testCase;
         $this->resolver = $resolver;
-        $this->variationRule = $variationRule;
+        $this->rule = $ruleFactory->create('variation');
 
         $this->data = $this->getTestCaseMethodVariations();
         $this->initFirstElement();
@@ -89,7 +90,7 @@ class Variation extends AbstractIterator
     {
         $cellTag = isset($this->current['tag']) ? $this->current['tag'] : '';
 
-        if (!$this->variationRule->apply($cellTag)) {
+        if (!$this->rule->apply($cellTag)) {
             return false;
         }
         return true;

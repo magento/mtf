@@ -27,7 +27,7 @@ namespace Mtf\Util\Filter;
 /**
  * Class filters out variations that are affected by specified tag.
  */
-class VariationTag extends AbstractFilterTag
+class VariationTag extends AbstractFilterTag implements FilterInterface
 {
     /**
      * Filters out variation.

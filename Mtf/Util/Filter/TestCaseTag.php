@@ -27,7 +27,7 @@ namespace Mtf\Util\Filter;
 /**
  * Class filters out test cases that are affected by specified tag.
  */
-class TestCaseTag extends AbstractClassTag
+class TestCaseTag extends AbstractClassTag implements FilterInterface
 {
     //
 }

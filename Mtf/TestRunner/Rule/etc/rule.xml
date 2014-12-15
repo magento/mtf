@@ -1,4 +1,5 @@
-<?php
+<?xml version="1.0" ?>
+<!--
 /**
  * Magento
  *
@@ -21,23 +22,21 @@
  * @copyright   Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
-namespace Mtf\TestRunner\Rule;
-
-use Mtf\Util\Filter\VariationTag;
-
-/**
- * Applying Test Runner rule of "variation" scope.
- */
-class Variation extends AbstractRule implements RuleInterface
-{
-    /**
-     * @construct
-     * @param VariationTag $variationTag
-     */
-    public function __construct(
-        VariationTag $variationTag
-    ) {
-        $this->filters[] = $variationTag;
-    }
-}
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="rule.xsd">
+    <rule scope="testsuite">
+        <filter name="namespace" class="Mtf\Util\Filter\TestSuiteNamespace" />
+        <filter name="type" class="Mtf\Util\Filter\TestSuiteType"/>
+        <filter name="module" class="Mtf\Util\Filter\TestSuiteModule"/>
+        <filter name="class" class="Mtf\Util\Filter\TestSuiteClass"/>
+    </rule>
+    <rule scope="testcase">
+        <filter name="tag" class="Mtf\Util\Filter\TestCaseTag"/>
+    </rule>
+    <rule scope="variation">
+        <filter name="tag" class="Mtf\Util\Filter\VariationTag"/>
+    </rule>
+    <rule scope="constraint">
+        <filter name="tag" class="Mtf\Util\Filter\ConstraintTag"/>
+    </rule>
+</config>
