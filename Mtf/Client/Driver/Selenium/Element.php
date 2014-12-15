@@ -211,6 +211,10 @@ class Element implements ElementInterface
             $this->_eventManager->dispatchEvent(['is_visible'], [__METHOD__, $this->getAbsoluteSelector()]);
             $visible = $this->_getWrappedElement(false)->displayed();
         } catch (\PHPUnit_Extensions_Selenium2TestCase_WebDriverException $e) {
+            $this->_eventManager->dispatchEvent(
+                ['exception'],
+                [__METHOD__, $this->getAbsoluteSelector(), $e->getMessage()]
+            );
             $visible = false;
         }
         return $visible;
