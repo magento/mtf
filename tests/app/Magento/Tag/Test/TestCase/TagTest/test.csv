@@ -1,0 +1,4 @@
+"fixture/data/locator";"fixture/data/strategy";"fixture/data/search";"constraint";"tag"
+"#hplogo";"css selector";"variation priority:high";"tagSeverityHigh, tagSeverityMiddle, tagSeverityLow";"priority:high"
+"#hplogo";"css selector";"variation priority:middle";"tagSeverityHigh, tagSeverityMiddle, tagSeverityLow";"priority:middle"
+"#hplogo";"css selector";"variation priority:low";"tagSeverityHigh, tagSeverityMiddle, tagSeverityLow";"priority:low"

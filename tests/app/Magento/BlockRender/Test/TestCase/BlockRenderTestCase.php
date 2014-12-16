@@ -22,17 +22,17 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Magento\Mtf\Test\TestCase;
+namespace Magento\BlockRender\Test\TestCase;
 
-use Magento\BlockRender\Test\Page\Area\TestPage;
 use Mtf\TestCase\Injectable;
 use Magento\Mtf\Test\Fixture\Test;
+use Magento\BlockRender\Test\Page\Area\TestPage;
 use Magento\BlockRender\Test\Fixture\BlockRender;
 
 /**
- * Class RenderTestCase
+ * Class BlockRenderTestCase
  */
-class RenderTestCase extends Injectable
+class BlockRenderTestCase extends Injectable
 {
     /**
      * Test proxy render #1

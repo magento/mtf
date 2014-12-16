@@ -22,20 +22,27 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Mtf\TestRunner\Rule;
+namespace Mtf\Util\Filter;
 
 /**
- * Class RuleInterface
- *
- * @api
+ * Base class filters out classes that are affected by specified class name.
  */
-interface ObjectRuleInterface
+class AbstractClassName extends AbstractFilter implements FilterInterface
 {
     /**
-     * Apply Test Runner Configuration rules to check if Test Case is eligible for execution
+     * Filters out class.
      *
-     * @param \PHPUnit_Framework_TestCase $testCase
+     * @param string $class
      * @return bool
      */
-    public function apply(\PHPUnit_Framework_TestCase $testCase);
+    public function apply($class)
+    {
+        if ($this->allow && !in_array($class, $this->allow)) {
+            return false;
+        }
+        if ($this->deny && in_array($class, $this->deny)) {
+            return false;
+        }
+        return true;
+    }
 }

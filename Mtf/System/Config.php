@@ -60,15 +60,15 @@ class Config
      */
     protected function _init($filePath)
     {
+        $paths = [];
         if (is_string($filePath)) {
             $paths = [$filePath];
         } else {
-            $paths = [
-                self::getEnvironmentValue('server_config_path', 'config/server.yml.dist'),
-                self::getEnvironmentValue('app_config_path', 'config/application.yml.dist'),
-                self::getEnvironmentValue('isolation_config_path', 'config/isolation.yml.dist'),
-                self::getEnvironmentValue('handlers_config_path', 'config/handler.yml.dist'),
-            ];
+            foreach ($_ENV as $key => $value) {
+                if (strpos($key, 'config_path')) {
+                    $paths[] = $value;
+                }
+            }
         }
 
         foreach ($paths as $path) {

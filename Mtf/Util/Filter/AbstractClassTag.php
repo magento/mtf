@@ -22,28 +22,44 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Mtf\TestRunner\Rule;
+namespace Mtf\Util\Filter;
 
 /**
- * Class SuiteRuleInterface
- *
- * @api
+ * Base class filters out classes that are affected by specified tag.
  */
-interface SuiteRuleInterface
+class AbstractClassTag extends AbstractFilterTag implements FilterInterface
 {
     /**
-     * Apply Test Runner Configuration rules to check if Test Case is eligible for execution within Test Suite
+     * Filters out class.
      *
      * @param string $class
-     * @return mixed
+     * @return bool
      */
-    public function apply($class);
+    public function apply($class)
+    {
+        $tags = $this->getClassTags($class);
+        return $this->processApply($tags);
+    }
 
     /**
-     * Apply filter to test suite according to rules
+     * Return constants of class.
      *
-     * @param \PHPUnit_Framework_TestSuite $testSuite
-     * @return mixed
+     * @param string $class
+     * @return array
      */
-    public function filterSuite(\PHPUnit_Framework_TestSuite $testSuite);
+    protected function getClassTags($class)
+    {
+        $reflection  = new \ReflectionClass($class);
+        $constants = $reflection->getConstants();
+        $result = [];
+
+        foreach ($constants as $name => $constant) {
+            $name = strtolower($name);
+            $values = empty($constant) ? [] : explode(',', $constant);
+
+            $result[$name] = array_map('trim', $values);
+        }
+
+        return $result;
+    }
 }

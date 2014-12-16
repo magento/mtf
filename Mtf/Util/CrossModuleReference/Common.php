@@ -25,7 +25,7 @@
 namespace Mtf\Util\CrossModuleReference;
 
 /**
- * Class Common contains utility functions that can be used by subclasses
+ * Class Common contains utility functions that can be used by subclasses.
  */
 class Common
 {
@@ -35,7 +35,23 @@ class Common
     const XML_TYPE_PAGE = 'Page';
 
     /**
-     * Map class name to module name
+     * Map class name to namespace.
+     *
+     * @param string $className
+     * @return string
+     */
+    protected function mapClassNameToNamespace($className)
+    {
+        $pieces = explode('\\', $className);
+
+        if (strpos($className, '\\') == 0) {
+            return $pieces[1];
+        }
+        return $pieces[0];
+    }
+
+    /**
+     * Map class name to module name.
      *
      * @param string $className
      * @return string
@@ -55,6 +71,7 @@ class Common
      * Get php classes in tests directory by given type, e.g, TestStep, Page, etc.
      *
      * @param string $type
+     * @param string|null $moduleName
      * @return array
      */
     protected function getTestClassesByType($type, $moduleName = null)
@@ -86,6 +103,7 @@ class Common
                     $nameSpace = str_replace('/', '\\', str_replace($generatedClassesTopDirectory, '', $path));
                 }
 
+                $nameSpace = trim($nameSpace, '\\');
                 $className = $nameSpace . '\\' . $baseName;
 
                 $class = new \ReflectionClass($className);
@@ -97,7 +115,7 @@ class Common
     }
 
     /**
-     * Get specific type of XML files under test directory
+     * Get specific type of XML files under test directory.
      *
      * @param string $type
      * @return array

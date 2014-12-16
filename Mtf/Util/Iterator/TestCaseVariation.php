@@ -117,8 +117,6 @@ class TestCaseVariation extends AbstractIterator
                 $variations[self::$count] = $variation;
                 $source->next();
             }
-        } else {
-            $variations['Default'] = [];
         }
 
         return $variations;

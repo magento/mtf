@@ -34,6 +34,11 @@ use Mtf\System\Config;
 class ModuleResolver
 {
     /**
+     * Environment field name for module whitelist
+     */
+    const MODULE_WHITELIST = 'module_whitelist';
+
+    /**
      * @var array|null
      */
     protected $enabledModules = null;
@@ -132,6 +137,21 @@ class ModuleResolver
     }
 
     /**
+     * Return an array of module whitelist that not exist in target Magento instance
+     *
+     * @return array
+     */
+    protected function getModuleWhitelist()
+    {
+        $moduleWhitelist = getenv(self::MODULE_WHITELIST);
+
+        if (empty($moduleWhitelist)) {
+            return [];
+        }
+        return array_map('trim', explode(',', $moduleWhitelist));
+    }
+
+    /**
      * Return the modules path based on which modules are enabled in the target Magento instance
      *
      * @return array
@@ -143,22 +163,26 @@ class ModuleResolver
         }
 
         $enabledModules = $this->getEnabledModules();
-        $allModulePaths = glob( MTF_TESTS_PATH . '*/*');
+        $allModulePaths = glob(MTF_TESTS_PATH . '*/*');
         if (empty($enabledModules)) {
             $this->enabledModulePaths = $allModulePaths;
             return $this->enabledModulePaths;
         }
+
+        $enabledModules = array_merge($enabledModules, $this->getModuleWhitelist());
         $enabledDirectories = [];
         foreach ($enabledModules as $module) {
             $directoryName = explode('_', $module)[1];
             $enabledDirectories[$directoryName] = $directoryName;
         }
+
         foreach ($allModulePaths as $index => $modulePath) {
             $moduleShortName = basename($modulePath);
             if (!isset($enabledDirectories[$moduleShortName]) && !isset($this->knownDirectories[$moduleShortName])) {
                 unset($allModulePaths[$index]);
             }
         }
+
         $this->enabledModulePaths = $allModulePaths;
         return $this->enabledModulePaths;
     }

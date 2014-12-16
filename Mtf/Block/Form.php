@@ -234,6 +234,7 @@ class Form extends Block
      *
      * @param array $fields
      * @param Element $element
+     * @return void
      */
     protected function _fill(array $fields, Element $element = null)
     {

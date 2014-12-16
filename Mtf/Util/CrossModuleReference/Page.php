@@ -90,8 +90,8 @@ class Page extends Common implements CheckerInterface
      * Search in $scopeModule for test cases that uses page class in $pageModule
      * Only check classes in TestCase and Constraint
      *
-     * @param $scopeModule
-     * @param $pageModule
+     * @param string $scopeModule
+     * @param string $pageModule
      * @return array
      */
     protected function getTestClassesByCrossModulePageReference($scopeModule, $pageModule)

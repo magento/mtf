@@ -22,20 +22,29 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Magento\Mtf\Test\Repository;
+namespace Mtf\TestRunner\Rule\Configuration\FileResolver;
 
-use Mtf\Repository\AbstractRepository;
+use Mtf\Util\Iterator\File;
+use Magento\Framework\Config\FileResolverInterface;
 
 /**
- * Class TestRepository
+ * Provides the list of rule configuration files.
  */
-class TestRepository extends AbstractRepository
+class Primary implements FileResolverInterface
 {
     /**
-     * @param array $defaultConfig
-     * @param array $defaultData
+     * Retrieve the configuration files with given name that relate to test suite configuration.
+     *
+     * @param string $filename
+     * @param string $scope
+     * @return File
      */
-    public function __construct(array $defaultConfig, array $defaultData)
+    public function get($filename, $scope)
     {
+        $scope = str_replace('\\', DIRECTORY_SEPARATOR, $scope) . $filename;
+        $paths[$scope] = $scope;
+
+        $iterator = new File($paths);
+        return $iterator;
     }
 }

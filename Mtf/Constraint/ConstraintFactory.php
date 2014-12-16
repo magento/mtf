@@ -28,7 +28,8 @@ use Mtf\ObjectManager;
 use Mtf\Configuration\Reader;
 
 /**
- * Factory for Constraints
+ * Factory for Constraints.
+ *
  * There is a convention around class names of Constraint classes
  * In general case constraints should be located by constraint code
  * (see method "getByCode")
@@ -38,12 +39,14 @@ use Mtf\Configuration\Reader;
 class ConstraintFactory
 {
     /**
+     * Object Manager.
+     *
      * @var \Mtf\ObjectManager
      */
     protected $objectManager;
 
     /**
-     * Constraints definition array
+     * Constraints definition array.
      *
      * @var array
      */
@@ -54,16 +57,14 @@ class ConstraintFactory
      * @param ObjectManager $objectManager
      * @param Reader $constraintReader
      */
-    public function __construct(
-        ObjectManager $objectManager,
-        Reader $constraintReader
-    ) {
+    public function __construct(ObjectManager $objectManager, Reader $constraintReader)
+    {
         $this->objectManager = $objectManager;
         $this->configuration = $constraintReader->read('constraint');
     }
 
     /**
-     * Get Constraint object
+     * Get Constraint object.
      *
      * @param string $class
      * @return ConstraintInterface
@@ -82,7 +83,7 @@ class ConstraintFactory
     }
 
     /**
-     * Get class by code
+     * Get class by code.
      *
      * @param string $code
      * @return ConstraintInterface
@@ -95,12 +96,12 @@ class ConstraintFactory
     }
 
     /**
-     * Resolve class name by code
+     * Resolve class name by code.
      *
      * @param string $code
      * @return string
      */
-    protected function resolveClassName($code)
+    public function resolveClassName($code)
     {
         if (isset($this->configuration[$code])) {
             $class = str_replace('_', '\\', $this->configuration[$code]['module']) . '\\Test\\Constraint\\'
@@ -113,7 +114,7 @@ class ConstraintFactory
     }
 
     /**
-     * Return constraint configuration
+     * Return constraint configuration.
      *
      * @return array
      */

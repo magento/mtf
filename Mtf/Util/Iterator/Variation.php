@@ -26,60 +26,78 @@ namespace Mtf\Util\Iterator;
 
 use Mtf\ObjectManager;
 use Mtf\TestCase\Injectable;
+use Mtf\Util\TestClassResolver;
+use Mtf\TestRunner\Rule\RuleFactory;
+use Mtf\TestRunner\Rule\RuleInterface;
 
 /**
- * Class Variation
+ * Test Case variations iterator.
  *
  * @api
  */
 class Variation extends AbstractIterator
 {
     /**
-     * Column Names
+     * Column Names.
      *
      * @var array
      */
     protected $header = [];
 
     /**
-     * Parent Test Case Object
+     * Parent Test Case Object.
      *
      * @var Injectable
      */
     protected $testCase;
 
     /**
-     * @var \Mtf\Util\TestClassResolver
+     * Test class resolver.
+     *
+     * @var TestClassResolver
      */
     protected $resolver;
 
     /**
-     * Constructor
+     * Filtering rule.
      *
+     * @var RuleInterface
+     */
+    protected $rule;
+
+    /**
      * @constructor
      * @param Injectable $testCase
-     * @param \Mtf\Util\TestClassResolver $resolver
+     * @param TestClassResolver $resolver
+     * @param RuleFactory $ruleFactory
      */
-    public function __construct(Injectable $testCase, \Mtf\Util\TestClassResolver $resolver)
+    public function __construct(Injectable $testCase, TestClassResolver $resolver, RuleFactory $ruleFactory)
     {
         $this->testCase = $testCase;
         $this->resolver = $resolver;
+        $this->rule = $ruleFactory->create('variation');
+
         $this->data = $this->getTestCaseMethodVariations();
         $this->initFirstElement();
     }
 
     /**
-     * Check if current element is valid
+     * Check if current element is valid.
      *
      * @return boolean
      */
     protected function isValid()
     {
+        $cellTag = isset($this->current['tag']) ? $this->current['tag'] : '';
+
+        if (!$this->rule->apply($cellTag)) {
+            return false;
+        }
         return true;
     }
 
     /**
-     * Return current data row
+     * Return current data row.
      *
      * @return array
      */
@@ -89,14 +107,33 @@ class Variation extends AbstractIterator
     }
 
     /**
-     * Get Test Case Method Variations
+     * Get Test Case Method Variations.
      *
      * @return array
      */
     protected function getTestCaseMethodVariations()
     {
         $data = [];
+        $variationFilePath = $this->getTestCaseMethodVariationFilePath();
+
+        if ($variationFilePath && is_readable($variationFilePath)) {
+            $data = $this->readCsv($variationFilePath);
+        } else {
+            $data['Default'] = [];
+        }
+
+        return $data;
+    }
+
+    /**
+     * Return file path of test case method variations.
+     *
+     * @return string|null
+     */
+    protected function getTestCaseMethodVariationFilePath()
+    {
         $testFilePath = $this->testCase->getFilePath();
+        $variationFilePath = null;
 
         if (!$testFilePath) {
             $testCaseData = $this->resolver->get('TestCase', [get_class($this->testCase)]);
@@ -108,16 +145,13 @@ class Variation extends AbstractIterator
         if ($testFilePath) {
             $testMethodName = $this->testCase->getName(false);
             $variationFilePath = str_replace('.php', "/{$testMethodName}.csv", $testFilePath);
-            if (is_readable($variationFilePath)) {
-                $data = $this->readCsv($variationFilePath);
-            }
         }
 
-        return $data;
+        return $variationFilePath;
     }
 
     /**
-     * Parse source file, extract column names information and prepare data array
+     * Parse source file, extract column names information and prepare data array.
      *
      * @param string $variationFilePath
      * @return array
@@ -140,7 +174,7 @@ class Variation extends AbstractIterator
     }
 
     /**
-     * Convert source variation format into normal array
+     * Convert source variation format into normal array.
      *
      * @return array
      */
@@ -160,7 +194,7 @@ class Variation extends AbstractIterator
     }
 
     /**
-     * Transform 'a/b/c' key reference to normal array structure
+     * Transform 'a/b/c' key reference to normal array structure.
      *
      * @param array $data
      * @param string $key

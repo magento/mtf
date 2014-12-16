@@ -24,12 +24,12 @@
 
 namespace Magento\Mtf\TestSuite;
 
-use Mtf\ObjectManagerFactory;
 use Mtf\ObjectManager;
+use Mtf\ObjectManagerFactory;
 use Mtf\TestRunner\Configuration;
 
 /**
- * Class MtfTests
+ * Class runner test suite.
  */
 class MtfTests extends \PHPUnit_Framework_TestSuite
 {
@@ -49,7 +49,7 @@ class MtfTests extends \PHPUnit_Framework_TestSuite
     protected $result;
 
     /**
-     * Run collected tests
+     * Run collected tests.
      *
      * @param \PHPUnit_Framework_TestResult $result
      * @param bool $filter
@@ -58,6 +58,8 @@ class MtfTests extends \PHPUnit_Framework_TestSuite
      * @param bool $processIsolation
      *
      * @return \PHPUnit_Framework_TestResult|void
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function run(
         \PHPUnit_Framework_TestResult $result = null,
@@ -72,7 +74,7 @@ class MtfTests extends \PHPUnit_Framework_TestSuite
     }
 
     /**
-     * Prepare test suite
+     * Prepare test suite.
      *
      * @return mixed
      */
@@ -83,7 +85,7 @@ class MtfTests extends \PHPUnit_Framework_TestSuite
     }
 
     /**
-     * Prepare test suite and apply application state
+     * Prepare test suite and apply application state.
      *
      * @return \Mtf\TestSuite\AppState
      */
@@ -94,8 +96,7 @@ class MtfTests extends \PHPUnit_Framework_TestSuite
     }
 
     /**
-     * Call the initialization of ObjectManager
-     * @return void
+     * Call the initialization of ObjectManager.
      */
     public function init()
     {
@@ -103,7 +104,8 @@ class MtfTests extends \PHPUnit_Framework_TestSuite
     }
 
     /**
-     * Initialize ObjectManager
+     * Initialize ObjectManager.
+     *
      * @return void
      */
     private function initObjectManager()
@@ -114,12 +116,14 @@ class MtfTests extends \PHPUnit_Framework_TestSuite
                 ? $_ENV['configuration:Magento/Mtf/TestSuite/MtfTests']
                 : 'basic';
             $confFilePath = __DIR__ . '/MtfTests/' . $configurationFileName . '.xml';
-            $testRunnerConfiguration = new Configuration();
+            /** @var \Mtf\TestRunner\Configuration $testRunnerConfiguration */
+            $testRunnerConfiguration = $objectManagerFactory->getObjectManager()->get('\Mtf\TestRunner\Configuration');
             $testRunnerConfiguration->load($confFilePath);
+            $testRunnerConfiguration->loadEnvConfig();
 
-            $shared = array(
+            $shared = [
                 'Mtf\TestRunner\Configuration' => $testRunnerConfiguration
-            );
+            ];
             $this->objectManager = $objectManagerFactory->create($shared);
         }
     }

@@ -25,15 +25,9 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="../../../../../Mtf/TestRunner/etc/testRunner.xsd">
-    <suiteRule>
+    <rule scope="testsuite">
         <allow>
-            <namespace>Magento</namespace>
-            <module>Magento_Mtf</module>
+            <namespace value="Magento" />
         </allow>
-    </suiteRule>
-    <objectRule for="Mtf\TestCase\Injectable">
-        <deny>
-            <object>Mtf\ObjectManager</object>
-        </deny>
-    </objectRule>
+    </rule>
 </config>

@@ -84,6 +84,7 @@ class Logger implements LoggerInterface
      * Set appropriate log directories
      *
      * @param array $dirs
+     * @return void
      */
     protected function resolveLogDirectory(array $dirs)
     {
@@ -100,6 +101,7 @@ class Logger implements LoggerInterface
      * Create log directory if not exists
      *
      * @param string $path
+     * @return void
      * @throws \RuntimeException
      */
     protected function checkDirectory($path)

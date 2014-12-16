@@ -125,13 +125,10 @@ class Constraint extends AbstractGenerate
         $content .= "class {$classShortName} extends AbstractConstraint\n";
         $content .= "{\n";
 
-        $severeness = (string)$item['severeness'];
-        $content .= "    /**\n";
-        $content .= "     * Constraint severeness\n";
-        $content .= "     *\n";
-        $content .= "     * @var string\n";
-        $content .= "     */\n";
-        $content .= "    protected \$severeness = '{$severeness}';\n\n";
+        $severity = (string)$item['severity'];
+        $content .= "    /* tags */\n";
+        $content .= "    const SEVERITY = '{$severity}';\n";
+        $content .= "    /* end tags */\n\n";
 
         $requiredArgumentsArray = [];
         foreach ($requiredArguments as $argument) {

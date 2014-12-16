@@ -88,25 +88,6 @@ class InjectableMethod extends InjectableTestCase
     }
 
     /**
-     * Check if test is eligible before adding to the suite.
-     *
-     * @param \PHPUnit_Framework_Test $test
-     * @param array $groups
-     * @return void
-     */
-    public function addTest(\PHPUnit_Framework_Test $test, $groups = [])
-    {
-        $allow = true;
-        if ($test instanceof \PHPUnit_Framework_TestCase) {
-            $rule = $this->objectManager->get('Mtf\TestRunner\Rule\ObjectComposite');
-            $allow = $rule->apply($test);
-        }
-        if ($allow) {
-            parent::addTest($test, $groups);
-        }
-    }
-
-    /**
      * Custom implementation of native PHPUnit_Framework_TestSuite::createTest method
      *  - Test Case class should be instantiated with MTF Object Manager
      *  - Data Provider Test Suite should be instantiated with MTF Object Manager

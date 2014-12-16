@@ -24,8 +24,11 @@
 
 namespace Mtf\Constraint;
 
+use Mtf\TestRunner\Rule\RuleFactory;
+use Mtf\TestRunner\Rule\RuleInterface;
+
 /**
- * Composite Constraint
+ * Composite Constraint.
  *
  * Class for assertions composition
  * Does not perform own assertions
@@ -35,45 +38,72 @@ namespace Mtf\Constraint;
 class Composite extends AbstractConstraint
 {
     /**
-     * Constraint Objects
+     * Constraint factory.
+     *
+     * @var ConstraintFactory
+     */
+    protected $factory;
+
+    /**
+     * Filtering rule.
+     *
+     * @var RuleInterface
+     */
+    protected $rule;
+
+    /**
+     * Constraint Objects.
      *
      * @var AbstractConstraint[]
      */
     protected $constraints = [];
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @constructor
      * @param ConstraintFactory $factory
-     * @param array $constraints
+     * @param RuleFactory $ruleFactory
+     * @param array $codeConstraints
      */
-    public function __construct(ConstraintFactory $factory, array $constraints)
+    public function __construct(ConstraintFactory $factory, RuleFactory $ruleFactory, array $codeConstraints)
     {
         $this->factory = $factory;
+        $this->rule = $ruleFactory->create('constraint');
+        $this->constraints = $this->createConstraints($codeConstraints);
+    }
 
-        foreach ($constraints as $code) {
-            if ($code) {
-                $constraint = $this->factory->getByCode($code);
-                if ($constraint) {
-                    $this->constraints[] = $constraint;
-                }
+    /**
+     * Create constraints by list code.
+     *
+     * @param array $codes
+     * @return AbstractConstraint[]
+     */
+    protected function createConstraints(array $codes)
+    {
+        $constraints = [];
+
+        foreach ($codes as $code) {
+            if (!$code) {
+                continue;
+            }
+
+            $constraintClass = $this->factory->resolveClassName($code);
+            if (!$this->rule->apply($constraintClass)) {
+                continue;
+            }
+
+            $constraint = $this->factory->getByCode($code);
+            if ($constraint) {
+                $constraints[] = $constraint;
             }
         }
+
+        return $constraints;
     }
 
     /**
-     * Returns a string representation of the object.
-     *
-     * @return string
-     */
-    public function toString()
-    {
-        return 'Composite Constraint (' . implode(', ', $this->constraints) . ')';
-    }
-
-    /**
-     * Set DI Arguments to Constraint
+     * Set DI Arguments to Constraint.
      *
      * @param array $arguments
      * @return void
@@ -86,7 +116,7 @@ class Composite extends AbstractConstraint
     }
 
     /**
-     * Evaluates the constraint for test case
+     * Evaluates the constraint for test case.
      *
      * @param string $testCaseName
      * @return bool
@@ -99,5 +129,15 @@ class Composite extends AbstractConstraint
             $result = $result && $constraint->getResult();
         }
         return $result;
+    }
+
+    /**
+     * Returns a string representation of the object.
+     *
+     * @return string
+     */
+    public function toString()
+    {
+        return 'Composite Constraint (' . implode(', ', $this->constraints) . ')';
     }
 }

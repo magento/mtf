@@ -24,72 +24,51 @@
 
 namespace Mtf\Util\Iterator;
 
-use Mtf\Util\TestClassModuleFilter;
-use Mtf\TestRunner\Rule\SuiteRuleInterface;
-use Mtf\TestRunner\Configuration;
 use Mtf\Util\TestClassResolver;
-use Mtf\ObjectManager;
+use Mtf\TestRunner\Rule\RuleFactory;
+use Mtf\TestRunner\Rule\RuleInterface;
 
 /**
- * Class TestCase
+ * Test cases iterator.
  *
  * @api
  */
 class TestCase extends AbstractIterator
 {
     /**
-     * @var ObjectManager
-     */
-    protected $objectManager;
-
-    /**
-     * @var Configuration
-     */
-    protected $testRunnerConfig;
-
-    /**
+     * Resolver for collect classes of test case.
+     *
      * @var TestClassResolver
      */
     protected $testClassResolver;
 
     /**
-     * @var SuiteRuleInterface
+     * Filtering rules.
+     *
+     * @var RuleInterface[]
      */
-    protected $rule;
-
-    /**
-     * @var TestClassModuleFilter
-     */
-    protected $moduleFilter;
+    protected $rules = [];
 
     /**
      * @constructor
-     * @param ObjectManager $objectManager
-     * @param Configuration $testRunnerConfig
      * @param TestClassResolver $testClassResolver
-     * @param TestClassModuleFilter $moduleFilter
-     * @param SuiteRuleInterface $rule
+     * @param RuleFactory $ruleFactory
      */
     public function __construct(
-        ObjectManager $objectManager,
-        Configuration $testRunnerConfig,
         TestClassResolver $testClassResolver,
-        TestClassModuleFilter $moduleFilter,
-        SuiteRuleInterface $rule
+        RuleFactory $ruleFactory
     ) {
-        $this->objectManager = $objectManager;
-        $this->testRunnerConfig = $testRunnerConfig;
         $this->testClassResolver = $testClassResolver;
-        $this->moduleFilter = $moduleFilter;
-        $this->rule = $rule;
+
+        $this->rules[] = $ruleFactory->create('testsuite');
+        $this->rules[] = $ruleFactory->create('testcase');
 
         $this->data = $this->collectTestCases();
-        $this->data = $this->moduleFilter->applyFilter($this->data);
         $this->initFirstElement();
     }
 
     /**
-     * Get current element
+     * Get current element.
      *
      * @return mixed
      */
@@ -99,22 +78,25 @@ class TestCase extends AbstractIterator
     }
 
     /**
-     * Check if current element is valid
+     * Check if current element is valid.
      *
      * @return boolean
      */
     protected function isValid()
     {
         $class = $this->current['class'];
-        if (!$this->rule->apply($class)) {
-            return false;
-        } else {
-            return true;
+
+        foreach ($this->rules as $rule) {
+            if (!$rule->apply($class)) {
+                return false;
+            }
         }
+
+        return true;
     }
 
     /**
-     * Get list of available Test Case classes (without filtering)
+     * Get list of available Test Case classes (without filtering).
      * Available keys:
      *  - class
      *  - name

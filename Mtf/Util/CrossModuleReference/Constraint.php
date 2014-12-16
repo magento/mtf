@@ -64,7 +64,7 @@ class Constraint extends Common implements CheckerInterface
     /**
      * Return a list of testcases that uses constraint defined in specified module
      *
-     * @param $moduleName
+     * @param string $moduleName
      * @return array
      */
     public function getCrossModuleReference($moduleName)
@@ -95,7 +95,7 @@ class Constraint extends Common implements CheckerInterface
     /**
      * Return an array of test cases that uses the specified constraint
      *
-     * @param $constraint
+     * @param string $constraint
      * @return array
      */
     public function getTestCasesByConstraintReference($constraint)
@@ -176,6 +176,8 @@ class Constraint extends Common implements CheckerInterface
                 $testMethodName = $fileInfo->getBasename('.csv');
                 $path = $fileInfo->getPath();
                 $testClassName = str_replace('/', '\\', str_replace(MTF_TESTS_PATH, '', $path));
+
+                $testClassName = trim($testClassName, '\\');
                 $dataSets[$testClassName][$testMethodName] = $this->readCsv($fileInfo->getRealPath());
             }
         }

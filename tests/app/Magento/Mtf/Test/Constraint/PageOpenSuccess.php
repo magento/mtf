@@ -33,12 +33,9 @@ use Magento\Mtf\Test\Fixture\Test;
  */
 class PageOpenSuccess extends AbstractConstraint
 {
-    /**
-     * Constraint severeness
-     *
-     * @var string
-     */
-    protected $severeness = 'low';
+    /* tags */
+    const SEVERITY = 'low';
+    /* end tags */
 
     /**
      * Assert that page has been opened

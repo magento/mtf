@@ -210,7 +210,7 @@ class ProcessManager
                 }
             }
         } else {
-        $phpunitPath = MTF_BP . '/phpunit.xml';
+            $phpunitPath = MTF_BP . '/phpunit.xml';
             if (file_exists($phpunitPath)) {
                 $configFile = realpath($phpunitPath);
             } else {
@@ -275,7 +275,7 @@ class ProcessManager
         $listenerConfiguration = "'." . $listenerConfiguration . ".'";
 
         $template->setVar(
-            array(
+            [
                 'bootstrap' => $bootstrap,
                 'phar' => $phar,
                 'filename' => $class->getFileName(),
@@ -288,7 +288,7 @@ class ProcessManager
                 'env' => $env,
                 'filePath' => $filePath,
                 'listenerConfiguration' => $listenerConfiguration
-            )
+            ]
         );
         return $template->render();
     }
@@ -336,6 +336,7 @@ class ProcessManager
      *
      * @param Callable $callback
      * @param array $arguments
+     * @return void
      */
     public function applyAppState($callback, array $arguments = [])
     {
