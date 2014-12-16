@@ -31,7 +31,7 @@ use Mtf\ObjectManager;
  *
  * @api
  */
-class InjectableTestCase extends TestSuite
+class InjectableTestCase extends Injectable
 {
     /**
      * @var ObjectManager

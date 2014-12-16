@@ -33,7 +33,7 @@ use Mtf\TestRunner\Process\ProcessManager;
  *
  * @api
  */
-class TestCase extends TestSuite
+class TestCase extends Injectable
 {
     /**
      * @var ObjectManager

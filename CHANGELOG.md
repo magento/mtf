@@ -1,5 +1,10 @@
+* Implemented tagging functionality to run custom test scope
 * Fixed getting configuration path from environment variable
 * Fixed an issue with default timeout
+* Fixed handling for Incomplete and Skipped tests in parallel mode
+* Fixed issues when final tests were missed in report in parallel mode
+
+1.0.0-rc.9
 * Sync factory class from Magento/Framework/ObjectManager/Factory
 * Fixed issue with applying placeholders to selectors in fixture data mapping
 * Fixed an issue with method keys() in \Mtf\Client\Driver\Selenium\Element
