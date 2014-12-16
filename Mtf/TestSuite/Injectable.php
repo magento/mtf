@@ -21,23 +21,25 @@
  * @copyright   Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-namespace Mtf\TestRunner\Process;
 
-class TestResultException extends \PHPUnit_Framework_AssertionFailedError
+namespace Mtf\TestSuite;
+
+use Mtf\TestRunner\Process\ProcessManager;
+
+/**
+ * Class Functional
+ * Test suite to handle parallel run process completion for injectable tests
+ */
+class Injectable extends \Mtf\TestSuite\TestSuite
 {
     /**
-     * @param \Exception $exception
+     * Wait for parallel processes to complete (for parallel run)
+     * @return void
      */
-    public function __construct(\Exception $exception)
+    protected function waitForProcessesToComplete()
     {
-        parent::__construct($exception);
-    }
-
-    /**
-     * @return array
-     */
-    public function __sleep()
-    {
-        return ['message'];
+        if ($this instanceof \Mtf\TestSuite\TestCase) {
+            parent::waitForProcessesToComplete();
+        }
     }
 }

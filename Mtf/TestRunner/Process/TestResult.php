@@ -24,6 +24,11 @@
 
 namespace Mtf\TestRunner\Process;
 
+use Mtf\TestRunner\Process\Exception\Failure;
+use Mtf\TestRunner\Process\Exception\Skipped;
+use Mtf\TestRunner\Process\Exception\Risky;
+use Mtf\TestRunner\Process\Exception\Incomplete;
+
 /**
  * Class ProcessTestResult
  *
@@ -43,7 +48,7 @@ class TestResult extends \PHPUnit_Framework_TestResult
      */
     public function addError(\PHPUnit_Framework_Test $test, \Exception $e, $time)
     {
-        parent::addError($test, new TestResultException($e), $time);
+        parent::addError($test, $this->wrapException($e), $time);
     }
 
     /**
@@ -53,10 +58,33 @@ class TestResult extends \PHPUnit_Framework_TestResult
      * @param \PHPUnit_Framework_Test                 $test
      * @param \PHPUnit_Framework_AssertionFailedError $e
      * @param float                                  $time
+     * @return void
      */
     public function addFailure(\PHPUnit_Framework_Test $test, \PHPUnit_Framework_AssertionFailedError $e, $time)
     {
-        parent::addFailure($test, new TestResultException($e), $time);
+        parent::addFailure($test, $this->wrapException($e), $time);
+    }
+
+    /**
+     * @param \Exception $exception
+     * @return Failure|Incomplete|Risky|Skipped
+     */
+    protected function wrapException(\Exception $exception)
+    {
+        switch (true) {
+            case ($exception instanceof \PHPUnit_Framework_RiskyTest):
+                $wrappedException = new Risky($exception);
+                break;
+            case ($exception instanceof \PHPUnit_Framework_IncompleteTest):
+                $wrappedException = new Incomplete($exception);
+                break;
+            case ($exception instanceof \PHPUnit_Framework_SkippedTest):
+                $wrappedException = new Skipped($exception);
+                break;
+            default:
+                $wrappedException = new Failure($exception);
+        }
+        return $wrappedException;
     }
 
     /**

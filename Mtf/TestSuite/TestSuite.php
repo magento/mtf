@@ -163,12 +163,8 @@ class TestSuite extends \PHPUnit_Framework_TestSuite
             }
         }
 
-        if ($this instanceof \Mtf\TestSuite\TestCase) {
-            /* Unique lines for TestSuite */
-            /** @var ProcessManager $processManager */
-            $processManager = ProcessManager::factory();
-            $processManager->waitForProcessesToComplete();
-        }
+        /* Unique lines for TestSuite */
+        $this->waitForProcessesToComplete();
 
         if ($doSetup) {
             if ($this->testCase
@@ -186,6 +182,17 @@ class TestSuite extends \PHPUnit_Framework_TestSuite
         $result->endTestSuite($this);
 
         return $result;
+    }
+
+    /**
+     * Wait for parallel processes to complete (for parallel run)
+     * @return void
+     */
+    protected function waitForProcessesToComplete()
+    {
+        /** @var ProcessManager $processManager */
+        $processManager = ProcessManager::factory();
+        $processManager->waitForProcessesToComplete();
     }
 
     /**

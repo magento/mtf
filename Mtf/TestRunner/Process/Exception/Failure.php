@@ -21,27 +21,18 @@
  * @copyright   Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
-namespace Mtf\TestSuite;
-
-use Mtf\ObjectManager;
+namespace Mtf\TestRunner\Process\Exception;
 
 /**
- * Class RegularTestCase
- *
- * @api
+ * Serializable exception for parallel run
  */
-class RegularTestCase extends Injectable
+class Failure extends \PHPUnit_Framework_AssertionFailedError
 {
     /**
-     * To accept $class argument name instead of $theClass
-     *
-     * @constructor
-     * @param string $class
-     * @param string $name
+     * @return array
      */
-    public function __construct($class = '', $name = '')
+    public function __sleep()
     {
-        parent::__construct($class, $name);
+        return ['message'];
     }
 }
