@@ -249,7 +249,10 @@ class Page extends AbstractGenerate
 
             $dirIterator = new \RegexIterator(
                 new \RecursiveIteratorIterator(
-                    new \RecursiveDirectoryIterator($modulePath . '/Test/Page', \FilesystemIterator::SKIP_DOTS)
+                    new \RecursiveDirectoryIterator(
+                        $modulePath . '/Test/Page',
+                        \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::FOLLOW_SYMLINKS
+                    )
                 ),
                 '/.xml$/i'
             );

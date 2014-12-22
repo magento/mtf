@@ -713,12 +713,12 @@ class File implements DriverInterface
      */
     public function readDirectoryRecursively($path = null)
     {
-        $result = array();
+        $result = [];
         $flags = \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::UNIX_PATHS;
         try {
             $iterator = new \RecursiveIteratorIterator(
                 new \RecursiveDirectoryIterator($path, $flags),
-                \RecursiveIteratorIterator::CHILD_FIRST
+                \RecursiveIteratorIterator::CHILD_FIRST | \FilesystemIterator::FOLLOW_SYMLINKS
             );
             /** @var \FilesystemIterator $file */
             foreach ($iterator as $file) {

@@ -69,7 +69,10 @@ class TestClassResolver
 
             $dirIterator = new \RegexIterator(
                 new \RecursiveIteratorIterator(
-                    new \RecursiveDirectoryIterator($modulePath . '/Test/' . $classType, \FilesystemIterator::SKIP_DOTS)
+                    new \RecursiveDirectoryIterator(
+                        $modulePath . '/Test/' . $classType,
+                        \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::FOLLOW_SYMLINKS
+                    )
                 ),
                 '/.php$/i'
             );
