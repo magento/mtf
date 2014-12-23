@@ -1,3 +1,5 @@
+* Changed file iterators to work with symlinks
+
 1.0.0-rc.10
 =============
 * Implemented tagging functionality to run custom test scope
