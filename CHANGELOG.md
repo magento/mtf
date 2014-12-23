@@ -1,3 +1,4 @@
+* Fixed tagging mechanism for filter variations by tag
 * Changed file iterators to work with symlinks
 
 1.0.0-rc.10

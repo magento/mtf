@@ -79,7 +79,7 @@ class TestClassResolver
 
             foreach ($dirIterator as $fileInfo) {
                 /** @var $fileInfo \SplFileInfo */
-                $filePath = $fileInfo->getRealPath();
+                $filePath = $fileInfo->getPathname();
                 $filePath = str_replace('\\', '/', $filePath);
                 $classPath = str_replace(MTF_TESTS_PATH, '', $filePath);
                 $className = str_replace('/', '\\', $classPath);
