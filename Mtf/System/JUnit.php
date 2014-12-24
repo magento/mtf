@@ -21,6 +21,7 @@
  * @copyright   Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+
 namespace Mtf\System;
 
 /**
@@ -29,10 +30,9 @@ namespace Mtf\System;
 class JUnit extends \PHPUnit_Util_Log_JUnit
 {
     /**
-     * Constructor.
-     *
-     * @param mixed $out
-     * @param boolean $logIncompleteSkipped
+     * @constructor
+     * @param mixed $out [optional]
+     * @param boolean $logIncompleteSkipped [optional]
      */
     public function __construct($out = null, $logIncompleteSkipped = false)
     {
@@ -81,7 +81,7 @@ class JUnit extends \PHPUnit_Util_Log_JUnit
                 $errors = $xpath->query('//testsuite[@name="' . $class->name . '"]//failure')->length;
                 $entries->item(0)->setAttribute("failures", $errors);
 
-                $entries->item(0)->setAttribute("time", $time);
+                $entries->item(0)->setAttribute("time", $entries->item(0)->getAttribute("time") + $time);
 
                 if (method_exists($test, 'hasOutput') && $test->hasOutput()) {
                     $systemOut = $this->document->createElement('system-out');

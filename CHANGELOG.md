@@ -1,3 +1,5 @@
+* Fixed wrong test names of MTF Corpuscular tests in parallel mode on bamboo
+
 1.0.0-rc.10
 =============
 * Implemented tagging functionality to run custom test scope

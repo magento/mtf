@@ -42,6 +42,7 @@
             </arguments>
         </listener>
         <listener class="Mtf\System\Event\StateListener"/>
+        <listener class="Mtf\System\JUnit"/>
     </listeners>
 
     <php>
@@ -54,6 +55,7 @@
         <env name="configuration:Magento/Mtf/TestSuite/MtfTests" value="basic"/>
         <env name="log_directory" value="var/log"/>
         <env name="events_preset" value="base"/>
+        <env name="report_file_name" value="test-cases-report.xml"/>
     </php>
 
 </phpunit>
