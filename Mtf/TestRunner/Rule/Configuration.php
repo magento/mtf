@@ -32,7 +32,7 @@ use Mtf\TestRunner\Rule\Configuration\FileResolver\Primary;
 /**
  * Reader for rule configuration.
  */
-class Configuration extends \Magento\Framework\Config\Reader\Filesystem
+class Configuration extends \Mtf\Config\Reader\Filesystem
 {
     /**
      * List of name attributes for merge.
@@ -62,7 +62,7 @@ class Configuration extends \Magento\Framework\Config\Reader\Filesystem
         ValidationState $validationState,
         $fileName = '',
         $idAttributes = [],
-        $domDocumentClass = 'Magento\Framework\Config\Dom',
+        $domDocumentClass = 'Mtf\Config\Dom',
         $defaultScope = ''
     ) {
         parent::__construct(

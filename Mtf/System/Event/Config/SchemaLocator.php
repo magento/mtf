@@ -27,7 +27,7 @@ namespace Mtf\System\Event\Config;
 /**
  * Class SchemaLocator for locating events.xml configuration file
  */
-class SchemaLocator implements \Magento\Framework\Config\SchemaLocatorInterface
+class SchemaLocator implements \Mtf\Config\SchemaLocatorInterface
 {
     /**
      * Get path to merged config schema

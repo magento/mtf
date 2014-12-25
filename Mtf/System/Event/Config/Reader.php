@@ -25,7 +25,7 @@
 namespace Mtf\System\Event\Config;
 
 use Mtf\Config\FileResolver\Primary;
-use \Magento\Framework\Config\Reader\Filesystem;
+use Mtf\Config\Reader\Filesystem;
 
 /**
  * Class for reading events.xml files
@@ -63,7 +63,7 @@ class Reader extends Filesystem
         ValidationState $validationState,
         $fileName = 'events.xml',
         $idAttributes = array(),
-        $domDocumentClass = 'Magento\Framework\Config\Dom',
+        $domDocumentClass = 'Mtf\Config\Dom',
         $defaultScope = 'etc/global'
     ) {
         parent::__construct(

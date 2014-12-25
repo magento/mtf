@@ -9,7 +9,8 @@
         "php": ">=5.4.0",
         "phpunit/phpunit": ">=3.7",
         "phpunit/phpunit-selenium": ">=1.2",
-        "netwing/selenium-server-standalone": ">=2.35"
+        "netwing/selenium-server-standalone": ">=2.35",
+        "magento/zendframework1": "1.12.9-patch1"
     },
     "autoload": {
         "psr-0": {

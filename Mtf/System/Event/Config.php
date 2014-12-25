@@ -34,7 +34,7 @@ class Config extends Data
     /**
      * Configuration reader model
      *
-     * @var \Magento\Framework\Config\ReaderInterface
+     * @var \Mtf\Config\ReaderInterface
      */
     protected $reader;
 

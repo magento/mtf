@@ -26,7 +26,7 @@ namespace Mtf\Util\Generate;
 
 use Mtf\Util\Generate\Fixture\FieldsProviderInterface;
 use Mtf\Configuration\Reader;
-use Magento\Framework\ObjectManagerInterface;
+use Mtf\ObjectManagerInterface;
 use Mtf\Util\XmlConverter;
 
 /**

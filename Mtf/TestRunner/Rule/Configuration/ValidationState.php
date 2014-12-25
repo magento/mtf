@@ -24,7 +24,7 @@
 
 namespace Mtf\TestRunner\Rule\Configuration;
 
-use Magento\Framework\Config\ValidationStateInterface;
+use Mtf\Config\ValidationStateInterface;
 
 /**
  * Used for Object Manager.

@@ -21,26 +21,22 @@
  * @copyright   Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+namespace Mtf\Data\Argument\Interpreter;
 
-namespace Mtf\Di\Config;
+use Mtf\Data\Argument\InterpreterInterface;
 
-class Reader
+/**
+ * Interpreter of NULL data type
+ */
+class NullType implements InterpreterInterface
 {
     /**
-     * @var array
+     * {@inheritdoc}
+     * @return null
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    protected $preferences = [];
-
-    /** @var \Mtf\ObjectManager\Config\Reader\Dom */
-    protected $configDom;
-
-    public function __construct(\Mtf\ObjectManager\Config\Reader\Dom $dom)
+    public function evaluate(array $data)
     {
-        $this->configDom = $dom;
-    }
-
-    public function get($param)
-    {
-        $data = $this->configDom->read();
+        return null;
     }
 }

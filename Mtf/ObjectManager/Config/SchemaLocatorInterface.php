@@ -1,5 +1,7 @@
 <?php
 /**
+ * Configuration validation schema locator
+ *
  * Magento
  *
  * NOTICE OF LICENSE
@@ -21,23 +23,24 @@
  * @copyright   Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
-namespace Mtf\Di;
+namespace Mtf\ObjectManager\Config;
 
 /**
- * Class Factory
+ * Interface SchemaLocatorInterface
  */
-class Factory
+interface SchemaLocatorInterface
 {
-    protected $configReader;
+    /**
+     * Get path to merged config schema
+     *
+     * @return string|null
+     */
+    public function getSchema();
 
-    public function __construct(\Mtf\Di\Config\Reader $reader)
-    {
-        $this->configReader = $reader;
-    }
-
-    public function getInstance($className)
-    {
-        $origClassName = $this->configReader->get($className);
-    }
+    /**
+     * Get path to per file validation schema
+     *
+     * @return string|null
+     */
+    public function getPerFileSchema();
 }

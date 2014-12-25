@@ -27,7 +27,7 @@ namespace Mtf\TestRunner\Rule\Configuration;
 /**
  * Convert rule configuration.
  */
-class Converter implements \Magento\Framework\Config\ConverterInterface
+class Converter implements \Mtf\Config\ConverterInterface
 {
     /**
      * Convert xml to array.

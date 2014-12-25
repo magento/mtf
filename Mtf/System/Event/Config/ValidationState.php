@@ -23,7 +23,7 @@
  */
 namespace Mtf\System\Event\Config;
 
-use Magento\Framework\Config\ValidationStateInterface;
+use Mtf\Config\ValidationStateInterface;
 
 /**
  * Class for defining different behaviour depending on DEVELOPER mode

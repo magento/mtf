@@ -31,7 +31,7 @@ use Mtf\System\Code\ClassReader;
  *
  * @internal
  */
-class Factory extends \Magento\Framework\ObjectManager\Factory\Dynamic\Developer
+class Factory extends \Mtf\ObjectManager\Factory\Dynamic\Developer
 {
     /**
      * @var \Mtf\System\Code\ClassReader
@@ -41,15 +41,15 @@ class Factory extends \Magento\Framework\ObjectManager\Factory\Dynamic\Developer
     /**
      * @constructor
      *
-     * @param \Magento\Framework\ObjectManager\ConfigInterface $config
-     * @param \Magento\Framework\ObjectManagerInterface $objectManager
-     * @param \Magento\Framework\ObjectManager\DefinitionInterface $definitions
+     * @param \Mtf\ObjectManager\ConfigInterface $config
+     * @param \Mtf\ObjectManagerInterface $objectManager
+     * @param \Mtf\ObjectManager\DefinitionInterface $definitions
      * @param array $globalArguments
      */
     public function __construct(
-        \Magento\Framework\ObjectManager\ConfigInterface $config,
-        \Magento\Framework\ObjectManagerInterface $objectManager = null,
-        \Magento\Framework\ObjectManager\DefinitionInterface $definitions = null,
+        \Mtf\ObjectManager\ConfigInterface $config,
+        \Mtf\ObjectManagerInterface $objectManager = null,
+        \Mtf\ObjectManager\DefinitionInterface $definitions = null,
         $globalArguments = array()
     ) {
         parent::__construct($config, $objectManager, $definitions, $globalArguments);

@@ -21,39 +21,44 @@
  * @copyright   Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+namespace Mtf\Data\Argument\Interpreter;
 
-namespace Mtf;
+use Mtf\Data\Argument\InterpreterInterface;
+use Mtf\Stdlib\BooleanUtils;
 
 /**
- * Class Di
+ * Interpreter of string data type that may optionally perform text translation
  */
-class Di
+class String implements InterpreterInterface
 {
     /**
-     * @var array
+     * @var BooleanUtils
      */
-    protected $sharedInstances = [];
+    private $booleanUtils;
 
     /**
-     * @var \Mtf\Di\Factory
+     * @param BooleanUtils $booleanUtils
      */
-    protected $factory;
-
-    public function __construct(\Mtf\Di\Factory $factory)
+    public function __construct(BooleanUtils $booleanUtils)
     {
-        $this->factory = $factory;
+        $this->booleanUtils = $booleanUtils;
     }
 
-    public function get($className)
+    /**
+     * {@inheritdoc}
+     * @return string
+     * @throws \InvalidArgumentException
+     */
+    public function evaluate(array $data)
     {
-        if (isset($this->sharedInstances[$className])) {
-            return $this->sharedInstances[$className];
+        if (isset($data['value'])) {
+            $result = $data['value'];
+            if (!is_string($result)) {
+                throw new \InvalidArgumentException('String value is expected.');
+            }
+        } else {
+            $result = '';
         }
-        return $this->sharedInstances[$className] = $this->factory->getInstance($className);
-    }
-
-    public function create($className)
-    {
-        return $this->factory->getInstance($className);
+        return $result;
     }
 }

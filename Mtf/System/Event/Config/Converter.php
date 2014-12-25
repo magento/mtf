@@ -24,7 +24,7 @@
 
 namespace Mtf\System\Event\Config;
 
-use Magento\Framework\Config\ConverterInterface;
+use Mtf\Config\ConverterInterface;
 
 class Converter implements ConverterInterface
 {
