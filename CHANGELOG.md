@@ -1,3 +1,6 @@
+* Added workaround for selenium issue https://code.google.com/p/selenium/issues/detail?id=3544
+* Added workaround for selenium issue https://code.google.com/p/selenium/issues/detail?id=5165
+
 1.0.0-rc.10
 =============
 * Implemented tagging functionality to run custom test scope
