@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<!--
+/**
+ * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ */
+-->
+<repository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../Mtf/Repository/etc/repository.xsd">
+    <storage class="Magento\RepositoryFirst\Test\Repository\ConfigData">
+        <dataset name="config_currency_symbols_usd_and_chf">
+            <field path="currency/options/allow" scope="currency" scope_id="1">
+                <item name="USD">US Dollars</item>
+                <item name="UAH">Ukrainian Hryvnia</item>
+            </field>
+        </dataset>
+    </storage>
+</repository>

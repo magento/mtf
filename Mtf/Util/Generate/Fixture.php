@@ -29,50 +29,50 @@ use Mtf\Configuration\Reader;
 use Magento\Framework\ObjectManagerInterface;
 use Mtf\Util\XmlConverter;
 
+use Mtf\Config\FileResolver\Module;
+
 /**
- * Class Fixture
- * Fixture files generator
+ * Fixture files generator.
  *
  * @internal
  */
 class Fixture extends AbstractGenerate
 {
     /**
-     * @var Reader
+     * File Resolver.
+     *
+     * @var Module
      */
-    protected $configReader;
+    protected $fileResolver;
 
     /**
-     * @var FieldsProviderInterface
-     */
-    protected $fieldsProvider;
-
-    /**
-     * @var XmlConverter
+     * Converter xml data to array.
+     *
+     * @var XmlConverter.
      */
     protected $xmlConverter;
 
     /**
      * @constructor
      * @param ObjectManagerInterface $objectManager
-     * @param Reader $configReader
+     * @param Module $fileResolver
      * @param FieldsProviderInterface $fieldsProvider
      * @param XmlConverter $xmlConverter
      */
     public function __construct(
         ObjectManagerInterface $objectManager,
-        Reader $configReader,
+        Module $fileResolver,
         FieldsProviderInterface $fieldsProvider,
         XmlConverter $xmlConverter
     ) {
         parent::__construct($objectManager);
-        $this->configReader = $configReader;
+        $this->fileResolver = $fileResolver;
         $this->fieldsProvider = $fieldsProvider;
         $this->xmlConverter = $xmlConverter;
     }
 
     /**
-     * Launch Fixture generators
+     * Launch Fixture generators.
      *
      * @return void
      */
@@ -83,22 +83,31 @@ class Fixture extends AbstractGenerate
     }
 
     /**
-     * Generate Fixtures XML
+     * Generate Fixtures XML.
      *
      * @return void
      */
     protected function generateXml()
     {
         $this->cnt = 0;
-        $configuration = $this->configReader->read('fixture');
-        foreach ($configuration as $name => $item) {
-            $this->generateFixtureXml($name, $item);
+
+        $configs = $this->fileResolver->get('fixture.xml', 'etc');
+        foreach ($configs as $config) {
+            $configXml = simplexml_load_string($config);
+
+            if ($configXml instanceof \SimpleXMLElement) {
+                $fixtures = $this->xmlConverter->convert($configXml);
+
+                foreach ($fixtures as $code => $fixture) {
+                    $this->generateFixtureXml($code, $fixture);
+                }
+            }
         }
         \Mtf\Util\Generate\GenerateResult::addResult('Fixture XML Files', $this->cnt);
     }
 
     /**
-     * Generate fixtures XML definition files
+     * Generate fixtures XML definition files.
      *
      * @param string $name
      * @param array $item
@@ -149,22 +158,25 @@ class Fixture extends AbstractGenerate
     }
 
     /**
-     * Generate Fixtures Classes
+     * Generate Fixtures Classes.
      *
      * @return void
      */
     protected function generateClasses()
     {
         $this->cnt = 0;
-        $items = $this->collectFixturesXml();
-        foreach ($items as $item) {
-            $this->generateClass($item);
+        $fixtures = $this->collectFixturesXml();
+
+        foreach ($fixtures as $fixtureData) {
+            $fixture = $this->mergeFixtureXml($fixtureData);
+            $this->generateClass($fixture);
         }
+
         \Mtf\Util\Generate\GenerateResult::addResult('Fixture Classes', $this->cnt);
     }
 
     /**
-     * Collect all fixtures .xml files
+     * Collect all fixtures .xml files.
      *
      * @return array
      */
@@ -172,14 +184,16 @@ class Fixture extends AbstractGenerate
     {
         $items = [];
         $path = MTF_TESTS_PATH . '*/*';
-        $modulesPages = glob($path);
-        foreach ($modulesPages as $modulePath) {
+        $modules = glob($path);
+
+        foreach ($modules as $modulePath) {
             $modulePathArray = explode('/', $modulePath);
             $module = array_pop($modulePathArray);
             $namespace = array_pop($modulePathArray);
             if (!is_readable($modulePath . '/Test/Fixture')) {
                 continue;
             }
+
             $dirIterator = new \RecursiveIteratorIterator(
                 new \RecursiveDirectoryIterator($modulePath . '/Test/Fixture', \FilesystemIterator::SKIP_DOTS)
             );
@@ -187,8 +201,9 @@ class Fixture extends AbstractGenerate
                 /** @var $fileInfo \SplFileInfo */
                 $fileExt = $fileInfo->getExtension();
                 if ($fileExt === 'xml') {
-                    $items[] = [
-                        'file_name' => $fileInfo->getBasename('.xml'),
+                    $fileName = $fileInfo->getBasename('.xml');
+                    $items[$fileName][] = [
+                        'file_name' => $fileName,
                         'module_path' => str_replace('\\', '/', $modulePath),
                         'folder_path' => str_replace('\\', '/', $fileInfo->getPath()),
                         'real_path' => str_replace('\\', '/', $fileInfo->getRealPath()),
@@ -202,31 +217,53 @@ class Fixture extends AbstractGenerate
     }
 
     /**
-     * Generate fixture classes from XML sources
+     * Merge xml fixture data.
+     *
+     * @param array $fixtureData
+     * @return array
+     */
+    protected function mergeFixtureXml(array $fixtureData)
+    {
+        $config = [];
+
+        foreach ($fixtureData as $file) {
+            $content = file_get_contents($file['real_path']);
+            $configXml = simplexml_load_string($content);
+
+            if ($configXml instanceof \SimpleXMLElement) {
+                $config = array_replace_recursive($config, $this->xmlConverter->convert($configXml));
+            }
+        }
+
+        return $config;
+    }
+
+
+    /**
+     * Generate fixture classes from sources.
      *
      * @param array $item
      * @return void
      */
     protected function generateClass(array $item)
     {
-        $className = $item['file_name'];
-        $modulePath = $item['module_path'];
-        $folderPath = $item['folder_path'];
-        $realPath = $item['real_path'];
-        $namespace = $item['namespace'];
-        $module = $item['module'];
-        $contentXml = simplexml_load_file($realPath);
-        $mTime = filemtime($realPath);
-        $fields = [];
-        $fieldsXml = $contentXml->xpath('fields');
-        if ($fieldsXml) {
-            foreach ($fieldsXml[0] as $fieldXml) {
-                $name = $fieldXml->getName();
-                $fields[$name] = (array)$fieldXml;
-            }
+        $class = $item['class'];
+        $classNameArray = explode('\\', $class);
+        $className = end($classNameArray);
+        $fileName = $className . '.php';
+        $relativeFilePath = str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
+        $relativeFolderPath = str_replace(DIRECTORY_SEPARATOR . $fileName, '', $relativeFilePath);
+
+        if (file_exists(MTF_BP . '/tests/app/' . $relativeFilePath)) {
+            return;
         }
-        $relativeFilePath = str_replace($modulePath . '/', '', $folderPath);
-        $ns = $namespace . '\\' . $module . '\\' . str_replace('/', '\\', $relativeFilePath);
+
+        $ns = str_replace('\\' . $className, '', $class);
+        $repository = isset($item['repository']) ? $item['repository'] : null;
+        $handlerInterface = isset($item['handler_interface']) ? $item['handler_interface'] : null;
+        $dataConfig = isset($item['data_config']) ? $item['data_config'] : null;
+        $fields = isset($item['fields']) ? $item['fields'] : [];
+
         $content = "<?php\n";
         $content .= $this->getFilePhpDoc();
         $content .= "namespace {$ns};\n\n";
@@ -237,21 +274,19 @@ class Fixture extends AbstractGenerate
         $content .= "class {$className} extends InjectableFixture\n";
         $content .= "{\n";
 
-        if (isset($contentXml->{'repository_class'})) {
+        if (isset($repository)) {
             $content .= "    /**\n";
             $content .= "     * @var string\n";
             $content .= "     */\n";
-            $content .= "    protected \$repositoryClass = '{$contentXml->{'repository_class'}}';\n\n";
+            $content .= "    protected \$repositoryClass = '{$repository}';\n\n";
         }
-        if (isset($contentXml->{'handler_interface'})) {
+        if (isset($handlerInterface)) {
             $content .= "    /**\n";
             $content .= "     * @var string\n";
             $content .= "     */\n";
-            $content .= "    protected \$handlerInterface = '{$contentXml->{'handler_interface'}}';\n\n";
+            $content .= "    protected \$handlerInterface = '{$handlerInterface}';\n\n";
         }
-
-        if (isset($contentXml->{'data_config'})) {
-            $dataConfig = $this->xmlConverter->convert($contentXml->{'data_config'}[0]);
+        if (isset($dataConfig)) {
             if (is_array($dataConfig)) {
                 $content .= "    protected \$dataConfig = ";
                 $content .= $this->toArrayDefinition($dataConfig, '    ');
@@ -281,25 +316,24 @@ class Fixture extends AbstractGenerate
             $content .= "    }\n";
         }
         $content .= "}\n";
-        $newFilename = $className . '.php';
-        if (file_exists($folderPath . '/' . $newFilename)) {
-            $mmTime = filemtime($folderPath . '/' . $newFilename);
-            if ($mTime > $mmTime) {
-                return; // in order to not overwrite old fixtures
-                unlink($folderPath . '/' . $newFilename);
-            } else {
-                return;
-            }
+
+        $filePath = MTF_BP . '/generated/' . $relativeFilePath;
+        if (file_exists($filePath)) {
+            unlink($filePath);
         }
+
+        $folderPath = MTF_BP . '/generated/' . $relativeFolderPath;
         if (!is_dir($folderPath)) {
             mkdir($folderPath, 0777, true);
         }
-        file_put_contents($folderPath . '/' . $newFilename, $content);
-        touch($folderPath . '/' . $newFilename, $mTime);
+
+        file_put_contents($filePath, $content);
         $this->cnt++;
     }
 
     /**
+     * Convert array to xml string.
+     *
      * @param array $data
      * @param string $tab
      * @param string $tag
@@ -327,6 +361,8 @@ class Fixture extends AbstractGenerate
     }
 
     /**
+     * Convert array to string.
+     *
      * @param array $array
      * @param string $tab
      * @return string

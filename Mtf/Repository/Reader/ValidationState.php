@@ -1,5 +1,4 @@
-<?xml version="1.0" ?>
-<!--
+<?php
 /**
  * Magento
  *
@@ -22,6 +21,23 @@
  * @copyright   Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
--->
-<repository class="Magento\Mtf\Test\Repository\TestRepository">
-</repository>
+
+namespace Mtf\Repository\Reader;
+
+use Magento\Framework\Config\ValidationStateInterface;
+
+/**
+ * Used for Object Manager.
+ */
+class ValidationState implements ValidationStateInterface
+{
+    /**
+     * Retrieve current validation state.
+     *
+     * @return bool
+     */
+    public function isValidated()
+    {
+        return true;
+    }
+}

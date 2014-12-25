@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<!--
+/**
+ * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ */
+-->
+<repository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../Mtf/Repository/etc/repository.xsd">
+    <storage class="Magento\RepositoryFirst\Test\Repository\ConfigData">
+        <dataset name="reward_points_with_registration_reward">
+            <field path="magento_reward/points/order" scope="magento_reward" scope_id="1">1</field>
+            <field path="magento_reward/points/register" scope="magento_reward" scope_id="1">10</field>
+        </dataset>
+    </storage>
+</repository>
