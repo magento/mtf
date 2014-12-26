@@ -24,6 +24,8 @@
 
 namespace Mtf\ObjectManager\Config;
 
+use Mtf\Config\SchemaLocatorInterface;
+
 /**
  * Class SchemaLocator
  *
