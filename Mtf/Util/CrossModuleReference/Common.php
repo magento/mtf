@@ -90,7 +90,10 @@ class Common
         foreach ($directories as $directory) {
             $dirIterator = new \RegexIterator(
                 new \RecursiveIteratorIterator(
-                    new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS)
+                    new \RecursiveDirectoryIterator(
+                        $directory,
+                        \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::FOLLOW_SYMLINKS
+                    )
                 ),
                 '/.php/i'
             );
@@ -127,7 +130,10 @@ class Common
         foreach ($directories as $directory) {
             $dirIterator = new \RegexIterator(
                 new \RecursiveIteratorIterator(
-                    new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS)
+                    new \RecursiveDirectoryIterator(
+                        $directory,
+                        \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::FOLLOW_SYMLINKS
+                    )
                 ),
                 '/.xml/i'
             );
