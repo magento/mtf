@@ -55,6 +55,11 @@ class TestSuite extends \PHPUnit_Framework_TestSuite
             $result = $this->createResult();
         }
 
+        $classShortName = (new \ReflectionClass($this))->getShortName();
+        if ('InjectableTestCase' == $classShortName && !$this->validate()) {
+            return $result;
+        }
+
         $result->startTestSuite($this);
 
         //@TODO setUpBeforeClass and tearDownAfterClass are not supported for parallel run

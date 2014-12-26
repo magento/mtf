@@ -215,7 +215,10 @@ class Repository extends AbstractGenerate
             }
 
             $dirIterator = new \RecursiveIteratorIterator(
-                new \RecursiveDirectoryIterator($modulePath . '/Test/Repository', \FilesystemIterator::SKIP_DOTS)
+                new \RecursiveDirectoryIterator(
+                    $modulePath . '/Test/Repository',
+                    \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::FOLLOW_SYMLINKS
+                )
             );
             foreach ($dirIterator as $fileInfo) {
                 /** @var $fileInfo \SplFileInfo */

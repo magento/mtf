@@ -167,7 +167,10 @@ class Constraint extends Common implements CheckerInterface
         foreach ($directories as $directory) {
             $dirIterator = new \RegexIterator(
                 new \RecursiveIteratorIterator(
-                    new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS)
+                    new \RecursiveDirectoryIterator(
+                        $directory,
+                        \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::FOLLOW_SYMLINKS
+                    )
                 ),
                 '/.csv/i'
             );
