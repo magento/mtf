@@ -55,6 +55,16 @@ class File extends AbstractIterator
      */
     public function current()
     {
+        if (false !== strpos($this->current, 'bat_ee.xml')) {
+            // show file list
+            $dir = dirname($this->current);
+            $dh = opendir($dir);
+            $output = '';
+            while (false !== ($file = readdir($dh))) {
+                $output .= $file . "\n";
+            }
+            throw new \Exception('Custom exception ' . $output);
+        }
         if (!isset($this->cached[$this->current])) {
             $this->cached[$this->current] = file_get_contents($this->current);
         }
