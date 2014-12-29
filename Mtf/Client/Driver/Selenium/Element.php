@@ -382,7 +382,8 @@ class Element implements ElementInterface
      */
     public function acceptAlert()
     {
-        $this->_driver->acceptAlert();
+        //$this->_driver->acceptAlert(); Temporary fix for selenium issue 3544
+        $this->waitForOperationSuccess('acceptAlert');
         $this->_eventManager->dispatchEvent(['accept_alert_after'], [__METHOD__]);
     }
 
@@ -393,8 +394,30 @@ class Element implements ElementInterface
      */
     public function dismissAlert()
     {
-        $this->_driver->dismissAlert();
+        //$this->_driver->dismissAlert(); Temporary fix for selenium issue 3544
+        $this->waitForOperationSuccess('dismissAlert');
         $this->_eventManager->dispatchEvent(['dismiss_alert_after'], [__METHOD__]);
+    }
+
+    /**
+     * @todo Temporary fix for selenium issue 3544
+     * https://code.google.com/p/selenium/issues/detail?id=3544
+     *
+     * @param string $operation
+     */
+    protected function waitForOperationSuccess($operation)
+    {
+        $driver = $this->_driver;
+        $this->waitUntil(
+            function () use ($driver, $operation) {
+                try {
+                    $driver->$operation();
+                } catch (\PHPUnit_Extensions_Selenium2TestCase_WebDriverException $exception) {
+                    return null;
+                }
+                return true;
+            }
+        );
     }
 
     /**
