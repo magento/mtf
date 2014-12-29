@@ -1,6 +1,10 @@
+1.0.0-rc.11
+=============
 * Fixed tagging mechanism for filter variations by tag
 * Changed file iterators to work with symlinks
 * Fixed wrong test names of MTF Corpuscular tests in parallel mode on bamboo
+* Added workaround for selenium issue https://code.google.com/p/selenium/issues/detail?id=3544
+* Added workaround for selenium issue https://code.google.com/p/selenium/issues/detail?id=5165
 
 1.0.0-rc.10
 =============
