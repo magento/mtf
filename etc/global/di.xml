@@ -86,4 +86,5 @@
             <argument name="pathConfig" xsi:type="string">rule/constraint/tag</argument>
         </arguments>
     </type>
+    <type name="Mtf\Fixture\InjectableFixture\Replacer" shared="true" />
 </config>

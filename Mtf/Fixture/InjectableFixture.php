@@ -25,6 +25,7 @@
 namespace Mtf\Fixture;
 
 use Mtf\Handler\HandlerFactory;
+use Mtf\Fixture\InjectableFixture\Replacer;
 use Mtf\Repository\RepositoryFactory;
 use Mtf\System\Config;
 use Mtf\System\Event\EventManagerInterface;
@@ -112,6 +113,11 @@ class InjectableFixture implements FixtureInterface
     protected $eventManager;
 
     /**
+     * @var Replacer
+     */
+    protected $replacer;
+
+    /**
      * Constructor
      *
      * @constructor
@@ -120,6 +126,7 @@ class InjectableFixture implements FixtureInterface
      * @param FixtureFactory $fixtureFactory
      * @param HandlerFactory $handlerFactory
      * @param EventManagerInterface $eventManager
+     * @param Replacer $replacer
      * @param array $data
      * @param string $dataSet
      * @param bool $persist
@@ -130,6 +137,7 @@ class InjectableFixture implements FixtureInterface
         FixtureFactory $fixtureFactory,
         HandlerFactory $handlerFactory,
         EventManagerInterface $eventManager,
+        Replacer $replacer,
         array $data = [],
         $dataSet = '',
         $persist = false
@@ -139,6 +147,7 @@ class InjectableFixture implements FixtureInterface
         $this->fixtureFactory = $fixtureFactory;
         $this->handlerFactory = $handlerFactory;
         $this->eventManager = $eventManager;
+        $this->replacer = $replacer;
 
         if ($dataSet) {
             $data = $this->getDataFromRepository($dataSet, $data);
@@ -169,6 +178,7 @@ class InjectableFixture implements FixtureInterface
             }
         }
 
+        $this->data = $this->replacer->apply($this->data);
         $this->_applyPlaceholders($this->data, ['isolation' => mt_rand()]);
         if ($persist === true) {
             $this->persist();

@@ -72,7 +72,7 @@ class ObjectManagerFactory
 
         $diConfig = new $this->configClassName();
         $systemConfig = new SystemConfig();
-        $configuration = $systemConfig->getConfigParam();
+        $configuration = $systemConfig->getConfigParam(null, []);
         $diConfig->extend($configuration);
 
         $directories = isset($arguments[\Magento\Framework\App\Filesystem::PARAM_APP_DIRS])
