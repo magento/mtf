@@ -24,9 +24,9 @@
 
 namespace Mtf\Factory;
 
-use Mtf\Factory as FactoryInterface;
-use Mtf\System\Config;
 use Mtf;
+use Mtf\System\Config;
+use Mtf\Factory as FactoryInterface;
 
 /**
  * Class Factory
@@ -53,14 +53,14 @@ class Factory implements FactoryInterface
     protected static $_app;
 
     /**
-     * @var Mtf\Client\Driver\Selenium\Element
+     * @var Mtf\Client\ElementInterface
      */
     protected static $_rootElement;
 
     /**
      * Client Browser instance
      *
-     * @var Mtf\Client\Driver\Selenium\Browser
+     * @var Mtf\Client\BrowserInterface
      */
     protected static $_clientBrowser;
 
@@ -136,7 +136,7 @@ class Factory implements FactoryInterface
      */
     public static function initClientBrowser()
     {
-        self::$_clientBrowser = self::getObjectManager()->get('Mtf\Client\Driver\Selenium\Browser');
+        self::$_clientBrowser = self::getObjectManager()->get('Mtf\Client\BrowserInterface');
     }
 
     /**
@@ -222,7 +222,7 @@ class Factory implements FactoryInterface
      * Get Client Browser
      *
      * @spi
-     * @return Mtf\Client\Browser
+     * @return Mtf\Client\BrowserInterface
      */
     public static function getClientBrowser()
     {

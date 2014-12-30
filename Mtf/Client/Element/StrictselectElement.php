@@ -22,18 +22,37 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Mtf;
+namespace Mtf\Client\Element;
 
 /**
- * Interface for Pages
+ * Class StrictselectElement
+ * Class provides an ability to work with page element select which select strict values
+ *
+ * @api
  */
-interface Page
+class StrictselectElement extends SelectElement
 {
     /**
-     * Open the page URL in browser.
+     * Set the value
      *
-     * @param array $params [optional]
+     * @param string|array $value
      * @return void
      */
-    public function open(array $params = array());
+    public function setValue($value)
+    {
+        $this->eventManager->dispatchEvent(['set_value'], [__METHOD__, $this->getAbsoluteSelector()]);
+        parent::setValue($value);
+    }
+
+    /**
+     * Select value in dropdown which has option groups
+     *
+     * @param string $optionGroup
+     * @param string $value
+     * @return void
+     */
+    public function setOptionGroupValue($optionGroup, $value)
+    {
+        parent::setOptionGroupValue($optionGroup, $value);
+    }
 }

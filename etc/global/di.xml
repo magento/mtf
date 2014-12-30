@@ -24,7 +24,8 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <preference for="Mtf\Client\Browser" type="Mtf\Client\Driver\Selenium\Browser"/>
+    <preference for="Mtf\Client\BrowserInterface" type="Mtf\Client\Driver\Selenium\Driver"/>
+    <preference for="Mtf\Client\ElementInterface" type="Mtf\Client\Element\SimpleElement"/>
     <preference for="Mtf\System\Event\EventManagerInterface" type="Mtf\System\Event\EventManager"/>
     <preference for="Mtf\Constraint\AbstractConstraint" type="Mtf\Constraint\Dummy"/>
     <preference for="Mtf\ObjectManagerInterface" type="Mtf\ObjectManager"/>
@@ -34,7 +35,8 @@
                 type="Mtf\Util\Generate\Fixture\DummyFieldsProvider"/>
     <preference for="Mtf\Util\Generate\Repository\CollectionProviderInterface"
                 type="Mtf\Util\Generate\Repository\DummyCollectionProvider"/>
-    <type name="Mtf\Client\Driver\Selenium\Element" shared="false"/>
+    <type name="Mtf\Client\Driver\Selenium\Driver" shared="true"/>
+    <type name="Mtf\Client\Element\SimpleElement" shared="false"/>
     <type name="Mtf\Block\BlockInterface" shared="false"/>
     <type name="Mtf\Page\PageInterface" shared="false"/>
     <type name="Mtf\Fixture\InjectableFixture" shared="false"/>

@@ -24,8 +24,6 @@
 
 namespace Mtf\Client;
 
-use Mtf\Client\Element\Locator;
-
 /**
  * Interface Browser
  *
@@ -34,7 +32,7 @@ use Mtf\Client\Element\Locator;
  *
  * @api
  */
-interface Browser
+interface BrowserInterface
 {
     /**
      * Open page
@@ -74,10 +72,10 @@ interface Browser
     /**
      * Change the focus to a frame in the page by locator
      *
-     * @param Locator|null $locator
+     * @param Locator $locator
      * @return void
      */
-    public function switchToFrame($locator = null);
+    public function switchToFrame(Locator $locator);
 
     /**
      * Close the current window
@@ -97,11 +95,17 @@ interface Browser
      * Find element on the page
      *
      * @param string $selector
-     * @param string $strategy [optional]
-     * @param string|null $typifiedElement = select|multiselect|null
-     * @return Element
+     * @param string $strategy
+     * @param string $type = select|multiselect|checkbox|null OR custom class with full namespace
+     * @param ElementInterface $context
+     * @return ElementInterface
      */
-    public function find($selector, $strategy = Locator::SELECTOR_CSS, $typifiedElement = null);
+    public function find(
+        $selector,
+        $strategy = Locator::SELECTOR_CSS,
+        $type = null,
+        ElementInterface $context = null
+    );
 
     /**
      * Wait until callback isn't null or timeout occurs
@@ -110,6 +114,35 @@ interface Browser
      * @return mixed
      */
     public function waitUntil($callback);
+
+    /**
+     * Press OK on an alert, or confirms a dialog
+     *
+     * @return void
+     */
+    public function acceptAlert();
+
+    /**
+     * Press Cancel on an alert, or does not confirm a dialog
+     *
+     * @return void
+     */
+    public function dismissAlert();
+
+    /**
+     * Get the alert dialog text
+     *
+     * @return string
+     */
+    public function getAlertText();
+
+    /**
+     * Set the text to a prompt popup
+     *
+     * @param string $text
+     * @return void
+     */
+    public function setAlertText($text);
 
     /**
      * Get current page url
@@ -131,4 +164,18 @@ interface Browser
      * @return string
      */
     public function getScreenshotData();
+
+    /**
+     * Inject Js Error collector
+     *
+     * @return mixed
+     */
+    public function injectJsErrorCollector();
+
+    /**
+     * Get js errors
+     *
+     * @return mixed
+     */
+    public function getJsErrors();
 }

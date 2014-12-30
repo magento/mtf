@@ -22,7 +22,7 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Mtf\Client\Driver\Selenium\Element;
+namespace Mtf\Client\Element;
 
 /**
  * Class StrictmultiselectElement
@@ -40,10 +40,10 @@ class StrictmultiselectElement extends MultiselectElement
      */
     public function setValue($values)
     {
-        $this->_eventManager->dispatchEvent(['set_value'], [__METHOD__, $this->getAbsoluteSelector()]);
-        $this->clearSelectedOptions();
-        foreach ((array)$values as $label) {
-            $this->_getWrappedElement()->selectOptionByLabel($label);
+        $this->eventManager->dispatchEvent(['set_value'], [__METHOD__, $this->getAbsoluteSelector()]);
+        $this->deselectAll();
+        foreach ((array)$values as $value) {
+            parent::setValue($value);
         }
     }
 }

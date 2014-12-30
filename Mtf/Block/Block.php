@@ -24,9 +24,9 @@
 
 namespace Mtf\Block;
 
-use Mtf\Client\Element;
-use Mtf\Client\Element\Locator;
-use Mtf\Client\Driver\Selenium\Browser;
+use Mtf\Client\Locator;
+use Mtf\Client\BrowserInterface;
+use Mtf\Client\ElementInterface;
 
 /**
  * Class Block
@@ -45,7 +45,7 @@ abstract class Block implements BlockInterface
     /**
      * The root element of the block
      *
-     * @var Element
+     * @var ElementInterface
      */
     protected $_rootElement;
 
@@ -59,7 +59,7 @@ abstract class Block implements BlockInterface
     /**
      * Provides ability to perform browser actions
      *
-     * @var Browser
+     * @var BrowserInterface
      */
     protected $browser;
 
@@ -79,30 +79,23 @@ abstract class Block implements BlockInterface
 
     /**
      * @constructor
-     * @param Element $element
+     * @param ElementInterface $element
      * @param BlockFactory $blockFactory
-     * @param Browser $browser
+     * @param BrowserInterface $browser
      * @param array $config
      */
-    public function __construct(Element $element, BlockFactory $blockFactory, Browser $browser, array $config = [])
-    {
+    public function __construct(
+        ElementInterface $element,
+        BlockFactory $blockFactory,
+        BrowserInterface $browser,
+        array $config = []
+    ) {
         $this->_rootElement = $element;
         $this->blockFactory = $blockFactory;
         $this->browser = $browser;
         $this->config = $config;
 
         $this->_init();
-    }
-
-    /**
-     * Element reinitialization in order to keep operability of block after page reload
-     *
-     * @return Block
-     */
-    public function reinitRootElement()
-    {
-        $this->_rootElement = clone $this->_rootElement;
-        return $this;
     }
 
     /**
@@ -133,7 +126,7 @@ abstract class Block implements BlockInterface
      */
     public function waitForElementVisible($selector, $strategy = Locator::SELECTOR_CSS)
     {
-        $browser = $this->_rootElement;
+        $browser = $this->browser;
         return $browser->waitUntil(
             function () use ($browser, $selector, $strategy) {
                 $element = $browser->find($selector, $strategy);
@@ -151,7 +144,7 @@ abstract class Block implements BlockInterface
      */
     public function waitForElementNotVisible($selector, $strategy = Locator::SELECTOR_CSS)
     {
-        $browser = $this->_rootElement;
+        $browser = $this->browser;
         return $browser->waitUntil(
             function () use ($browser, $selector, $strategy) {
                 $element = $browser->find($selector, $strategy);
@@ -186,6 +179,7 @@ abstract class Block implements BlockInterface
         if (null === $block) {
             throw new \Exception("Wrong render instance: \"{$type}\"");
         }
+
         return call_user_func_array([$block, $method], $arguments);
     }
 
@@ -220,6 +214,7 @@ abstract class Block implements BlockInterface
 
             $this->renderInstances[$renderName] = $block;
         }
+
         return $this->renderInstances[$renderName];
     }
 }
