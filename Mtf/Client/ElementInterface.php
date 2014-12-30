@@ -24,8 +24,6 @@
 
 namespace Mtf\Client;
 
-use Mtf\Client\Element\Locator;
-
 /**
  * Interface Element
  *
@@ -33,7 +31,7 @@ use Mtf\Client\Element\Locator;
  *
  * @api
  */
-interface Element
+interface ElementInterface
 {
     /**
      * Click
@@ -100,22 +98,22 @@ interface Element
     public function getText();
 
     /**
-     * Find element by locator in context of current element
+     * Find element on the page
      *
      * @param string $selector
      * @param string $strategy [optional]
-     * @param string|null $typifiedElement = select|multiselect|null
-     * @return Element
+     * @param string $type = select|multiselect|checkbox|null OR custom class with full namespace
+     * @return ElementInterface
      */
-    public function find($selector, $strategy = Locator::SELECTOR_CSS, $typifiedElement = null);
+    public function find($selector, $strategy = Locator::SELECTOR_CSS, $type = null);
 
     /**
-     * Drag and drop element to another element
+     * Drag and drop element to(between) another element(s)
      *
-     * @param Element $target
+     * @param ElementInterface $target
      * @return void
      */
-    public function dragAndDrop(Element $target);
+    public function dragAndDrop(ElementInterface $target);
 
     /**
      * Send a sequence of key strokes to the active element.
@@ -128,51 +126,47 @@ interface Element
     /**
      * Wait until callback isn't null or timeout occurs
      *
-     * @param callback $callback
+     * @param callable $callback
      * @return mixed
      */
     public function waitUntil($callback);
 
     /**
-     * Press OK on an alert, or confirms a dialog
-     *
-     * @return void
-     */
-    public function acceptAlert();
-
-    /**
-     * Press Cancel on an alert, or does not confirm a dialog
-     *
-     * @return void
-     */
-    public function dismissAlert();
-
-    /**
-     * Get the alert dialog text
-     *
-     * @return string
-     */
-    public function getAlertText();
-
-    /**
-     * Set the text to a prompt popup
-     *
-     * @param string $text
-     * @return void
-     */
-    public function setAlertText($text);
-
-    /**
-     * Get current page url
-     *
-     * @return string
-     */
-    public function getUrl();
-
-    /**
      * Get all elements by locator
      *
-     * @return Element[]
+     * @param string $selector
+     * @param string $strategy
+     * @param null|string $type
+     * @return ElementInterface[]
      */
-    public function getElements();
+    public function getElements($selector, $strategy = Locator::SELECTOR_CSS, $type = null);
+
+    /**
+     * Get absolute selector (for DBG)
+     *
+     * @return string
+     */
+    public function getAbsoluteSelector();
+
+    /**
+     * Get element locator
+     *
+     * @return Locator
+     */
+    public function getLocator();
+
+    /**
+     * Get context element
+     *
+     * @return ElementInterface|null
+     */
+    public function getContext();
+
+    /**
+     * Get the value of a the given attribute of the element
+     *
+     * @param string $name
+     * @return string
+     */
+    public function getAttribute($name);
 }

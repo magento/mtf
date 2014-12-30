@@ -24,24 +24,16 @@
 
 namespace Mtf\Client\Driver\Selenium;
 
-use Mtf\System\Event\EventManager;
 use Mtf\System\Config;
 
 /**
- * Class TestCase
+ * Class RemoteDriver
  * Entry point to selenium
  *
  * @api
  */
-class TestCase extends \PHPUnit_Extensions_Selenium2TestCase
+class RemoteDriver extends \PHPUnit_Extensions_Selenium2TestCase
 {
-    /**
-     * Event Manager instance
-     *
-     * @var EventManager
-     */
-    protected $eventManager;
-
     /**
      * Timeout for wait until
      *
@@ -52,14 +44,11 @@ class TestCase extends \PHPUnit_Extensions_Selenium2TestCase
     /**
      * Constructor
      *
-     * @constructor
      * @param Config $config
-     * @param EventManager $eventManager
      */
-    public function __construct(Config $config, EventManager $eventManager)
+    public function __construct(Config $config)
     {
         $this->timeout = $config->getConfigParam('server/selenium/seleniumServerRequestsTimeout', 10) * 1000;
-        $this->eventManager = $eventManager;
     }
 
     /**

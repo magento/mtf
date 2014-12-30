@@ -22,40 +22,39 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Mtf\Client\Driver\Selenium\Element;
+namespace Mtf\Client\Element;
 
 /**
- * Class StrictselectElement
- * Class provides an ability to work with page element select which select strict values
+ * Class CheckboxElement
+ * Class provides ability to work with page element checkbox
+ * (Such as setting/getting value)
  *
  * @api
  */
-class StrictselectElement extends SelectElement
+class CheckboxElement extends SimpleElement
 {
     /**
-     * Set the value
+     * Get value of the selected option of the element
      *
-     * @param string|array $value
+     * @return string
+     */
+    public function getValue()
+    {
+        $this->eventManager->dispatchEvent(['get_value'], [$this->getAbsoluteSelector()]);
+        return $this->isSelected() ? 'Yes' : 'No';
+    }
+
+    /**
+     * Mark checkbox if value 'Yes', otherwise unmark
+     *
+     * @param string $value
      * @return void
      */
     public function setValue($value)
     {
-        $this->_eventManager->dispatchEvent(['set_value'], [__METHOD__, $this->getAbsoluteSelector()]);
-        $this->_getWrappedElement()->selectOptionByLabel($value);
-    }
-
-    /**
-     * Select value in dropdown which has option groups
-     *
-     * @param string $optionGroup
-     * @param string $value
-     * @return void
-     */
-    public function setOptionGroupValue($optionGroup, $value)
-    {
-        $optionLocator = ".//optgroup[@label='$optionGroup']/option[.=, '$value']";
-        $criteria = new \PHPUnit_Extensions_Selenium2TestCase_ElementCriteria('xpath');
-        $criteria->value($optionLocator);
-        $this->_getWrappedElement()->selectOptionByCriteria($criteria);
+        $this->eventManager->dispatchEvent(['set_value'], [__METHOD__, $this->getAbsoluteSelector()]);
+        if (($this->isSelected() && $value == 'No') || (!$this->isSelected() && $value == 'Yes')) {
+            $this->click();
+        }
     }
 }
