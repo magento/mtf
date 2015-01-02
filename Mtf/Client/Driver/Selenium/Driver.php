@@ -133,9 +133,10 @@ class Driver implements DriverInterface
      * Get context element
      *
      * @param ElementInterface $element
+     * @param bool $wait
      * @return null|\PHPUnit_Extensions_Selenium2TestCase_Element
      */
-    protected function getContext(ElementInterface $element = null)
+    protected function getContext(ElementInterface $element = null, $wait = true)
     {
         $elements = [];
         $contextElement = null;
@@ -151,7 +152,7 @@ class Driver implements DriverInterface
         /** @var ElementInterface $element */
         foreach (array_reverse($elements) as $element) {
             // First call "getElement" with $contextElement equal "null" value
-            $contextElement = $this->getElement($element->getLocator(), $contextElement);
+            $contextElement = $this->getElement($element->getLocator(), $contextElement, $wait);
         }
 
         return $contextElement;
@@ -270,7 +271,7 @@ class Driver implements DriverInterface
             $this->eventManager->dispatchEvent(['is_visible'], [__METHOD__, $element->getAbsoluteSelector()]);
             $visible = $this->getElement(
                 $element->getLocator(),
-                $this->getContext($element->getContext()),
+                $this->getContext($element->getContext(), false),
                 false
             )->displayed();
         } catch (\PHPUnit_Extensions_Selenium2TestCase_WebDriverException $e) {
