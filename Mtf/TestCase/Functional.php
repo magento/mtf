@@ -149,7 +149,7 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
             $this->processManager->run($this, $result, $params);
         } else {
             try {
-                PHP_Timer::start();
+                \PHP_Timer::start();
                 parent::run($result);
                 if ($this->getStatus() == \PHPUnit_Runner_BaseTestRunner::STATUS_ERROR) {
                     $this->eventManager->dispatchEvent(['exception'], [$this->getStatusMessage()]);
@@ -160,10 +160,10 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
                 }
             } catch (\PHPUnit_Framework_AssertionFailedError $phpUnitException) {
                 $this->eventManager->dispatchEvent(['failure'], [$phpUnitException->getMessage()]);
-                $result->addFailure($this, $phpUnitException, PHP_Timer::stop());
+                $result->addFailure($this, $phpUnitException, \PHP_Timer::stop());
             } catch (\Exception $exception) {
                 $this->eventManager->dispatchEvent(['exception'], [$exception->getMessage()]);
-                $result->addError($this, $exception, PHP_Timer::stop());
+                $result->addError($this, $exception, \PHP_Timer::stop());
             }
         }
         return $result;

@@ -135,7 +135,7 @@ abstract class Injectable extends Functional
             return parent::run($result);
         }
         try {
-            PHP_Timer::start();
+            \PHP_Timer::start();
             if (!isset(static::$sharedArguments[$this->dataId]) && method_exists($this, '__prepare')) {
                 static::$sharedArguments[$this->dataId] = (array) $this->getObjectManager()->invoke($this, '__prepare');
             }
@@ -169,10 +169,10 @@ abstract class Injectable extends Functional
             }
         } catch (\PHPUnit_Framework_AssertionFailedError $phpUnitException) {
             $this->eventManager->dispatchEvent(['failure'], [$phpUnitException->getMessage()]);
-            $result->addFailure($this, $phpUnitException, PHP_Timer::stop());
+            $result->addFailure($this, $phpUnitException, \PHP_Timer::stop());
         } catch (\Exception $exception) {
             $this->eventManager->dispatchEvent(['exception'], [$exception->getMessage()]);
-            $result->addError($this, $exception, PHP_Timer::stop());
+            $result->addError($this, $exception, \PHP_Timer::stop());
         }
         self::$sharedArguments = [];
 
