@@ -194,6 +194,8 @@ class Factory extends \Magento\Framework\ObjectManager\Factory\Dynamic\Developer
      *
      * @param array $array
      * @return void
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function parseArray(&$array)
     {

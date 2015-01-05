@@ -156,6 +156,7 @@ class Listener implements \PHPUnit_Framework_TestListener
      *
      * @param PHPUnit_Framework_TestSuite $suite
      * @return void
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
@@ -167,6 +168,7 @@ class Listener implements \PHPUnit_Framework_TestListener
      *
      * @param PHPUnit_Framework_Test $test
      * @return void
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function startTest(PHPUnit_Framework_Test $test)
     {
@@ -183,6 +185,7 @@ class Listener implements \PHPUnit_Framework_TestListener
      * @param PHPUnit_Framework_Test $test
      * @param float $time
      * @return void
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function endTest(PHPUnit_Framework_Test $test, $time)
     {

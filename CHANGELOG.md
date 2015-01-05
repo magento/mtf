@@ -1,3 +1,5 @@
+* Code marked with @SuppressWarnings annotations
+
 1.0.0-rc.11
 =============
 * Fixed tagging mechanism for filter variations by tag

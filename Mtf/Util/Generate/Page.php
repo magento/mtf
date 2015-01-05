@@ -126,6 +126,7 @@ class Page extends AbstractGenerate
      *
      * @param array $item
      * @return void
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function generatePageXml(array $item)
     {
@@ -314,6 +315,7 @@ class Page extends AbstractGenerate
      *
      * @param array $item
      * @return void
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function generatePageClass(array $item)
     {

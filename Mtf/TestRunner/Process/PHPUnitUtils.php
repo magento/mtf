@@ -34,6 +34,7 @@ class PHPUnitUtils extends \PHPUnit_Util_PHP
      * @param array $settings
      * @return array|null|void
      * @throws \PHPUnit_Framework_Exception
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function runJob($job, array $settings = [])
     {
@@ -48,6 +49,7 @@ class PHPUnitUtils extends \PHPUnit_Util_PHP
      * @param resource $pipe
      * @param string $job
      * @return void
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     protected function process($pipe, $job)
     {
@@ -62,6 +64,8 @@ class PHPUnitUtils extends \PHPUnit_Util_PHP
      * @param string $stdout
      * @param string $stderr
      * @return void
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function processChildResult(
         \PHPUnit_Framework_Test $test,

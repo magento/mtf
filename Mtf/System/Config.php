@@ -57,6 +57,7 @@ class Config
      * @param string $filePath
      * @return void
      * @throws \Exception
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
     protected function _init($filePath)
     {

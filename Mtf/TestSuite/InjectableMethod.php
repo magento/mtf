@@ -97,6 +97,9 @@ class InjectableMethod extends InjectableTestCase
      * @param array $arguments
      * @return \PHPUnit_Framework_Test
      * @throws \PHPUnit_Framework_Exception
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public static function createTest(\ReflectionClass $theClass, $name, array $arguments = [])
     {

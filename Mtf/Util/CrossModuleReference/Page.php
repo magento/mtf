@@ -62,6 +62,7 @@ class Page extends Common implements CheckerInterface
      * Initialize cross module page extension
      *
      * @return void
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
     protected function init()
     {
@@ -93,6 +94,7 @@ class Page extends Common implements CheckerInterface
      * @param string $scopeModule
      * @param string $pageModule
      * @return array
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
     protected function getTestClassesByCrossModulePageReference($scopeModule, $pageModule)
     {

@@ -209,6 +209,8 @@ class Fixture extends AbstractGenerate
      *
      * @param array $item
      * @return void
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function generateClass(array $item)
     {

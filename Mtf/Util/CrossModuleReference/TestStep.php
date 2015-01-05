@@ -83,6 +83,7 @@ class TestStep extends Common implements CheckerInterface
 
     /**
      * @return void
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     protected function initialize()
     {

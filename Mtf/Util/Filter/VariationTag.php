@@ -46,6 +46,7 @@ class VariationTag extends AbstractFilterTag implements FilterInterface
      *
      * @param string $subject
      * @return array
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function convertTags($subject)
     {
