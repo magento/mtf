@@ -43,6 +43,7 @@ class PageOpenSuccess extends AbstractConstraint
      * @param TestPage $page
      * @param Test $fixture
      * @return void
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function processAssert(TestPage $page, Test $fixture)
     {

@@ -55,6 +55,7 @@ class EntryPoint
     /**
      * Start to generate all classes
      * @return void
+     * @SuppressWarnings(PHPMD.ExitExpression)
      */
     public function processRequest()
     {

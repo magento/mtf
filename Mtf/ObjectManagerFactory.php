@@ -34,6 +34,7 @@ use Magento\Framework\App\Arguments\Loader;
  * Class ObjectManagerFactory
  *
  * @api
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class ObjectManagerFactory
 {

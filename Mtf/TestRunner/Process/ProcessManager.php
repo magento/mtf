@@ -190,6 +190,9 @@ class ProcessManager
      * @param array $params
      * @param Environment $environment
      * @return string
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     private function generateTestCaseJob(
         \PHPUnit_Framework_Test $testcase,

@@ -39,6 +39,7 @@ class AbstractFilterTag extends AbstractFilter
      *
      * @param array $tags
      * @return bool
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function processApply(array $tags)
     {

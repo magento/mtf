@@ -64,6 +64,7 @@ class Http extends File
      *
      * @param string $path
      * @return array
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function stat($path)
     {

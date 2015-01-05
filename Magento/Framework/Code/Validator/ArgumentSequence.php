@@ -58,6 +58,7 @@ class ArgumentSequence implements ValidatorInterface
      * @param string $className
      * @return bool
      * @throws ValidationException
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function validate($className)
     {
@@ -153,6 +154,8 @@ class ArgumentSequence implements ValidatorInterface
      * @param array $classArguments
      * @param array $parentArguments
      * @return array
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function _buildsSequence(array $classArguments, array $parentArguments = array())
     {

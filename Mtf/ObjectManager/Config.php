@@ -44,6 +44,7 @@ class Config extends ObjectManagerConfig
      *
      * @param string $type
      * @return bool
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
     public function isShared($type)
     {

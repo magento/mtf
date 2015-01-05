@@ -48,6 +48,8 @@ class Converter implements \Magento\Framework\Config\ConverterInterface
      *
      * @param \DOMElement $element
      * @return array
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function convertElement(\DOMElement $element)
     {

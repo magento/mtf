@@ -51,6 +51,7 @@ class AppState extends Injectable
      * @constructor
      * @param string $theClass
      * @param string $name
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function __construct($theClass = '', $name = '')
     {
