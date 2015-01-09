@@ -133,6 +133,7 @@ final class Driver implements DriverInterface
      * @param ElementInterface $element
      * @param bool $wait
      * @return \RemoteWebElement
+     * @throws \Exception
      */
     protected function getNativeElement(ElementInterface $element, $wait = true)
     {
@@ -148,8 +149,8 @@ final class Driver implements DriverInterface
             try {
                 // First call "getElement" with $resultElement equal "null" value
                 $contextElement = $this->getElement($chainElement->getLocator(), $contextElement, $wait);
-            } catch (\PHPUnit_Extensions_Selenium2TestCase_WebDriverException $e) {
-                throw new \PHPUnit_Extensions_Selenium2TestCase_WebDriverException(
+            } catch (\Exception $e) {
+                throw new \Exception (
                     sprintf('Error occurred on attempt to get element. Message: "%s". Locator: "%s" . Wait: "%s"',
                         $e->getMessage(),
                         $chainElement->getAbsoluteSelector(),
