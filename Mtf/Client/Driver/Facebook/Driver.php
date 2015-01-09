@@ -111,20 +111,13 @@ final class Driver implements DriverInterface
         if ($wait) {
             return $this->waitUntil(
                 function () use ($context, $criteria) {
-                    return $context->findElement($criteria)->isDisplayed()
-                        ? $context->findElement($criteria)
-                        : null ;
+                    $element = $context->findElement($criteria);
+                    return $element->isDisplayed() ? $element : null;
                 }
             );
         }
 
-        $driver = $this->driver;
-        $this->waitUntil(
-            function () use ($driver) {
-                $result = $driver->executeScript("return document['readyState']", []);
-                return $result === 'complete' || $result === 'uninitialized';
-            }
-        );
+        $this->waitForPageToLoad();
 
         return $context->findElement($criteria);
     }
@@ -413,11 +406,31 @@ final class Driver implements DriverInterface
         $type = null,
         $wait = true
     ) {
-
         $locator = new Locator($selector, $strategy);
         $resultElements = [];
         $nativeContext = $this->getNativeElement($context, $wait);
-        $nativeElements = $nativeContext->findElements($this->getSearchCriteria($locator));
+        $criteria = $this->getSearchCriteria($locator);
+
+        if ($wait) {
+            try {
+                $nativeElements = $this->waitUntil(
+                    function() use ($nativeContext, $criteria) {
+                        return $nativeContext->findElements($criteria);
+                    }
+                );
+            } catch (\Exception $e) {
+                throw new \Exception(
+                    sprintf(
+                        'Error occurred during waiting for an elements. Message: "%s". Locator: "%s"',
+                        $e->getMessage(),
+                        $context->getAbsoluteSelector() . ' -> ' . $locator
+                    )
+                );
+            }
+        } else {
+            $this->waitForPageToLoad();
+            $nativeElements = $nativeContext->findElements($this->getSearchCriteria($locator));
+        }
 
         if (count($nativeElements) > 20) {
             // todo Temporary performance improvement for long lists of elements
@@ -710,5 +723,25 @@ final class Driver implements DriverInterface
         ';
 
         return $this->driver->executeScript($script, []);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function waitForPageToLoad()
+    {
+        $driver = $this->driver;
+        try {
+            $this->waitUntil(
+                function () use ($driver) {
+                    $result = $driver->executeScript("return document['readyState']", []);
+                    return $result === 'complete' || $result === 'uninitialized';
+                }
+            );
+        } catch (\Exception $e) {
+            throw new \Exception(
+                sprintf('Error occurred during waiting for page to load. Message: "%s"', $e->getMessage())
+            );
+        }
     }
 }
