@@ -130,28 +130,33 @@ final class Driver implements DriverInterface
     }
 
     /**
-     * Get context element
-     *
      * @param ElementInterface $element
-     * @return null|\RemoteWebElement
+     * @param bool $wait
+     * @return \RemoteWebElement
      */
-    protected function getContext(ElementInterface $element = null)
+    protected function getNativeElement(ElementInterface $element, $wait = true)
     {
-        $elements = [];
-        $contextElement = null;
-        if ($element === null) {
-            return $contextElement;
-        }
-
-        $elements[] = $element;
+        $chainElements = [$element];
         while($element = $element->getContext()) {
-            $elements[] = $element;
+            $chainElements[] = $element;
         }
 
-        /** @var ElementInterface $element */
-        foreach (array_reverse($elements) as $element) {
-            // First call "getElement" with $contextElement equal "null" value
-            $contextElement = $this->getElement($element->getLocator(), $contextElement);
+        $contextElement = null;
+        /** @var ElementInterface $context */
+        foreach (array_reverse($chainElements) as $chainElement) {
+            /** @var ElementInterface $chainElement */
+            try {
+                // First call "getElement" with $resultElement equal "null" value
+                $contextElement = $this->getElement($chainElement->getLocator(), $contextElement, $wait);
+            } catch (\PHPUnit_Extensions_Selenium2TestCase_WebDriverException $e) {
+                throw new \PHPUnit_Extensions_Selenium2TestCase_WebDriverException(
+                    sprintf('Error occurred on attempt to get element. Message: "%s". Locator: "%s" . Wait: "%s"',
+                        $e->getMessage(),
+                        $chainElement->getAbsoluteSelector(),
+                        $wait
+                    )
+                );
+            }
         }
 
         return $contextElement;
@@ -194,7 +199,7 @@ final class Driver implements DriverInterface
     public function click(ElementInterface $element)
     {
         $this->eventManager->dispatchEvent(['click_before'], [__METHOD__, $element->getAbsoluteSelector()]);
-        $this->getElement($element->getLocator(), $this->getContext($element->getContext()))->click();
+        $this->getNativeElement($element)->click();
         $this->eventManager->dispatchEvent(['click_after'], [__METHOD__, $element->getAbsoluteSelector()]);
     }
 
@@ -207,7 +212,7 @@ final class Driver implements DriverInterface
     public function doubleClick(ElementInterface $element)
     {
         $this->driver->action()
-            ->doubleClick($this->getElement($element->getLocator(), $this->getContext($element->getContext())))
+            ->doubleClick($this->getNativeElement($element))
             ->perform();
     }
 
@@ -232,11 +237,7 @@ final class Driver implements DriverInterface
     public function isVisible(ElementInterface $element)
     {
         try {
-            $visible = $this->getElement(
-                $element->getLocator(),
-                $this->getContext($element->getContext()),
-                false
-            )->isDisplayed();
+            $visible = $this->getNativeElement($element, false)->isDisplayed();
         } catch (\Exception $e) {
             $visible = false;
         }
@@ -252,7 +253,7 @@ final class Driver implements DriverInterface
      */
     public function isDisabled(ElementInterface $element)
     {
-        return !$this->getElement($element->getLocator(), $this->getContext($element->getContext()))->isEnabled();
+        return !$this->getNativeElement($element)->isEnabled();
     }
 
     /**
@@ -263,7 +264,7 @@ final class Driver implements DriverInterface
      */
     public function isSelected(ElementInterface $element)
     {
-        return $this->getElement($element->getLocator(), $this->getContext($element->getContext()))->isSelected();
+        return $this->getNativeElement($element, false)->isSelected();
     }
 
     /**
@@ -275,7 +276,7 @@ final class Driver implements DriverInterface
      */
     public function setValue(ElementInterface $element, $value)
     {
-        $wrappedElement = $this->getElement($element->getLocator(), $this->getContext($element->getContext()));
+        $wrappedElement = $this->getNativeElement($element);
         $wrappedElement->clear();
         $wrappedElement->sendKeys($value);
     }
@@ -288,7 +289,7 @@ final class Driver implements DriverInterface
      */
     public function getValue(ElementInterface $element)
     {
-        return $this->getElement($element->getLocator(), $this->getContext($element->getContext()))
+        return $this->getNativeElement($element)
             ->getAttribute('value');
     }
 
@@ -300,7 +301,7 @@ final class Driver implements DriverInterface
      */
     public function getText(ElementInterface $element)
     {
-        return $this->getElement($element->getLocator(), $this->getContext($element->getContext()))->getText();
+        return $this->getNativeElement($element)->getText();
     }
 
     /**
@@ -365,8 +366,8 @@ final class Driver implements DriverInterface
     {
         $this->driver->action()
             ->dragAndDrop(
-                $this->getElement($element->getLocator(), $this->getContext($element->getContext())),
-                $this->getElement($target->getLocator(), $this->getContext($target->getContext()))
+                $this->getNativeElement($element),
+                $this->getNativeElement($target)
             )->perform();
     }
 
@@ -379,7 +380,7 @@ final class Driver implements DriverInterface
      */
     public function keys(ElementInterface $element, array $keys)
     {
-        $this->getElement($element->getLocator(), $this->getContext($element->getContext()))->sendKeys($keys);
+        $this->getNativeElement($element)->sendKeys($keys);
     }
 
     /**
@@ -387,17 +388,10 @@ final class Driver implements DriverInterface
      *
      * @param callable $callback
      * @return mixed
-     * @throws \Exception
      */
     public function waitUntil($callback)
     {
-        try {
-            return $this->driver->wait()->until($callback);
-        } catch (\Exception $e) {
-            throw new \Exception(
-                sprintf("Error occurred during waiting for an element with message (%s)",$e->getMessage())
-            );
-        }
+        return $this->driver->wait()->until($callback);
     }
 
     /**
@@ -407,6 +401,7 @@ final class Driver implements DriverInterface
      * @param string $selector
      * @param string $strategy
      * @param null|string $type
+     * @param bool $wait
      * @return ElementInterface[]
      * @throws \Exception
      */
@@ -414,23 +409,79 @@ final class Driver implements DriverInterface
         ElementInterface $context,
         $selector,
         $strategy = Locator::SELECTOR_CSS,
-        $type = null
+        $type = null,
+        $wait = true
     ) {
-        $locator = $this->objectManager->create(
-            'Mtf\Client\Locator',
-            [
-                'value' => $selector,
-                'strategy' => $strategy
-            ]
-        );
+
+        $locator = new Locator($selector, $strategy);
         $resultElements = [];
-        $elements = $this->getElement($context->getLocator(), $this->getContext($context->getContext()))
-            ->findElements($this->getSearchCriteria($locator));
-        for ($length = count($elements), $i = 0; $i < $length; ++$i) {
-            $resultElements[$i] = $this->find($selector, $strategy, $type, $context);
+        $nativeContext = $this->getNativeElement($context, $wait);
+        $nativeElements = $nativeContext->findElements($this->getSearchCriteria($locator));
+
+        if (count($nativeElements) > 20) {
+            // todo Temporary performance improvement for long lists of elements
+            $xpath = $this->getRelativeXpath($nativeElements[0], $nativeContext, '', false);
+            foreach ($nativeElements as $key => $element) {
+                $resultElements[] = $this->find(
+                    sprintf('%s[%s]', $xpath, $key + 1),
+                    Locator::SELECTOR_XPATH,
+                    $type,
+                    $context
+                );
+            }
+        } else {
+            foreach ($nativeElements as $key => $element) {
+                $resultElements[] = $this->find(
+                    $this->getRelativeXpath($element, $nativeContext),
+                    Locator::SELECTOR_XPATH,
+                    $type,
+                    $context
+                );
+            }
         }
 
         return $resultElements;
+    }
+
+    /**
+     * Retrieve relative xpath from context to element
+     *
+     * @param \RemoteWebElement $element
+     * @param \RemoteWebElement $context
+     * @param string $path
+     * @param bool $includeLastIndex
+     * @return null
+     */
+    protected function getRelativeXpath(
+        \RemoteWebElement $element,
+        \RemoteWebElement $context,
+        $path = '',
+        $includeLastIndex = true
+    ) {
+        if($element->equals($context)) {
+            return '.' . $path;
+        }
+
+        $parentLocator = new Locator('..', Locator::SELECTOR_XPATH);
+        $parentElement = $element->findElement($this->getSearchCriteria($parentLocator));
+
+        $childrenLocator = new Locator('*', Locator::SELECTOR_XPATH);
+
+        $index = 1;
+        $tag = $element->getTagName();
+        if (!$includeLastIndex) {
+            return $this->getRelativeXpath($parentElement, $context, '/' . $tag);
+        }
+        foreach ($parentElement->findElements($this->getSearchCriteria($childrenLocator)) as $child) {
+            /** @var \RemoteWebElement $child */
+            if ($child->equals($element)) {
+                return $this->getRelativeXpath($parentElement, $context, '/' . $tag . '[' . $index . ']' . $path);
+            }
+            if ($child->getTagName() == $tag) {
+                ++$index;
+            }
+        }
+        return null;
     }
 
     /**
@@ -442,7 +493,7 @@ final class Driver implements DriverInterface
      */
     public function getAttribute(ElementInterface $element, $name)
     {
-        return $this->getElement($element->getLocator(), $this->getContext($element->getContext()))
+        return $this->getNativeElement($element)
             ->getAttribute($name);
     }
 

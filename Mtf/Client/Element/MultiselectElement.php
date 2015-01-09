@@ -36,13 +36,6 @@ use Mtf\Client\Locator;
 class MultiselectElement extends SelectElement
 {
     /**
-     * Is multiple select
-     *
-     * @var bool
-     */
-    protected $isMultiple = true;
-
-    /**
      * Get value of the selected option of the element
      *
      * @return array
@@ -79,13 +72,29 @@ class MultiselectElement extends SelectElement
      *
      * @param string|array $values
      * @return void
+     * @throws \Exception
      */
     public function setValue($values)
     {
         $this->eventManager->dispatchEvent(['set_value'], [__METHOD__, $this->getAbsoluteSelector()]);
         $this->deselectAll();
         foreach ((array)$values as $value) {
-            parent::setValue($value);
+            $matched = false;
+
+            $xpath = './/option[contains(normalize-space(.), ' . $this->escapeQuotes($value) . ')]';
+            $options = $this->getElements($xpath, Locator::SELECTOR_XPATH);
+
+            /** @var SimpleElement $option */
+            foreach ($options as $option) {
+                if (!$option->isSelected()) {
+                    $option->click();
+                }
+                $matched = true;
+            }
+
+            if (!$matched) {
+                throw new \Exception(sprintf('Cannot locate option with value: %s', $value));
+            }
         }
     }
 
@@ -96,10 +105,6 @@ class MultiselectElement extends SelectElement
      * @return void
      */
     public function deselectAll() {
-        if (!$this->isMultiple()) {
-            throw new \Exception('You may only deselect all options of a multi-select');
-        }
-
         $tagName = 'option';
         $options = $this->getElements($tagName, Locator::SELECTOR_XPATH);
         /** @var SimpleElement $option */

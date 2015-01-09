@@ -19,23 +19,6 @@ use Mtf\Client\Locator;
 class SelectElement extends SimpleElement
 {
     /**
-     * Is multiple select
-     *
-     * @var bool
-     */
-    protected $isMultiple = false;
-
-    /**
-     * @return bool Whether this select element support selecting multiple
-     *              options. This is done by checking the value of the 'multiple'
-     *              attribute.
-     */
-    public function isMultiple()
-    {
-        return $this->isMultiple;
-    }
-
-    /**
      * Set the value
      *
      * @param string|array $value
@@ -45,25 +28,9 @@ class SelectElement extends SimpleElement
     public function setValue($value)
     {
         $this->eventManager->dispatchEvent(['set_value'], [__METHOD__, $this->getAbsoluteSelector()]);
-        $matched = false;
-
         $xpath = './/option[contains(normalize-space(.), ' . $this->escapeQuotes($value) . ')]';
-        $options = $this->getElements($xpath, Locator::SELECTOR_XPATH);
-
-        /** @var SimpleElement $option */
-        foreach ($options as $option) {
-            if (!$option->isSelected()) {
-                $option->click();
-            }
-            if (!$this->isMultiple()) {
-                return;
-            }
-            $matched = true;
-        }
-
-        if (!$matched) {
-            throw new \Exception(sprintf('Cannot locate option with value: %s', $value));
-        }
+        $option = $this->find($xpath, Locator::SELECTOR_XPATH);
+        $option->click();
     }
 
     /**
@@ -77,25 +44,10 @@ class SelectElement extends SimpleElement
     public function setOptionGroupValue($optionGroup, $value)
     {
         $this->eventManager->dispatchEvent(['set_value'], [__METHOD__, $this->getAbsoluteSelector()]);
-        $matched = false;
         $xpath = ".//optgroup[contains(@label,'$optionGroup')]/option[contains(text(), "
             . $this->escapeQuotes($value) . ")]";
-        $options = $this->getElements($xpath, Locator::SELECTOR_XPATH);
-
-        /** @var SimpleElement $option */
-        foreach ($options as $option) {
-            if (!$option->isSelected()) {
-                $option->click();
-            }
-            if (!$this->isMultiple()) {
-                return;
-            }
-            $matched = true;
-        }
-
-        if (!$matched) {
-            throw new \Exception(sprintf('Cannot locate option with value: %s', $value));
-        }
+        $option = $this->find($xpath, Locator::SELECTOR_XPATH);
+        $option->click();
     }
 
     /**

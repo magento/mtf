@@ -70,7 +70,9 @@ class Driver implements DriverInterface
      */
     public function __destruct()
     {
-        $this->driver->stop();
+        if ($this->driver->getSessionId()) {
+            $this->driver->stop();
+        }
     }
 
     /**
@@ -91,14 +93,15 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Get native element
+     * Get native element by locator
      *
      * @param Locator $locator
      * @param \PHPUnit_Extensions_Selenium2TestCase_Element $context
      * @param bool $wait
      * @return \PHPUnit_Extensions_Selenium2TestCase_Element
+     * @throws \Exception
      */
-    protected function getElement(
+    protected function findElement(
         Locator $locator,
         \PHPUnit_Extensions_Selenium2TestCase_Element $context = null,
         $wait = true
@@ -118,41 +121,42 @@ class Driver implements DriverInterface
             );
         }
 
-        $driver = $this->driver;
-        $this->waitUntil(
-            function () use ($driver) {
-                $result = $driver->execute(['script' => "return document['readyState']", 'args' => []]);
-                return $result === 'complete' || $result === 'uninitialized';
-            }
-        );
+        $this->waitForPageToLoad();
 
         return $context->element($criteria);
     }
 
     /**
-     * Get context element
+     * Get native element by Mtf Element
      *
      * @param ElementInterface $element
      * @param bool $wait
      * @return null|\PHPUnit_Extensions_Selenium2TestCase_Element
+     * @throws \Exception
      */
-    protected function getContext(ElementInterface $element = null, $wait = true)
+    protected function getNativeElement(ElementInterface $element, $wait = true)
     {
-        $elements = [];
-        $contextElement = null;
-        if ($element === null) {
-            return $contextElement;
-        }
-
-        $elements[] = $element;
+        $chainElements = [$element];
         while($element = $element->getContext()) {
-            $elements[] = $element;
+            $chainElements[] = $element;
         }
 
-        /** @var ElementInterface $element */
-        foreach (array_reverse($elements) as $element) {
-            // First call "getElement" with $contextElement equal "null" value
-            $contextElement = $this->getElement($element->getLocator(), $contextElement, $wait);
+        $contextElement = null;
+        /** @var ElementInterface $context */
+        foreach (array_reverse($chainElements) as $chainElement) {
+            /** @var ElementInterface $chainElement */
+            try {
+                // First call "getElement" with $resultElement equal "null" value
+                $contextElement = $this->findElement($chainElement->getLocator(), $contextElement, $wait);
+            } catch (\PHPUnit_Extensions_Selenium2TestCase_WebDriverException $e) {
+                throw new \PHPUnit_Extensions_Selenium2TestCase_WebDriverException(
+                    sprintf('Error occurred on attempt to get element. Message: "%s". Locator: "%s" . Wait: "%s"',
+                        $e->getMessage(),
+                        $chainElement->getAbsoluteSelector(),
+                        $wait
+                    )
+                );
+            }
         }
 
         return $contextElement;
@@ -225,7 +229,7 @@ class Driver implements DriverInterface
         $absoluteSelector = $element->getAbsoluteSelector();
         $this->eventManager->dispatchEvent(['click_before'], [__METHOD__, $absoluteSelector]);
 
-        $this->getElement($element->getLocator(), $this->getContext($element->getContext()))->click();
+        $this->getNativeElement($element)->click();
 
         $this->eventManager->dispatchEvent(['click_before'], [__METHOD__, $absoluteSelector]);
     }
@@ -240,8 +244,7 @@ class Driver implements DriverInterface
     {
         $this->eventManager->dispatchEvent(['double_click_before'], [__METHOD__, $element->getAbsoluteSelector()]);
 
-        $wrappedElement = $this->getElement($element->getLocator(), $this->getContext($element->getContext()));
-        $this->driver->moveto($wrappedElement);
+        $this->driver->moveto($this->getNativeElement($element));
         $this->driver->doubleclick();
     }
 
@@ -255,7 +258,7 @@ class Driver implements DriverInterface
     {
         $this->eventManager->dispatchEvent(['right_click_before'], [__METHOD__, $element->getAbsoluteSelector()]);
 
-        $this->driver->moveto($this->getElement($element->getLocator(), $this->getContext($element->getContext())));
+        $this->driver->moveto($this->getNativeElement($element));
         $this->driver->click(\PHPUnit_Extensions_Selenium2TestCase_SessionCommand_Click::RIGHT);
     }
 
@@ -269,11 +272,7 @@ class Driver implements DriverInterface
     {
         try {
             $this->eventManager->dispatchEvent(['is_visible'], [__METHOD__, $element->getAbsoluteSelector()]);
-            $visible = $this->getElement(
-                $element->getLocator(),
-                $this->getContext($element->getContext(), false),
-                false
-            )->displayed();
+            $visible = $this->getNativeElement($element, false)->displayed();
         } catch (\PHPUnit_Extensions_Selenium2TestCase_WebDriverException $e) {
             $visible = false;
         }
@@ -289,7 +288,7 @@ class Driver implements DriverInterface
      */
     public function isDisabled(ElementInterface $element)
     {
-        return !$this->getElement($element->getLocator(), $this->getContext($element->getContext()))->enabled();
+        return !$this->getNativeElement($element)->enabled();
     }
 
     /**
@@ -300,7 +299,7 @@ class Driver implements DriverInterface
      */
     public function isSelected(ElementInterface $element)
     {
-        return $this->getElement($element->getLocator(), $this->getContext($element->getContext()))->selected();
+        return $this->getNativeElement($element)->selected();
     }
 
     /**
@@ -312,7 +311,8 @@ class Driver implements DriverInterface
      */
     public function setValue(ElementInterface $element, $value)
     {
-        $wrappedElement = $this->getElement($element->getLocator(), $this->getContext($element->getContext()));
+        $this->eventManager->dispatchEvent(['set_value'], [__METHOD__, $element->getAbsoluteSelector()]);
+        $wrappedElement = $this->getNativeElement($element);
         $wrappedElement->clear();
         $wrappedElement->value($value);
     }
@@ -325,7 +325,8 @@ class Driver implements DriverInterface
      */
     public function getValue(ElementInterface $element)
     {
-        return $this->getElement($element->getLocator(), $this->getContext($element->getContext()))->value();
+        $this->eventManager->dispatchEvent(['get_value'], [__METHOD__, $element->getAbsoluteSelector()]);
+        return $this->getNativeElement($element)->value();
     }
 
     /**
@@ -336,7 +337,7 @@ class Driver implements DriverInterface
      */
     public function getText(ElementInterface $element)
     {
-        return $this->getElement($element->getLocator(), $this->getContext($element->getContext()))->text();
+        return $this->getNativeElement($element)->text();
     }
 
     /**
@@ -355,15 +356,9 @@ class Driver implements DriverInterface
         $type = null,
         ElementInterface $context = null
     ) {
-        $this->eventManager->dispatchEvent(['find'], [__METHOD__, sprintf('(%s -> %s)', $strategy, $selector)]);
+        $locator = new Locator($selector, $strategy);
 
-        $locator = $this->objectManager->create(
-            'Mtf\Client\Locator',
-            [
-                'value' => $selector,
-                'strategy' => $strategy
-            ]
-        );
+        $this->eventManager->dispatchEvent(['find'], [__METHOD__, $locator]);
 
         $className = 'Mtf\Client\ElementInterface';
         if (null !== $type) {
@@ -374,7 +369,9 @@ class Driver implements DriverInterface
                 }
             } else {
                 if (!class_exists($type) && !interface_exists($type)) {
-                    throw new \Exception('Requested interface or class does not exists!');
+                    throw new \Exception(
+                        sprintf('Requested interface or class "%s" does not exists!', $type)
+                    );
                 }
                 $className = $type;
             }
@@ -399,10 +396,10 @@ class Driver implements DriverInterface
      */
     public function dragAndDrop(ElementInterface $element, ElementInterface $target)
     {
-        $this->driver->moveto($this->getElement($element->getLocator(), $this->getContext($element->getContext())));
+        $this->driver->moveto($this->getNativeElement($element));
         $this->driver->buttondown();
 
-        $this->driver->moveto($this->getElement($target->getLocator(), $this->getContext($target->getContext())));
+        $this->driver->moveto($this->getNativeElement($target));
         $this->driver->buttonup();
     }
 
@@ -415,7 +412,7 @@ class Driver implements DriverInterface
      */
     public function keys(ElementInterface $element, array $keys)
     {
-        $wrappedElement = $this->getElement($element->getLocator(), $this->getContext($element->getContext()));
+        $wrappedElement = $this->getNativeElement($element);
         $wrappedElement->clear();
         $wrappedElement->click();
         foreach ($keys as $key) {
@@ -432,13 +429,7 @@ class Driver implements DriverInterface
      */
     public function waitUntil($callback)
     {
-        try {
-            return $this->driver->waitUntil($callback);
-        } catch (\Exception $e) {
-            throw new \Exception(
-                sprintf("Error occurred during waiting for an element with message (%s)",$e->getMessage())
-            );
-        }
+        return $this->driver->waitUntil($callback);
     }
 
     /**
@@ -448,29 +439,105 @@ class Driver implements DriverInterface
      * @param string $selector
      * @param string $strategy
      * @param null|string $type
+     * @param bool $wait
      * @return ElementInterface[]
+     * @throws \Exception
      */
     public function getElements(
         ElementInterface $context,
         $selector,
         $strategy = Locator::SELECTOR_CSS,
-        $type = null
+        $type = null,
+        $wait = true
     ) {
-        $locator = $this->objectManager->create(
-            'Mtf\Client\Locator',
-            [
-                'value' => $selector,
-                'strategy' => $strategy
-            ]
-        );
+        $locator = new Locator($selector, $strategy);
+        $criteria = $this->getSearchCriteria($locator);
+        $nativeContext = $this->getNativeElement($context);
         $resultElements = [];
-        $elements = $this->getElement($context->getLocator(), $this->getContext($context->getContext()))
-            ->elements($this->getSearchCriteria($locator));
-        for ($length = count($elements), $i = 0; $i < $length; ++$i) {
-            $resultElements[$i] = $this->find($selector, $strategy, $type, $context);
+        if ($wait) {
+            try {
+                $nativeElements = $this->waitUntil(
+                    function() use ($nativeContext, $criteria) {
+                        return $nativeContext->elements($criteria);
+                    }
+                );
+            } catch (\Exception $e) {
+                throw new \Exception(
+                    sprintf(
+                        'Error occurred during waiting for an elements. Message: "%s". Locator: "%s"',
+                        $e->getMessage(),
+                        $context->getAbsoluteSelector() . ' -> ' . $locator
+                    )
+                );
+            }
+        } else {
+            $this->waitForPageToLoad();
+            $nativeElements = $nativeContext->elements($criteria);
+        }
+
+        if (count($nativeElements) > 20) {
+            // todo Temporary performance improvement for long lists of elements
+            $xpath = $this->getRelativeXpath($nativeElements[0], $nativeContext, '', false);
+            foreach ($nativeElements as $key => $element) {
+                $resultElements[] = $this->find(
+                    sprintf('%s[%s]', $xpath, $key + 1),
+                    Locator::SELECTOR_XPATH,
+                    $type,
+                    $context
+                );
+            }
+        } else {
+            foreach ($nativeElements as $key => $element) {
+                $resultElements[] = $this->find(
+                    $this->getRelativeXpath($element, $nativeContext),
+                    Locator::SELECTOR_XPATH,
+                    $type,
+                    $context
+                );
+            }
         }
 
         return $resultElements;
+    }
+
+    /**
+     * Retrieve relative xpath from context to element
+     *
+     * @param \PHPUnit_Extensions_Selenium2TestCase_Element $element
+     * @param \PHPUnit_Extensions_Selenium2TestCase_Element $context
+     * @param string $path
+     * @param bool $includeLastIndex
+     * @return null
+     */
+    protected function getRelativeXpath(
+        \PHPUnit_Extensions_Selenium2TestCase_Element $element,
+        \PHPUnit_Extensions_Selenium2TestCase_Element $context,
+        $path = '',
+        $includeLastIndex = true
+    ) {
+        if($element->equals($context)) {
+            return '.' . $path;
+        }
+
+        $parentLocator = new Locator('..', Locator::SELECTOR_XPATH);
+        $parentElement = $element->element($this->getSearchCriteria($parentLocator));
+
+        $childrenLocator = new Locator('*', Locator::SELECTOR_XPATH);
+
+        $index = 1;
+        $tag = $element->name();
+        if (!$includeLastIndex) {
+            return $this->getRelativeXpath($parentElement, $context, '/' . $tag);
+        }
+        foreach ($parentElement->elements($this->getSearchCriteria($childrenLocator)) as $child) {
+            if ($child->equals($element)) {
+                return $this->getRelativeXpath($parentElement, $context, '/' . $tag . '[' . $index . ']' . $path);
+            }
+            if ($child->name() == $tag) {
+                ++$index;
+            }
+        }
+        return null;
     }
 
     /**
@@ -482,8 +549,7 @@ class Driver implements DriverInterface
      */
     public function getAttribute(ElementInterface $element, $name)
     {
-        return $this->getElement($element->getLocator(), $this->getContext($element->getContext()))
-            ->attribute($name);
+        return $this->getNativeElement($element)->attribute($name);
     }
 
     /**
@@ -538,7 +604,9 @@ class Driver implements DriverInterface
     public function reopen()
     {
         $this->eventManager->dispatchEvent(['reopen'], [__METHOD__]);
-        $this->driver->stop();
+        if ($this->driver->getSessionId()) {
+            $this->driver->stop();
+        }
         if ($sessionStrategy = $this->configuration->getConfigParam('server/selenium/sessionStrategy')) {
             $this->driver->setSessionStrategy($sessionStrategy);
         } else {
@@ -552,12 +620,22 @@ class Driver implements DriverInterface
      *
      * @param Locator|null $locator
      * @return void
+     * @throws \Exception
      */
     public function switchToFrame(Locator $locator = null)
     {
         if ($locator) {
             $this->eventManager->dispatchEvent(['switch_to_frame'], [(string) $locator]);
-            $element = $this->getElement($locator);
+            try {
+                $element = $this->findElement($locator);
+            } catch (\Exception $e) {
+                throw new \Exception(
+                    sprintf('Error occurred during switch to frame! Message: "%s". Locator: "%s".',
+                        $e->getMessage(),
+                        $locator
+                    )
+                );
+            }
         } else {
             $this->eventManager->dispatchEvent(['switch_to_frame'], ['Switch to main window']);
             $element = null;
@@ -594,25 +672,48 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Press OK on an alert, or confirms a dialog
+     * Press OK on an alert or confirm a dialog
      *
      * @return void
      */
     public function acceptAlert()
     {
-        $this->driver->acceptAlert();
+        //$this->_driver->acceptAlert(); Temporary fix for selenium issue 3544
+        $this->waitForOperationSuccess('acceptAlert');
         $this->eventManager->dispatchEvent(['accept_alert_after'], [__METHOD__]);
     }
 
     /**
-     * Press Cancel on an alert, or does not confirm a dialog
+     * Press Cancel on alert or does not confirm a dialog
      *
      * @return void
      */
     public function dismissAlert()
     {
-        $this->driver->dismissAlert();
+        //$this->_driver->dismissAlert(); Temporary fix for selenium issue 3544
+        $this->waitForOperationSuccess('dismissAlert');
         $this->eventManager->dispatchEvent(['dismiss_alert_after'], [__METHOD__]);
+    }
+
+    /**
+     * @todo Temporary fix for selenium issue 3544
+     * https://code.google.com/p/selenium/issues/detail?id=3544
+     *
+     * @param string $operation
+     */
+    protected function waitForOperationSuccess($operation)
+    {
+        $driver = $this->driver;
+        $this->waitUntil(
+            function () use ($driver, $operation) {
+                try {
+                    $driver->$operation();
+                } catch (\PHPUnit_Extensions_Selenium2TestCase_WebDriverException $exception) {
+                    return null;
+                }
+                return true;
+            }
+        );
     }
 
     /**
@@ -672,5 +773,25 @@ class Driver implements DriverInterface
     public function getScreenshotData()
     {
         return $this->driver->currentScreenshot();
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function waitForPageToLoad()
+    {
+        $driver = $this->driver;
+        try {
+            $this->waitUntil(
+                function () use ($driver) {
+                    $result = $driver->execute(['script' => "return document['readyState']", 'args' => []]);
+                    return $result === 'complete' || $result === 'uninitialized';
+                }
+            );
+        } catch (\Exception $e) {
+            throw new \Exception(
+                sprintf('Error occurred during waiting for page to load. Message: "%s"', $e->getMessage())
+            );
+        }
     }
 }

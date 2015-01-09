@@ -134,13 +134,15 @@ interface DriverInterface extends BrowserInterface
      * @param string $selector
      * @param string $strategy
      * @param null|string $type
+     * @param bool $wait
      * @return ElementInterface[]
      */
     public function getElements(
         ElementInterface $context,
         $selector,
         $strategy = Locator::SELECTOR_CSS,
-        $type = null
+        $type = null,
+        $wait = true
     );
 
     /**
