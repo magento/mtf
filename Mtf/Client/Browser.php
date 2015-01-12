@@ -7,8 +7,6 @@
  */
 namespace Mtf\Client;
 
-use Mtf\Client\Locator;
-use Mtf\Client\DriverInterface;
 use Mtf\System\Config;
 use Mtf\ObjectManager;
 use Mtf\System\Event\EventManagerInterface;

@@ -105,8 +105,7 @@ class MultiselectElement extends SelectElement
      * @return void
      */
     public function deselectAll() {
-        $tagName = 'option';
-        $options = $this->getElements($tagName, Locator::SELECTOR_XPATH);
+        $options = $this->getElements('option[selected]');
         /** @var SimpleElement $option */
         foreach ($options as $option) {
             if ($option->isSelected()) {
