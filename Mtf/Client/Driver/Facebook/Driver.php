@@ -688,7 +688,7 @@ final class Driver implements DriverInterface
     /**
      * Inject Js Error collector
      *
-     * @return mixed
+     * @return void
      */
     public function injectJsErrorCollector()
     {
@@ -706,13 +706,13 @@ final class Driver implements DriverInterface
             }
         ';
 
-        return $this->driver->executeScript($script, []);
+        $this->driver->executeScript($script, []);
     }
 
     /**
      * Get js errors
      *
-     * @return mixed
+     * @return string
      */
     public function getJsErrors()
     {
@@ -722,7 +722,7 @@ final class Driver implements DriverInterface
             return errors;
         ';
 
-        return $this->driver->executeScript($script, []);
+        return (string) $this->driver->executeScript($script, []);
     }
 
     /**

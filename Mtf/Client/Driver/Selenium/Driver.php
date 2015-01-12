@@ -179,7 +179,7 @@ class Driver implements DriverInterface
     /**
      * Inject Js Error collector
      *
-     * @return mixed
+     * @return void
      */
     public function injectJsErrorCollector()
     {
@@ -204,7 +204,7 @@ class Driver implements DriverInterface
     /**
      * Get js errors
      *
-     * @return mixed
+     * @return string
      */
     public function getJsErrors()
     {

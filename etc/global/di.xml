@@ -24,7 +24,8 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <preference for="Mtf\Client\BrowserInterface" type="Mtf\Client\Driver\Selenium\Driver"/>
+    <preference for="Mtf\Client\DriverInterface" type="Mtf\Client\Driver\Selenium\Driver"/>
+    <preference for="Mtf\Client\BrowserInterface" type="Mtf\Client\Browser"/>
     <preference for="Mtf\Client\ElementInterface" type="Mtf\Client\Element\SimpleElement"/>
     <preference for="Mtf\System\Event\EventManagerInterface" type="Mtf\System\Event\EventManager"/>
     <preference for="Mtf\Constraint\AbstractConstraint" type="Mtf\Constraint\Dummy"/>

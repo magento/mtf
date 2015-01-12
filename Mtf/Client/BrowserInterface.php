@@ -168,14 +168,14 @@ interface BrowserInterface
     /**
      * Inject Js Error collector
      *
-     * @return mixed
+     * @return void
      */
     public function injectJsErrorCollector();
 
     /**
      * Get js errors
      *
-     * @return mixed
+     * @return string
      */
     public function getJsErrors();
 }

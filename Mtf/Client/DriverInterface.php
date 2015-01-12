@@ -10,7 +10,7 @@ namespace Mtf\Client;
 /**
  * Interface DriverInterface
  */
-interface DriverInterface extends BrowserInterface
+interface DriverInterface
 {
     /**
      * Click
@@ -260,4 +260,18 @@ interface DriverInterface extends BrowserInterface
      * @return string
      */
     public function getScreenshotData();
+
+    /**
+     * Inject Js Error collector
+     *
+     * @return void
+     */
+    public function injectJsErrorCollector();
+
+    /**
+     * Get js errors
+     *
+     * @return string
+     */
+    public function getJsErrors();
 }
