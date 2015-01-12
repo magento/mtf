@@ -475,26 +475,13 @@ class Driver implements DriverInterface
             $nativeElements = $nativeContext->elements($criteria);
         }
 
-        if (count($nativeElements) > 20) {
-            // todo Temporary performance improvement for long lists of elements
-            $xpath = $this->getRelativeXpath($nativeElements[0], $nativeContext, '', false);
-            foreach ($nativeElements as $key => $element) {
-                $resultElements[] = $this->find(
-                    sprintf('%s[%s]', $xpath, $key + 1),
-                    Locator::SELECTOR_XPATH,
-                    $type,
-                    $context
-                );
-            }
-        } else {
-            foreach ($nativeElements as $key => $element) {
-                $resultElements[] = $this->find(
-                    $this->getRelativeXpath($element, $nativeContext),
-                    Locator::SELECTOR_XPATH,
-                    $type,
-                    $context
-                );
-            }
+        foreach ($nativeElements as $key => $element) {
+            $resultElements[] = $this->find(
+                $this->getRelativeXpath($element, $nativeContext),
+                Locator::SELECTOR_XPATH,
+                $type,
+                $context
+            );
         }
 
         return $resultElements;
