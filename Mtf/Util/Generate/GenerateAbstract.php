@@ -112,6 +112,10 @@ class GenerateAbstract
      *
      * @param string $type
      * @return void
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
     protected function _startFactory($type)
     {
@@ -224,7 +228,10 @@ class GenerateAbstract
                     $this->_processItem($items, $rewrites, $filePath, $location, $path);
                 } else {
                     $dirIterator = new \RecursiveIteratorIterator(
-                        new \RecursiveDirectoryIterator($filePath, \FilesystemIterator::SKIP_DOTS)
+                        new \RecursiveDirectoryIterator(
+                            $filePath,
+                            \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::FOLLOW_SYMLINKS
+                        )
                     );
                     foreach ($dirIterator as $info) {
                         /** @var $info \SplFileInfo */
@@ -287,7 +294,10 @@ class GenerateAbstract
                         continue;
                     }
                     $filesIterator = new \RecursiveIteratorIterator(
-                        new \RecursiveDirectoryIterator($controllersPath, \FilesystemIterator::SKIP_DOTS)
+                        new \RecursiveDirectoryIterator(
+                            $controllersPath,
+                            \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::FOLLOW_SYMLINKS
+                        )
                     );
 
                     foreach ($filesIterator as $fileInfo) {

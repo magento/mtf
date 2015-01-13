@@ -43,6 +43,9 @@ class TestSuite extends \PHPUnit_Framework_TestSuite
      * @param  false|bool $processIsolation
      *
      * @return \PHPUnit_Framework_TestResult
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function run(
         \PHPUnit_Framework_TestResult $result = null,
@@ -53,6 +56,11 @@ class TestSuite extends \PHPUnit_Framework_TestSuite
     ) {
         if ($result === null) {
             $result = $this->createResult();
+        }
+
+        $classShortName = (new \ReflectionClass($this))->getShortName();
+        if ('InjectableTestCase' == $classShortName && !$this->validate()) {
+            return $result;
         }
 
         $result->startTestSuite($this);

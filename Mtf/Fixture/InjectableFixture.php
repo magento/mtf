@@ -130,6 +130,8 @@ class InjectableFixture implements FixtureInterface
      * @param array $data
      * @param string $dataSet
      * @param bool $persist
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function __construct(
         Config $configuration,

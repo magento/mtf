@@ -85,6 +85,11 @@ class TestCase extends AbstractIterator
     protected function isValid()
     {
         $class = $this->current['class'];
+        $reflection = new \ReflectionClass($class);
+
+        if ($reflection->isAbstract()) {
+            return false;
+        }
 
         foreach ($this->rules as $rule) {
             if (!$rule->apply($class)) {

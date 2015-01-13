@@ -25,6 +25,7 @@
 namespace Mtf\TestSuite;
 
 use Mtf\ObjectManager;
+use Mtf\TestCase\Injectable as TestCaseInjectable;
 
 /**
  * Class InjectableTestCase
@@ -95,5 +96,32 @@ class InjectableTestCase extends Injectable
     protected function initObjectManager()
     {
         $this->objectManager = \Mtf\ObjectManager::getInstance();
+    }
+
+    /**
+     * Validate if empty test methods
+     *
+     * @return bool
+     */
+    public function validate()
+    {
+        foreach ($this->tests as $method) {
+            foreach ($method->tests as $methodTest) {
+                if (!$methodTest instanceof TestCaseInjectable) {
+                    return true;
+                }
+
+                /** @var $testVariationIterator \Mtf\Util\Iterator\TestCaseVariation */
+                $testVariationIterator = $this->objectManager->create(
+                    'Mtf\Util\Iterator\TestCaseVariation',
+                    ['testCase' => $methodTest]
+                );
+                if (count($testVariationIterator) > 0) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

@@ -194,6 +194,7 @@ abstract class Block implements BlockInterface
      *
      * @param string $renderName
      * @return BlockInterface|null
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function getRenderInstance($renderName)
     {

@@ -68,6 +68,7 @@ class XmlConverter
      *
      * @param \SimpleXMLElement $element
      * @return bool
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
     public function hasChildren(\SimpleXMLElement $element)
     {

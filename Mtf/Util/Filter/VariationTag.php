@@ -46,6 +46,7 @@ class VariationTag extends AbstractFilterTag implements FilterInterface
      *
      * @param string $subject
      * @return array
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function convertTags($subject)
     {
@@ -53,7 +54,9 @@ class VariationTag extends AbstractFilterTag implements FilterInterface
         $result = [];
 
         foreach ($compositeTags as $compositeTag) {
-            list($group, $tag) = explode(':', $compositeTag);
+            $pieces = explode(':', $compositeTag);
+            $group = isset($pieces[0]) ? $pieces[0] : '';
+            $tag = isset($pieces[1]) ? $pieces[1] : '';
 
             if (!isset($result[$group])) {
                 $result[$group] = [];

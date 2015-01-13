@@ -109,7 +109,14 @@ class Browser implements \Mtf\Client\Browser
     public function open($url)
     {
         $this->_eventManager->dispatchEvent(['open_before'], [__METHOD__, $url]);
-        $this->_driver->url($url);
+        try {
+            $this->_driver->url($url);
+        } catch (\PHPUnit_Extensions_Selenium2TestCase_WebDriverException $exception) {
+            //@todo Workaround for selenium issues https://code.google.com/p/selenium/issues/detail?id=5165
+            $this->_eventManager->dispatchEvent(['exception'], [__METHOD__, $url, $exception->getMessage()]);
+            $this->_driver->refresh();
+            $this->_driver->url($url);
+        }
         $this->_eventManager->dispatchEvent(['open_after'], [__METHOD__, $url]);
     }
 

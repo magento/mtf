@@ -71,6 +71,7 @@ class FixtureFactory extends GenerateAbstract
      *
      * @param array $item
      * @return void
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     protected function _addFixtureToFactory($item)
     {

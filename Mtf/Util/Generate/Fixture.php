@@ -195,7 +195,10 @@ class Fixture extends AbstractGenerate
             }
 
             $dirIterator = new \RecursiveIteratorIterator(
-                new \RecursiveDirectoryIterator($modulePath . '/Test/Fixture', \FilesystemIterator::SKIP_DOTS)
+                new \RecursiveDirectoryIterator(
+                    $modulePath . '/Test/Fixture',
+                    \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::FOLLOW_SYMLINKS
+                )
             );
             foreach ($dirIterator as $fileInfo) {
                 /** @var $fileInfo \SplFileInfo */
@@ -244,6 +247,8 @@ class Fixture extends AbstractGenerate
      *
      * @param array $item
      * @return void
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function generateClass(array $item)
     {

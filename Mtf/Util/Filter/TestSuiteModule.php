@@ -50,6 +50,7 @@ class TestSuiteModule extends AbstractClassModule
      *
      * @param string $class
      * @return bool
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function apply($class)
     {

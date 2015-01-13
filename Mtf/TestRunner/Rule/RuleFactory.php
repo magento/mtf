@@ -63,6 +63,7 @@ class RuleFactory
      * @param string $scope
      * @return Rule
      * @throws \Exception
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
     public function create($scope)
     {

@@ -102,6 +102,7 @@ class InjectableTestCase extends Injectable
      *
      * @param \Mtf\ObjectManager $objectManager
      * @return void
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function test6(\Mtf\ObjectManager $objectManager)
     {

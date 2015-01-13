@@ -69,14 +69,17 @@ class TestClassResolver
 
             $dirIterator = new \RegexIterator(
                 new \RecursiveIteratorIterator(
-                    new \RecursiveDirectoryIterator($modulePath . '/Test/' . $classType, \FilesystemIterator::SKIP_DOTS)
+                    new \RecursiveDirectoryIterator(
+                        $modulePath . '/Test/' . $classType,
+                        \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::FOLLOW_SYMLINKS
+                    )
                 ),
                 '/.php$/i'
             );
 
             foreach ($dirIterator as $fileInfo) {
                 /** @var $fileInfo \SplFileInfo */
-                $filePath = $fileInfo->getRealPath();
+                $filePath = $fileInfo->getPathname();
                 $filePath = str_replace('\\', '/', $filePath);
                 $classPath = str_replace(MTF_TESTS_PATH, '', $filePath);
                 $className = str_replace('/', '\\', $classPath);
