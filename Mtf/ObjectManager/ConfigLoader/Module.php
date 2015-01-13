@@ -29,6 +29,7 @@ namespace Mtf\ObjectManager\ConfigLoader;
  * MTF Modular configuration loader. Loads configuration from XML files, located in modules' directories
  *
  * @internal
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Module
 {

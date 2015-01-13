@@ -29,6 +29,7 @@ namespace Mtf\ObjectManager\ConfigLoader;
  * MTF Primary DI configuration loader
  *
  * @internal
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Primary
 {

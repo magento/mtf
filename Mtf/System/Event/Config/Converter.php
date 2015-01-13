@@ -33,6 +33,7 @@ class Converter implements ConverterInterface
      *
      * @param \DOMDocument $node
      * @return array|string
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function convert($node)
     {

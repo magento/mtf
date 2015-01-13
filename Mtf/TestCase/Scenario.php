@@ -114,6 +114,7 @@ abstract class Scenario extends Injectable
      * @param array $additionalSteps
      * @param array $baseSteps
      * @return array
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
     protected function interposeSteps(array $additionalSteps, array $baseSteps)
     {

@@ -172,6 +172,8 @@ class Form extends Block
      * @param array|null $fields
      * @param string|null $parent
      * @return array
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function dataMapping(array $fields = null, $parent = null)
     {

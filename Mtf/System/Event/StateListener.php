@@ -36,6 +36,7 @@ class StateListener implements \PHPUnit_Framework_TestListener
      * @param \Exception $e
      * @param float $time
      * @return void
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function addError(\PHPUnit_Framework_Test $test, \Exception $e, $time)
     {
@@ -49,6 +50,7 @@ class StateListener implements \PHPUnit_Framework_TestListener
      * @param \PHPUnit_Framework_AssertionFailedError $e
      * @param float $time
      * @return void
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function addFailure(\PHPUnit_Framework_Test $test, \PHPUnit_Framework_AssertionFailedError $e, $time)
     {
@@ -62,6 +64,7 @@ class StateListener implements \PHPUnit_Framework_TestListener
      * @param \Exception $e
      * @param float $time
      * @return void
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function addIncompleteTest(\PHPUnit_Framework_Test $test, \Exception $e, $time)
     {
@@ -75,6 +78,7 @@ class StateListener implements \PHPUnit_Framework_TestListener
      * @param \Exception $e
      * @param float $time
      * @return void
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function addRiskyTest(\PHPUnit_Framework_Test $test, \Exception $e, $time)
     {
@@ -88,6 +92,7 @@ class StateListener implements \PHPUnit_Framework_TestListener
      * @param \Exception $e
      * @param float $time
      * @return void
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function addSkippedTest(\PHPUnit_Framework_Test $test, \Exception $e, $time)
     {
@@ -112,6 +117,7 @@ class StateListener implements \PHPUnit_Framework_TestListener
      *
      * @param \PHPUnit_Framework_TestSuite $suite
      * @return void
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function endTestSuite(\PHPUnit_Framework_TestSuite $suite)
     {
@@ -136,6 +142,7 @@ class StateListener implements \PHPUnit_Framework_TestListener
      * @param \PHPUnit_Framework_Test $test
      * @param float $time
      * @return void
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function endTest(\PHPUnit_Framework_Test $test, $time)
     {

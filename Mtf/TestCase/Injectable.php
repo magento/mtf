@@ -128,6 +128,8 @@ abstract class Injectable extends Functional
      *
      * @param \PHPUnit_Framework_TestResult $result
      * @return \PHPUnit_Framework_TestResult
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function run(\PHPUnit_Framework_TestResult $result = null)
     {

@@ -99,6 +99,7 @@ abstract class AbstractConstraint extends \PHPUnit_Framework_Constraint implemen
      * Get constraint result
      *
      * @return bool
+     * @SuppressWarnings(PHPMD.BooleanGetMethodName)
      */
     public function getResult()
     {

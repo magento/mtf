@@ -209,6 +209,7 @@ class Config implements \Mtf\ObjectManager\ConfigInterface
      *
      * @param array $configuration
      * @return void
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     protected function _mergeConfiguration(array $configuration)
     {

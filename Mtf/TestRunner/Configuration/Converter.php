@@ -48,6 +48,8 @@ class Converter implements \Mtf\Config\ConverterInterface
      *
      * @param \DOMElement $element
      * @return array
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function convertElement(\DOMElement $element)
     {

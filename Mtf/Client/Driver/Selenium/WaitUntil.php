@@ -56,6 +56,8 @@ class WaitUntil
      * @return mixed
      * @throws \PHPUnit_Extensions_Selenium2TestCase_Exception
      * @throws \PHPUnit_Extensions_Selenium2TestCase_WebDriverException
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public static function run($callback, $testCase, $timeout = null)
     {

@@ -138,6 +138,7 @@ class Config extends Data
      * @param string $name
      * @throws \Exception
      * @return array
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     protected function getPresetObservers($metadata, $name)
     {
