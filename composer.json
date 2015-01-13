@@ -15,9 +15,9 @@
         "facebook/webdriver": "dev-master"
     },
     "autoload": {
-        "psr-0": {
+        "psr-4": {
             "Mtf\\": "",
-            "": "tests/app"
+            "Magento\\": "tests/app"
         }
     }
 }
