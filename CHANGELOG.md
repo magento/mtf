@@ -1,3 +1,4 @@
+* Fixed issue with applying tagging mechanism on variation scope in parallel mode
 * Code marked with @SuppressWarnings annotations
 
 1.0.0-rc.11
