@@ -94,11 +94,27 @@ class Config
      *
      * @param string $configName
      * @param string $scope
-     * @return array
+     * @return array|mixed|null
      */
-    public function getData($configName, $scope = null)
+    public function getParameter($configName = null, $scope = null)
     {
+        $parameterPath = null;
+
+        if (strpos($configName, '/')) {
+            $parameterPath = $configName;
+            $configName = explode('/', $configName)[0];
+        }
+
         switch ($configName) {
+            case null:
+            case 'application':
+            case 'server':
+            case 'isolation':
+            case 'handler':
+                $filePath = is_null($scope) ? null : $scope;
+                $systemConfigReader = new \Mtf\System\Config($filePath);
+                return $systemConfigReader->getConfigParam($parameterPath);
+                break;
             case 'scenario':
                 return $this->scenarioConfigReader->read($scope);
                 break;
@@ -115,5 +131,20 @@ class Config
                 $scope = is_null($scope) ? null : 'etc';
                 return $this->defaultConfigReader->read($configName, $scope);
         }
+    }
+
+    /**
+     * Return value from $_ENV container
+     *
+     * @param string $param
+     * @param string $default
+     * @return null|string
+     */
+    public static function getEnvironmentValue($param, $default = null)
+    {
+        if (!isset($_ENV[$param])) {
+            return $default;
+        }
+        return $_ENV[$param];
     }
 }
