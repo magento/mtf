@@ -23,7 +23,6 @@
  */
 namespace Mtf\System\Event;
 
-use Mtf\System\Event\Config\Reader;
 use Magento\Framework\Config\Data;
 
 /**
@@ -32,11 +31,11 @@ use Magento\Framework\Config\Data;
 class Config extends Data
 {
     /**
-     * Configuration reader model
+     * Configuration model
      *
-     * @var \Magento\Framework\Config\ReaderInterface
+     * @var \Mtf\Config
      */
-    protected $reader;
+    protected $config;
 
     /**
      * Preset name for observers configuration
@@ -62,13 +61,13 @@ class Config extends Data
     /**
      * Constructor
      *
-     * @param Reader $reader
+     * @param \Mtf\Config $config
      */
     public function __construct(
-        Reader $reader
+        \Mtf\Config $config
     ) {
-        $this->reader = $reader;
-        $data = $reader->read();
+        $this->config = $config;
+        $data = $config->getData('events');
         $this->presetName = isset($_ENV['events_preset'])
             ? $_ENV['events_preset']
             : 'default';

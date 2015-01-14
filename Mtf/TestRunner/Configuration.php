@@ -24,7 +24,7 @@
 
 namespace Mtf\TestRunner;
 
-use Mtf\TestRunner\Configuration\Reader;
+use Mtf\Config;
 
 /**
  * Loader test runner configuration.
@@ -53,17 +53,17 @@ class Configuration
     /**
      * Configuration reader.
      *
-     * @var Reader
+     * @var Config
      */
-    protected $reader;
+    protected $config;
 
     /**
      * @constructor
-     * @param Reader $reader
+     * @param Config $config
      */
-    public function __construct(Reader $reader)
+    public function __construct(Config $config)
     {
-        $this->reader = $reader;
+        $this->config = $config;
     }
 
     /**
@@ -74,7 +74,7 @@ class Configuration
      */
     public function load($configFolderPath)
     {
-        $this->data = $this->reader->read($configFolderPath);
+        $this->data = $this->config->getData('test_runner', $configFolderPath);
         if (isset($this->data['rule'])) {
             $this->data['rule'] = $this->prepareRule($this->data['rule']);
         }

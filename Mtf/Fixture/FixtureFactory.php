@@ -25,7 +25,7 @@
 namespace Mtf\Fixture;
 
 use Mtf\Factory\AbstractFactory;
-use Mtf\Configuration\Reader;
+use Mtf\Config;
 use Mtf\ObjectManager;
 
 /**
@@ -52,14 +52,14 @@ class FixtureFactory extends AbstractFactory
     /**
      * @constructor
      * @param ObjectManager $objectManager
-     * @param Reader $fixtureReader
+     * @param Config $config
      */
     public function __construct(
         ObjectManager $objectManager,
-        Reader $fixtureReader
+        Config $config
     ) {
         parent::__construct($objectManager);
-        $this->configuration = $fixtureReader->read('fixture');
+        $this->configuration = $config->getData('fixture');
     }
 
     /**

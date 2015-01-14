@@ -24,8 +24,6 @@
 
 namespace Mtf\TestCase;
 
-use Mtf\Config\Reader;
-
 /**
  * Class Scenario
  * Base test case class for functional test using scenario.
@@ -36,11 +34,9 @@ use Mtf\Config\Reader;
 abstract class Scenario extends Injectable
 {
     /**
-     * Configuration reader.
-     *
-     * @var Reader
+     * @var \Mtf\Config
      */
-    protected $reader;
+    protected $config;
 
     /**
      * @constructor
@@ -51,7 +47,7 @@ abstract class Scenario extends Injectable
      */
     public function __construct($name = null, array $data = [], $dataName = '', $path = '')
     {
-        $this->reader = $this->getObjectManager()->get('Mtf\Config\Reader');
+        $this->config = $this->getObjectManager()->get('Mtf\Config');
         parent::__construct($name, $data, $dataName, $path);
     }
 
@@ -66,7 +62,7 @@ abstract class Scenario extends Injectable
         $result = [];
         $pathToClass = explode('\\', get_called_class());
         $testCaseName = end($pathToClass);
-        $config = $this->reader->read('etc');
+        $config = $this->config->getData('scenario');
 
         if (!empty($config['scenarios'][$testCaseName]['methods'][$testMethodName]['steps'])) {
             $steps = $this->prepareSteps($config['scenarios'][$testCaseName]['methods'][$testMethodName]['steps']);

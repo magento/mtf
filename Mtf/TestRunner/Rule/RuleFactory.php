@@ -25,6 +25,7 @@
 namespace Mtf\TestRunner\Rule;
 
 use Mtf\ObjectManager;
+use Mtf\Config;
 
 /**
  * Factory for create rules.
@@ -47,14 +48,15 @@ class RuleFactory
 
     /**
      * @constructor
-     * @param Configuration $configuration
+     * @param ObjectManager $objectManager
+     * @param Config $config
      */
-    public function __construct(ObjectManager $objectManager, Configuration $configuration)
+    public function __construct(ObjectManager $objectManager, Config $config)
     {
         $configFilePath = __DIR__ . '/etc/rule.xml';
 
         $this->objectManager = $objectManager;
-        $this->config = $configuration->read($configFilePath);
+        $this->config = $config->getData('test_runner_rule', $configFilePath);
     }
 
     /**

@@ -25,7 +25,7 @@
 namespace Mtf\Util\Generate;
 
 use Mtf\Util\Generate\Repository\CollectionProviderInterface;
-use Mtf\Configuration\Reader;
+use Mtf\Config;
 use Magento\Framework\ObjectManagerInterface;
 
 /**
@@ -37,9 +37,9 @@ use Magento\Framework\ObjectManagerInterface;
 class Repository extends AbstractGenerate
 {
     /**
-     * @var Reader
+     * @var Config
      */
-    protected $configReader;
+    protected $config;
 
     /**
      * @var CollectionProviderInterface
@@ -49,16 +49,16 @@ class Repository extends AbstractGenerate
     /**
      * @constructor
      * @param ObjectManagerInterface $objectManager
-     * @param Reader $configReader
+     * @param Config $config
      * @param CollectionProviderInterface $collectionProvider
      */
     public function __construct(
         ObjectManagerInterface $objectManager,
-        Reader $configReader,
+        Config $config,
         CollectionProviderInterface $collectionProvider
     ) {
         parent::__construct($objectManager);
-        $this->configReader = $configReader;
+        $this->config = $config;
         $this->collectionProvider = $collectionProvider;
     }
 
@@ -84,7 +84,7 @@ class Repository extends AbstractGenerate
     {
         $this->cnt = 0;
 
-        $configuration = $this->configReader->read('fixture');
+        $configuration = $this->config->getData('fixture');
         foreach ($configuration as $name => $item) {
             $this->generateRepositoryXml($name, $item);
         }

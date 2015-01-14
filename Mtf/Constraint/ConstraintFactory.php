@@ -25,7 +25,7 @@
 namespace Mtf\Constraint;
 
 use Mtf\ObjectManager;
-use Mtf\Configuration\Reader;
+use Mtf\Config;
 
 /**
  * Factory for Constraints.
@@ -57,10 +57,10 @@ class ConstraintFactory
      * @param ObjectManager $objectManager
      * @param Reader $constraintReader
      */
-    public function __construct(ObjectManager $objectManager, Reader $constraintReader)
+    public function __construct(ObjectManager $objectManager, Config $config)
     {
         $this->objectManager = $objectManager;
-        $this->configuration = $constraintReader->read('constraint');
+        $this->configuration = $config->getData('constraint');
     }
 
     /**
