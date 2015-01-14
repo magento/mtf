@@ -35,27 +35,28 @@
     </testsuites>
 
     <listeners>
-        <listener class="Mtf\System\Browser\Listener"/>
+        <listener class="Mtf\System\Browser\Listener" />
         <listener class="Mtf\System\Isolation\Listener">
             <arguments>
-                <object class="Mtf\System\Isolation\Driver\Base"/>
+                <object class="Mtf\System\Isolation\Driver\Base" />
             </arguments>
         </listener>
-        <listener class="Mtf\System\Event\StateListener"/>
-        <listener class="Mtf\System\JUnit"/>
+        <listener class="Mtf\System\Event\StateListener" />
+        <listener class="Mtf\System\JUnit" />
     </listeners>
 
     <php>
-        <env name="app_frontend_url" value="http://google.com/"/>
-        <env name="app_backend_url" value="http://localhost/backend/"/>
-        <env name="app_config_path" value="config/application.yml.dist"/>
-        <env name="server_config_path" value="config/server.yml.dist"/>
-        <env name="isolation_config_path" value="config/isolation.yml.dist"/>
-        <env name="handlers_config_path" value="config/handler.yml.dist"/>
-        <env name="configuration:Magento/Mtf/TestSuite/MtfTests" value="basic"/>
-        <env name="log_directory" value="var/log"/>
-        <env name="events_preset" value="base"/>
-        <env name="report_file_name" value="test-cases-report.xml"/>
+        <env name="app_frontend_url" value="http://google.com/" />
+        <env name="app_backend_url" value="http://localhost/backend/" />
+        <env name="app_config_path" value="config/application.yml.dist" />
+        <env name="server_config_path" value="config/server.yml.dist" />
+        <env name="isolation_config_path" value="config/isolation.yml.dist" />
+        <env name="handlers_config_path" value="config/handler.yml.dist" />
+        <env name="testsuite_rule" value="basic" />
+        <env name="testsuite_rule_path" value="Magento/Mtf/TestSuite/MtfTests" />
+        <env name="log_directory" value="var/log" />
+        <env name="events_preset" value="base" />
+        <env name="report_file_name" value="test-cases-report.xml" />
     </php>
 
 </phpunit>
