@@ -87,7 +87,7 @@ class TestStep extends Common implements CheckerInterface
      */
     protected function initialize()
     {
-        $scenarioConfig = $this->config->getData('scenario');
+        $scenarioConfig = $this->config->getParameter('scenario');
         if (empty($scenarioConfig) || empty($scenarioConfig['scenarios'])) {
             $this->testStepCrossModuleMap = [];
             return;

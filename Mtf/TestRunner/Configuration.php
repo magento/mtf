@@ -74,7 +74,7 @@ class Configuration
      */
     public function load($configFolderPath)
     {
-        $this->data = $this->config->getData('test_runner', $configFolderPath);
+        $this->data = $this->config->getParameter('test_runner', $configFolderPath);
         if (isset($this->data['rule'])) {
             $this->data['rule'] = $this->prepareRule($this->data['rule']);
         }

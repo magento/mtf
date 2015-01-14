@@ -25,7 +25,7 @@
 namespace Mtf\Client\Driver\Selenium;
 
 use Mtf\Client\Element\Locator;
-use Mtf\System\Config;
+use Mtf\Config; // Mtf\SystemConfig
 use Mtf\System\Event\EventManagerInterface;
 
 /**
@@ -92,7 +92,7 @@ class Browser implements \Mtf\Client\Browser
     {
         $this->_driver = clone $this->_prototype;
         $this->_driver->setBrowserUrl('about:blank');
-        $this->_driver->setupSpecificBrowser($this->_configuration->getConfigParam('server/selenium'));
+        $this->_driver->setupSpecificBrowser($this->_configuration->getParameter('server/selenium'));
         $this->_driver->prepareSession();
 
         $this->_driver->currentWindow()->maximize();
@@ -164,7 +164,7 @@ class Browser implements \Mtf\Client\Browser
         $this->_driver->stop();
         $this->_driver->setSessionStrategy('isolated');
         $this->_init();
-        if ($sessionStrategy = $this->_configuration->getConfigParam('server/selenium/sessionStrategy')) {
+        if ($sessionStrategy = $this->_configuration->getParameter('server/selenium/sessionStrategy')) {
             $this->_driver->setSessionStrategy($sessionStrategy);
         }
     }

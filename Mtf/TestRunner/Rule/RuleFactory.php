@@ -56,7 +56,7 @@ class RuleFactory
         $configFilePath = __DIR__ . '/etc/rule.xml';
 
         $this->objectManager = $objectManager;
-        $this->config = $config->getData('test_runner_rule', $configFilePath);
+        $this->config = $config->getParameter('test_runner_rule', $configFilePath);
     }
 
     /**

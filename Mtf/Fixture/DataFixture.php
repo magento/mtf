@@ -25,7 +25,7 @@
 namespace Mtf\Fixture;
 
 use Mtf\Repository\AbstractRepository;
-use Mtf\System\Config;
+use Mtf\Config; // Mtf\SystemConfig
 
 /**
  * Class DataFixture

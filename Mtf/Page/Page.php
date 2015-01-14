@@ -28,7 +28,7 @@ use Mtf\Block\BlockFactory;
 use Mtf\Block\BlockInterface;
 use Mtf\Fixture\FixtureInterface;
 use Mtf\Client\Browser;
-use Mtf\System\Config;
+use Mtf\Config; // Mtf\SystemConfig
 
 /**
  * Class Page

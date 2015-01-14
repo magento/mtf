@@ -24,7 +24,7 @@
 
 namespace Mtf\Util;
 
-use Mtf\System\Config;
+use Mtf\Config; // Mtf\SystemConfig
 
 /**
  * Class ModuleResolver, resolve module path based on enabled modules of target Magento instance
@@ -49,7 +49,7 @@ class ModuleResolver
     protected $enabledModulePaths = null;
 
     /**
-     * @var \Mtf\System\Config
+     * @var Config
      */
     protected $configuration;
 
@@ -96,7 +96,7 @@ class ModuleResolver
         if ($configuration) {
             $this->configuration = $configuration;
         } else {
-            $this->configuration = new Config();
+            $this->configuration = \Mtf\ObjectManager::getInstance()->get('\Mtf\Config');;
         }
     }
 
@@ -194,7 +194,7 @@ class ModuleResolver
      */
     protected function getAdminToken()
     {
-        $credentials = $this->configuration->getConfigParam('application/backend_user_credentials');
+        $credentials = $this->configuration->getParameter('application/backend_user_credentials');
         if (!$credentials || !isset($_ENV['app_frontend_url'])) {
             return false;
         }

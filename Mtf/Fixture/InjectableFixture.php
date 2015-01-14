@@ -26,7 +26,7 @@ namespace Mtf\Fixture;
 
 use Mtf\Handler\HandlerFactory;
 use Mtf\Repository\RepositoryFactory;
-use Mtf\System\Config;
+use Mtf\Config; // Mtf\SystemConfig
 use Mtf\System\Event\EventManagerInterface;
 
 /**

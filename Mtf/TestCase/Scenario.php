@@ -62,7 +62,7 @@ abstract class Scenario extends Injectable
         $result = [];
         $pathToClass = explode('\\', get_called_class());
         $testCaseName = end($pathToClass);
-        $config = $this->config->getData('scenario');
+        $config = $this->config->getParameter('scenario');
 
         if (!empty($config['scenarios'][$testCaseName]['methods'][$testMethodName]['steps'])) {
             $steps = $this->prepareSteps($config['scenarios'][$testCaseName]['methods'][$testMethodName]['steps']);

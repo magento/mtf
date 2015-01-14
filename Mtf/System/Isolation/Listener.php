@@ -25,7 +25,7 @@
 namespace Mtf\System\Isolation;
 
 use Mtf\System\Isolation\Driver;
-use Mtf\System\Config;
+use Mtf\Config; // Mtf\SystemConfig
 
 /**
  * Class Listener
@@ -94,18 +94,18 @@ class Listener implements \PHPUnit_Framework_TestListener
 
     /**
      * @param \Mtf\System\Isolation\Driver $driver
-     * @param null|\Mtf\System\Config $configuration
+     * @param null|Config $configuration
      */
     public function __construct(Driver $driver, $configuration = null)
     {
         if (!isset($configuration)) {
-            $configuration = new Config();
+            $configuration = \Mtf\ObjectManager::getInstance()->get('\Mtf\Config');
         }
         $this->_driver = $driver;
         $this->_lastDefaultModes = [
-            self::SCOPE_TEST_SUITE => $configuration->getConfigParam('isolation/' . self::SCOPE_TEST_SUITE),
-            self::SCOPE_TEST_CASE => $configuration->getConfigParam('isolation/' . self::SCOPE_TEST_CASE),
-            self::SCOPE_TEST => $configuration->getConfigParam('isolation/' . self::SCOPE_TEST),
+            self::SCOPE_TEST_SUITE => $configuration->getParameter('isolation/' . self::SCOPE_TEST_SUITE),
+            self::SCOPE_TEST_CASE => $configuration->getParameter('isolation/' . self::SCOPE_TEST_CASE),
+            self::SCOPE_TEST => $configuration->getParameter('isolation/' . self::SCOPE_TEST),
         ];
     }
 

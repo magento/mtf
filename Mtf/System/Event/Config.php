@@ -67,7 +67,7 @@ class Config extends Data
         \Mtf\Config $config
     ) {
         $this->config = $config;
-        $data = $config->getData('events');
+        $data = $config->getParameter('events');
         $this->presetName = isset($_ENV['events_preset'])
             ? $_ENV['events_preset']
             : 'default';

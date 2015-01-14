@@ -90,7 +90,7 @@ class Fixture extends AbstractGenerate
     protected function generateXml()
     {
         $this->cnt = 0;
-        $configuration = $this->config->getData('fixture');
+        $configuration = $this->config->getParameter('fixture');
         foreach ($configuration as $name => $item) {
             $this->generateFixtureXml($name, $item);
         }

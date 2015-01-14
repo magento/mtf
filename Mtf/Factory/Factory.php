@@ -25,7 +25,7 @@
 namespace Mtf\Factory;
 
 use Mtf\Factory as FactoryInterface;
-use Mtf\System\Config;
+use Mtf\Config; // Mtf\SystemConfig
 use Mtf;
 
 /**
@@ -116,7 +116,7 @@ class Factory implements FactoryInterface
      */
     public static function initConfig()
     {
-        self::$_config = self::getObjectManager()->get('Mtf\System\Config');
+        self::$_config = self::getObjectManager()->get('Mtf\Config');
     }
 
     /**

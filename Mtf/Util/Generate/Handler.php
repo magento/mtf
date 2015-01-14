@@ -73,7 +73,7 @@ class Handler extends AbstractGenerate
     {
         $this->cnt = 0;
 
-        $configuration = $this->config->getData('fixture');
+        $configuration = $this->config->getParameter('fixture');
         foreach ($configuration as $name => $item) {
             $this->generateInterface($name, $item);
             $this->generateCurl($name, $item);

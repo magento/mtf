@@ -73,7 +73,7 @@ class Constraint extends AbstractGenerate
     {
         $this->cnt = 0;
 
-        $configuration = $this->config->getData('constraint');
+        $configuration = $this->config->getParameter('constraint');
         foreach ($configuration as $name => $item) {
             $this->generateClass($name, $item);
         }

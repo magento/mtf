@@ -60,7 +60,7 @@ class ConstraintFactory
     public function __construct(ObjectManager $objectManager, Config $config)
     {
         $this->objectManager = $objectManager;
-        $this->configuration = $config->getData('constraint');
+        $this->configuration = $config->getParameter('constraint');
     }
 
     /**
