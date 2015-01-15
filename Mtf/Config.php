@@ -68,25 +68,11 @@ class Config
      * Class Constructor
      *
      * @constructor
-     * @param \Mtf\Config\Reader $scenarioConfigReader
-     * @param \Mtf\TestRunner\Configuration\Reader $testRunnerConfigReader
-     * @param \Mtf\TestRunner\Rule\Configuration $testRunnerRuleConfigReader
-     * @param \Mtf\System\Event\Config\Reader $eventsConfigReader
-     * @param \Mtf\Configuration\Reader $defaultConfigReader
+     * @param \Mtf\ObjectManager $objectManager
      */
-    public function __construct(
-        \Mtf\Config\Reader $scenarioConfigReader,
-        \Mtf\TestRunner\Configuration\Reader $testRunnerConfigReader,
-        \Mtf\TestRunner\Rule\Configuration $testRunnerRuleConfigReader,
-        \Mtf\System\Event\Config\Reader $eventsConfigReader,
-        \Mtf\Configuration\Reader $defaultConfigReader
-    )
+    public function __construct(\Mtf\ObjectManager $objectManager)
     {
-        $this->scenarioConfigReader = $scenarioConfigReader;
-        $this->testRunnerConfigReader = $testRunnerConfigReader;
-        $this->testRunnerRuleConfigReader = $testRunnerRuleConfigReader;
-        $this->eventsConfigReader = $eventsConfigReader;
-        $this->defaultConfigReader = $defaultConfigReader;
+        $this->objectManager = $objectManager;
     }
 
     /**
@@ -116,19 +102,44 @@ class Config
                 return $systemConfigReader->getConfigParam($parameterPath);
                 break;
             case 'scenario':
+                if (is_null($this->scenarioConfigReader)) {
+                    $this->scenarioConfigReader = $this->objectManager->get(
+                        'Mtf\Config\Reader'
+                    );
+                }
                 return $this->scenarioConfigReader->read($scope);
                 break;
             case 'test_runner':
+                if (is_null($this->testRunnerConfigReader)) {
+                    $this->testRunnerConfigReader = $this->objectManager->get(
+                        'Mtf\TestRunner\Configuration\Reader'
+                    );
+                }
                 return $this->testRunnerConfigReader->read($scope);
                 break;
             case 'test_runner_rule':
+                if (is_null($this->testRunnerRuleConfigReader)) {
+                    $this->testRunnerRuleConfigReader = $this->objectManager->get(
+                        'Mtf\TestRunner\Rule\Configuration'
+                    );
+                }
                 return $this->testRunnerRuleConfigReader->read($scope);
                 break;
             case 'events':
+                if (is_null($this->eventsConfigReader)) {
+                    $this->eventsConfigReader = $this->objectManager->get(
+                        'Mtf\System\Event\Config\Reader'
+                    );
+                }
                 return $this->eventsConfigReader->read($scope);
                 break;
             default:
                 $scope = is_null($scope) ? null : 'etc';
+                if (is_null($this->defaultConfigReader)) {
+                    $this->defaultConfigReader = $this->objectManager->get(
+                        'Mtf\Configuration\Reader'
+                    );
+                }
                 return $this->defaultConfigReader->read($configName, $scope);
         }
     }
