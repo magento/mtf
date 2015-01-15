@@ -306,13 +306,13 @@ abstract class Injectable extends Functional
      */
     protected function initObjectManager()
     {
-        if (!isset($this->objectManager)) {
+        if (!$objectManager = \Mtf\ObjectManager::getInstance()) {
             $objectManagerFactory = new \Mtf\ObjectManagerFactory();
             $configurationFile = isset($_ENV['testsuite_rule'])
                 ? $_ENV['testsuite_rule']
                 : 'basic';
             $confFilePath = realpath(
-                MTF_BP . '/testsuites/' . $_ENV['testsuite_rule_path']  . '/' . $configurationFile . '.xml'
+                MTF_BP . '/testsuites/' . $_ENV['testsuite_rule_path'] . '/' . $configurationFile . '.xml'
             );
             /** @var \Mtf\TestRunner\Configuration $testRunnerConfiguration */
             $testRunnerConfiguration = $objectManagerFactory->getObjectManager()->get('\Mtf\TestRunner\Configuration');
@@ -322,7 +322,9 @@ abstract class Injectable extends Functional
             $shared = [
                 'Mtf\TestRunner\Configuration' => $testRunnerConfiguration
             ];
+            $objectManagerFactory = new \Mtf\ObjectManagerFactory();
             $this->objectManager = $objectManagerFactory->create($shared);
         }
+        $this->objectManager = $objectManager;
     }
 }
