@@ -96,7 +96,7 @@ class ModuleResolver
         if ($configuration) {
             $this->configuration = $configuration;
         } else {
-            $this->configuration = \Mtf\ObjectManager::getInstance()->get('\Mtf\Config');;
+            $this->configuration = \Mtf\ObjectManager::getInstance()->get('Mtf\Config');
         }
     }
 

@@ -99,7 +99,7 @@ class Listener implements \PHPUnit_Framework_TestListener
     public function __construct(Driver $driver, $configuration = null)
     {
         if (!isset($configuration)) {
-            $configuration = \Mtf\ObjectManager::getInstance()->get('\Mtf\Config');
+            $configuration = \Mtf\ObjectManager::getInstance()->get('Mtf\Config');
         }
         $this->_driver = $driver;
         $this->_lastDefaultModes = [

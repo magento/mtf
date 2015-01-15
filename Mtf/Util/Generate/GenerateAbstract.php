@@ -507,7 +507,7 @@ class GenerateAbstract
         if (isset($this->_params['generate_specified_modules'])
             && $this->_params['generate_specified_modules'] == static::GENERATE_BY_MODULES
         ) {
-            $configModules = \Mtf\ObjectManager::getInstance()->get('\Mtf\Config');
+            $configModules = \Mtf\ObjectManager::getInstance()->get('Mtf\Config');
             $modules = $configModules->getParameter(null, $this->_params['specified_modules']);
             if (empty($modules)) {
                 throw new \RuntimeException('Generator modules configuration file is empty');

@@ -58,7 +58,7 @@ class Listener implements \PHPUnit_Framework_TestListener
     public function __construct(Config $configuration = null)
     {
         if (!isset($configuration)) {
-            $configuration = \Mtf\ObjectManager::getInstance()->get('\Mtf\Config');
+            $configuration = \Mtf\ObjectManager::getInstance()->get('Mtf\Config');
         }
         $this->_scope = $configuration->getParameter('application/reopen_browser_on') ? : static::SCOPE_TEST_CASE;
     }
