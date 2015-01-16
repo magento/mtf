@@ -52,7 +52,9 @@ class Primary implements FileResolverInterface
         $mtfDefaultPath = str_replace('\\', '/', $mtfDefaultPath);
         $paths[$mtfDefaultPath] = $mtfDefaultPath . '/' . $scope . '/' . $filename;
         $paths[MTF_BP] = MTF_BP . '/' . $scope . '/' . $filename;
-
+        if (!file_exists($paths[MTF_BP])) {
+            unset($paths[MTF_BP]);
+        }
         $iterator = new File($paths);
         return $iterator;
     }
