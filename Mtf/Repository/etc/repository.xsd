@@ -1,7 +1,7 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 /**
- * Schema for scenario configuration
+ * Schema for repositories
  *
  * Magento
  *
@@ -25,47 +25,172 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:complexType name="argumentType" abstract="true" mixed="true">
+        <xs:annotation>
+            <xs:documentation>
+                Attributes:
+                - Creating config repository attributes such as 'path' and 'label' are required.
+                - Creating simple repository the only required field is name.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="name" use="optional" type="xs:string" />
+        <xs:attribute name="path" use="optional" type="xs:string" />
+        <xs:attribute name="scope" use="optional" type="xs:string" />
+        <xs:attribute name="scope_id" use="optional" type="xs:integer" />
+        <xs:attribute name="label" use="optional" type="xs:string" />
+    </xs:complexType>
+
+    <xs:complexType name="array" mixed="true">
+        <xs:complexContent>
+            <xs:extension base="argumentType">
+                <xs:sequence>
+                    <xs:element name="item" type="argumentType" minOccurs="1" maxOccurs="unbounded">
+                        <xs:key name="itemName">
+                            <xs:selector xpath="item" />
+                            <xs:field xpath="@name|@label" />
+                        </xs:key>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="string">
+        <xs:complexContent>
+            <xs:extension base="argumentType">
+                <xs:attribute name="translate" use="optional" type="xs:boolean"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="boolean">
+        <xs:complexContent>
+            <xs:extension base="argumentType"/>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="object">
+        <xs:complexContent>
+            <xs:extension base="argumentType"/>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="number">
+        <xs:complexContent>
+            <xs:extension base="argumentType"/>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="null">
+        <xs:complexContent>
+            <xs:restriction base="argumentType"/>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="argumentsType">
+        <xs:sequence>
+            <xs:element name="argument" type="argumentType" minOccurs="1" maxOccurs="unbounded">
+                <xs:key name="argumentItemName">
+                    <xs:selector xpath="item" />
+                    <xs:field xpath="@name|@label"/>
+                </xs:key>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
     <xs:element name="repository">
         <xs:complexType>
-            <xs:sequence minOccurs="1" maxOccurs="unbounded">
-                <xs:element ref="storage"/>
-            </xs:sequence>
-        </xs:complexType>
-    </xs:element>
-    <xs:element name="storage">
-        <xs:complexType>
-            <xs:sequence minOccurs="1" maxOccurs="unbounded">
-                <xs:element ref="dataset"/>
-            </xs:sequence>
-            <xs:attribute type="xs:string" name="class" use="required"/>
-        </xs:complexType>
-    </xs:element>
-    <xs:element name="dataset">
-        <xs:complexType>
-            <xs:choice>
-                <xs:element ref="field" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:choice maxOccurs="unbounded">
+                <xs:element name="storage" type="storageType" minOccurs="1" maxOccurs="unbounded">
+                    <xs:unique name="uniqueStorageParam">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Class name should be unique in scope of storage
+                            </xs:documentation>
+                        </xs:annotation>
+                        <xs:selector xpath="param"/>
+                        <xs:field xpath="@class"/>
+                    </xs:unique>
+                </xs:element>
             </xs:choice>
-            <xs:attribute type="xs:string" name="name" use="required"/>
         </xs:complexType>
+
+        <xs:unique name="uniqueStorage">
+            <xs:annotation>
+                <xs:documentation>
+                    Class for each storage should be unique
+                </xs:documentation>
+            </xs:annotation>
+            <xs:selector xpath="storage"/>
+            <xs:field xpath="@class"/>
+        </xs:unique>
+        <xs:unique name="uniqueDataset">
+            <xs:annotation>
+                <xs:documentation>
+                    Dataset name should be unique in scope of file
+                </xs:documentation>
+            </xs:annotation>
+            <xs:selector xpath="dataset"/>
+            <xs:field xpath="@name"/>
+        </xs:unique>
+        <xs:unique name="uniqueField">
+            <xs:annotation>
+                <xs:documentation>
+                    Field name should be unique in scope of file
+                </xs:documentation>
+            </xs:annotation>
+            <xs:selector xpath="field"/>
+            <xs:field xpath="@name|@path"/>
+        </xs:unique>
+        <xs:unique name="uniqueItem">
+            <xs:annotation>
+                <xs:documentation>
+                    Item name should be unique in scope of file
+                </xs:documentation>
+            </xs:annotation>
+            <xs:selector xpath="item"/>
+            <xs:field xpath="@name|@label"/>
+        </xs:unique>
     </xs:element>
-    <xs:element name="field">
-        <xs:complexType mixed="true">
-            <xs:sequence>
-                <xs:element ref="item" maxOccurs="unbounded" minOccurs="0"/>
-            </xs:sequence>
-            <xs:attribute type="xs:string" name="name" use="optional"/>
-            <xs:attribute type="xs:string" name="path" use="optional"/>
-            <xs:attribute type="xs:string" name="scope" use="optional"/>
-            <xs:attribute type="xs:string" name="scope_id" use="optional"/>
-        </xs:complexType>
-    </xs:element>
-    <xs:element name="item">
-        <xs:complexType  mixed="true">
-            <xs:sequence>
-                <xs:element ref="item" maxOccurs="unbounded" minOccurs="0"/>
-            </xs:sequence>
-            <xs:attribute type="xs:string" name="name" use="optional"/>
-        </xs:complexType>
-    </xs:element>
+
+    <xs:complexType name="const">
+        <xs:complexContent>
+            <xs:extension base="argumentType"/>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="storageType">
+        <xs:annotation>
+            <xs:documentation>
+                With 'storage' tag you can create repositories
+            </xs:documentation>
+        </xs:annotation>
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="dataset" type="datasetType" minOccurs="1" maxOccurs="unbounded">
+                <xs:key name="fieldName">
+                    <xs:selector xpath="field" />
+                    <xs:field xpath="@name|@path" />
+                </xs:key>
+            </xs:element>
+        </xs:choice>
+        <xs:attribute name="class" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="datasetType">
+        <xs:annotation>
+            <xs:documentation>
+                With 'dataset' tag you can create datasets for certain repository class
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="field" type="argumentType" minOccurs="1" maxOccurs="unbounded">
+                <xs:key name="fieldItemName">
+                    <xs:selector xpath="item" />
+                    <xs:field xpath="@name|@label" />
+                </xs:key>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string" use="required"/>
+    </xs:complexType>
 </xs:schema>

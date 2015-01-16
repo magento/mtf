@@ -38,8 +38,8 @@ class Reader extends \Magento\Framework\Config\Reader\Filesystem
     protected $_idAttributes = [
         '/repository/storage' => 'class',
         '/repository/storage/dataset' => 'name',
-        '/repository/storage/dataset/field' => 'name',
-        '//item' => 'name',
+        '/repository/storage/dataset/field' => 'name|path',
+        '/repository/storage/dataset/field(/item)+' => 'name|label',
     ];
 
     /**
@@ -60,7 +60,7 @@ class Reader extends \Magento\Framework\Config\Reader\Filesystem
         ValidationState $validationState,
         $fileName = '*.xml',
         $idAttributes = [],
-        $domDocumentClass = 'Magento\Framework\Config\Dom',
+        $domDocumentClass = 'Mtf\Repository\Reader\Dom',
         $defaultScope = 'Repository'
     ) {
         $this->_fileResolver = $fileResolver;

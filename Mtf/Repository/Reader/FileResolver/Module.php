@@ -25,34 +25,12 @@
 namespace Mtf\Repository\Reader\FileResolver;
 
 use Mtf\Util\Iterator\File;
-use Magento\Framework\Config\FileResolverInterface;
-use Mtf\Util\ModuleResolver;
 
 /**
  * Provides the list of configuration files collected through modules test folders.
  */
-class Module implements FileResolverInterface
+class Module extends \Mtf\Config\FileResolver\Module
 {
-    /**
-     * Resolve module path based on enabled modules of target Magento instance.
-     *
-     * @var ModuleResolver
-     */
-    protected $moduleResolver;
-
-    /**
-     * @constructor
-     * @param ModuleResolver $moduleResolver
-     */
-    public function __construct(ModuleResolver $moduleResolver = null)
-    {
-        if ($moduleResolver) {
-            $this->moduleResolver = $moduleResolver;
-        } else {
-            $this->moduleResolver = ModuleResolver::getInstance();
-        }
-    }
-
     /**
      * Retrieve the list of configuration files with given name that relate to specified scope.
      *

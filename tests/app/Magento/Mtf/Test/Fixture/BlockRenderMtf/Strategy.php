@@ -22,16 +22,18 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Magento\Mtf\Test\Fixture\Test;
+namespace Magento\Mtf\BlockRender\Fixture\Test;
 
 use Mtf\Fixture\FixtureInterface;
 
 /**
- * Class Curl
+ * Class Strategy.
  */
 class Strategy implements FixtureInterface
 {
     /**
+     * Data set configuration settings.
+     *
      * @var array
      */
     protected $params = [];
@@ -52,7 +54,8 @@ class Strategy implements FixtureInterface
     }
 
     /**
-     * Persists prepared data into application
+     * Persists prepared data into application.
+     *
      * @return void
      */
     public function persist()
@@ -61,7 +64,7 @@ class Strategy implements FixtureInterface
     }
 
     /**
-     * Return prepared data set
+     * Return prepared data set.
      *
      * @param string $key [optional]
      * @return mixed
@@ -72,7 +75,7 @@ class Strategy implements FixtureInterface
     }
 
     /**
-     * Return data set configuration settings
+     * Return data set configuration settings.
      *
      * @return string
      */

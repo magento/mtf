@@ -23,15 +23,12 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 -->
-<fixture>
-    <test module="Magento_Mtf">
-        <type>blank</type>
-        <entity_type>test_fixture</entity_type>
-        <fields>
-            <collection>
-                <attribute_code>collection</attribute_code>
-                <backend_type>virtual</backend_type>
-            </collection>
-        </fields>
-    </test>
-</fixture>
+<repository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="../../../../../../Mtf/Repository/etc/repository.xsd">
+    <storage class="Magento\Mtf\Test\Repository\Test">
+        <dataset name="some_dummy_configuration">
+            <field path="path/to/dummy/field" scope="dummy" scope_id="1" label="Label value" xsi:type="string">1</field>
+            <field path="path/to/other/dummy/field" scope="dummy" scope_id="1" label="Dummy Label" xsi:type="string">10</field>
+        </dataset>
+    </storage>
+</repository>

@@ -56,6 +56,7 @@ class Repository extends AbstractGenerate
      * @param ObjectManagerInterface $objectManager
      * @param Reader $configReader
      * @param CollectionProviderInterface $collectionProvider
+     * @param RepositoryReader $repositoryReader
      */
     public function __construct(
         ObjectManagerInterface $objectManager,
@@ -114,7 +115,6 @@ class Repository extends AbstractGenerate
         $className = str_replace('_', '\\', $moduleName) . '\\Test\\Repository\\' . $classShortName;
         $folderName = MTF_TESTS_PATH . $path;
         if (file_exists($folderName . '/' . $fileName)) {
-            //unlink($folderName . '/' . $fileName);
             return;
         }
         if (!is_dir($folderName)) {
@@ -124,8 +124,9 @@ class Repository extends AbstractGenerate
         $content .= '<!--' . "\n";
         $content .= $this->getFilePhpDoc();
         $content .= '-->' . "\n";
-        $content .= "<repository xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" ";
-        $content .= "xsi:noNamespaceSchemaLocation=\"../../../../../../Mtf/Repository/etc/repository.xsd\">\n";
+        $content .= "<repository xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n";
+        $content .= "            xsi:noNamespaceSchemaLocation=";
+        $content .= "\"../../../../../../vendor/magento/mtf/Mtf/Repository/etc/repository.xsd\">\n";
         $content .= "    <storage class=\"{$className}\">\n";
         $collection = $this->collectionProvider->getCollection($item);
         foreach ($collection as $record) {
@@ -181,7 +182,7 @@ class Repository extends AbstractGenerate
                 $fieldValue = "<![CDATA[$fieldValue]]>";
             }
             $xml .= "            ";
-            $xml .= "<field name=\"{$fieldName}\">{$fieldValue}</field>\n";
+            $xml .= "<field name=\"{$fieldName}\" xsi:type=\"string\">{$fieldValue}</field>\n";
         }
         $xml = "        <{$tag} name=\"{$data['mtf_dataset_name']}\">\n{$xml}        </{$tag}>\n";
         return $xml;
@@ -195,10 +196,10 @@ class Repository extends AbstractGenerate
     protected function getDummyXml()
     {
         $content = "        <dataset name=\"dummy_dataset\">\n";
-        $content .= "            <field name=\"dummy_simple_field\">test_value</field>\n";
-        $content .= "            <field name=\"dummy_array_field\">\n";
-        $content .= "                <item name=\"dummy_array_0\">test_value_0</item>\n";
-        $content .= "                <item name=\"dummy_array_1\">test_value_1</item>\n";
+        $content .= "            <field name=\"dummy_simple_field\" xsi:type=\"string\">test_value</field>\n";
+        $content .= "            <field name=\"dummy_array_field\" xsi:type=\"array\">\n";
+        $content .= "                <item name=\"dummy_array_0\" xsi:type=\"string\">test_value_0</item>\n";
+        $content .= "                <item name=\"dummy_array_1\" xsi:type=\"string\">test_value_1</item>\n";
         $content .= "            </field>\n";
         $content .= "        </dataset>\n";
 
@@ -224,6 +225,7 @@ class Repository extends AbstractGenerate
      * Generate repository classes from XML sources.
      *
      * @param array $items
+     * @param string $class
      * @return void
      */
     protected function generateClass(array $items, $class)
@@ -231,12 +233,11 @@ class Repository extends AbstractGenerate
         $class = explode("\\", $class);
 
         $className = end($class);
-        $modulePath = MTF_BP . '/generated/' . implode(DIRECTORY_SEPARATOR,
-                array_diff($class, [$className, 'Test', 'Repository']));
-        $folderPath = $modulePath . '/Test/Repository';
-        $realPath = realpath($folderPath);
         $namespace = $class[0];
         $module = $class[1];
+        $modulePath = MTF_BP . '/generated/' . $namespace . "/" . $module;
+        $folderPath = $modulePath . '/Test/Repository';
+        $realPath = realpath($folderPath);
 
         $mTime = filemtime($realPath);
 
@@ -252,12 +253,18 @@ class Repository extends AbstractGenerate
         $content .= "class {$className} extends AbstractRepository\n";
         $content .= "{\n";
 
+        $content .= "    /**\n     * @constructor\n";
+        $content .= "     * @param array \$defaultConfig\n";
+        $content .= "     * @param array \$defaultData\n     */\n";
         $content .= '    public function __construct(array $defaultConfig = [], array $defaultData = [])' . "\n";
         $content .= "    {\n";
+        end($items);
+        $lastItemName = key($items);
         foreach ($items as $name => $item) {
             $content .= "        \$this->_data['{$name}'] = ";
-            $content .= $this->generateArray('', $item, '        ');
-            $content .= "        ];\n\n";
+            $content .= $this->generateArray('', $item, '            ');
+            $content .= "        ];\n";
+            $content .= $lastItemName === $name ? "" : "\n";
         }
         $content .= "    }\n";
 
@@ -301,7 +308,7 @@ class Repository extends AbstractGenerate
         foreach ($params as $key => $value) {
             $content .= is_array($value)
                 ? $this->generateArray($key, $value, $indent . '    ', true)
-                : ($indent . "    '{$key}' => '{$value}',\n");
+                : ($indent . "    '{$key}' => '" . $value . "',\n");
         }
         $content .= !$flag ? '' : $indent . "],\n";
 

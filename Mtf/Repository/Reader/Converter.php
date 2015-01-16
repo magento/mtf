@@ -24,96 +24,143 @@
 namespace Mtf\Repository\Reader;
 
 /**
- * Convert repository.
+ * Convert repository to array.
  */
 class Converter implements \Magento\Framework\Config\ConverterInterface
 {
     /**
-     * Unique identifiers of node.
+     * Interpreter that aggregates named interpreters and delegates every evaluation to one of them.
      *
-     * @var array
+     * @var \Magento\Framework\Data\Argument\Interpreter\Composite
      */
-    protected $attributes = ['class', 'name', 'path'];
+    protected $attributeInterpriter;
 
     /**
-     * Attributes in config fields.
-     *
-     * @var array
+     * @constructor
+     * @param \Magento\Framework\Data\Argument\InterpreterInterface $attributeInterpriter
      */
-    protected $configAttributes = ['path', 'scope', 'scope_id'];
-
-    /**
-     * Convert xml to array.
-     *
-     * @param \DOMDocument $source
-     * @return array
-     */
-    public function convert($source)
+    public function __construct(\Magento\Framework\Data\Argument\InterpreterInterface $attributeInterpriter)
     {
-        $repositories = $source->getElementsByTagName('storage');
-        return $this->convertXml($repositories);
+        $this->attributeInterpriter = $attributeInterpriter;
     }
 
     /**
-     * Convert xml node to array or string recursive.
+     * Convert repository xml to array.
      *
-     * @param mixed $elements
-     * @return array|string
+     * @param \DOMDocument $config
+     * @return array
+     * @throws \Exception
      */
-    protected function convertXml($elements)
+    public function convert($config)
     {
-        $result = [];
+        $output = [];
+        $repositories = $config->getElementsByTagName('storage');
+        foreach ($repositories as $repository) {
+            /** @var \DOMElement $repository */
+            if ($repository->nodeType != XML_ELEMENT_NODE) {
+                continue;
+            }
+            $classNamespace = $repository->getAttribute('class');
+            $output[$classNamespace] = $this->convertNode($repository);
+        }
 
-        foreach ($elements as $element) {
-            if ($element instanceof \DOMElement) {
-                $key = $this->getKey($element);
-                if ($element->hasAttribute('path')) {
-                    $result['collection'][$key] = $this->convertConfigData($element);
-                    $result['collection'][$key]['value'] = $this->convertXml($element->childNodes);
-                } elseif ($element->hasChildNodes()) {
-                    $result[$key] = $this->convertXml($element->childNodes);
+        return $output;
+    }
+
+    /**
+     * Convert xml node to array or string recursively.
+     *
+     * @param \DOMNode $node
+     * @return array
+     * @throws \Exception
+     */
+    public function convertNode(\DOMNode $node)
+    {
+        $data = [];
+        switch ($node->nodeName) {
+            case 'storage':
+            case 'dataset':
+                foreach ($node->childNodes as $dataSet) {
+                    /** @var \DOMElement $dataSet */
+                    if ($dataSet->nodeType != XML_ELEMENT_NODE) {
+                        continue;
+                    }
+                    $key = $dataSet->getAttribute('name');
+                    $childNodeData = [];
+                    foreach ($dataSet->childNodes as $childNode) {
+                        /** @var \DOMElement $childNode */
+                        if ($childNode->nodeType != XML_ELEMENT_NODE) {
+                            continue;
+                        }
+                        $nodeName = $this->getKey($childNode);
+                        $nodeData = $this->convertNode($childNode);
+                        $childNodeData[$nodeName] = isset($nodeData['path'])
+                            ? $this->evaluateConfig($nodeData)
+                            : $this->attributeInterpriter->evaluate($nodeData);
+                    }
+                    $data[$key] = $dataSet->childNodes->length === 1 && empty($childNodeData)
+                        ? $dataSet->nodeValue
+                        : $childNodeData;
                 }
-            } elseif ($element->nodeType == XML_TEXT_NODE && trim($element->nodeValue) != '') {
-                return $element->nodeValue;
-            }
+                break;
+            case 'default_value':
+            case 'field':
+            case 'item':
+                $fieldAttributes = $node->attributes;
+                foreach ($fieldAttributes as $fieldAttribute) {
+                    $data[$fieldAttribute->nodeName] = $fieldAttribute->nodeValue;
+                }
+                if ($node->childNodes->length > 1) {
+                    $childNodeData = [];
+                    foreach ($node->childNodes as $childNode) {
+                        /** @var \DOMElement $childNode */
+                        if ($childNode->nodeType != XML_ELEMENT_NODE) {
+                            continue;
+                        }
+                        $nodeName = $this->getKey($childNode);
+                        $childNodeData[$nodeName] = $this->convertNode($childNode);
+                    }
+                    $data['item'] = $childNodeData;
+                } else {
+                    $data['value'] = $node->nodeValue;
+                }
+                break;
+            default:
+                throw new \Exception("Invalid repository data. Unknown node: {$node->nodeName}.");
+                break;
         }
 
-        return $result;
+        return $data;
     }
 
     /**
-     * Convert config data.
+     * Get unique identifier of element.
      *
-     * @param \DOMElement $element
+     * @param \DOMElement $node
+     * @return string|null
+     */
+    protected function getKey(\DOMElement $node)
+    {
+        $attributes = ['name', 'path', 'label'];
+        foreach ($attributes as $attribute) {
+            if ($node->hasAttribute($attribute)) {
+                return $node->getAttribute($attribute);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Compute and return effective value of an config argument.
+     *
+     * @param array $data
      * @return array
      */
-    protected function convertConfigData(\DOMElement $element)
+    protected function evaluateConfig(array $data)
     {
-        $result = [];
-        foreach ($this->configAttributes as $configAttribute) {
-            if ($element->hasAttribute($configAttribute)) {
-                $result[$configAttribute] = $element->getAttribute($configAttribute);
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     * Get key for current element.
-     *
-     * @param \DOMElement $element
-     * @return string
-     */
-    protected function getKey(\DOMElement $element)
-    {
-        $key = $element->nodeName;
-        foreach ($this->attributes as $attribute) {
-            if ($element->hasAttribute($attribute)) {
-                $key = $element->getAttribute($attribute);
-            }
-        }
-
-        return $key;
+        $preparedData = $this->attributeInterpriter->evaluate($data);
+        $data['value'] = $preparedData;
+        unset($data['xsi:type'], $data['item']);
+        return $data;
     }
 }

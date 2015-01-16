@@ -24,12 +24,12 @@
 
 namespace Mtf\Util\Generate;
 
+use Mtf\Repository\Reader\Converter;
 use Mtf\Util\Generate\Fixture\FieldsProviderInterface;
-use Mtf\Configuration\Reader;
 use Magento\Framework\ObjectManagerInterface;
 use Mtf\Util\XmlConverter;
-
 use Mtf\Config\FileResolver\Module;
+use Mtf\Util\Generate\Fixture\Reader;
 
 /**
  * Fixture files generator.
@@ -53,22 +53,35 @@ class Fixture extends AbstractGenerate
     protected $xmlConverter;
 
     /**
+     * Fixture convertor.
+     *
+     * @var Reader
+     */
+    protected $fixtureReader;
+
+    /**
      * @constructor
      * @param ObjectManagerInterface $objectManager
      * @param Module $fileResolver
      * @param FieldsProviderInterface $fieldsProvider
      * @param XmlConverter $xmlConverter
+     * @param Reader $fixtureReader
+     * @param Converter $repositoryConverter
      */
     public function __construct(
         ObjectManagerInterface $objectManager,
         Module $fileResolver,
         FieldsProviderInterface $fieldsProvider,
-        XmlConverter $xmlConverter
+        XmlConverter $xmlConverter,
+        Reader $fixtureReader,
+        Converter $repositoryConverter
     ) {
         parent::__construct($objectManager);
         $this->fileResolver = $fileResolver;
         $this->fieldsProvider = $fieldsProvider;
         $this->xmlConverter = $xmlConverter;
+        $this->fixtureReader = $fixtureReader;
+        $this->repositoryConverter = $repositoryConverter;
     }
 
     /**
@@ -122,7 +135,6 @@ class Fixture extends AbstractGenerate
         $className = str_replace('_', '\\', $moduleName) . '\\Test\\Fixture\\' . $classShortName;
         $folderName = MTF_TESTS_PATH . $path;
         if (file_exists($folderName . '/' . $fileName)) {
-            //unlink($folderName . '/' . $fileName);
             return;
         }
         if (!is_dir($folderName)) {
@@ -132,7 +144,10 @@ class Fixture extends AbstractGenerate
         $content .= '<!--' . "\n";
         $content .= $this->getFilePhpDoc();
         $content .= '-->' . "\n";
-        $content .= '<fixture class="' . $className . '">' . "\n";
+        $content .= '<fixture class="' . $className . '"' . "\n";
+        $content .= '         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"' . "\n";
+        $content .= '         xsi:noNamespaceSchemaLocation="';
+        $content .= '../../../../../../vendor/magento/mtf/Mtf/Fixture/etc/fixture.xsd">' . "\n";
 
         $fields = $this->fieldsProvider->getFields($item);
         if (!empty($item['fields']) && is_array($item['fields'])) {
@@ -230,12 +245,7 @@ class Fixture extends AbstractGenerate
         $config = [];
 
         foreach ($fixtureData as $file) {
-            $content = file_get_contents($file['real_path']);
-            $configXml = simplexml_load_string($content);
-
-            if ($configXml instanceof \SimpleXMLElement) {
-                $config = array_replace_recursive($config, $this->xmlConverter->convert($configXml));
-            }
+            $config = array_replace_recursive($config, $this->fixtureReader->read($file['real_path']));
         }
 
         return $config;
@@ -263,32 +273,32 @@ class Fixture extends AbstractGenerate
             return;
         }
 
-        $ns = str_replace('\\' . $className, '', $class);
+        $ns = implode("\\", array_slice($classNameArray, 0, -1));
         $repository = isset($item['repository']) ? $item['repository'] : null;
         $handlerInterface = isset($item['handler_interface']) ? $item['handler_interface'] : null;
         $dataConfig = isset($item['data_config']) ? $item['data_config'] : null;
         $fields = isset($item['fields']) ? $item['fields'] : [];
+        $defaultDataSet = isset($item['dataset']) ? $item['dataset'] : $this->getDefaultValues($fields);
+        $extends = isset($item['extends']) ? $item['extends'] : '\Mtf\Fixture\InjectableFixture';
+        $phpDocVarString = "    /**\n     * @var string\n     */\n";
+        $phpDocVarArray = "    /**\n     * @var array\n     */\n";
+        $phpDocReturnMixed = "    /**\n     * @return mixed\n     */\n";
 
         $content = "<?php\n";
         $content .= $this->getFilePhpDoc();
         $content .= "namespace {$ns};\n\n";
-        $content .= "use Mtf\\Fixture\\InjectableFixture;\n\n";
         $content .= "/**\n";
         $content .= " * Class {$className}\n";
         $content .= " */\n";
-        $content .= "class {$className} extends InjectableFixture\n";
+        $content .= "class {$className} extends {$extends}\n";
         $content .= "{\n";
 
         if (isset($repository)) {
-            $content .= "    /**\n";
-            $content .= "     * @var string\n";
-            $content .= "     */\n";
+            $content .= $phpDocVarString;
             $content .= "    protected \$repositoryClass = '{$repository}';\n\n";
         }
         if (isset($handlerInterface)) {
-            $content .= "    /**\n";
-            $content .= "     * @var string\n";
-            $content .= "     */\n";
+            $content .= $phpDocVarString;
             $content .= "    protected \$handlerInterface = '{$handlerInterface}';\n\n";
         }
         if (isset($dataConfig)) {
@@ -299,23 +309,27 @@ class Fixture extends AbstractGenerate
             }
         }
 
-        $content .= "    protected \$defaultDataSet = [\n";
-        foreach ($fields as $name => $field) {
-            if (empty($field['default_value'])) {
-                continue;
-            }
-            $content .= "        '{$name}' => null,\n";
-        }
+        $content .= $phpDocVarArray;
+        $content .= "    protected \$defaultDataSet = ";
+        $content .= $this->generateArray('', $defaultDataSet, '    ');
         $content .= "    ];\n";
         foreach ($fields as $name => $field) {
-            $content .= "\n    protected \${$name} = [\n";
+            $content .= "\n" . $phpDocVarArray;
+            $content .= "    protected \${$name} = [\n";
             foreach ($field as $key => $value) {
-                $content .= "        '{$key}' => '{$value}',\n";
+                if (is_array($value)) {
+                    $content .= "        '{$key}' => ";
+                    $content .= $this->generateArray('', $value, '        ');
+                    $content .= "        ],\n";
+                } else {
+                    $content .= "        '{$key}' => '{$value}',\n";
+                }
             }
             $content .= "    ];\n";
         }
         foreach ($fields as $name => $field) {
-            $content .= "\n" . '    public function get' . $this->toCamelCase($name) . '()' . "\n";
+            $content .= "\n" . $phpDocReturnMixed;
+            $content .= '    public function get' . $this->toCamelCase($name) . '()' . "\n";
             $content .= "    {\n";
             $content .= "        return \$this->getData('" . $name . "');" . "\n";
             $content .= "    }\n";
@@ -337,6 +351,25 @@ class Fixture extends AbstractGenerate
     }
 
     /**
+     * Get default values of all fields.
+     *
+     * @param array $fields
+     * @return array
+     */
+    protected function getDefaultValues(array $fields)
+    {
+        $data = [];
+        foreach ($fields as $name => $field) {
+            if (empty($field['default_value'])) {
+                continue;
+            }
+            $data[$name] = $field['default_value'];
+        }
+
+        return $data;
+    }
+
+    /**
      * Convert array to xml string.
      *
      * @param array $data
@@ -344,23 +377,26 @@ class Fixture extends AbstractGenerate
      * @param string $tag
      * @return string
      */
-    protected function toXml(array $data, $tab, $tag = '')
+    protected function toXml(array $data, $tab, $fields = false)
     {
+        $arrayField = $tab . "<field name=\"%s\">\n%s" . $tab . "</field>\n";
+        $stringField = $tab . "<field name=\"%s\">%s</field>\n";
+        $array = $tab . "<%s>\n%s" . $tab . "</%s>\n";
+        $string = $tab . "<%s>%s</%s>\n";
         $xml = '';
         foreach ($data as $fieldName => $fieldValue) {
             if (is_array($fieldValue)) {
-                $fieldValue = $this->toXml($fieldValue, $tab . '    ');
-                $xml .= $tab . "<{$fieldName}>\n";
-                $xml .= $fieldValue;
-                $xml .= $tab . "</{$fieldName}>\n";
+                $fieldValue = $this->toXml($fieldValue, $tab . '    ', $fieldName == 'fields' ? true : false);
+                $fieldName = $fieldName === 'default_value ' ? $fieldName . 'xsi:type="array"' : $fieldName;
+                $xml .= $fields
+                    ? sprintf($arrayField, $fieldName, $fieldValue)
+                    : sprintf($array, $fieldName, $fieldValue, $fieldName);
             } else {
-                $xml .= $tab . "<{$fieldName}>{$fieldValue}</{$fieldName}>\n";
+                $fieldName = $fieldName === 'default_value ' ? $fieldName . 'xsi:type="string"' : $fieldName;
+                $xml .= $fields
+                    ? sprintf($stringField, $fieldName, $fieldValue)
+                    : sprintf($string, $fieldName, $fieldValue, $fieldName);
             }
-        }
-        if ($tag) {
-            $xml = $tab . "<{$tag}>\n"
-                . $xml . "\n"
-                . $tab . "</{$tag}>\n";
         }
         return $xml;
     }
@@ -385,5 +421,27 @@ class Fixture extends AbstractGenerate
         }
         $result .= $tab . "]";
         return $result;
+    }
+
+    /**
+     * Generate dataSet array.
+     *
+     * @param string $arrayKey
+     * @param array|string $params
+     * @param string $indent
+     * @param bool $flag
+     * @return string
+     */
+    protected function generateArray($arrayKey, $params, $indent = '', $flag = false)
+    {
+        $content = $arrayKey == '' ? "[\n" : $indent . "'{$arrayKey}' => [\n";
+        foreach ($params as $key => $value) {
+            $content .= is_array($value)
+                ? $this->generateArray($key, $value, $indent . '    ', true)
+                : ($indent . "    '{$key}' => '" . $value . "',\n");
+        }
+        $content .= !$flag ? '' : $indent . "],\n";
+
+        return $content;
     }
 }

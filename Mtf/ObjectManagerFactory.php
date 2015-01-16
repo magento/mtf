@@ -74,7 +74,7 @@ class ObjectManagerFactory
         $diConfig = new $this->configClassName();
         $systemConfig = new SystemConfig();
         $configuration = $systemConfig->getConfigParam(null, []);
-        $diConfig->extend($configuration);
+        $diConfig->extend((array)$configuration);
 
         $directories = isset($arguments[\Magento\Framework\App\Filesystem::PARAM_APP_DIRS])
             ? $arguments[\Magento\Framework\App\Filesystem::PARAM_APP_DIRS]
@@ -91,6 +91,7 @@ class ObjectManagerFactory
         $argInterpreter = $this->createArgumentInterpreter(new BooleanUtils());
         $argumentMapper = new \Magento\Framework\ObjectManager\Config\Mapper\Dom($argInterpreter);
 
+        $sharedInstances['Magento\Framework\Data\Argument\InterpreterInterface'] = $argInterpreter;
         $sharedInstances['Magento\Framework\ObjectManager\Config\Mapper\Dom'] = $argumentMapper;
         $objectManager = new $this->locatorClassName($factory, $diConfig, $sharedInstances);
 

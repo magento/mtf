@@ -1,4 +1,5 @@
-<?php
+<?xml version="1.0" ?>
+<!--
 /**
  * Magento
  *
@@ -21,41 +22,22 @@
  * @copyright   Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
-namespace Magento\BlockRender\Test\Fixture;
-
-use Magento\Mtf\Test\Fixture\Test;
-
-/**
- * Class BlockRender
- */
-class BlockRender extends Test
-{
-    /**
-     * @var string
-     */
-    protected $repositoryClass = 'Magento\BlockRender\Test\Repository\BlockRender';
-
-    /**
-     * @var string
-     */
-    protected $handlerInterface = 'Magento\BlockRender\Test\Handler\BlockRender\BlockRenderInterface';
-
-    /**
-     * @var array
-     */
-    protected $defaultDataSet = [
-        'locator' => null,
-        'strategy' => null,
-        'search' => 'Block Render Test',
-        'type' => 'render'
-    ];
-
-    /**
-     * @var array
-     */
-    protected $type = [
-        'attribute_code' => 'type',
-        'default_value' => 'render',
-    ];
-}
+-->
+<fixture class="Magento\Mtf\Test\Fixture\BlockRenderMtf"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="../../../../../../Mtf/Fixture/etc/fixture.xsd">
+    <extends>\Magento\BlockRender\Test\Fixture\BlockRender</extends>
+    <fields>
+        <field name="strategy">
+            <attribute_code>strategy</attribute_code>
+            <frontend_input>text</frontend_input>
+            <frontend_label>Strategy</frontend_label>
+            <is_required>1</is_required>
+            <default_value xsi:type="string">link text</default_value>
+            <source>Magento\Mtf\BlockRender\Fixture\Test\Strategy</source>
+        </field>
+        <field name="type">
+            <attribute_code>type</attribute_code>
+        </field>
+    </fields>
+</fixture>
