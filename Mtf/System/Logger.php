@@ -23,6 +23,8 @@
  */
 namespace Mtf\System;
 
+use Mtf\Config; // Mtf\SystemConfig
+
 /**
  * Class for working with log directory and file
  */
@@ -46,7 +48,7 @@ class Logger implements LoggerInterface
      * @param Config $config
      * @param null $customLogDirectory
      */
-    public function __construct(\Mtf\System\Config $config, $customLogDirectory = null)
+    public function __construct(Config $config, $customLogDirectory = null)
     {
         $logDirectoryFallback = [
             $customLogDirectory,

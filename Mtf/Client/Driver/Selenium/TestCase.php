@@ -25,7 +25,7 @@
 namespace Mtf\Client\Driver\Selenium;
 
 use Mtf\System\Event\EventManager;
-use Mtf\System\Config;
+use Mtf\Config; // Mtf\SystemConfig
 
 /**
  * Class TestCase
@@ -58,7 +58,7 @@ class TestCase extends \PHPUnit_Extensions_Selenium2TestCase
      */
     public function __construct(Config $config, EventManager $eventManager)
     {
-        $this->timeout = $config->getConfigParam('server/selenium/seleniumServerRequestsTimeout', 10) * 1000;
+        $this->timeout = $config->getParameter('server/selenium/seleniumServerRequestsTimeout', 10) * 1000;
         $this->eventManager = $eventManager;
     }
 

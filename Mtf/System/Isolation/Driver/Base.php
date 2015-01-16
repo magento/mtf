@@ -25,7 +25,7 @@
 namespace Mtf\System\Isolation\Driver;
 
 use Mtf\System\Isolation\Driver;
-use Mtf\System\Config;
+use Mtf\Config; // Mtf\SystemConfig
 
 /**
  * Class Base
@@ -49,8 +49,8 @@ class Base implements Driver
      */
     public function __construct()
     {
-        $config = new Config();
-        $this->_resetUrl = $_ENV['app_frontend_url'] . $config->getConfigParam('isolation/reset_url_path');
+        $config = \Mtf\ObjectManager::getInstance()->get('Mtf\Config');
+        $this->_resetUrl = $_ENV['app_frontend_url'] . $config->getParameter('isolation/reset_url_path');
     }
 
     /**

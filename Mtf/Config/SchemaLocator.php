@@ -30,13 +30,33 @@ namespace Mtf\Config;
 class SchemaLocator implements \Magento\Framework\Config\SchemaLocatorInterface
 {
     /**
+     * XSD schema path (relatively to MTF path)
+     *
+     * @var string
+     */
+    protected $schemaPath;
+
+    /**
+     * Class constructor
+     *
+     * @constructor
+     * @param string $schemaPath
+     */
+    public function __construct($schemaPath) {
+        $mtfPath = dirname(dirname(__DIR__));
+        $mtfPath = str_replace('\\', '/', $mtfPath);
+
+        $this->schemaPath =  $mtfPath . '/' . $schemaPath;
+    }
+
+    /**
      * Get path to merged config schema
      *
      * @return string
      */
     public function getSchema()
     {
-        return realpath(__DIR__ . '/etc/') . '/scenario.xsd';
+        return $this->schemaPath;
     }
 
     /**

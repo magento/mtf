@@ -24,8 +24,6 @@
 
 namespace Mtf\TestRunner;
 
-use Mtf\TestRunner\Configuration\Reader;
-
 /**
  * Loader test runner configuration.
  *
@@ -51,30 +49,31 @@ class Configuration
     protected $data = [];
 
     /**
-     * Configuration reader.
+     * Configuration model.
      *
-     * @var Reader
+     * @var \Magento\Framework\Config\DataInterface
      */
-    protected $reader;
+    protected $configuration;
 
     /**
      * @constructor
-     * @param Reader $reader
+     * @param \Magento\Framework\Config\DataInterface $configuration
      */
-    public function __construct(Reader $reader)
+    public function __construct(\Magento\Framework\Config\DataInterface $configuration)
     {
-        $this->reader = $reader;
+        $this->configuration = $configuration;
     }
 
     /**
      * Load configuration.
      *
-     * @param string $configFolderPath
+     * @param string $configFileName
      * @return void
      */
-    public function load($configFolderPath)
+    public function load($configFileName)
     {
-        $this->data = $this->reader->read($configFolderPath);
+        $this->configuration->load($configFileName);
+        $this->data = $this->configuration->get();
         if (isset($this->data['rule'])) {
             $this->data['rule'] = $this->prepareRule($this->data['rule']);
         }

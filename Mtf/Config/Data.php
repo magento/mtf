@@ -21,30 +21,47 @@
  * @copyright   Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
-namespace Mtf\TestRunner\Rule\Configuration\FileResolver;
-
-use Mtf\Util\Iterator\File;
-use Magento\Framework\Config\FileResolverInterface;
+namespace Mtf\Config;
 
 /**
- * Provides the list of rule configuration files.
+ * Class Data
  */
-class Primary implements FileResolverInterface
+class Data extends \Magento\Framework\Config\Data
 {
     /**
-     * Retrieve the configuration files with given name that relate to test suite configuration.
-     *
-     * @param string $filename
-     * @param string $scope
-     * @return File
+     * @constructor
+     * @param \Magento\Framework\Config\ReaderInterface $reader
      */
-    public function get($filename, $scope)
-    {
-        $scope = str_replace('\\', DIRECTORY_SEPARATOR, $scope) . $filename;
-        $paths[$scope] = $scope;
+    public function __construct(
+        \Magento\Framework\Config\ReaderInterface $reader
+    ) {
+        $this->_reader = $reader;
+        $this->load();
+    }
 
-        $iterator = new File($paths);
-        return $iterator;
+    /**
+     * Set name of the config file
+     *
+     * @param string $fileName
+     * @return self
+     */
+    public function setFileName($fileName)
+    {
+        if (!is_null($fileName)) {
+            $this->_reader->setFileName($fileName);
+        }
+        return $this;
+    }
+
+    /**
+     * Load config data
+     *
+     * @param string|null $scope
+     */
+    public function load($scope = null)
+    {
+        $this->merge(
+            $this->_reader->read($scope)
+        );
     }
 }

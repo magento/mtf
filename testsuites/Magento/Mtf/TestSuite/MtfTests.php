@@ -115,10 +115,10 @@ class MtfTests extends \PHPUnit_Framework_TestSuite
             $configurationFileName = isset($_ENV['configuration:Magento/Mtf/TestSuite/MtfTests'])
                 ? $_ENV['configuration:Magento/Mtf/TestSuite/MtfTests']
                 : 'basic';
-            $confFilePath = __DIR__ . '/MtfTests/' . $configurationFileName . '.xml';
+            $configFileName = $configurationFileName . '.xml';
             /** @var \Mtf\TestRunner\Configuration $testRunnerConfiguration */
             $testRunnerConfiguration = $objectManagerFactory->getObjectManager()->get('\Mtf\TestRunner\Configuration');
-            $testRunnerConfiguration->load($confFilePath);
+            $testRunnerConfiguration->load($configFileName);
             $testRunnerConfiguration->loadEnvConfig();
 
             $shared = [

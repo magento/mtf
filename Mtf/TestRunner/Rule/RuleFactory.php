@@ -25,6 +25,7 @@
 namespace Mtf\TestRunner\Rule;
 
 use Mtf\ObjectManager;
+use Mtf\Config;
 
 /**
  * Factory for create rules.
@@ -34,12 +35,12 @@ class RuleFactory
     /**
      * Object manager.
      *
-     * @var ObjectManager
+     * @var \Mtf\ObjectManager
      */
     protected $objectManager;
 
     /**
-     * Data configuration.
+     * Configuration data.
      *
      * @var array
      */
@@ -47,14 +48,16 @@ class RuleFactory
 
     /**
      * @constructor
-     * @param Configuration $configuration
+     * @param \Mtf\ObjectManager $objectManager
+     * @param \Magento\Framework\Config\DataInterface $configuration
      */
-    public function __construct(ObjectManager $objectManager, Configuration $configuration)
+    public function __construct(
+        \Mtf\ObjectManager $objectManager,
+        \Magento\Framework\Config\DataInterface $configuration
+    )
     {
-        $configFilePath = __DIR__ . '/etc/rule.xml';
-
         $this->objectManager = $objectManager;
-        $this->config = $configuration->read($configFilePath);
+        $this->config = $configuration->get();
     }
 
     /**
