@@ -35,12 +35,12 @@ class RuleFactory
     /**
      * Object manager.
      *
-     * @var ObjectManager
+     * @var \Mtf\ObjectManager
      */
     protected $objectManager;
 
     /**
-     * Data configuration.
+     * Configuration data.
      *
      * @var array
      */
@@ -48,15 +48,16 @@ class RuleFactory
 
     /**
      * @constructor
-     * @param ObjectManager $objectManager
-     * @param Config $config
+     * @param \Mtf\ObjectManager $objectManager
+     * @param \Magento\Framework\Config\DataInterface $configuration
      */
-    public function __construct(ObjectManager $objectManager, Config $config)
+    public function __construct(
+        \Mtf\ObjectManager $objectManager,
+        \Magento\Framework\Config\DataInterface $configuration
+    )
     {
-        $configFilePath = __DIR__ . '/etc/rule.xml';
-
         $this->objectManager = $objectManager;
-        $this->config = $config->getParameter('test_runner_rule', $configFilePath);
+        $this->config = $configuration->get();
     }
 
     /**

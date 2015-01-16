@@ -24,8 +24,6 @@
 
 namespace Mtf\TestRunner;
 
-use Mtf\Config;
-
 /**
  * Loader test runner configuration.
  *
@@ -51,30 +49,31 @@ class Configuration
     protected $data = [];
 
     /**
-     * Configuration reader.
+     * Configuration model.
      *
-     * @var Config
+     * @var \Magento\Framework\Config\DataInterface
      */
-    protected $config;
+    protected $configuration;
 
     /**
      * @constructor
-     * @param Config $config
+     * @param \Magento\Framework\Config\DataInterface $configuration
      */
-    public function __construct(Config $config)
+    public function __construct(\Magento\Framework\Config\DataInterface $configuration)
     {
-        $this->config = $config;
+        $this->configuration = $configuration;
     }
 
     /**
      * Load configuration.
      *
-     * @param string $configFolderPath
+     * @param string $configFileName
      * @return void
      */
-    public function load($configFolderPath)
+    public function load($configFileName)
     {
-        $this->data = $this->config->getParameter('test_runner', $configFolderPath);
+        $this->configuration->load($configFileName);
+        $this->data = $this->configuration->get();
         if (isset($this->data['rule'])) {
             $this->data['rule'] = $this->prepareRule($this->data['rule']);
         }

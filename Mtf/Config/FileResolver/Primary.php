@@ -44,6 +44,10 @@ class Primary implements FileResolverInterface
      */
     public function get($filename, $scope)
     {
+        if (!$filename) {
+            return [];
+        }
+
         $mtfDefaultPath = dirname(dirname(dirname(__DIR__)));
         $mtfDefaultPath = str_replace('\\', '/', $mtfDefaultPath);
         $paths[$mtfDefaultPath] = $mtfDefaultPath . '/' . $scope . '/' . $filename;

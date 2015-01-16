@@ -39,14 +39,14 @@ class Config
     /**
      * Test Runner configuration reader
      *
-     * @var \Mtf\TestRunner\Configuration\Reader
+     * @var \Mtf\Config\TestRunner
      */
     protected $testRunnerConfigReader;
 
     /**
      * Test Runner Rule configuration reader
      *
-     * @var \Mtf\TestRunner\Rule\Configuration
+     * @var \Mtf\Config\TestRunnerRule
      */
     protected $testRunnerRuleConfigReader;
 
@@ -112,7 +112,7 @@ class Config
             case 'test_runner':
                 if (is_null($this->testRunnerConfigReader)) {
                     $this->testRunnerConfigReader = $this->objectManager->get(
-                        'Mtf\TestRunner\Configuration\Reader'
+                        'Mtf\Config\TestRunner'
                     );
                 }
                 return $this->testRunnerConfigReader->read($scope);
@@ -120,7 +120,7 @@ class Config
             case 'test_runner_rule':
                 if (is_null($this->testRunnerRuleConfigReader)) {
                     $this->testRunnerRuleConfigReader = $this->objectManager->get(
-                        'Mtf\TestRunner\Rule\Configuration'
+                        'Mtf\Config\TestRunnerRule'
                     );
                 }
                 return $this->testRunnerRuleConfigReader->read($scope);

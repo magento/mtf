@@ -29,12 +29,39 @@ namespace Mtf\Config;
 class Data extends \Magento\Framework\Config\Data
 {
     /**
+     * @constructor
      * @param \Magento\Framework\Config\ReaderInterface $reader
      */
     public function __construct(
         \Magento\Framework\Config\ReaderInterface $reader
     ) {
-        $data = $reader->read();
-        $this->merge($data);
+        $this->_reader = $reader;
+        $this->load();
+    }
+
+    /**
+     * Set name of the config file
+     *
+     * @param string $fileName
+     * @return self
+     */
+    public function setFileName($fileName)
+    {
+        if (!is_null($fileName)) {
+            $this->_reader->setFileName($fileName);
+        }
+        return $this;
+    }
+
+    /**
+     * Load config data
+     *
+     * @param string|null $scope
+     */
+    public function load($scope = null)
+    {
+        $this->merge(
+            $this->_reader->read($scope)
+        );
     }
 }

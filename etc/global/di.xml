@@ -86,4 +86,71 @@
             <argument name="pathConfig" xsi:type="string">rule/constraint/tag</argument>
         </arguments>
     </type>
+
+    <type name="Mtf\TestRunner\Configuration">
+        <arguments>
+            <argument name="configuration" xsi:type="object">Mtf\Config\TestRunner</argument>
+        </arguments>
+    </type>
+    <type name="Mtf\TestRunner\Rule\RuleFactory">
+        <arguments>
+            <argument name="configuration" xsi:type="object">Mtf\Config\TestRunnerRule</argument>
+        </arguments>
+    </type>
+
+    <virtualType name="Mtf\Config\TestRunner" type="Mtf\Config\Data">
+        <arguments>
+            <argument name="reader" xsi:type="object">Mtf\Config\Reader\TestRunner</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Mtf\Config\TestRunnerRule" type="Mtf\Config\Data">
+        <arguments>
+            <argument name="reader" xsi:type="object">Mtf\Config\Reader\TestRunnerRule</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Mtf\Config\SchemaLocator\TestRunner" type="Mtf\Config\SchemaLocator">
+        <arguments>
+            <argument name="schemaPath" xsi:type="string">Mtf/TestRunner/etc/testRunner.xsd</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Mtf\Config\SchemaLocator\TestRunnerRule" type="Mtf\Config\SchemaLocator">
+        <arguments>
+            <argument name="schemaPath" xsi:type="string">Mtf/TestRunner/Rule/etc/rule.xsd</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Mtf\Config\Reader\TestRunnerRule" type="\Magento\Framework\Config\Reader\Filesystem">
+        <arguments>
+            <argument name="fileResolver" xsi:type="object">Mtf\Config\FileResolver\Primary</argument>
+            <argument name="converter" xsi:type="object">Mtf\TestRunner\Rule\Configuration\Converter</argument>
+            <argument name="schemaLocator" xsi:type="object">Mtf\Config\SchemaLocator\TestRunnerRule</argument>
+            <argument name="idAttributes" xsi:type="array">
+                <item name="/config/rule" xsi:type="string">scope</item>
+                <item name="/config/rule/filter" xsi:type="string">namespace</item>
+            </argument>
+            <argument name="fileName" xsi:type="string">rule.xml</argument>
+            <argument name="defaultScope" xsi:type="string">Mtf/TestRunner/Rule/etc</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Mtf\Config\Reader\TestRunner" type="\Magento\Framework\Config\Reader\Filesystem">
+        <arguments>
+            <argument name="fileResolver" xsi:type="object">Mtf\Config\FileResolver\Primary</argument>
+            <argument name="converter" xsi:type="object">Mtf\TestRunner\Configuration\Converter</argument>
+            <argument name="schemaLocator" xsi:type="object">Mtf\Config\SchemaLocator\TestRunner</argument>
+            <argument name="idAttributes" xsi:type="array">
+                <item name="/config/rule" xsi:type="string">scope</item>
+                <item name="/config/rule/allow/namespace" xsi:type="string">value</item>
+                <item name="/config/rule/allow/type" xsi:type="string">value</item>
+                <item name="/config/rule/allow/module" xsi:type="string">value</item>
+                <item name="/config/rule/deny/namespace" xsi:type="string">value</item>
+                <item name="/config/rule/deny/type" xsi:type="string">value</item>
+                <item name="/config/rule/deny/module" xsi:type="string">value</item>
+                <item name="/config/rule/allow/tag" xsi:type="string">value</item>
+                <item name="/config/rule/deny/tag" xsi:type="string">value</item>
+            </argument>
+            <argument name="fileName" xsi:type="string"></argument>
+            <argument name="defaultScope" xsi:type="string">testsuites/Magento/Mtf/TestSuite/MtfTests</argument>
+        </arguments>
+    </virtualType>
 </config>

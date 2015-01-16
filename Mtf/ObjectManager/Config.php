@@ -48,6 +48,7 @@ class Config extends ObjectManagerConfig
      */
     public function isShared($type)
     {
+        return parent::isShared($type);
         if (isset($this->_nonShared[$type])) {
             return false;
         }
