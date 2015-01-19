@@ -23,8 +23,6 @@
  */
 namespace Mtf\System\Event\Config;
 
-use Mtf\Config\Data;
-
 /**
  * Class for dealing wth events.xml config file and adoption it as Config to an application
  */
@@ -47,10 +45,10 @@ class Data extends \Mtf\Config\Data
     /**
      * Constructor
      *
-     * @param \Magento\Framework\Config\ReaderInterface $reader
+     * @param \Mtf\Config\ReaderInterface $reader
      */
     public function __construct(
-        \Magento\Framework\Config\ReaderInterface $reader
+        \Mtf\Config\ReaderInterface $reader
     ) {
         parent::__construct($reader);
 
