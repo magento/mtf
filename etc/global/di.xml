@@ -48,6 +48,11 @@
             <argument name="rule" xsi:type="object">Mtf\TestRunner\Rule\SuiteComposite</argument>
         </arguments>
     </type>
+    <type name="Mtf\Fixture\FixtureFactory">
+        <arguments>
+            <argument name="config" xsi:type="object">Mtf\Config</argument>
+        </arguments>
+    </type>
     <preference for="Mtf\Config\FileResolverInterface" type="Mtf\Config\FileResolver\Module"/>
     <preference for="Mtf\Config\ConverterInterface" type="Mtf\Config\Converter"/>
     <preference for="Mtf\Config\SchemaLocatorInterface" type="Mtf\Config\SchemaLocator"/>
