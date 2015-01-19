@@ -89,32 +89,4 @@ class ConverterGlobal implements \Mtf\Config\ConverterInterface
 
         return $result;
     }
-
-    private function unify($xmlStructure)
-    {
-        $result = [];
-        if (!is_array($xmlStructure)) {
-            return $xmlStructure;
-        }
-
-        $iterator = new \RecursiveArrayIterator($xmlStructure);
-        foreach ($iterator as $key => $value) {
-            if ($key == '@attributes') {
-                if (is_array($value)) {
-                    $result = array_merge($result, $value);
-                }
-            } else {
-                if ($iterator->hasChildren()) {
-                    if ($key == 'item') {
-                        $result[] = $this->unify($value);
-                    } else {
-                        $result[$key] = $this->unify($value);
-                    }
-                } else {
-                    $result[$key] = $value;
-                }
-            }
-        }
-        return $result;
-    }
 }

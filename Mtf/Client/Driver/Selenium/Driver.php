@@ -82,10 +82,11 @@ class Driver implements DriverInterface
      */
     protected function init()
     {
-        $this->driver = $this->remoteDriverFactory->crate();
+        $this->driver = $this->remoteDriverFactory->create();
 
         $this->driver->setBrowserUrl('about:blank');
-        $this->driver->setupSpecificBrowser($this->configuration->get('server/selenium'));
+        $params = $this->configuration->get('server/selenium');
+        $this->driver->setupSpecificBrowser($params);
         $this->driver->prepareSession();
         $this->driver->currentWindow()->maximize();
         $this->driver->cookie()->clear();
