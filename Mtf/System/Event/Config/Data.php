@@ -23,6 +23,8 @@
  */
 namespace Mtf\System\Event\Config;
 
+use Mtf\Config\Data;
+
 /**
  * Class for dealing wth events.xml config file and adoption it as Config to an application
  */

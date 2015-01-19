@@ -24,12 +24,14 @@
 
 namespace Mtf\ObjectManager\Config;
 
+use Mtf\Config\SchemaLocatorInterface;
+
 /**
  * Class SchemaLocator
  *
  * @internal
  */
-class SchemaLocator extends \Magento\Framework\ObjectManager\Config\SchemaLocator
+class SchemaLocator implements SchemaLocatorInterface
 {
     /**
      * Get path to merged config schema
@@ -40,5 +42,15 @@ class SchemaLocator extends \Magento\Framework\ObjectManager\Config\SchemaLocato
     public function getSchema()
     {
         return realpath(__DIR__ . '/../etc/') . DIRECTORY_SEPARATOR . 'config.xsd';
+    }
+
+    /**
+     * Get path to pre file validation schema
+     *
+     * @return null
+     */
+    public function getPerFileSchema()
+    {
+        return null;
     }
 }

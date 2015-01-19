@@ -24,9 +24,9 @@
 namespace Mtf\System\Observer;
 
 use Mtf\System\Logger;
-use Mtf\System\Event\State as EventState;
 use Mtf\System\Event\Event;
-use \Mtf\Client\Driver\Selenium\Browser;
+use Mtf\Client\BrowserInterface;
+use Mtf\System\Event\State as EventState;
 
 class ClientError extends AbstractObserver
 {
@@ -45,10 +45,10 @@ class ClientError extends AbstractObserver
     /**
      * @param Logger $logger
      * @param EventState $state
-     * @param Browser $browser
+     * @param BrowserInterface $browser
      * @param string $filename
      */
-    public function __construct(Logger $logger, EventState $state, Browser $browser, $filename = null)
+    public function __construct(Logger $logger, EventState $state, BrowserInterface $browser, $filename = null)
     {
         parent::__construct($logger, $state);
         $this->browser = $browser;

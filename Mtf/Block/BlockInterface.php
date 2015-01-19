@@ -24,8 +24,6 @@
 
 namespace Mtf\Block;
 
-use Mtf\Client\Driver\Selenium\Element;
-
 /**
  * Interface for Blocks
  *
