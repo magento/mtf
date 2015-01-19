@@ -97,6 +97,11 @@
             <argument name="configuration" xsi:type="object">Mtf\Config\TestRunnerRule</argument>
         </arguments>
     </type>
+    <type name="Mtf\System\Event\EventManager">
+        <arguments>
+            <argument name="configuration" xsi:type="object">Mtf\Config\SystemEvent</argument>
+        </arguments>
+    </type>
 
     <virtualType name="Mtf\Config\TestRunner" type="Mtf\Config\Data">
         <arguments>
@@ -108,6 +113,11 @@
             <argument name="reader" xsi:type="object">Mtf\Config\Reader\TestRunnerRule</argument>
         </arguments>
     </virtualType>
+    <virtualType name="Mtf\Config\SystemEvent" type="Mtf\System\Event\Config\Data">
+        <arguments>
+            <argument name="reader" xsi:type="object">Mtf\Config\Reader\SystemEvent</argument>
+        </arguments>
+    </virtualType>
 
     <virtualType name="Mtf\Config\SchemaLocator\TestRunner" type="Mtf\Config\SchemaLocator">
         <arguments>
@@ -117,6 +127,11 @@
     <virtualType name="Mtf\Config\SchemaLocator\TestRunnerRule" type="Mtf\Config\SchemaLocator">
         <arguments>
             <argument name="schemaPath" xsi:type="string">Mtf/TestRunner/Rule/etc/rule.xsd</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Mtf\Config\SchemaLocator\SystemEvent" type="Mtf\Config\SchemaLocator">
+        <arguments>
+            <argument name="schemaPath" xsi:type="string">etc/global/events.xsd</argument>
         </arguments>
     </virtualType>
 
@@ -151,6 +166,20 @@
             </argument>
             <argument name="fileName" xsi:type="string"></argument>
             <argument name="defaultScope" xsi:type="string">testsuites/Magento/Mtf/TestSuite/MtfTests</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Mtf\Config\Reader\SystemEvent" type="\Magento\Framework\Config\Reader\Filesystem">
+        <arguments>
+            <argument name="fileResolver" xsi:type="object">Mtf\Config\FileResolver\Primary</argument>
+            <argument name="converter" xsi:type="object">Mtf\System\Event\Config\Converter</argument>
+            <argument name="schemaLocator" xsi:type="object">Mtf\Config\SchemaLocator\SystemEvent</argument>
+            <argument name="idAttributes" xsi:type="array">
+                <item name="/config/preset/observer/tag" xsi:type="string">name</item>
+                <item name="/config/preset/observer" xsi:type="string">class</item>
+                <item name="/config/preset" xsi:type="string">name</item>
+            </argument>
+            <argument name="fileName" xsi:type="string">events.xml</argument>
+            <argument name="defaultScope" xsi:type="string">etc/global</argument>
         </arguments>
     </virtualType>
     <virtualType name="Mtf\Config\SchemaLocator\Config" type="Mtf\Config\SchemaLocator">
