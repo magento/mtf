@@ -85,7 +85,7 @@ class Driver implements DriverInterface
         $this->driver = $this->remoteDriverFactory->crate();
 
         $this->driver->setBrowserUrl('about:blank');
-        $this->driver->setupSpecificBrowser($this->config->get('server/selenium'));
+        $this->driver->setupSpecificBrowser($this->configuration->get('server/selenium'));
         $this->driver->prepareSession();
         $this->driver->currentWindow()->maximize();
         $this->driver->cookie()->clear();

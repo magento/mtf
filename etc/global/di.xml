@@ -210,9 +210,14 @@
             <argument name="reader" xsi:type="object">Mtf\Config\Reader\Config</argument>
         </arguments>
     </virtualType>
-    <type name="Mtf\Client\Driver\Selenium\Browser">
+    <type name="Mtf\Client\Driver\Selenium\Driver">
         <arguments>
             <argument name="configuration" xsi:type="object">Mtf\Config\GlobalConfig</argument>
+        </arguments>
+    </type>
+    <type name="Mtf\Client\Driver\Selenium\RemoteDriver">
+        <arguments>
+            <argument name="config" xsi:type="object">Mtf\Config\GlobalConfig</argument>
         </arguments>
     </type>
     <type name="Mtf\Client\Driver\Selenium\TestCase">
