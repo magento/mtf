@@ -66,17 +66,9 @@ class Data implements \Mtf\Config\DataInterface
      * @param string $cacheId
      */
     public function __construct(
-        \Mtf\Config\ReaderInterface $reader,
-        \Mtf\Config\CacheInterface $cache,
-        $cacheId
+        \Mtf\Config\ReaderInterface $reader
     ) {
-        $data = $cache->load($cacheId);
-        if (false === $data) {
-            $data = $reader->read();
-            $cache->save(serialize($data), $cacheId);
-        } else {
-            $data = unserialize($data);
-        }
+        $data = $reader->read();
         $this->merge($data);
     }
 
