@@ -412,9 +412,7 @@ class Driver implements DriverInterface
      */
     public function keys(ElementInterface $element, array $keys)
     {
-        $wrappedElement = $this->getNativeElement($element);
-        $wrappedElement->clear();
-        $wrappedElement->click();
+        $this->getNativeElement($element)->click();
         foreach ($keys as $key) {
             $this->driver->keys($key);
         }
