@@ -31,6 +31,7 @@
     <preference for="Mtf\Constraint\AbstractConstraint" type="Mtf\Constraint\Dummy"/>
     <preference for="Mtf\ObjectManagerInterface" type="Mtf\ObjectManager"/>
     <preference for="Mtf\ObjectManager\FactoryInterface" type="Mtf\ObjectManager\Factory"/>
+    <preference for="Mtf\Config\ReaderInterface" type="Mtf\Config\Reader\Filesystem"/>
     <preference for="Mtf\ObjectManager\ConfigInterface" type="Mtf\ObjectManager\Config\Config"/>
     <preference for="Mtf\Util\Generate\Fixture\FieldsProviderInterface"
                 type="Mtf\Util\Generate\Fixture\DummyFieldsProvider"/>
