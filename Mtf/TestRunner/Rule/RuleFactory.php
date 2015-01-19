@@ -49,11 +49,11 @@ class RuleFactory
     /**
      * @constructor
      * @param \Mtf\ObjectManager $objectManager
-     * @param \Magento\Framework\Config\DataInterface $configuration
+     * @param \Mtf\Config\DataInterface $configuration
      */
     public function __construct(
         \Mtf\ObjectManager $objectManager,
-        \Magento\Framework\Config\DataInterface $configuration
+        \Mtf\Config\DataInterface $configuration
     )
     {
         $this->objectManager = $objectManager;

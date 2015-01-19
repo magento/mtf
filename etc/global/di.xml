@@ -140,7 +140,7 @@
         </arguments>
     </virtualType>
 
-    <virtualType name="Mtf\Config\Reader\TestRunnerRule" type="Magento\Framework\Config\Reader\Filesystem">
+    <virtualType name="Mtf\Config\Reader\TestRunnerRule" type="Mtf\Config\Reader">
         <arguments>
             <argument name="fileResolver" xsi:type="object">Mtf\Config\FileResolver\Primary</argument>
             <argument name="converter" xsi:type="object">Mtf\TestRunner\Rule\Configuration\Converter</argument>
@@ -153,7 +153,7 @@
             <argument name="defaultScope" xsi:type="string">Mtf/TestRunner/Rule/etc</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Mtf\Config\Reader\TestRunner" type="Magento\Framework\Config\Reader\Filesystem">
+    <virtualType name="Mtf\Config\Reader\TestRunner" type="Mtf\Config\Reader">
         <arguments>
             <argument name="fileResolver" xsi:type="object">Mtf\Config\FileResolver\Primary</argument>
             <argument name="converter" xsi:type="object">Mtf\TestRunner\Configuration\Converter</argument>
@@ -173,7 +173,7 @@
             <argument name="defaultScope" xsi:type="string">testsuites/Magento/Mtf/TestSuite/MtfTests</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Mtf\Config\Reader\SystemEvent" type="\Magento\Framework\Config\Reader\Filesystem">
+    <virtualType name="Mtf\Config\Reader\SystemEvent" type="\Mtf\Config\Reader">
         <arguments>
             <argument name="fileResolver" xsi:type="object">Mtf\Config\FileResolver\Primary</argument>
             <argument name="converter" xsi:type="object">Mtf\System\Event\Config\Converter</argument>
@@ -192,7 +192,7 @@
             <argument name="schemaPath" xsi:type="string">config/config.xsd</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Mtf\Config\Reader\Config" type="Magento\Framework\Config\Reader\Filesystem">
+    <virtualType name="Mtf\Config\Reader\Config" type="Mtf\Config\Reader">
         <arguments>
             <argument name="fileResolver" xsi:type="object">Mtf\Config\FileResolver\Primary</argument>
             <argument name="converter" xsi:type="object">Mtf\Config\ConverterGlobal</argument>

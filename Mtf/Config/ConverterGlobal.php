@@ -27,7 +27,7 @@ namespace Mtf\Config;
  * Class Converter
  * Convert Global configuration.
  */
-class ConverterGlobal implements \Magento\Framework\Config\ConverterInterface
+class ConverterGlobal implements \Mtf\Config\ConverterInterface
 {
     /**
      * Unique identifier of node.
