@@ -117,7 +117,7 @@ class MtfTests extends \PHPUnit_Framework_TestSuite
                 : 'basic';
             $configFileName = $configurationFileName . '.xml';
             /** @var \Mtf\TestRunner\Configuration $testRunnerConfiguration */
-            $testRunnerConfiguration = $objectManagerFactory->getObjectManager()->get('\Mtf\TestRunner\Configuration');
+            $testRunnerConfiguration = $objectManagerFactory->getObjectManager()->get('Mtf\TestRunner\Configuration');
             $testRunnerConfiguration->load($configFileName);
             $testRunnerConfiguration->loadEnvConfig();
 

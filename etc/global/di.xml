@@ -120,7 +120,7 @@
         </arguments>
     </virtualType>
 
-    <virtualType name="Mtf\Config\Reader\TestRunnerRule" type="\Magento\Framework\Config\Reader\Filesystem">
+    <virtualType name="Mtf\Config\Reader\TestRunnerRule" type="Magento\Framework\Config\Reader\Filesystem">
         <arguments>
             <argument name="fileResolver" xsi:type="object">Mtf\Config\FileResolver\Primary</argument>
             <argument name="converter" xsi:type="object">Mtf\TestRunner\Rule\Configuration\Converter</argument>
@@ -133,7 +133,7 @@
             <argument name="defaultScope" xsi:type="string">Mtf/TestRunner/Rule/etc</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Mtf\Config\Reader\TestRunner" type="\Magento\Framework\Config\Reader\Filesystem">
+    <virtualType name="Mtf\Config\Reader\TestRunner" type="Magento\Framework\Config\Reader\Filesystem">
         <arguments>
             <argument name="fileResolver" xsi:type="object">Mtf\Config\FileResolver\Primary</argument>
             <argument name="converter" xsi:type="object">Mtf\TestRunner\Configuration\Converter</argument>
@@ -153,4 +153,36 @@
             <argument name="defaultScope" xsi:type="string">testsuites/Magento/Mtf/TestSuite/MtfTests</argument>
         </arguments>
     </virtualType>
+    <virtualType name="Mtf\Config\SchemaLocator\Config" type="Mtf\Config\SchemaLocator">
+        <arguments>
+            <argument name="schemaPath" xsi:type="string">config/config.xsd</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Mtf\Config\Reader\Config" type="Magento\Framework\Config\Reader\Filesystem">
+        <arguments>
+            <argument name="fileResolver" xsi:type="object">Mtf\Config\FileResolver\Primary</argument>
+            <argument name="converter" xsi:type="object">Mtf\Config\ConverterGlobal</argument>
+            <argument name="schemaLocator" xsi:type="object">Mtf\Config\SchemaLocator\Config</argument>
+            <argument name="idAttributes" xsi:type="array">
+                <item name="/config" xsi:type="string">scope</item>
+            </argument>
+            <argument name="fileName" xsi:type="string">config.xml</argument>
+            <argument name="defaultScope" xsi:type="string">config</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Mtf\Config\GlobalConfig" type="Mtf\Config\Data">
+        <arguments>
+            <argument name="reader" xsi:type="object">Mtf\Config\Reader\Config</argument>
+        </arguments>
+    </virtualType>
+    <type name="Mtf\Client\Driver\Selenium\Browser">
+        <arguments>
+            <argument name="configuration" xsi:type="object">Mtf\Config\GlobalConfig</argument>
+        </arguments>
+    </type>
+    <type name="Mtf\Client\Driver\Selenium\TestCase">
+        <arguments>
+            <argument name="config" xsi:type="object">Mtf\Config\GlobalConfig</argument>
+        </arguments>
+    </type>
 </config>

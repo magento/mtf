@@ -26,7 +26,6 @@ namespace Mtf;
 
 use Mtf\ObjectManager\Factory;
 use Magento\Framework\Stdlib\BooleanUtils;
-use Mtf\System\Config as SystemConfig;
 use Mtf\ObjectManager as MagentoObjectManager;
 use Magento\Framework\App\Arguments\Loader;
 
@@ -72,10 +71,6 @@ class ObjectManagerFactory
         }
 
         $diConfig = new $this->configClassName();
-        $systemConfig = new SystemConfig();
-        $configuration = $systemConfig->getConfigParam();
-        $diConfig->extend($configuration);
-
         $directories = isset($arguments[\Magento\Framework\App\Filesystem::PARAM_APP_DIRS])
             ? $arguments[\Magento\Framework\App\Filesystem::PARAM_APP_DIRS]
             : array();

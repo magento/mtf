@@ -25,7 +25,7 @@
 namespace Mtf\Client\Driver\Selenium;
 
 use Mtf\Client\Element\Locator;
-use Mtf\Config; // Mtf\SystemConfig
+
 use Mtf\System\Event\EventManagerInterface;
 
 /**
@@ -55,7 +55,7 @@ class Browser implements \Mtf\Client\Browser
     /**
      * Configuration for driver
      *
-     * @var Config
+     * @var \Mtf\Config\Data
      */
     protected $_configuration;
 
@@ -72,9 +72,13 @@ class Browser implements \Mtf\Client\Browser
      * @constructor
      * @param TestCase $driver
      * @param EventManagerInterface $eventManager
-     * @param Config $configuration
+     * @param \Mtf\Config\Data $configuration
      */
-    public function __construct(TestCase $driver, EventManagerInterface $eventManager, Config $configuration)
+    public function __construct(
+        TestCase $driver,
+        EventManagerInterface $eventManager,
+        \Mtf\Config\Data $configuration
+    )
     {
         $this->_prototype = clone $driver;
         $this->_driver = $driver;
@@ -92,7 +96,7 @@ class Browser implements \Mtf\Client\Browser
     {
         $this->_driver = clone $this->_prototype;
         $this->_driver->setBrowserUrl('about:blank');
-        $this->_driver->setupSpecificBrowser($this->_configuration->getParameter('server/selenium'));
+        $this->_driver->setupSpecificBrowser($this->_configuration->get('server/selenium'));
         $this->_driver->prepareSession();
 
         $this->_driver->currentWindow()->maximize();
