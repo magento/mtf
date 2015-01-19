@@ -57,9 +57,9 @@ class Configuration
 
     /**
      * @constructor
-     * @param \Mtf\Config\DataInterface $configuration
+     * @param \Mtf\Config\Data $configuration
      */
-    public function __construct(\Mtf\Config\DataInterface $configuration)
+    public function __construct(\Mtf\Config\Data $configuration)
     {
         $this->configuration = $configuration;
     }

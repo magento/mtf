@@ -7,7 +7,7 @@
  */
 namespace Mtf\Client\Driver\Facebook;
 
-use Mtf\System\Config;
+use Mtf\Config\Data;
 use Mtf\ObjectManager;
 use Mtf\Client\Locator;
 use Mtf\Client\DriverInterface;
@@ -29,7 +29,7 @@ final class Driver implements DriverInterface
     /**
      * Configuration for driver
      *
-     * @var Config
+     * @var Data
      */
     protected $configuration;
 
@@ -52,13 +52,13 @@ final class Driver implements DriverInterface
      *
      * @param RemoteDriver $driver
      * @param EventManagerInterface $eventManager
-     * @param Config $configuration
+     * @param Data $configuration
      * @param ObjectManager $objectManager
      */
     public function __construct(
         RemoteDriver $driver,
         EventManagerInterface $eventManager,
-        Config $configuration,
+        Data $configuration,
         ObjectManager $objectManager
     ) {
         $this->driver = $driver;

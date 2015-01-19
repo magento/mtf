@@ -7,7 +7,7 @@
  */
 namespace Mtf\Client;
 
-use Mtf\System\Config;
+use Mtf\Config\Data;
 use Mtf\ObjectManager;
 use Mtf\System\Event\EventManagerInterface;
 
@@ -49,13 +49,13 @@ final class Browser implements BrowserInterface
      *
      * @param DriverInterface $driver
      * @param EventManagerInterface $eventManager
-     * @param Config $configuration
+     * @param Data $configuration
      * @param ObjectManager $objectManager
      */
     public function __construct(
         DriverInterface $driver,
         EventManagerInterface $eventManager,
-        Config $configuration,
+        Data $configuration,
         ObjectManager $objectManager
     ) {
         $this->driver = $driver;

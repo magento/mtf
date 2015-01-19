@@ -7,7 +7,7 @@
  */
 namespace Mtf\Client\Driver\Selenium;
 
-use Mtf\System\Config;
+use Mtf\Config\Data;
 use Mtf\ObjectManager;
 use Mtf\Client\Locator;
 use Mtf\Client\DriverInterface;
@@ -22,7 +22,7 @@ class Driver implements DriverInterface
     /**
      * Driver configuration
      *
-     * @var Config
+     * @var Data
      */
     protected $configuration;
 
@@ -46,11 +46,11 @@ class Driver implements DriverInterface
     /**
      * Constructor
      *
-     * @param Config $configuration
+     * @param Data $configuration
      * @param RemoteDriverFactory $remoteDriverFactory
      */
     public function __construct(
-        Config $configuration,
+        Data $configuration,
         RemoteDriverFactory $remoteDriverFactory,
         EventManagerInterface $eventManager,
         ObjectManager $objectManager
@@ -85,7 +85,7 @@ class Driver implements DriverInterface
         $this->driver = $this->remoteDriverFactory->crate();
 
         $this->driver->setBrowserUrl('about:blank');
-        $this->driver->setupSpecificBrowser($this->configuration->getConfigParam('server/selenium'));
+        $this->driver->setupSpecificBrowser($this->config->get('server/selenium'));
         $this->driver->prepareSession();
         $this->driver->currentWindow()->maximize();
         $this->driver->cookie()->clear();
@@ -594,7 +594,7 @@ class Driver implements DriverInterface
         if ($this->driver->getSessionId()) {
             $this->driver->stop();
         }
-        if ($sessionStrategy = $this->configuration->getConfigParam('server/selenium/sessionStrategy')) {
+        if ($sessionStrategy = $this->configuration->get('server/selenium/sessionStrategy')) {
             $this->driver->setSessionStrategy($sessionStrategy);
         } else {
             $this->driver->setSessionStrategy('isolated');

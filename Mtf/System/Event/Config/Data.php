@@ -56,7 +56,7 @@ class Data extends \Mtf\Config\Data
             ? $_ENV['events_preset']
             : 'default';
 
-        $this->_data['observers'] = $this->getObservers();
+        $this->data['observers'] = $this->getObservers();
     }
 
     /**

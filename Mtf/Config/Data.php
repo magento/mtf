@@ -35,28 +35,14 @@ class Data implements \Mtf\Config\DataInterface
      *
      * @var \Mtf\Config\ReaderInterface
      */
-    protected $_reader;
-
-    /**
-     * Configuration cache model
-     *
-     * @var \Mtf\Config\CacheInterface
-     */
-    protected $_cache;
-
-    /**
-     * Cache tag
-     *
-     * @var string
-     */
-    protected $_cacheId;
+    protected $reader;
 
     /**
      * Config data
      *
      * @var array
      */
-    protected $_data = array();
+    protected $data = [];
 
     /**
      * Constructor
@@ -68,8 +54,8 @@ class Data implements \Mtf\Config\DataInterface
     public function __construct(
         \Mtf\Config\ReaderInterface $reader
     ) {
-        $data = $reader->read();
-        $this->merge($data);
+        $this->reader = $reader;
+        $this->load();
     }
 
     /**
@@ -80,7 +66,7 @@ class Data implements \Mtf\Config\DataInterface
      */
     public function merge(array $config)
     {
-        $this->_data = array_replace_recursive($this->_data, $config);
+        $this->data = array_replace_recursive($this->data, $config);
     }
 
     /**
@@ -93,10 +79,10 @@ class Data implements \Mtf\Config\DataInterface
     public function get($path = null, $default = null)
     {
         if ($path === null) {
-            return $this->_data;
+            return $this->data;
         }
         $keys = explode('/', $path);
-        $data = $this->_data;
+        $data = $this->data;
         foreach ($keys as $key) {
             if (is_array($data) && array_key_exists($key, $data)) {
                 $data = $data[$key];
@@ -105,5 +91,31 @@ class Data implements \Mtf\Config\DataInterface
             }
         }
         return $data;
+    }
+
+    /**
+     * Set name of the config file
+     *
+     * @param string $fileName
+     * @return self
+     */
+    public function setFileName($fileName)
+    {
+        if (!is_null($fileName)) {
+            $this->reader->setFileName($fileName);
+        }
+        return $this;
+    }
+
+    /**
+     * Load config data
+     *
+     * @param string|null $scope
+     */
+    public function load($scope = null)
+    {
+        $this->merge(
+            $this->reader->read($scope)
+        );
     }
 }
