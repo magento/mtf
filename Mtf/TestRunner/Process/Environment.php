@@ -71,10 +71,13 @@ class Environment
             'server_config_path',
             'isolation_config_path',
             'handlers_config_path',
-            'configuration:Magento/Mtf/TestSuite/MtfTests',
+            'install_config_path',
+            'testsuite_rule',
+            'testsuite_rule_path',
             'app_instances',
             'events_preset',
-            'log_directory'
+            'log_directory',
+            'module_whitelist'
         ];
 
         $globalEnvironmentVariables = [];

@@ -97,6 +97,7 @@ abstract class Injectable extends Functional
      */
     public function __construct($name = null, array $data = [], $dataName = '', $path = '')
     {
+        $this->initObjectManager();
         parent::__construct($name, $data, $dataName);
         $this->dataId = get_class($this) . '::' . $name;
         $this->filePath = $path;
@@ -296,5 +297,34 @@ abstract class Injectable extends Functional
     {
         $constraintsArray = array_map('trim', explode(',', $constraints));
         return $this->getObjectManager()->create('Mtf\Constraint\Composite', ['codeConstraints' => $constraintsArray]);
+    }
+
+    /**
+     * Initialize ObjectManager.
+     *
+     * @return void
+     */
+    protected function initObjectManager()
+    {
+        if (!$objectManager = \Mtf\ObjectManager::getInstance()) {
+            $objectManagerFactory = new \Mtf\ObjectManagerFactory();
+            $configurationFile = isset($_ENV['testsuite_rule'])
+                ? $_ENV['testsuite_rule']
+                : 'basic';
+            $confFilePath = realpath(
+                MTF_BP . '/testsuites/' . $_ENV['testsuite_rule_path'] . '/' . $configurationFile . '.xml'
+            );
+            /** @var \Mtf\TestRunner\Configuration $testRunnerConfiguration */
+            $testRunnerConfiguration = $objectManagerFactory->getObjectManager()->get('\Mtf\TestRunner\Configuration');
+            $testRunnerConfiguration->load($confFilePath);
+            $testRunnerConfiguration->loadEnvConfig();
+
+            $shared = [
+                'Mtf\TestRunner\Configuration' => $testRunnerConfiguration
+            ];
+            $objectManagerFactory = new \Mtf\ObjectManagerFactory();
+            $this->objectManager = $objectManagerFactory->create($shared);
+        }
+        $this->objectManager = $objectManager;
     }
 }
