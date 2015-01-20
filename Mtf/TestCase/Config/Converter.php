@@ -30,14 +30,9 @@ namespace Mtf\TestCase\Config;
 class Converter implements \Magento\Framework\Config\ConverterInterface
 {
     /**
-     * Unique identifier of node.
+     * Node attribute identifier
      */
-    const NAME_ATTRIBUTE = 'name';
-
-    /**
-     * Module attribute for node.
-     */
-    const MODULE_ATTRIBUTE = 'module';
+    const IDENTIFIER = 'name';
 
     /**
      * Convert xml to array.
@@ -47,36 +42,30 @@ class Converter implements \Magento\Framework\Config\ConverterInterface
      */
     public function convert($source)
     {
-        $testCases = $source->getElementsByTagName('scenario');
-        return ['config' => $this->convertXml($testCases)];
+        return $this->convertXml($source->documentElement->childNodes);
     }
 
     /**
-     * Convert xml node to array or string recursive.
+     * Convert Xml to array
      *
-     * @param mixed $elements
-     * @return array|string
+     * @param $elements
+     * @return array
      */
     protected function convertXml($elements)
     {
         $result = [];
-
         foreach ($elements as $element) {
             if ($element instanceof \DOMElement) {
-                $key = $element->hasAttribute(self::NAME_ATTRIBUTE)
-                    ? $element->getAttribute(self::NAME_ATTRIBUTE)
-                    : $element->nodeName;
                 if ($element->hasChildNodes()) {
-                    $result[$key] = $this->convertXml($element->childNodes);
+                    $result[$element->localName][$element->getAttribute(self::IDENTIFIER)] =
+                        $this->convertXml($element->childNodes);
                 }
-                if ($element->hasAttribute(self::MODULE_ATTRIBUTE)) {
-                    $result[$key][self::MODULE_ATTRIBUTE] = $element->getAttribute(self::MODULE_ATTRIBUTE);
+                foreach ($element->attributes as $attribute) {
+                    $result[$element->localName][$element->getAttribute(self::IDENTIFIER)][$attribute->name] =
+                        $attribute->value;
                 }
-            } elseif ($element->nodeType == XML_TEXT_NODE && trim($element->nodeValue) != '') {
-                return $element->nodeValue;
             }
         }
-
         return $result;
     }
 }
