@@ -122,7 +122,7 @@ class Logger implements LoggerInterface
      */
     protected function getRootPath()
     {
-        $rootPath = dirname(dirname(__DIR__));
+        $rootPath = dirname(dirname(dirname(__DIR__)));
         return str_replace('\\', '/', $rootPath);
     }
 
