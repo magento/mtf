@@ -25,7 +25,8 @@ namespace Mtf\Config;
 
 /**
  * Class Converter
- * Convert scenario configuration.
+ *
+ * Converts configuration of fixtures, pages and constraints.
  */
 class Converter implements \Magento\Framework\Config\ConverterInterface
 {
@@ -47,8 +48,9 @@ class Converter implements \Magento\Framework\Config\ConverterInterface
      */
     public function convert($source)
     {
-        $testCases = $source->getElementsByTagName('scenario');
-        return ['scenarios' => $this->convertXml($testCases)];
+        return $this->convertXml(
+            $source->documentElement->childNodes
+        );
     }
 
     /**

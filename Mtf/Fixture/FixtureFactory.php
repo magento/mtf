@@ -24,16 +24,12 @@
 
 namespace Mtf\Fixture;
 
-use Mtf\Factory\AbstractFactory;
-use Mtf\Config;
-use Mtf\ObjectManager;
-
 /**
  * Factory for Fixtures
  *
  * @api
  */
-class FixtureFactory extends AbstractFactory
+class FixtureFactory extends \Mtf\Factory\AbstractFactory
 {
     /**
      * Fixtures definition array
@@ -51,15 +47,15 @@ class FixtureFactory extends AbstractFactory
 
     /**
      * @constructor
-     * @param ObjectManager $objectManager
-     * @param Config $config
+     * @param \Mtf\ObjectManager $objectManager
+     * @param \Magento\Framework\Config\DataInterface $configData
      */
     public function __construct(
-        ObjectManager $objectManager,
-        Config $config
+        \Mtf\ObjectManager $objectManager,
+        \Magento\Framework\Config\DataInterface $configData
     ) {
         parent::__construct($objectManager);
-        $this->configuration = $config->getParameter('fixture');
+        $this->configuration = $configData->get();
     }
 
     /**

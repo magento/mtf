@@ -24,9 +24,9 @@
 
 namespace Mtf\Util\Generate;
 
-use Mtf\Config;
 use Mtf\Util\XmlConverter;
 use Mtf\Util\Generate\Fixture\FieldsProviderInterface;
+use Magento\Framework\Config\DataInterface;
 use Magento\Framework\ObjectManagerInterface;
 
 /**
@@ -38,9 +38,9 @@ use Magento\Framework\ObjectManagerInterface;
 class Fixture extends AbstractGenerate
 {
     /**
-     * @var Config
+     * @var DataInterface
      */
-    protected $config;
+    protected $configData;
 
     /**
      * @var FieldsProviderInterface
@@ -55,18 +55,18 @@ class Fixture extends AbstractGenerate
     /**
      * @constructor
      * @param ObjectManagerInterface $objectManager
-     * @param Config $config
+     * @param DataInterface $configData
      * @param FieldsProviderInterface $fieldsProvider
      * @param XmlConverter $xmlConverter
      */
     public function __construct(
         ObjectManagerInterface $objectManager,
-        Config $config,
+        DataInterface $configData,
         FieldsProviderInterface $fieldsProvider,
         XmlConverter $xmlConverter
     ) {
         parent::__construct($objectManager);
-        $this->config = $config;
+        $this->configData = $configData;
         $this->fieldsProvider = $fieldsProvider;
         $this->xmlConverter = $xmlConverter;
     }
@@ -90,8 +90,7 @@ class Fixture extends AbstractGenerate
     protected function generateXml()
     {
         $this->cnt = 0;
-        $configuration = $this->config->getParameter('fixture');
-        foreach ($configuration as $name => $item) {
+        foreach ($this->configData->get() as $name => $item) {
             $this->generateFixtureXml($name, $item);
         }
         \Mtf\Util\Generate\GenerateResult::addResult('Fixture XML Files', $this->cnt);

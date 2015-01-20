@@ -102,6 +102,26 @@
             <argument name="configuration" xsi:type="object">Mtf\Config\SystemEvent</argument>
         </arguments>
     </type>
+    <type name="Mtf\Fixture\FixtureFactory">
+        <arguments>
+            <argument name="configuration" xsi:type="object">Mtf\Config\Fixture</argument>
+        </arguments>
+    </type>
+    <type name="Mtf\Util\Generate\Fixture">
+        <arguments>
+            <argument name="configData" xsi:type="object">Mtf\Config\Fixture</argument>
+        </arguments>
+    </type>
+    <type name="Mtf\Util\Generate\Handler">
+        <arguments>
+            <argument name="configData" xsi:type="object">Mtf\Config\Fixture</argument>
+        </arguments>
+    </type>
+    <type name="Mtf\Util\Generate\Repository">
+        <arguments>
+            <argument name="configData" xsi:type="object">Mtf\Config\Fixture</argument>
+        </arguments>
+    </type>
 
     <virtualType name="Mtf\Config\TestRunner" type="Mtf\Config\Data">
         <arguments>
@@ -118,6 +138,11 @@
             <argument name="reader" xsi:type="object">Mtf\Config\Reader\SystemEvent</argument>
         </arguments>
     </virtualType>
+    <virtualType name="Mtf\Config\Fixture" type="Mtf\Config\Data">
+        <arguments>
+            <argument name="reader" xsi:type="object">Mtf\Config\Reader\Fixture</argument>
+        </arguments>
+    </virtualType>
 
     <virtualType name="Mtf\Config\SchemaLocator\TestRunner" type="Mtf\Config\SchemaLocator">
         <arguments>
@@ -132,6 +157,11 @@
     <virtualType name="Mtf\Config\SchemaLocator\SystemEvent" type="Mtf\Config\SchemaLocator">
         <arguments>
             <argument name="schemaPath" xsi:type="string">etc/global/events.xsd</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Mtf\Config\SchemaLocator\Fixture" type="Mtf\Config\SchemaLocator">
+        <arguments>
+            <argument name="schemaPath" xsi:type="string">Mtf/Fixture/etc/fixture.xsd</argument>
         </arguments>
     </virtualType>
 
@@ -164,7 +194,7 @@
                 <item name="/config/rule/allow/tag" xsi:type="string">value</item>
                 <item name="/config/rule/deny/tag" xsi:type="string">value</item>
             </argument>
-            <argument name="fileName" xsi:type="string"></argument>
+            <argument name="fileName" xsi:type="string"/>
             <argument name="defaultScope" xsi:type="string">testsuites/Magento/Mtf/TestSuite/MtfTests</argument>
         </arguments>
     </virtualType>
@@ -180,6 +210,15 @@
             </argument>
             <argument name="fileName" xsi:type="string">events.xml</argument>
             <argument name="defaultScope" xsi:type="string">etc/global</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Mtf\Config\Reader\Fixture" type="\Magento\Framework\Config\Reader\Filesystem">
+        <arguments>
+            <argument name="fileResolver" xsi:type="object">Mtf\Config\FileResolver\Module</argument>
+            <argument name="converter" xsi:type="object">Mtf\Config\FixtureConverter</argument>
+            <argument name="schemaLocator" xsi:type="object">Mtf\Config\SchemaLocator\Fixture</argument>
+            <argument name="fileName" xsi:type="string">fixture.xml</argument>
+            <argument name="defaultScope" xsi:type="string">etc</argument>
         </arguments>
     </virtualType>
 </config>
