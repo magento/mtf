@@ -103,7 +103,10 @@ class Fixture extends AbstractGenerate
     protected function generateXml()
     {
         $this->cnt = 0;
-
+        if (!$this->fieldsProvider->checkConnection()) {
+            \Mtf\Util\Generate\GenerateResult::addResult('Fixture XML Files', $this->cnt);
+            return;
+        }
         $configs = $this->fileResolver->get('fixture.xml', 'etc');
         foreach ($configs as $config) {
             $configXml = simplexml_load_string($config);
@@ -269,16 +272,12 @@ class Fixture extends AbstractGenerate
         $relativeFilePath = str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
         $relativeFolderPath = str_replace(DIRECTORY_SEPARATOR . $fileName, '', $relativeFilePath);
 
-        if (file_exists(MTF_BP . '/tests/app/' . $relativeFilePath)) {
-            return;
-        }
-
         $ns = implode("\\", array_slice($classNameArray, 0, -1));
-        $repository = isset($item['repository']) ? $item['repository'] : null;
+        $repository = isset($item['repository_class']) ? $item['repository_class'] : null;
         $handlerInterface = isset($item['handler_interface']) ? $item['handler_interface'] : null;
         $dataConfig = isset($item['data_config']) ? $item['data_config'] : null;
         $fields = isset($item['fields']) ? $item['fields'] : [];
-        $defaultDataSet = isset($item['dataset']) ? $item['dataset'] : $this->getDefaultValues($fields);
+        $defaultDataSet = isset($item['dataset']) ? $item['dataset'] : $this->getDefaultValues((array)$fields);
         $extends = isset($item['extends']) ? $item['extends'] : '\Mtf\Fixture\InjectableFixture';
         $phpDocVarString = "    /**\n     * @var string\n     */\n";
         $phpDocVarArray = "    /**\n     * @var array\n     */\n";
@@ -303,6 +302,7 @@ class Fixture extends AbstractGenerate
         }
         if (isset($dataConfig)) {
             if (is_array($dataConfig)) {
+                $content .= $phpDocVarArray;
                 $content .= "    protected \$dataConfig = ";
                 $content .= $this->toArrayDefinition($dataConfig, '    ');
                 $content .= ";\n\n";
@@ -374,11 +374,14 @@ class Fixture extends AbstractGenerate
      *
      * @param array $data
      * @param string $tab
-     * @param string $tag
+     * @param bool $fields
+     * @param string $nodeName
      * @return string
      */
-    protected function toXml(array $data, $tab, $fields = false)
+    protected function toXml(array $data, $tab, $fields = false, $nodeName = '')
     {
+        $nodeList = ['fields', 'entities', 'data_config'];
+        $entityType = $tab . "<entity name=\"%s\" />\n";
         $arrayField = $tab . "<field name=\"%s\">\n%s" . $tab . "</field>\n";
         $stringField = $tab . "<field name=\"%s\">%s</field>\n";
         $array = $tab . "<%s>\n%s" . $tab . "</%s>\n";
@@ -386,16 +389,20 @@ class Fixture extends AbstractGenerate
         $xml = '';
         foreach ($data as $fieldName => $fieldValue) {
             if (is_array($fieldValue)) {
-                $fieldValue = $this->toXml($fieldValue, $tab . '    ', $fieldName == 'fields' ? true : false);
-                $fieldName = $fieldName === 'default_value ' ? $fieldName . 'xsi:type="array"' : $fieldName;
+                $fieldValue = $this->toXml($fieldValue, $tab . '    ', in_array($fieldName, $nodeList), $fieldName);
+                $fieldNameWithAttributes = $fieldName === 'default_value' ? $fieldName . ' xsi:type="array"' : $fieldName;
                 $xml .= $fields
                     ? sprintf($arrayField, $fieldName, $fieldValue)
-                    : sprintf($array, $fieldName, $fieldValue, $fieldName);
+                    : sprintf($array, $fieldNameWithAttributes, $fieldValue, $fieldName);
             } else {
-                $fieldName = $fieldName === 'default_value ' ? $fieldName . 'xsi:type="string"' : $fieldName;
-                $xml .= $fields
-                    ? sprintf($stringField, $fieldName, $fieldValue)
-                    : sprintf($string, $fieldName, $fieldValue, $fieldName);
+                $fieldNameWithAttributes = $fieldName === 'default_value' ? $fieldName . ' xsi:type="string"' : $fieldName;
+                if ($fields) {
+                    $xml .= $nodeName === 'entities'
+                        ? sprintf($entityType, $fieldValue)
+                        : sprintf($stringField, $fieldName, $fieldValue);
+                } else {
+                    $xml .= sprintf($string, $fieldNameWithAttributes, $fieldValue, $fieldName);
+                }
             }
         }
         return $xml;

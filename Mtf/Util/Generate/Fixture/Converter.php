@@ -30,15 +30,31 @@ namespace Mtf\Util\Generate\Fixture;
 class Converter implements \Magento\Framework\Config\ConverterInterface
 {
     /**
+     * Interpreter that aggregates named interpreters and delegates every evaluation to one of them.
+     *
+     * @var \Magento\Framework\Data\Argument\Interpreter\Composite
+     */
+    protected $argumentInterpreter;
+
+    /**
+     * Converter for repository xml files.
+     *
+     * @var \Mtf\Repository\Reader\Converter
+     */
+    protected $repositoryConverter;
+
+    /**
      * @constructor
      * @param \Mtf\Repository\Reader\Converter $repositoryConverter
+     * @param \Mtf\ObjectManagerFactory $objectManagerFactory
      */
     public function __construct(
         \Mtf\Repository\Reader\Converter $repositoryConverter,
-        \Magento\Framework\Data\Argument\InterpreterInterface $attributeInterpriter
+        \Mtf\ObjectManagerFactory $objectManagerFactory
     ) {
         $this->repositoryConverter = $repositoryConverter;
-        $this->attributeInterpriter = $attributeInterpriter;
+        $objectManager = $objectManagerFactory->getObjectManager();
+        $this->argumentInterpreter = $objectManager->get('Magento\Framework\Data\Argument\InterpreterInterface');
     }
 
     /**
@@ -153,7 +169,22 @@ class Converter implements \Magento\Framework\Config\ConverterInterface
     protected function convertDataset(\DOMElement $element)
     {
         $data['value'] = $this->repositoryConverter->convertNode($element);
+        $data['isSingle'] = true;
+        $data['key'] = null;
+        return $data;
+    }
 
+    /**
+     * Convert "data_config" node to array.
+     *
+     * @param \DOMElement $element
+     * @return array
+     */
+    protected function convertDataConfig(\DOMElement $element)
+    {
+        $converted = $this->repositoryConverter->convertNode($element);
+        $converted['xsi:type'] = 'array';
+        $data['value'] = $this->argumentInterpreter->evaluate($converted);
         $data['isSingle'] = true;
         $data['key'] = null;
         return $data;
@@ -168,7 +199,7 @@ class Converter implements \Magento\Framework\Config\ConverterInterface
     protected function convertDefaultValue(\DOMElement $element)
     {
         $defaultValue = $this->repositoryConverter->convertNode($element);
-        $data['value'] = $this->attributeInterpriter->evaluate($defaultValue);
+        $data['value'] = $this->argumentInterpreter->evaluate($defaultValue);
         $data['isSingle'] = true;
         $data['key'] = null;
         return $data;

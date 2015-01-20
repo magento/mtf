@@ -41,4 +41,14 @@ class DummyCollectionProvider implements CollectionProviderInterface
     {
         return [];
     }
+
+    /**
+     * Check connection to DB.
+     *
+     * @return bool
+     */
+    public function checkConnection()
+    {
+        return true;
+    }
 }

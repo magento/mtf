@@ -24,7 +24,7 @@
 namespace Mtf\Repository\Reader;
 
 /**
- * Convert repository to array.
+ * Converter for repository xml files.
  */
 class Converter implements \Magento\Framework\Config\ConverterInterface
 {
@@ -33,15 +33,16 @@ class Converter implements \Magento\Framework\Config\ConverterInterface
      *
      * @var \Magento\Framework\Data\Argument\Interpreter\Composite
      */
-    protected $attributeInterpriter;
+    protected $argumentInterpreter;
 
     /**
      * @constructor
-     * @param \Magento\Framework\Data\Argument\InterpreterInterface $attributeInterpriter
+     * @param \Mtf\ObjectManagerFactory $objectManagerFactory
      */
-    public function __construct(\Magento\Framework\Data\Argument\InterpreterInterface $attributeInterpriter)
+    public function __construct(\Mtf\ObjectManagerFactory $objectManagerFactory)
     {
-        $this->attributeInterpriter = $attributeInterpriter;
+        $objectManager = $objectManagerFactory->getObjectManager();
+        $this->argumentInterpreter = $objectManager->get('Magento\Framework\Data\Argument\InterpreterInterface');
     }
 
     /**
@@ -94,9 +95,11 @@ class Converter implements \Magento\Framework\Config\ConverterInterface
                         }
                         $nodeName = $this->getKey($childNode);
                         $nodeData = $this->convertNode($childNode);
-                        $childNodeData[$nodeName] = isset($nodeData['path'])
-                            ? $this->evaluateConfig($nodeData)
-                            : $this->attributeInterpriter->evaluate($nodeData);
+                        if (isset($nodeData['path'])) {
+                            $childNodeData['section'][$nodeName] = $this->evaluateConfig($nodeData);
+                        } else {
+                            $childNodeData[$nodeName] = $this->argumentInterpreter->evaluate($nodeData);
+                        }
                     }
                     $data[$key] = $dataSet->childNodes->length === 1 && empty($childNodeData)
                         ? $dataSet->nodeValue
@@ -104,6 +107,7 @@ class Converter implements \Magento\Framework\Config\ConverterInterface
                 }
                 break;
             case 'default_value':
+            case 'data_config':
             case 'field':
             case 'item':
                 $fieldAttributes = $node->attributes;
@@ -158,7 +162,7 @@ class Converter implements \Magento\Framework\Config\ConverterInterface
      */
     protected function evaluateConfig(array $data)
     {
-        $preparedData = $this->attributeInterpriter->evaluate($data);
+        $preparedData = $this->argumentInterpreter->evaluate($data);
         $data['value'] = $preparedData;
         unset($data['xsi:type'], $data['item']);
         return $data;

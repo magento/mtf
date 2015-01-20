@@ -28,7 +28,7 @@
 namespace Mtf\Repository\Reader;
 
 /**
- * Mtf configuration XML DOM utility.
+ * Repository XML DOM utility.
  */
 class Dom extends \Magento\Framework\Config\Dom
 {
@@ -38,6 +38,7 @@ class Dom extends \Magento\Framework\Config\Dom
      * @param \DOMElement $node
      * @param string $parentPath
      * @return string
+     * @throws \Exception
      */
     protected function _getNodePathByParent(\DOMElement $node, $parentPath)
     {
@@ -47,14 +48,39 @@ class Dom extends \Magento\Framework\Config\Dom
 
         if ($idAttribute) {
             $attributes = explode("|", $idAttribute);
-            foreach ($attributes as $attribute) {
+            $nodeAttributes = $this->getAttributes($node);
+            $absentAttributes = array_diff($attributes, array_keys($nodeAttributes));
+            if (count($absentAttributes) === count($attributes)) {
+                throw new \Exception("One of required attributes (" . implode(',', $attributes) . ") is absent!");
+            }
+            $issetAttributes = array_diff($attributes, $absentAttributes);
+            foreach ($issetAttributes as $attribute) {
                 if ($node->hasAttribute($attribute)) {
                     $value = $node->getAttribute($attribute);
                     $idAttribute = $attribute;
                 }
             }
+
             $path .= isset($value) ? "[@{$idAttribute}='{$value}']" : '';
         }
         return $path;
+    }
+
+    /**
+     * Returns array with all attributes.
+     *
+     * @param \DOMElement $node
+     * @return array
+     */
+    protected function getAttributes(\DOMElement $node)
+    {
+        $attributes = [];
+        $nodeAttributes = $node->attributes;
+        for ($i = 0; $i < $nodeAttributes->length; $i++) {
+            $attribute = $nodeAttributes->item($i);
+            $attributes[$attribute->nodeName] = $attribute->nodeValue;
+        }
+
+        return $attributes;
     }
 }

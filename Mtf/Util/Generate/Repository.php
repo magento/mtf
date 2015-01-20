@@ -77,7 +77,7 @@ class Repository extends AbstractGenerate
      */
     public function launch()
     {
-        $this->generateXml();
+        // $this->generateXml(); @TODO: Fix issue MTA-1478
         $this->generateClasses();
     }
 
@@ -91,7 +91,10 @@ class Repository extends AbstractGenerate
     protected function generateXml()
     {
         $this->cnt = 0;
-
+        if (!$this->collectionProvider->checkConnection()) {
+            \Mtf\Util\Generate\GenerateResult::addResult('Fixture XML Files', $this->cnt);
+            return;
+        }
         $configuration = $this->configReader->read('fixture');
         foreach ($configuration as $name => $item) {
             $this->generateRepositoryXml($name, $item);
@@ -262,7 +265,7 @@ class Repository extends AbstractGenerate
         $lastItemName = key($items);
         foreach ($items as $name => $item) {
             $content .= "        \$this->_data['{$name}'] = ";
-            $content .= $this->generateArray('', $item, '            ');
+            $content .= $this->generateArray('', $item, '        ');
             $content .= "        ];\n";
             $content .= $lastItemName === $name ? "" : "\n";
         }
@@ -271,16 +274,6 @@ class Repository extends AbstractGenerate
         $content .= "}\n";
 
         $newFilename = $className . '.php';
-
-        if (file_exists($folderPath . '/' . $newFilename)) {
-            $mmTime = filemtime($folderPath . '/' . $newFilename);
-            if ($mTime > $mmTime) {
-                return; // in order to not overwrite old repositories
-                unlink($folderPath . '/' . $newFilename);
-            } else {
-                return;
-            }
-        }
 
         if (!is_dir($folderPath)) {
             mkdir($folderPath, 0777, true);

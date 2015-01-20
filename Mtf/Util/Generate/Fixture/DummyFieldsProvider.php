@@ -41,4 +41,14 @@ class DummyFieldsProvider implements FieldsProviderInterface
     {
         return [];
     }
+
+    /**
+     * Check connection to DB.
+     *
+     * @return bool
+     */
+    public function checkConnection()
+    {
+        return true;
+    }
 }

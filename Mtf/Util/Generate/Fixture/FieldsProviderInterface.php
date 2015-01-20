@@ -38,4 +38,11 @@ interface FieldsProviderInterface
      * @return array
      */
     public function getFields(array $fixture);
+
+    /**
+     * Check connection to DB.
+     *
+     * @return bool
+     */
+    public function checkConnection();
 }
