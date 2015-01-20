@@ -59,7 +59,7 @@ class FixtureFactory extends AbstractFactory
         Config $config
     ) {
         parent::__construct($objectManager);
-        $this->configuration = $config->getParameter('fixture');
+        $this->configuration = $config->getParameter('fixture', 'etc');
     }
 
     /**
