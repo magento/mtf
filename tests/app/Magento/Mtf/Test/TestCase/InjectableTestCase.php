@@ -25,7 +25,7 @@
 namespace Magento\Mtf\Test\TestCase;
 
 use Magento\Mtf\Test\Fixture\Test;
-use Mtf\TestCase\Injectable;
+use Magento\Mtf\TestCase\Injectable;
 use Magento\BlockRender\Test\Page\Area\TestPage;
 
 /**
@@ -100,11 +100,11 @@ class InjectableTestCase extends Injectable
     /**
      * Filtered Test, see TestRunner.xml
      *
-     * @param \Mtf\ObjectManager $objectManager
+     * @param \Magento\Mtf\ObjectManager $objectManager
      * @return void
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function test6(\Mtf\ObjectManager $objectManager)
+    public function test6(\Magento\Mtf\ObjectManager $objectManager)
     {
         //
     }

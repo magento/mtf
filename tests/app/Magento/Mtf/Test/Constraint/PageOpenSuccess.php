@@ -24,7 +24,7 @@
 
 namespace Magento\Mtf\Test\Constraint;
 
-use Mtf\Constraint\AbstractConstraint;
+use Magento\Mtf\Constraint\AbstractConstraint;
 use Magento\BlockRender\Test\Page\Area\TestPage;
 use Magento\Mtf\Test\Fixture\Test;
 

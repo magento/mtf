@@ -1,3 +1,7 @@
+1.0.0-rc.14
+=============
+* Magento vendor name is used as root MTF namespace
+
 1.0.0-rc.13
 =============
 * Added ability to skip injectable test including prepare and inject methods
@@ -29,7 +33,7 @@
 =============
 * Sync factory class from Magento/Framework/ObjectManager/Factory
 * Fixed issue with applying placeholders to selectors in fixture data mapping
-* Fixed an issue with method keys() in \Mtf\Client\Driver\Selenium\Element
+* Fixed an issue with method keys() in \Magento\Mtf\Client\Driver\Selenium\Element
 * Added 'Interface' suffix to all interface names within Magento/Framework directory
 
 1.0.0-dev.8
@@ -100,12 +104,12 @@
   * Running the Magento Test Framework (MTF)
   * Installing and Configuring the Magento Test Framework (MTF)
 * MTF Improvements
-  * Fixed Mtf\Fixture\InjectableFixture::__construct() method
-  * Moved __prepare() method call from __construct() to run() method in Mtf\Constraint\AbstractConstraint\Injectable class
-  * Added validations for Mtf\Block\Form class methods
-  * Updated return value for Mtf\Client\Driver\Selenium\Element\CheckboxElement::getValue() method
+  * Fixed Magento\Mtf\Fixture\InjectableFixture::__construct() method
+  * Moved __prepare() method call from __construct() to run() method in Magento\Mtf\Constraint\AbstractConstraint\Injectable class
+  * Added validations for Magento\Mtf\Block\Form class methods
+  * Updated return value for Magento\Mtf\Client\Driver\Selenium\Element\CheckboxElement::getValue() method
 * Fixed bugs:
-  * Fixed an issue in Mtf\ObjectManager\Factory with resolving arguments in __construct() during new instance creation
+  * Fixed an issue in Magento\Mtf\ObjectManager\Factory with resolving arguments in __construct() during new instance creation
 
 1.0.0-dev.1
 =============

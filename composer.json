@@ -16,8 +16,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Mtf\\": "Mtf/",
-            "Magento\\": "tests/app/Magento/"
+            "Magento\\": ["Magento/", "testsuites/Magento/", "tests/app/Magento/"]
         }
     }
 }
