@@ -48,11 +48,11 @@ class FixtureFactory extends \Mtf\Factory\AbstractFactory
     /**
      * @constructor
      * @param \Mtf\ObjectManager $objectManager
-     * @param \Magento\Framework\Config\DataInterface $configData
+     * @param \Mtf\Config\DataInterface $configData
      */
     public function __construct(
         \Mtf\ObjectManager $objectManager,
-        \Magento\Framework\Config\DataInterface $configData
+        \Mtf\Config\DataInterface $configData
     ) {
         parent::__construct($objectManager);
         $this->configuration = $configData->get();

@@ -27,15 +27,15 @@ namespace Mtf\TestCase;
 class Config
 {
     /**
-     * @var \Magento\Framework\Config\DataInterface
+     * @var \Mtf\Config\DataInterface
      */
     protected $configuration;
 
     /**
      * @constructor
-     * @param \Magento\Framework\Config\DataInterface $configuration
+     * @param \Mtf\Config\DataInterface $configuration
      */
-    public function __construct(\Magento\Framework\Config\DataInterface $configuration)
+    public function __construct(\Mtf\Config\DataInterface $configuration)
     {
         $this->configuration = $configuration;
     }
