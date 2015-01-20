@@ -24,7 +24,7 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="config.xsd">
-    <application reopenBrowser="testCase" backendLogin="admin" backendPassword="123123q"/>
+    <application backendLogin="admin" backendPassword="123123q" reopenBrowser="testCase" />
     <isolation resetUrlPath="dev/tests/mtf/isolation.php" testSuite="before" testCase="none" test="none"/>
     <server>
         <item name="selenium" type="default" browser="Mozilla Firefox" browserName="firefox" host="localhost" port="4444" seleniumServerRequestsTimeout="90" sessionStrategy="shared">
