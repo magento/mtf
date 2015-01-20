@@ -142,6 +142,11 @@
             <argument name="configData" xsi:type="object">Mtf\Config\Constraint</argument>
         </arguments>
     </type>
+    <type name="Mtf\Page\Page">
+        <arguments>
+            <argument name="configData" xsi:type="object">Mtf\Config\Page</argument>
+        </arguments>
+    </type>
 
     <virtualType name="Mtf\Config\TestRunner" type="Mtf\Config\Data">
         <arguments>
@@ -168,6 +173,11 @@
             <argument name="reader" xsi:type="object">Mtf\Config\Reader\Constraint</argument>
         </arguments>
     </virtualType>
+    <virtualType name="Mtf\Config\Page" type="Mtf\Config\Data">
+        <arguments>
+            <argument name="reader" xsi:type="object">Mtf\Config\Reader\Page</argument>
+        </arguments>
+    </virtualType>
 
     <virtualType name="Mtf\Config\SchemaLocator\TestRunner" type="Mtf\Config\SchemaLocator">
         <arguments>
@@ -192,6 +202,11 @@
     <virtualType name="Mtf\Config\SchemaLocator\Constraint" type="Mtf\Config\SchemaLocator">
         <arguments>
             <argument name="schemaPath" xsi:type="string">Mtf/Constraint/etc/constraint.xsd</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Mtf\Config\SchemaLocator\Page" type="Mtf\Config\SchemaLocator">
+        <arguments>
+            <argument name="schemaPath" xsi:type="string">Mtf/Constraint/etc/page.xsd</argument>
         </arguments>
     </virtualType>
 
@@ -257,6 +272,15 @@
             <argument name="converter" xsi:type="object">Mtf\Config\Converter</argument>
             <argument name="schemaLocator" xsi:type="object">Mtf\Config\SchemaLocator\Constraint</argument>
             <argument name="fileName" xsi:type="string">constraint.xml</argument>
+            <argument name="defaultScope" xsi:type="string">etc</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Mtf\Config\Reader\Page" type="Mtf\Config\Reader\Filesystem">
+        <arguments>
+            <argument name="fileResolver" xsi:type="object">Mtf\Config\FileResolver\Module</argument>
+            <argument name="converter" xsi:type="object">Mtf\Config\Converter</argument>
+            <argument name="schemaLocator" xsi:type="object">Mtf\Config\SchemaLocator\Page</argument>
+            <argument name="fileName" xsi:type="string">page.xml</argument>
             <argument name="defaultScope" xsi:type="string">etc</argument>
         </arguments>
     </virtualType>
