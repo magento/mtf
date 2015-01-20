@@ -31,6 +31,7 @@
     <preference for="Mtf\Constraint\AbstractConstraint" type="Mtf\Constraint\Dummy"/>
     <preference for="Mtf\ObjectManagerInterface" type="Mtf\ObjectManager"/>
     <preference for="Mtf\ObjectManager\FactoryInterface" type="Mtf\ObjectManager\Factory"/>
+    <preference for="Mtf\Config\ReaderInterface" type="Mtf\Config\Reader\Filesystem"/>
     <preference for="Mtf\ObjectManager\ConfigInterface" type="Mtf\ObjectManager\Config\Config"/>
     <preference for="Mtf\Util\Generate\Fixture\FieldsProviderInterface"
                 type="Mtf\Util\Generate\Fixture\DummyFieldsProvider"/>
@@ -45,6 +46,11 @@
     <type name="Mtf\Util\Iterator\TestCase">
         <arguments>
             <argument name="rule" xsi:type="object">Mtf\TestRunner\Rule\SuiteComposite</argument>
+        </arguments>
+    </type>
+    <type name="Mtf\Fixture\FixtureFactory">
+        <arguments>
+            <argument name="config" xsi:type="object">Mtf\Config</argument>
         </arguments>
     </type>
     <preference for="Mtf\Config\FileResolverInterface" type="Mtf\Config\FileResolver\Module"/>
@@ -209,9 +215,19 @@
             <argument name="reader" xsi:type="object">Mtf\Config\Reader\Config</argument>
         </arguments>
     </virtualType>
-    <type name="Mtf\Client\Driver\Selenium\Browser">
+    <type name="Mtf\Client\Driver\Selenium\Driver">
         <arguments>
             <argument name="configuration" xsi:type="object">Mtf\Config\GlobalConfig</argument>
+        </arguments>
+    </type>
+    <type name="Mtf\Client\Browser">
+        <arguments>
+            <argument name="configuration" xsi:type="object">Mtf\Config\GlobalConfig</argument>
+        </arguments>
+    </type>
+    <type name="Mtf\Client\Driver\Selenium\RemoteDriver">
+        <arguments>
+            <argument name="config" xsi:type="object">Mtf\Config\GlobalConfig</argument>
         </arguments>
     </type>
     <type name="Mtf\Client\Driver\Selenium\TestCase">
