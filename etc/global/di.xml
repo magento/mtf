@@ -206,7 +206,7 @@
     </virtualType>
     <virtualType name="Mtf\Config\SchemaLocator\Page" type="Mtf\Config\SchemaLocator">
         <arguments>
-            <argument name="schemaPath" xsi:type="string">Mtf/Constraint/etc/constraint.xsd</argument>
+            <argument name="schemaPath" xsi:type="string">Mtf/Page/etc/page.xsd</argument>
         </arguments>
     </virtualType>
 
