@@ -29,6 +29,7 @@ namespace Mtf\Config;
  */
 class ConverterGlobal implements \Mtf\Config\ConverterInterface
 {
+    const ACCURACY = 10000;
     /**
      * Unique identifier of node.
      */
@@ -57,19 +58,12 @@ class ConverterGlobal implements \Mtf\Config\ConverterInterface
 
         foreach ($elements as $element) {
             if ($element instanceof \DOMElement) {
-                $key = $element->hasAttribute(self::NAME_ATTRIBUTE)
-                    ? $element->getAttribute(self::NAME_ATTRIBUTE)
-                    : $element->nodeName;
-                if ($element->nodeName == 'item' && !$element->hasAttribute(self::NAME_ATTRIBUTE)) {
-                    $key = count($result);
-                }
-
+                $key = $this->chooseKey($element, $result);
                 $result[$key] = [];
-
                 if ($element->hasAttributes()) {
                     foreach ($element->attributes as $attribute) {
                         if (trim($attribute->nodeValue) != '') {
-                            $result[$key][$attribute->nodeName] = $attribute->nodeValue;
+                            $result[$key][$attribute->nodeName] = $this->castNumeric($attribute->nodeValue);
                         }
                     }
                 }
@@ -88,5 +82,45 @@ class ConverterGlobal implements \Mtf\Config\ConverterInterface
         }
 
         return $result;
+    }
+
+    /**
+     * Cast nodeValue to int or double
+     *
+     * @param $nodeValue
+     * @return float|int
+     */
+    protected function castNumeric($nodeValue)
+    {
+        if (is_numeric($nodeValue)) {
+            $intNodeValue = (int)$nodeValue * self::ACCURACY;
+            $floatNodeValue = $nodeValue * self::ACCURACY;
+            if ($floatNodeValue - $intNodeValue > 0) {
+                $nodeValue = (double)$nodeValue;
+            } else {
+                $nodeValue = (int)$nodeValue;
+            }
+        }
+
+        return $nodeValue;
+    }
+
+    /**
+     * Choosing key depends on element
+     *
+     * @param \DOMElement $element
+     * @param array $result
+     * @return int
+     */
+    protected function chooseKey(\DOMElement $element, $result)
+    {
+        $key = $element->hasAttribute(self::NAME_ATTRIBUTE)
+            ? $element->getAttribute(self::NAME_ATTRIBUTE)
+            : $element->nodeName;
+        if ($element->nodeName == 'item' && !$element->hasAttribute(self::NAME_ATTRIBUTE)) {
+            $key = count($result);
+            return $key;
+        }
+        return $key;
     }
 }
