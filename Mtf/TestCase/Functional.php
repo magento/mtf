@@ -36,7 +36,7 @@ use Mtf\TestRunner\Process\ProcessManager;
  * @api
  * @abstract
  */
-abstract class Functional extends \PHPUnit_Framework_TestCase
+abstract class Functional extends TestCase
 {
     /**
      * @var \Mtf\ObjectManager
@@ -152,10 +152,6 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
                 parent::run($result);
                 if ($this->getStatus() == \PHPUnit_Runner_BaseTestRunner::STATUS_ERROR) {
                     $this->eventManager->dispatchEvent(['exception'], [$this->getStatusMessage()]);
-                }
-                /** @var \PHPUnit_Framework_TestFailure $failure */
-                foreach ($result->failures() as $failure) {
-                    $this->eventManager->dispatchEvent(['failure'], [$failure->exceptionMessage()]);
                 }
             } catch (\PHPUnit_Framework_Exception $phpUnitException) {
                 $this->eventManager->dispatchEvent(['exception'], [$phpUnitException->getMessage()]);

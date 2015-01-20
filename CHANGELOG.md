@@ -1,3 +1,4 @@
+* Fixed wrong screenshot is taken for test failure if tearDown() method is present
 * Fixed issue with applying tagging mechanism on variation scope in parallel mode
 * Code marked with @SuppressWarnings annotations
 
