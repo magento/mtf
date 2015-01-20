@@ -1,3 +1,9 @@
+1.0.0-rc.13
+=============
+* Added ability to skip injectable test including prepare and inject methods
+* Removed dependency on Magento Framework
+* Added alternative web driver support and adapter for Facebook web driver as an example
+
 1.0.0-rc.12
 =============
 * Fixed issue with applying tagging mechanism on variation scope in parallel mode

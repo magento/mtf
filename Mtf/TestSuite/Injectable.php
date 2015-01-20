@@ -24,8 +24,6 @@
 
 namespace Mtf\TestSuite;
 
-use Mtf\TestRunner\Process\ProcessManager;
-
 /**
  * Class Functional
  * Test suite to handle parallel run process completion for injectable tests

@@ -25,7 +25,7 @@
 namespace Mtf\TestRunner\Configuration\FileResolver;
 
 use Mtf\Util\Iterator\File;
-use Magento\Framework\Config\FileResolverInterface;
+use Mtf\Config\FileResolverInterface;
 
 /**
  * Provides the list of test runner configuration files.

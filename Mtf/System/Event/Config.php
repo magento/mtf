@@ -24,7 +24,7 @@
 namespace Mtf\System\Event;
 
 use Mtf\System\Event\Config\Reader;
-use Magento\Framework\Config\Data;
+use Mtf\Config\Data;
 
 /**
  * Class for dealing wth events.xml config file and adoption it as Config to an application
@@ -34,7 +34,7 @@ class Config extends Data
     /**
      * Configuration reader model
      *
-     * @var \Magento\Framework\Config\ReaderInterface
+     * @var \Mtf\Config\ReaderInterface
      */
     protected $reader;
 

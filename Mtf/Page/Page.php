@@ -27,7 +27,7 @@ namespace Mtf\Page;
 use Mtf\Block\BlockFactory;
 use Mtf\Block\BlockInterface;
 use Mtf\Fixture\FixtureInterface;
-use Mtf\Client\Browser;
+use Mtf\Client\BrowserInterface;
 use Mtf\System\Config;
 
 /**
@@ -47,7 +47,7 @@ class Page implements PageInterface
     /**
      * Client Browser
      *
-     * @var Browser
+     * @var BrowserInterface
      */
     protected $_browser;
 
@@ -92,10 +92,10 @@ class Page implements PageInterface
      *
      * @constructor
      * @param Config $configuration
-     * @param Browser $browser
+     * @param BrowserInterface $browser
      * @param BlockFactory $blockFactory
      */
-    public function __construct(Config $configuration, Browser $browser, BlockFactory $blockFactory)
+    public function __construct(Config $configuration, BrowserInterface $browser, BlockFactory $blockFactory)
     {
         $this->_configuration = $configuration;
         $this->_browser = $browser;
@@ -203,6 +203,6 @@ class Page implements PageInterface
             $this->blockInstances[$blockName] = $block;
         }
         // @todo fix to get link to new page if page reloaded
-        return $this->blockInstances[$blockName]->reinitRootElement();
+        return $this->blockInstances[$blockName];
     }
 }

@@ -24,14 +24,19 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <preference for="Mtf\Client\Browser" type="Mtf\Client\Driver\Selenium\Browser"/>
+    <preference for="Mtf\Client\DriverInterface" type="Mtf\Client\Driver\Selenium\Driver"/>
+    <preference for="Mtf\Client\BrowserInterface" type="Mtf\Client\Browser"/>
+    <preference for="Mtf\Client\ElementInterface" type="Mtf\Client\Element\SimpleElement"/>
     <preference for="Mtf\System\Event\EventManagerInterface" type="Mtf\System\Event\EventManager"/>
     <preference for="Mtf\Constraint\AbstractConstraint" type="Mtf\Constraint\Dummy"/>
+    <preference for="Mtf\ObjectManagerInterface" type="Mtf\ObjectManager"/>
+    <preference for="Mtf\ObjectManager\FactoryInterface" type="Mtf\ObjectManager\Factory"/>
+    <preference for="Mtf\ObjectManager\ConfigInterface" type="Mtf\ObjectManager\Config\Config"/>
     <preference for="Mtf\Util\Generate\Fixture\FieldsProviderInterface"
                 type="Mtf\Util\Generate\Fixture\DummyFieldsProvider"/>
     <preference for="Mtf\Util\Generate\Repository\CollectionProviderInterface"
                 type="Mtf\Util\Generate\Repository\DummyCollectionProvider"/>
-    <type name="Mtf\Client\Driver\Selenium\Element" shared="false"/>
+    <type name="Mtf\Client\Element\SimpleElement" shared="false"/>
     <type name="Mtf\Block\BlockInterface" shared="false"/>
     <type name="Mtf\Page\PageInterface" shared="false"/>
     <type name="Mtf\Fixture\InjectableFixture" shared="false"/>
@@ -42,10 +47,10 @@
             <argument name="rule" xsi:type="object">Mtf\TestRunner\Rule\SuiteComposite</argument>
         </arguments>
     </type>
-    <preference for="Magento\Framework\Config\FileResolverInterface" type="Mtf\Config\FileResolver\Module"/>
-    <preference for="Magento\Framework\Config\ConverterInterface" type="Mtf\Config\Converter"/>
-    <preference for="Magento\Framework\Config\SchemaLocatorInterface" type="Mtf\Config\SchemaLocator"/>
-    <preference for="Magento\Framework\Config\ValidationStateInterface" type="Mtf\Config\ValidationState"/>
+    <preference for="Mtf\Config\FileResolverInterface" type="Mtf\Config\FileResolver\Module"/>
+    <preference for="Mtf\Config\ConverterInterface" type="Mtf\Config\Converter"/>
+    <preference for="Mtf\Config\SchemaLocatorInterface" type="Mtf\Config\SchemaLocator"/>
+    <preference for="Mtf\Config\ValidationStateInterface" type="Mtf\Config\ValidationState"/>
     <type name="Mtf\Config\ValidationState">
         <arguments>
             <argument name="appMode" xsi:type="string">developer</argument>

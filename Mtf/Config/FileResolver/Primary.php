@@ -25,7 +25,7 @@
 namespace Mtf\Config\FileResolver;
 
 use Mtf\Util\Iterator\File;
-use Magento\Framework\Config\FileResolverInterface;
+use Mtf\Config\FileResolverInterface;
 
 /**
  * Class Primary

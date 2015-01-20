@@ -24,10 +24,11 @@
 
 namespace Mtf\Block;
 
-use Mtf\Client\Element;
+use Mtf\Client\Locator;
+use Mtf\Client\BrowserInterface;
 use Mtf\Fixture\FixtureInterface;
 use Mtf\Fixture\InjectableFixture;
-use Mtf\Client\Driver\Selenium\Browser;
+use Mtf\Client\Element\SimpleElement;
 
 /**
  * Class Form
@@ -81,17 +82,17 @@ class Form extends Block
 
     /**
      * @constructor
-     * @param Element $element
+     * @param SimpleElement $element
      * @param BlockFactory $blockFactory
      * @param Mapper $mapper
-     * @param Browser $browser
+     * @param BrowserInterface $browser
      * @param array $config [optional]
      */
     public function __construct(
-        Element $element,
+        SimpleElement $element,
         BlockFactory $blockFactory,
         Mapper $mapper,
-        Browser $browser,
+        BrowserInterface $browser,
         array $config = []
     ) {
         $this->mapper = $mapper;
@@ -193,7 +194,7 @@ class Form extends Block
                     : (($this->wrapper != '') ? "[name='{$this->wrapper}" . "[{$key}]']" : "[name={$key}]");
                 $mapping[$key]['strategy'] = isset($mappingFields[$key]['strategy'])
                     ? $mappingFields[$key]['strategy']
-                    : Element\Locator::SELECTOR_CSS;
+                    : Locator::SELECTOR_CSS;
                 $mapping[$key]['input'] = isset($mappingFields[$key]['input'])
                     ? $mappingFields[$key]['input']
                     : null;
@@ -212,16 +213,16 @@ class Form extends Block
     /**
      * Get element of particular class if defined in xml configuration or of one of framework classes otherwise
      *
-     * @param Element $context
+     * @param SimpleElement $context
      * @param array $field
-     * @return Element
+     * @return SimpleElement
      * @throws \Exception
      */
-    protected function getElement(Element $context, array $field)
+    protected function getElement(SimpleElement $context, array $field)
     {
         if (isset($field['class'])) {
             $element = $context->find($field['selector'], $field['strategy'], $field['class']);
-            if (!$element instanceof Element) {
+            if (!$element instanceof SimpleElement) {
                 throw new \Exception('Wrong Element Class.');
             }
         } else {
@@ -235,10 +236,10 @@ class Form extends Block
      * Fill specified form data
      *
      * @param array $fields
-     * @param Element $element
+     * @param SimpleElement $element
      * @return void
      */
-    protected function _fill(array $fields, Element $element = null)
+    protected function _fill(array $fields, SimpleElement $element = null)
     {
         $context = ($element === null) ? $this->_rootElement : $element;
         foreach ($fields as $name => $field) {
@@ -258,10 +259,10 @@ class Form extends Block
      * Fill the root form
      *
      * @param FixtureInterface $fixture
-     * @param Element|null $element
+     * @param SimpleElement|null $element
      * @return $this
      */
-    public function fill(FixtureInterface $fixture, Element $element = null)
+    public function fill(FixtureInterface $fixture, SimpleElement $element = null)
     {
         $data = $fixture->getData();
         $fields = isset($data['fields']) ? $data['fields'] : $data;
@@ -275,10 +276,10 @@ class Form extends Block
      * Get data of specified form data
      *
      * @param array $fields
-     * @param Element|null $element
+     * @param SimpleElement|null $element
      * @return array
      */
-    protected function _getData(array $fields, Element $element = null)
+    protected function _getData(array $fields, SimpleElement $element = null)
     {
         $data = [];
         $context = ($element === null) ? $this->_rootElement : $element;
@@ -300,10 +301,10 @@ class Form extends Block
      * Get data of the root form
      *
      * @param FixtureInterface|null $fixture
-     * @param Element|null $element
+     * @param SimpleElement|null $element
      * @return array
      */
-    public function getData(FixtureInterface $fixture = null, Element $element = null)
+    public function getData(FixtureInterface $fixture = null, SimpleElement $element = null)
     {
         if (null === $fixture) {
             $fields = null;

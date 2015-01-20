@@ -27,7 +27,7 @@ namespace Mtf\TestRunner\Rule\Configuration;
 /**
  * Test runner configuration schema locator.
  */
-class SchemaLocator implements \Magento\Framework\Config\SchemaLocatorInterface
+class SchemaLocator implements \Mtf\Config\SchemaLocatorInterface
 {
     /**
      * Get path to merged config schema.
