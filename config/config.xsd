@@ -26,15 +26,15 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xs:element name="config">
         <xs:complexType>
-            <xs:sequence>
-                <xs:element name="application">
+            <xs:all>
+                <xs:element name="application" minOccurs="0">
                     <xs:complexType>
                         <xs:attribute name="reopenBrowser" type="reopenBrowserType" use="required"/>
                         <xs:attribute name="backendLogin" type="backendLoginType" use="required"/>
                         <xs:attribute name="backendPassword" type="backendPasswordType" use="required"/>
                     </xs:complexType>
                 </xs:element>
-                <xs:element name="isolation">
+                <xs:element name="isolation" minOccurs="0">
                     <xs:complexType>
                         <xs:attribute name="resetUrlPath" type="notEmptyType" use="required"/>
                         <xs:attribute name="testSuite" type="isolationModeType" use="required"/>
@@ -42,7 +42,7 @@
                         <xs:attribute name="test" type="isolationModeType" use="required"/>
                     </xs:complexType>
                 </xs:element>
-                <xs:element name="server">
+                <xs:element name="server" minOccurs="0">
                     <xs:complexType>
                         <xs:sequence>
                             <xs:choice maxOccurs="unbounded" minOccurs="1">
@@ -51,7 +51,7 @@
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
-            </xs:sequence>
+            </xs:all>
         </xs:complexType>
     </xs:element>
     <xs:simpleType name="reopenBrowserType">

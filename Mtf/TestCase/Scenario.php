@@ -47,7 +47,7 @@ abstract class Scenario extends Injectable
      */
     public function __construct($name = null, array $data = [], $dataName = '', $path = '')
     {
-        $this->config = $this->getObjectManager()->get('Mtf\TestCase\Config');
+        $this->config = $this->getObjectManager()->get('Mtf\Config');
         parent::__construct($name, $data, $dataName, $path);
     }
 

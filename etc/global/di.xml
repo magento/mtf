@@ -45,7 +45,7 @@
     <type name="Mtf\TestCase\Functional" shared="false"/>
     <type name="Mtf\Util\Iterator\TestCase">
         <arguments>
-            <argument name="rule" xsi:type="object">Mtf\TestRunner\Rule\SuiteComposite</argument>
+            <argument name="ruleFactory" xsi:type="object">Mtf\TestRunner\Rule\RuleFactory</argument>
         </arguments>
     </type>
     <preference for="Mtf\Config\FileResolverInterface" type="Mtf\Config\FileResolver\Module"/>
@@ -93,26 +93,6 @@
         </arguments>
     </type>
 
-    <type name="Mtf\Client\Driver\Selenium\Driver">
-        <arguments>
-            <argument name="configuration" xsi:type="object">Mtf\Config\GlobalConfig</argument>
-        </arguments>
-    </type>
-    <type name="Mtf\Client\Browser">
-        <arguments>
-            <argument name="configuration" xsi:type="object">Mtf\Config\GlobalConfig</argument>
-        </arguments>
-    </type>
-    <type name="Mtf\Client\Driver\Selenium\RemoteDriver">
-        <arguments>
-            <argument name="config" xsi:type="object">Mtf\Config\GlobalConfig</argument>
-        </arguments>
-    </type>
-    <type name="Mtf\Client\Driver\Selenium\TestCase">
-        <arguments>
-            <argument name="config" xsi:type="object">Mtf\Config\GlobalConfig</argument>
-        </arguments>
-    </type>
     <type name="Mtf\TestRunner\Configuration">
         <arguments>
             <argument name="configuration" xsi:type="object">Mtf\Config\TestRunner</argument>
@@ -130,7 +110,7 @@
     </type>
     <type name="Mtf\Fixture\FixtureFactory">
         <arguments>
-            <argument name="configuration" xsi:type="object">Mtf\Config\Fixture</argument>
+            <argument name="configData" xsi:type="object">Mtf\Config\Fixture</argument>
         </arguments>
     </type>
     <type name="Mtf\Util\Generate\Fixture">
@@ -149,11 +129,6 @@
         </arguments>
     </type>
 
-    <virtualType name="Mtf\Config\GlobalConfig" type="Mtf\Config\Data">
-        <arguments>
-            <argument name="reader" xsi:type="object">Mtf\Config\Reader\Config</argument>
-        </arguments>
-    </virtualType>
     <virtualType name="Mtf\Config\TestRunner" type="Mtf\Config\Data">
         <arguments>
             <argument name="reader" xsi:type="object">Mtf\Config\Reader\TestRunner</argument>
@@ -174,17 +149,7 @@
             <argument name="reader" xsi:type="object">Mtf\Config\Reader\Fixture</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Mtf\Config\Constraint" type="Mtf\Config\Data">
-        <arguments>
-            <argument name="reader" xsi:type="object">Mtf\Config\Reader\constraint</argument>
-        </arguments>
-    </virtualType>
 
-    <virtualType name="Mtf\Config\SchemaLocator\Config" type="Mtf\Config\SchemaLocator">
-        <arguments>
-            <argument name="schemaPath" xsi:type="string">config/config.xsd</argument>
-        </arguments>
-    </virtualType>
     <virtualType name="Mtf\Config\SchemaLocator\TestRunner" type="Mtf\Config\SchemaLocator">
         <arguments>
             <argument name="schemaPath" xsi:type="string">Mtf/TestRunner/etc/testRunner.xsd</argument>
@@ -205,22 +170,18 @@
             <argument name="schemaPath" xsi:type="string">Mtf/Fixture/etc/fixture.xsd</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Mtf\Config\SchemaLocator\Constraint" type="Mtf\Config\SchemaLocator">
-        <arguments>
-            <argument name="schemaPath" xsi:type="string">Mtf/Constraint/etc/constraint.xsd</argument>
-        </arguments>
-    </virtualType>
 
-    <virtualType name="Mtf\Config\Reader\Config" type="Mtf\Config\Reader\Filesystem">
+    <virtualType name="Mtf\Config\Reader\TestRunnerRule" type="Mtf\Config\Reader\Filesystem">
         <arguments>
             <argument name="fileResolver" xsi:type="object">Mtf\Config\FileResolver\Primary</argument>
-            <argument name="converter" xsi:type="object">Mtf\Config\ConverterGlobal</argument>
-            <argument name="schemaLocator" xsi:type="object">Mtf\Config\SchemaLocator\Config</argument>
+            <argument name="converter" xsi:type="object">Mtf\TestRunner\Rule\Configuration\Converter</argument>
+            <argument name="schemaLocator" xsi:type="object">Mtf\Config\SchemaLocator\TestRunnerRule</argument>
             <argument name="idAttributes" xsi:type="array">
-                <item name="/config" xsi:type="string">scope</item>
+                <item name="/config/rule" xsi:type="string">scope</item>
+                <item name="/config/rule/filter" xsi:type="string">namespace</item>
             </argument>
-            <argument name="fileName" xsi:type="string">config.xml</argument>
-            <argument name="defaultScope" xsi:type="string">config</argument>
+            <argument name="fileName" xsi:type="string">rule.xml</argument>
+            <argument name="defaultScope" xsi:type="string">Mtf/TestRunner/Rule/etc</argument>
         </arguments>
     </virtualType>
     <virtualType name="Mtf\Config\Reader\TestRunner" type="Mtf\Config\Reader\Filesystem">
@@ -241,19 +202,6 @@
             </argument>
             <argument name="fileName" xsi:type="string"/>
             <argument name="defaultScope" xsi:type="string">testsuites/Magento/Mtf/TestSuite/MtfTests</argument>
-        </arguments>
-    </virtualType>
-    <virtualType name="Mtf\Config\Reader\TestRunnerRule" type="Mtf\Config\Reader\Filesystem">
-        <arguments>
-            <argument name="fileResolver" xsi:type="object">Mtf\Config\FileResolver\Primary</argument>
-            <argument name="converter" xsi:type="object">Mtf\TestRunner\Rule\Configuration\Converter</argument>
-            <argument name="schemaLocator" xsi:type="object">Mtf\Config\SchemaLocator\TestRunnerRule</argument>
-            <argument name="idAttributes" xsi:type="array">
-                <item name="/config/rule" xsi:type="string">scope</item>
-                <item name="/config/rule/filter" xsi:type="string">namespace</item>
-            </argument>
-            <argument name="fileName" xsi:type="string">rule.xml</argument>
-            <argument name="defaultScope" xsi:type="string">Mtf/TestRunner/Rule/etc</argument>
         </arguments>
     </virtualType>
     <virtualType name="Mtf\Config\Reader\SystemEvent" type="Mtf\Config\Reader\Filesystem">
@@ -279,13 +227,46 @@
             <argument name="defaultScope" xsi:type="string">etc</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Mtf\Config\Reader\Constraint" type="Mtf\Config\Reader\Filesystem">
+    <virtualType name="Mtf\Config\SchemaLocator\Config" type="Mtf\Config\SchemaLocator">
         <arguments>
-            <argument name="fileResolver" xsi:type="object">Mtf\Config\FileResolver\Module</argument>
-            <argument name="converter" xsi:type="object">Mtf\Config\Converter</argument>
-            <argument name="schemaLocator" xsi:type="object">Mtf\Config\SchemaLocator\Constraint</argument>
-            <argument name="fileName" xsi:type="string">constraint.xml</argument>
-            <argument name="defaultScope" xsi:type="string">etc</argument>
+            <argument name="schemaPath" xsi:type="string">config/config.xsd</argument>
         </arguments>
     </virtualType>
+    <virtualType name="Mtf\Config\Reader\Config" type="Mtf\Config\Reader\Filesystem">
+        <arguments>
+            <argument name="fileResolver" xsi:type="object">Mtf\Config\FileResolver\Primary</argument>
+            <argument name="converter" xsi:type="object">Mtf\Config\ConverterGlobal</argument>
+            <argument name="schemaLocator" xsi:type="object">Mtf\Config\SchemaLocator\Config</argument>
+            <argument name="idAttributes" xsi:type="array">
+                <item name="/config" xsi:type="string">scope</item>
+            </argument>
+            <argument name="fileName" xsi:type="string">config.xml</argument>
+            <argument name="defaultScope" xsi:type="string">config</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Mtf\Config\GlobalConfig" type="Mtf\Config\Data">
+        <arguments>
+            <argument name="reader" xsi:type="object">Mtf\Config\Reader\Config</argument>
+        </arguments>
+    </virtualType>
+    <type name="Mtf\Client\Driver\Selenium\Driver">
+        <arguments>
+            <argument name="configuration" xsi:type="object">Mtf\Config\GlobalConfig</argument>
+        </arguments>
+    </type>
+    <type name="Mtf\Client\Browser">
+        <arguments>
+            <argument name="configuration" xsi:type="object">Mtf\Config\GlobalConfig</argument>
+        </arguments>
+    </type>
+    <type name="Mtf\Client\Driver\Selenium\RemoteDriver">
+        <arguments>
+            <argument name="config" xsi:type="object">Mtf\Config\GlobalConfig</argument>
+        </arguments>
+    </type>
+    <type name="Mtf\Client\Driver\Selenium\TestCase">
+        <arguments>
+            <argument name="config" xsi:type="object">Mtf\Config\GlobalConfig</argument>
+        </arguments>
+    </type>
 </config>
