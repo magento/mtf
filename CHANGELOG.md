@@ -1,3 +1,5 @@
+1.0.0-rc.12
+=============
 * Fixed issue with applying tagging mechanism on variation scope in parallel mode
 * Code marked with @SuppressWarnings annotations
 
