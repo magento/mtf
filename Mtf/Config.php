@@ -92,15 +92,6 @@ class Config
         }
 
         switch ($configName) {
-            case null:
-            case 'application':
-            case 'server':
-            case 'isolation':
-            case 'handler':
-                $filePath = is_null($scope) ? null : $scope;
-                $systemConfigReader = new \Mtf\System\Config($filePath);
-                return $systemConfigReader->getConfigParam($parameterPath);
-                break;
             case 'scenario':
                 if (is_null($this->scenarioConfigReader)) {
                     $this->scenarioConfigReader = $this->objectManager->get(

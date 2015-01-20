@@ -29,7 +29,7 @@ namespace Mtf\ObjectManager\Config\Reader;
  *
  * @internal
  */
-class Dom extends \Magento\Framework\Config\Reader\Filesystem
+class Dom extends \Mtf\Config\Reader\Filesystem
 {
     /**
      * Name of an attribute that stands for data type of node values
@@ -48,23 +48,23 @@ class Dom extends \Magento\Framework\Config\Reader\Filesystem
     );
 
     /**
-     * @param \Magento\Framework\Config\FileResolverInterface $fileResolver
-     * @param \Magento\Framework\ObjectManager\Config\Mapper\Dom $converter
-     * @param \Magento\Framework\ObjectManager\Config\SchemaLocator $schemaLocator
-     * @param \Magento\Framework\Config\ValidationStateInterface $validationState
+     * @param \Mtf\Config\FileResolverInterface $fileResolver
+     * @param \Mtf\ObjectManager\Config\Mapper\Dom $converter
+     * @param \Mtf\ObjectManager\Config\SchemaLocator $schemaLocator
+     * @param \Mtf\Config\ValidationStateInterface $validationState
      * @param string $fileName
      * @param array $idAttributes
      * @param string $domDocumentClass
      * @param string $defaultScope
      */
     public function __construct(
-        \Magento\Framework\Config\FileResolverInterface $fileResolver,
-        \Magento\Framework\ObjectManager\Config\Mapper\Dom $converter,
-        \Magento\Framework\ObjectManager\Config\SchemaLocator $schemaLocator,
-        \Magento\Framework\Config\ValidationStateInterface $validationState,
+        \Mtf\Config\FileResolverInterface $fileResolver,
+        \Mtf\ObjectManager\Config\Mapper\Dom $converter,
+        \Mtf\ObjectManager\Config\SchemaLocator $schemaLocator,
+        \Mtf\Config\ValidationStateInterface $validationState,
         $fileName = 'di.xml',
         $idAttributes = array(),
-        $domDocumentClass = 'Magento\Framework\Config\Dom',
+        $domDocumentClass = 'Mtf\Config\Dom',
         $defaultScope = 'etc/global'
     ) {
         parent::__construct(
@@ -84,7 +84,7 @@ class Dom extends \Magento\Framework\Config\Reader\Filesystem
      *
      * @param string $mergerClass
      * @param string $initialContents
-     * @return \Magento\Framework\Config\Dom
+     * @return \Mtf\Config\Dom
      */
     protected function _createConfigMerger($mergerClass, $initialContents)
     {

@@ -24,10 +24,10 @@
 
 namespace Mtf\Util\Generate;
 
+use Mtf\Util\Generate\Fixture\FieldsProviderInterface;
 use Mtf\Config;
 use Mtf\Util\XmlConverter;
-use Mtf\Util\Generate\Fixture\FieldsProviderInterface;
-use Magento\Framework\ObjectManagerInterface;
+use Mtf\ObjectManagerInterface;
 
 /**
  * Class Fixture

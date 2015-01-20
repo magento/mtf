@@ -26,7 +26,7 @@ namespace Mtf\System\Browser;
 
 use Exception;
 use Mtf\Factory\Factory;
-use Mtf\Config; // Mtf\SystemConfig
+use Mtf\Config\Data;
 use PHPUnit_Framework_AssertionFailedError;
 use PHPUnit_Framework_Test;
 use PHPUnit_Framework_TestSuite;
@@ -53,14 +53,14 @@ class Listener implements \PHPUnit_Framework_TestListener
     protected $_scope;
 
     /**
-     * @param Config $configuration
+     * @param Data $configuration
      */
-    public function __construct(Config $configuration = null)
+    public function __construct(Data $configuration = null)
     {
         if (!isset($configuration)) {
-            $configuration = \Mtf\ObjectManager::getInstance()->get('Mtf\Config');
+            $configuration = \Mtf\ObjectManager::getInstance()->get('Mtf\Config\GlobalConfig');
         }
-        $this->_scope = $configuration->getParameter('application/reopen_browser_on') ? : static::SCOPE_TEST_CASE;
+        $this->_scope = $configuration->get('application/reopen_browser_on') ? : static::SCOPE_TEST_CASE;
     }
 
     /**

@@ -27,7 +27,7 @@ namespace Mtf\Config;
  * Class Converter
  * Convert scenario configuration.
  */
-class Converter implements \Magento\Framework\Config\ConverterInterface
+class Converter implements \Mtf\Config\ConverterInterface
 {
     /**
      * Unique identifier of node.

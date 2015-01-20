@@ -22,8 +22,7 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 namespace Mtf\System;
-
-use Mtf\Config; // Mtf\SystemConfig
+use Mtf\Config as MtfConfig;
 
 /**
  * Class for working with log directory and file
@@ -45,10 +44,10 @@ class Logger implements LoggerInterface
     /**
      * Constructor
      *
-     * @param Config $config
+     * @param MtfConfig $config
      * @param null $customLogDirectory
      */
-    public function __construct(Config $config, $customLogDirectory = null)
+    public function __construct(MtfConfig $config, $customLogDirectory = null)
     {
         $logDirectoryFallback = [
             $customLogDirectory,
