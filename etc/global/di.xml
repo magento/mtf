@@ -45,12 +45,7 @@
     <type name="Mtf\TestCase\Functional" shared="false"/>
     <type name="Mtf\Util\Iterator\TestCase">
         <arguments>
-            <argument name="rule" xsi:type="object">Mtf\TestRunner\Rule\SuiteComposite</argument>
-        </arguments>
-    </type>
-    <type name="Mtf\Fixture\FixtureFactory">
-        <arguments>
-            <argument name="config" xsi:type="object">Mtf\Config</argument>
+            <argument name="ruleFactory" xsi:type="object">Mtf\TestRunner\Rule\RuleFactory</argument>
         </arguments>
     </type>
     <preference for="Mtf\Config\FileResolverInterface" type="Mtf\Config\FileResolver\Module"/>
@@ -115,7 +110,7 @@
     </type>
     <type name="Mtf\Fixture\FixtureFactory">
         <arguments>
-            <argument name="configuration" xsi:type="object">Mtf\Config\Fixture</argument>
+            <argument name="configData" xsi:type="object">Mtf\Config\Fixture</argument>
         </arguments>
     </type>
     <type name="Mtf\Util\Generate\Fixture">
@@ -226,7 +221,7 @@
     <virtualType name="Mtf\Config\Reader\Fixture" type="Mtf\Config\Reader\Filesystem">
         <arguments>
             <argument name="fileResolver" xsi:type="object">Mtf\Config\FileResolver\Module</argument>
-            <argument name="converter" xsi:type="object">Mtf\Config\FixtureConverter</argument>
+            <argument name="converter" xsi:type="object">Mtf\Config\Converter</argument>
             <argument name="schemaLocator" xsi:type="object">Mtf\Config\SchemaLocator\Fixture</argument>
             <argument name="fileName" xsi:type="string">fixture.xml</argument>
             <argument name="defaultScope" xsi:type="string">etc</argument>
