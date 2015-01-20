@@ -75,7 +75,7 @@ class RuleFactory
         }
 
         /** @var \Mtf\TestRunner\Rule\Rule $rule */
-        $rule = $this->objectManager->create('\Mtf\TestRunner\Rule\Rule');
+        $rule = $this->objectManager->create('Mtf\TestRunner\Rule\Rule');
         $filters = $this->config[$scope];
 
         foreach ($filters as $type => $class) {
