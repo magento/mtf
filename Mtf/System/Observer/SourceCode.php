@@ -23,9 +23,9 @@
  */
 namespace Mtf\System\Observer;
 
-use Mtf\Client\Driver\Selenium\Browser;
 use Mtf\System\Logger;
 use Mtf\System\Event\Event;
+use Mtf\Client\BrowserInterface;
 use Mtf\System\Event\State as EventState;
 
 /**
@@ -41,16 +41,16 @@ class SourceCode extends AbstractObserver
     /**
      * Browser object
      *
-     * @var Browser
+     * @var BrowserInterface
      */
     protected $browser;
 
     /**
      * @param Logger $logger
      * @param EventState $state
-     * @param Browser $browser
+     * @param BrowserInterface $browser
      */
-    public function __construct(Logger $logger, EventState $state, Browser $browser)
+    public function __construct(Logger $logger, EventState $state, BrowserInterface $browser)
     {
         parent::__construct($logger, $state);
         $this->browser = $browser;

@@ -28,7 +28,7 @@ namespace Mtf\Config;
  *
  * Converts configuration of fixtures, pages and constraints.
  */
-class Converter implements \Magento\Framework\Config\ConverterInterface
+class Converter implements \Mtf\Config\ConverterInterface
 {
     /**
      * Unique identifier of node.

@@ -68,12 +68,12 @@ class EventManager implements EventManagerInterface
      *
      * @param EventFactory $eventFactory
      * @param ObserverPool $observerPool
-     * @param \Magento\Framework\Config\DataInterface $configuration
+     * @param \Mtf\Config\DataInterface $configuration
      */
     public function __construct(
         EventFactory $eventFactory,
         ObserverPool $observerPool,
-        \Magento\Framework\Config\DataInterface $configuration
+        \Mtf\Config\DataInterface $configuration
     ) {
         $this->observerPool = $observerPool;
         $this->eventFactory = $eventFactory;

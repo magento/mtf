@@ -45,10 +45,10 @@ class Data extends \Mtf\Config\Data
     /**
      * Constructor
      *
-     * @param \Magento\Framework\Config\ReaderInterface $reader
+     * @param \Mtf\Config\ReaderInterface $reader
      */
     public function __construct(
-        \Magento\Framework\Config\ReaderInterface $reader
+        \Mtf\Config\ReaderInterface $reader
     ) {
         parent::__construct($reader);
 
@@ -56,7 +56,7 @@ class Data extends \Mtf\Config\Data
             ? $_ENV['events_preset']
             : 'default';
 
-        $this->_data['observers'] = $this->getObservers();
+        $this->data['observers'] = $this->getObservers();
     }
 
     /**

@@ -25,8 +25,8 @@
 namespace Mtf\Util\Generate;
 
 use Mtf\Util\Generate\Repository\CollectionProviderInterface;
-use Magento\Framework\Config\DataInterface;
-use Magento\Framework\ObjectManagerInterface;
+use Mtf\Config\DataInterface;
+use Mtf\ObjectManagerInterface;
 
 /**
  * Class Repository

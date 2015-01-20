@@ -24,8 +24,8 @@
 
 namespace Mtf\Util\Generate;
 
-use Magento\Framework\ObjectManagerInterface;
-use Magento\Framework\Config\DataInterface;
+use Mtf\ObjectManagerInterface;
+use Mtf\Config\DataInterface;
 
 /**
  * Class Constraint

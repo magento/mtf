@@ -99,13 +99,13 @@ class Listener implements \PHPUnit_Framework_TestListener
     public function __construct(Driver $driver, $configuration = null)
     {
         if (!isset($configuration)) {
-            $configuration = \Mtf\ObjectManager::getInstance()->get('Mtf\Config');
+            $configuration = \Mtf\ObjectManager::getInstance()->get('Mtf\Config\GlobalConfig');
         }
         $this->_driver = $driver;
         $this->_lastDefaultModes = [
-            self::SCOPE_TEST_SUITE => $configuration->getParameter('isolation/' . self::SCOPE_TEST_SUITE),
-            self::SCOPE_TEST_CASE => $configuration->getParameter('isolation/' . self::SCOPE_TEST_CASE),
-            self::SCOPE_TEST => $configuration->getParameter('isolation/' . self::SCOPE_TEST),
+            self::SCOPE_TEST_SUITE => $configuration->get('isolation/' . self::SCOPE_TEST_SUITE),
+            self::SCOPE_TEST_CASE => $configuration->get('isolation/' . self::SCOPE_TEST_CASE),
+            self::SCOPE_TEST => $configuration->get('isolation/' . self::SCOPE_TEST),
         ];
     }
 

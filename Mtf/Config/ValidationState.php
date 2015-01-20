@@ -24,8 +24,6 @@
 
 namespace Mtf\Config;
 
-use Magento\Framework\Config\ValidationStateInterface;
-
 /**
  * Class ValidationState
  * Used for Object Manager.

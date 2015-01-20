@@ -23,10 +23,10 @@
  */
 namespace Mtf\System\Observer;
 
-use Mtf\System\Event\State as EventState;
-use Mtf\System\Event\Event;
 use Mtf\System\Logger;
-use Mtf\Client\Browser;
+use Mtf\System\Event\Event;
+use Mtf\Client\BrowserInterface;
+use Mtf\System\Event\State as EventState;
 
 /**
  * Create screnshot Observer
@@ -39,16 +39,16 @@ class Screenshot extends AbstractObserver
     const FILE_EXTENSION = '.png';
 
     /**
-     * @var \Mtf\Client\Browser
+     * @var \Mtf\Client\BrowserInterface
      */
     protected $browser;
 
     /**
      * @param Logger $logger
      * @param EventState $state
-     * @param Browser $browser
+     * @param BrowserInterface $browser
      */
-    public function __construct(Logger $logger, EventState $state, Browser $browser)
+    public function __construct(Logger $logger, EventState $state, BrowserInterface $browser)
     {
         parent::__construct($logger, $state);
         $this->browser = $browser;
