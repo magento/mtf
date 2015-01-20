@@ -40,7 +40,11 @@
     <type name="Mtf\Client\Element\SimpleElement" shared="false"/>
     <type name="Mtf\Block\BlockInterface" shared="false"/>
     <type name="Mtf\Page\PageInterface" shared="false"/>
-    <type name="Mtf\Fixture\InjectableFixture" shared="false"/>
+    <type name="Mtf\Fixture\InjectableFixture" shared="false">
+        <arguments>
+            <argument name="configuration" xsi:type="object">Mtf\Config</argument>
+        </arguments>
+    </type>
     <type name="Mtf\Fixture\FixtureInterface" shared="false"/>
     <type name="Mtf\TestCase\Functional" shared="false"/>
     <type name="Mtf\Util\Iterator\TestCase">
