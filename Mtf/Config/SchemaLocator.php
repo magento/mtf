@@ -42,11 +42,15 @@ class SchemaLocator implements \Mtf\Config\SchemaLocatorInterface
      * @constructor
      * @param string $schemaPath
      */
-    public function __construct($schemaPath) {
-        $mtfPath = dirname(dirname(__DIR__));
-        $mtfPath = str_replace('\\', '/', $mtfPath);
-
-        $this->schemaPath =  $mtfPath . '/' . $schemaPath;
+    public function __construct($schemaPath)
+    {
+        if (constant('MTF_BP') && file_exists(MTF_BP . '/' . $schemaPath)) {
+            $this->schemaPath =  MTF_BP . '/' . $schemaPath;
+        } else {
+            $mtfPath = dirname(dirname(__DIR__));
+            $mtfPath = str_replace('\\', '/', $mtfPath);
+            $this->schemaPath =  $mtfPath . '/' . $schemaPath;
+        }
     }
 
     /**
