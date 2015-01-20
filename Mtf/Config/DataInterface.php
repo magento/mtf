@@ -43,5 +43,5 @@ interface DataInterface
      * @param mixed $default
      * @return mixed
      */
-    public function get($key, $default = null);
+    public function get($key = null, $default = null);
 }

@@ -48,12 +48,9 @@ class Data implements \Mtf\Config\DataInterface
      * Constructor
      *
      * @param \Mtf\Config\ReaderInterface $reader
-     * @param \Mtf\Config\CacheInterface $cache
-     * @param string $cacheId
      */
-    public function __construct(
-        \Mtf\Config\ReaderInterface $reader
-    ) {
+    public function __construct(\Mtf\Config\ReaderInterface $reader)
+    {
         $this->reader = $reader;
         $this->load();
     }
