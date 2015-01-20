@@ -40,7 +40,11 @@
     <type name="Mtf\Client\Element\SimpleElement" shared="false"/>
     <type name="Mtf\Block\BlockInterface" shared="false"/>
     <type name="Mtf\Page\PageInterface" shared="false"/>
-    <type name="Mtf\Fixture\InjectableFixture" shared="false"/>
+    <type name="Mtf\Fixture\InjectableFixture" shared="false">
+        <arguments>
+            <argument name="configuration" xsi:type="object">Mtf\Config</argument>
+        </arguments>
+    </type>
     <type name="Mtf\Fixture\FixtureInterface" shared="false"/>
     <type name="Mtf\TestCase\Functional" shared="false"/>
     <type name="Mtf\Util\Iterator\TestCase">
@@ -128,6 +132,21 @@
             <argument name="configData" xsi:type="object">Mtf\Config\Fixture</argument>
         </arguments>
     </type>
+    <type name="Mtf\Constraint\ConstraintFactory">
+        <arguments>
+            <argument name="configData" xsi:type="object">Mtf\Config\Constraint</argument>
+        </arguments>
+    </type>
+    <type name="Mtf\Util\Generate\Constraint">
+        <arguments>
+            <argument name="configData" xsi:type="object">Mtf\Config\Constraint</argument>
+        </arguments>
+    </type>
+    <type name="Mtf\Page\Page">
+        <arguments>
+            <argument name="configData" xsi:type="object">Mtf\Config\Page</argument>
+        </arguments>
+    </type>
 
     <virtualType name="Mtf\Config\TestRunner" type="Mtf\Config\Data">
         <arguments>
@@ -149,6 +168,16 @@
             <argument name="reader" xsi:type="object">Mtf\Config\Reader\Fixture</argument>
         </arguments>
     </virtualType>
+    <virtualType name="Mtf\Config\Constraint" type="Mtf\Config\Data">
+        <arguments>
+            <argument name="reader" xsi:type="object">Mtf\Config\Reader\Constraint</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Mtf\Config\Page" type="Mtf\Config\Data">
+        <arguments>
+            <argument name="reader" xsi:type="object">Mtf\Config\Reader\Page</argument>
+        </arguments>
+    </virtualType>
 
     <virtualType name="Mtf\Config\SchemaLocator\TestRunner" type="Mtf\Config\SchemaLocator">
         <arguments>
@@ -168,6 +197,16 @@
     <virtualType name="Mtf\Config\SchemaLocator\Fixture" type="Mtf\Config\SchemaLocator">
         <arguments>
             <argument name="schemaPath" xsi:type="string">Mtf/Fixture/etc/fixture.xsd</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Mtf\Config\SchemaLocator\Constraint" type="Mtf\Config\SchemaLocator">
+        <arguments>
+            <argument name="schemaPath" xsi:type="string">Mtf/Constraint/etc/constraint.xsd</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Mtf\Config\SchemaLocator\Page" type="Mtf\Config\SchemaLocator">
+        <arguments>
+            <argument name="schemaPath" xsi:type="string">Mtf/Page/etc/page.xsd</argument>
         </arguments>
     </virtualType>
 
@@ -224,6 +263,24 @@
             <argument name="converter" xsi:type="object">Mtf\Config\Converter</argument>
             <argument name="schemaLocator" xsi:type="object">Mtf\Config\SchemaLocator\Fixture</argument>
             <argument name="fileName" xsi:type="string">fixture.xml</argument>
+            <argument name="defaultScope" xsi:type="string">etc</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Mtf\Config\Reader\Constraint" type="Mtf\Config\Reader\Filesystem">
+        <arguments>
+            <argument name="fileResolver" xsi:type="object">Mtf\Config\FileResolver\Module</argument>
+            <argument name="converter" xsi:type="object">Mtf\Config\Converter</argument>
+            <argument name="schemaLocator" xsi:type="object">Mtf\Config\SchemaLocator\Constraint</argument>
+            <argument name="fileName" xsi:type="string">constraint.xml</argument>
+            <argument name="defaultScope" xsi:type="string">etc</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Mtf\Config\Reader\Page" type="Mtf\Config\Reader\Filesystem">
+        <arguments>
+            <argument name="fileResolver" xsi:type="object">Mtf\Config\FileResolver\Module</argument>
+            <argument name="converter" xsi:type="object">Mtf\Config\Converter</argument>
+            <argument name="schemaLocator" xsi:type="object">Mtf\Config\SchemaLocator\Page</argument>
+            <argument name="fileName" xsi:type="string">page.xml</argument>
             <argument name="defaultScope" xsi:type="string">etc</argument>
         </arguments>
     </virtualType>

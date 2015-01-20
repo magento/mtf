@@ -28,7 +28,7 @@ use Mtf\Block\BlockFactory;
 use Mtf\Block\BlockInterface;
 use Mtf\Fixture\FixtureInterface;
 use Mtf\Client\BrowserInterface;
-use Mtf\Config;
+use Mtf\Config\DataInterface;
 
 /**
  * Class Page
@@ -61,9 +61,9 @@ class Page implements PageInterface
     /**
      * Configuration instance
      *
-     * @var Config
+     * @var DataInterface
      */
-    protected $_configuration;
+    protected $_configData;
 
     /**
      * Page blocks definitions array
@@ -91,13 +91,17 @@ class Page implements PageInterface
      * Set configuration instance, client browser and call _init method
      *
      * @constructor
-     * @param Config $configuration
+     * @param DataInterface $configData
      * @param BrowserInterface $browser
      * @param BlockFactory $blockFactory
      */
-    public function __construct(Config $configuration, BrowserInterface $browser, BlockFactory $blockFactory)
+    public function __construct(
+        DataInterface $configData,
+        BrowserInterface $browser,
+        BlockFactory $blockFactory
+    )
     {
-        $this->_configuration = $configuration;
+        $this->_configuData = $configData;
         $this->_browser = $browser;
         $this->_blockFactory = $blockFactory;
 

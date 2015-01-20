@@ -1,5 +1,8 @@
-<?php
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
 /**
+ * Schema for constraint configuration
+ *
  * Magento
  *
  * NOTICE OF LICENSE
@@ -21,27 +24,15 @@
  * @copyright   Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-namespace Mtf\Config;
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="constraints">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="constraint" maxOccurs="unbounded" minOccurs="1" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
 
-/**
- * Interface DataInterface
- */
-interface DataInterface
-{
-    /**
-     * Merge config data to the object
-     *
-     * @param array $config
-     * @return void
-     */
-    public function merge(array $config);
-
-    /**
-     * Get config value by key
-     *
-     * @param string $key
-     * @param mixed $default
-     * @return mixed
-     */
-    public function get($key = null, $default = null);
-}
+    <xs:element name="constraint" type="xs:anyType"/>
+</xs:schema>

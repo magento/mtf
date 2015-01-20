@@ -24,9 +24,6 @@
 
 namespace Mtf\Util\Generate;
 
-use Mtf\ObjectManagerInterface;
-use Mtf\Config;
-
 /**
  * Class Constraint
  * Constraint files generator
@@ -36,22 +33,21 @@ use Mtf\Config;
 class Constraint extends AbstractGenerate
 {
     /**
-     * @var Config
+     * @var \Mtf\Config\DataInterface
      */
-    protected $config;
+    protected $configData;
 
     /**
      * @constructor
-     * @param ObjectManagerInterface $objectManager
-     * @param Config $config
+     * @param \Mtf\ObjectManagerInterface $objectManager
+     * @param \Mtf\Config\DataInterface $configData
      */
     public function __construct(
-        ObjectManagerInterface $objectManager,
-        Config $config
+        \Mtf\ObjectManagerInterface $objectManager,
+        \Mtf\Config\DataInterface $configData
     ) {
         parent::__construct($objectManager);
-
-        $this->config = $config;
+        $this->configData = $configData;
     }
 
     /**
@@ -72,9 +68,7 @@ class Constraint extends AbstractGenerate
     public function generateClasses()
     {
         $this->cnt = 0;
-
-        $configuration = $this->config->getParameter('constraint');
-        foreach ($configuration as $name => $item) {
+        foreach ($this->configData->get() as $name => $item) {
             $this->generateClass($name, $item);
         }
         \Mtf\Util\Generate\GenerateResult::addResult('Constraint Classes', $this->cnt);
