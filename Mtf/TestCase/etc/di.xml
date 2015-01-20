@@ -15,7 +15,7 @@
             <argument name="schemaPath" xsi:type="string">Mtf/TestCase/etc/testcase.xsd</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Mtf\TestCase\Config\Reader" type="\Magento\Framework\Config\Reader\Filesystem">
+    <virtualType name="Mtf\TestCase\Config\Reader" type="Mtf\Config\Reader\Filesystem">
         <arguments>
             <argument name="fileResolver" xsi:type="object">Mtf\Config\FileResolver\Module</argument>
             <argument name="converter" xsi:type="object">Mtf\TestCase\Config\Converter</argument>

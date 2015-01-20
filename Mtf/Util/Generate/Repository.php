@@ -25,7 +25,7 @@
 namespace Mtf\Util\Generate;
 
 use Mtf\Util\Generate\Repository\CollectionProviderInterface;
-use Mtf\Config;
+use Mtf\Config\DataInterface;
 use Mtf\ObjectManagerInterface;
 
 /**
@@ -37,9 +37,9 @@ use Mtf\ObjectManagerInterface;
 class Repository extends AbstractGenerate
 {
     /**
-     * @var Config
+     * @var DataInterface
      */
-    protected $config;
+    protected $configData;
 
     /**
      * @var CollectionProviderInterface
@@ -49,16 +49,16 @@ class Repository extends AbstractGenerate
     /**
      * @constructor
      * @param ObjectManagerInterface $objectManager
-     * @param Config $config
+     * @param DataInterface $configData
      * @param CollectionProviderInterface $collectionProvider
      */
     public function __construct(
         ObjectManagerInterface $objectManager,
-        Config $config,
+        DataInterface $configData,
         CollectionProviderInterface $collectionProvider
     ) {
         parent::__construct($objectManager);
-        $this->config = $config;
+        $this->configData = $configData;
         $this->collectionProvider = $collectionProvider;
     }
 
@@ -83,9 +83,7 @@ class Repository extends AbstractGenerate
     protected function generateXml()
     {
         $this->cnt = 0;
-
-        $configuration = $this->config->getParameter('fixture');
-        foreach ($configuration as $name => $item) {
+        foreach ($this->configData->get() as $name => $item) {
             $this->generateRepositoryXml($name, $item);
         }
         \Mtf\Util\Generate\GenerateResult::addResult('Repository XML Files', $this->cnt);

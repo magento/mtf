@@ -25,7 +25,7 @@
 namespace Mtf\Util\Generate;
 
 use Mtf\ObjectManagerInterface;
-use Mtf\Config;
+use Mtf\Config\DataInterface;
 
 /**
  * Class Constraint
@@ -36,22 +36,21 @@ use Mtf\Config;
 class Handler extends AbstractGenerate
 {
     /**
-     * @var Config
+     * @var DataInterface
      */
-    protected $config;
+    protected $configData;
 
     /**
      * @constructor
      * @param ObjectManagerInterface $objectManager
-     * @param Config $config
+     * @param DataInterface $configData
      */
     public function __construct(
         ObjectManagerInterface $objectManager,
-        Config $config
+        DataInterface $configData
     ) {
         parent::__construct($objectManager);
-
-        $this->config = $config;
+        $this->configData = $configData;
     }
 
     /**
@@ -72,9 +71,7 @@ class Handler extends AbstractGenerate
     protected function generateHandlers()
     {
         $this->cnt = 0;
-
-        $configuration = $this->config->getParameter('fixture');
-        foreach ($configuration as $name => $item) {
+        foreach ($this->configData->get() as $name => $item) {
             $this->generateInterface($name, $item);
             $this->generateCurl($name, $item);
             $this->generateUi($name, $item);
