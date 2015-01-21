@@ -22,12 +22,12 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Mtf\TestRunner\Config;
+namespace Magento\Mtf\TestRunner\Config;
 
 /**
  * Convert test runner configuration.
  */
-class Converter implements \Mtf\Config\ConverterInterface
+class Converter implements \Magento\Mtf\Config\ConverterInterface
 {
     /**
      * Convert xml to array.

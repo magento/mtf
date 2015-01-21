@@ -22,14 +22,14 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Mtf\TestRunner\Config;
+namespace Magento\Mtf\TestRunner\Config;
 
 /**
  * Loader test runner configuration.
  *
  * @api
  */
-class Data extends \Mtf\Config\Data
+class Data extends \Magento\Mtf\Config\Data
 {
     /**
      * Environment field name for allow module list
@@ -43,10 +43,10 @@ class Data extends \Mtf\Config\Data
 
     /**
      * @constructor
-     * @param \Mtf\Config\ReaderInterface $reader
+     * @param \Magento\Mtf\Config\ReaderInterface $reader
      */
     public function __construct(
-        \Mtf\Config\ReaderInterface $reader
+        \Magento\Mtf\Config\ReaderInterface $reader
     )
     {
         parent::__construct($reader);
