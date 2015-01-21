@@ -68,18 +68,28 @@ class Step extends AbstractIterator
     protected $firstStep;
 
     /**
+     * Target module
+     *
+     * @var string
+     */
+    protected $module;
+
+    /**
      * @constructor
      * @param TestStepFactory $factory
      * @param array $steps
      * @param array $currentVariation
      * @param array $localArguments
+     * @param string $module
      */
     public function __construct(
         TestStepFactory $factory,
         array $steps,
         array $currentVariation,
-        array $localArguments
+        array $localArguments,
+        $module
     ) {
+        $this->module = $module;
         $this->data = $steps;
         $this->firstStep = $steps['first'];
         $this->factory = $factory;
@@ -147,19 +157,42 @@ class Step extends AbstractIterator
     {
         $class = isset($step['class'])
             ? $step['class']
-            : str_replace('_', '\\', $step['module'])
+            : str_replace('_', '\\', $this->module)
             . '\Test\TestStep'
             . '\\' . ucfirst($this->key) . 'Step';
 
         $arguments = $this->result;
-        if (isset($step['arguments'])) {
-            $arguments = array_merge($step['arguments'], $arguments);
+        if (isset($step['item'])) {
+            $stepArguments = $this->resolveArguments($step['item']);
+            $arguments = array_merge($stepArguments, $arguments);
         }
         if (isset($this->currentVariation['arguments'])) {
             $arguments = array_merge($this->currentVariation['arguments'], $arguments);
         }
 
         return $this->factory->create($class, $arguments);
+    }
+
+    /**
+     * Resolve arguments
+     *
+     * @param array $arguments
+     * @return array
+     */
+    protected function resolveArguments($arguments)
+    {
+        $output = [];
+        if (isset($arguments['item'])) {
+            $arguments = $arguments['item'];
+        }
+        foreach ($arguments as $key => $item) {
+            if (isset($item['name']) && $item['name'] == $key && !isset($item['value'])) {
+                $output[$key] = $this->resolveArguments($item);
+            } else if (is_array($item)){
+                $output[$key] = $item['value'];
+            }
+        }
+        return $output;
     }
 
     /**
