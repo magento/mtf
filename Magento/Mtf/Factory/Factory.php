@@ -24,7 +24,7 @@
 
 namespace Magento\Mtf\Factory;
 
-use Mtf;
+use Magento\Mtf;
 use Magento\Mtf\Config;
 use Magento\Mtf\Factory as FactoryInterface;
 
