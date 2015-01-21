@@ -24,7 +24,7 @@
 
 namespace Magento\BlockRender\Test\TestCase;
 
-use Mtf\TestCase\Injectable;
+use Magento\Mtf\TestCase\Injectable;
 use Magento\Mtf\Test\Fixture\Test;
 use Magento\BlockRender\Test\Page\Area\TestPage;
 use Magento\BlockRender\Test\Fixture\BlockRender;

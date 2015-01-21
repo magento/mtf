@@ -24,9 +24,9 @@
 
 namespace Magento\Mtf\TestSuite;
 
-use Mtf\ObjectManager;
-use Mtf\ObjectManagerFactory;
-use Mtf\TestRunner\Configuration;
+use Magento\Mtf\ObjectManager;
+use Magento\Mtf\ObjectManagerFactory;
+use Magento\Mtf\TestRunner\Configuration;
 
 /**
  * Class runner test suite.
@@ -87,12 +87,12 @@ class MtfTests extends \PHPUnit_Framework_TestSuite
     /**
      * Prepare test suite and apply application state.
      *
-     * @return \Mtf\TestSuite\AppState
+     * @return \Magento\Mtf\TestSuite\AppState
      */
     public function prepareSuite()
     {
         $this->init();
-        return $this->objectManager->create('Mtf\TestSuite\AppState');
+        return $this->objectManager->create('Magento\Mtf\TestSuite\AppState');
     }
 
     /**
@@ -115,14 +115,14 @@ class MtfTests extends \PHPUnit_Framework_TestSuite
             $configurationFileName = isset($_ENV['configuration:Magento/Mtf/TestSuite/MtfTests'])
                 ? $_ENV['configuration:Magento/Mtf/TestSuite/MtfTests']
                 : 'basic';
-            $configFileName = $configurationFileName . '.xml';
-            /** @var \Mtf\TestRunner\Configuration $testRunnerConfiguration */
-            $testRunnerConfiguration = $objectManagerFactory->getObjectManager()->get('Mtf\TestRunner\Configuration');
-            $testRunnerConfiguration->load($configFileName);
+            $confFilePath = $configurationFileName . '.xml';
+            /** @var \Magento\Mtf\TestRunner\Configuration $testRunnerConfiguration */
+            $testRunnerConfiguration = $objectManagerFactory->getObjectManager()->get('Magento\Mtf\TestRunner\Configuration');
+            $testRunnerConfiguration->load($confFilePath);
             $testRunnerConfiguration->loadEnvConfig();
 
             $shared = [
-                'Mtf\TestRunner\Configuration' => $testRunnerConfiguration
+                'Magento\Mtf\TestRunner\Configuration' => $testRunnerConfiguration
             ];
             $this->objectManager = $objectManagerFactory->create($shared);
         }

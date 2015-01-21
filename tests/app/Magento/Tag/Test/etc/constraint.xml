@@ -29,7 +29,7 @@
         <require>
             <page class="Magento\BlockRender\Test\Page\Area\TestPage"/>
             <fixture class="Magento\Mtf\Test\Fixture\Test"/>
-            <objectManager class="Mtf\ObjectManager"/>
+            <objectManager class="Magento\Mtf\ObjectManager"/>
         </require>
     </tagSeverityHigh>
     <tagSeverityMiddle module="Magento_Tag">
@@ -37,7 +37,7 @@
         <require>
             <page class="Magento\BlockRender\Test\Page\Area\TestPage"/>
             <fixture class="Magento\Mtf\Test\Fixture\Test"/>
-            <objectManager class="Mtf\ObjectManager"/>
+            <objectManager class="Magento\Mtf\ObjectManager"/>
         </require>
     </tagSeverityMiddle>
     <tagSeverityLow module="Magento_Tag">
@@ -45,7 +45,7 @@
         <require>
             <page class="Magento\BlockRender\Test\Page\Area\TestPage"/>
             <fixture class="Magento\Mtf\Test\Fixture\Test"/>
-            <objectManager class="Mtf\ObjectManager"/>
+            <objectManager class="Magento\Mtf\ObjectManager"/>
         </require>
     </tagSeverityLow>
 </constraint>
