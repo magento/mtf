@@ -224,7 +224,7 @@
     <virtualType name="Magento\Mtf\Config\Reader\TestRunnerRule" type="Magento\Mtf\Config\Reader\Filesystem">
         <arguments>
             <argument name="fileResolver" xsi:type="object">Magento\Mtf\Config\FileResolver\Primary</argument>
-            <argument name="converter" xsi:type="object">Magento\Mtf\TestRunner\Rule\Configuration\Converter</argument>
+            <argument name="converter" xsi:type="object">Magento\Mtf\TestRunner\Rule\Config\Converter</argument>
             <argument name="schemaLocator" xsi:type="object">Magento\Mtf\Config\SchemaLocator\TestRunnerRule</argument>
             <argument name="idAttributes" xsi:type="array">
                 <item name="/config/rule" xsi:type="string">scope</item>
