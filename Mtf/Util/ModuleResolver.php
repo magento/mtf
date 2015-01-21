@@ -192,15 +192,16 @@ class ModuleResolver
      */
     protected function getAdminToken()
     {
-        $credentials = $this->configuration->get('application/backend_user_credentials');
-        if (!$credentials || !isset($_ENV['app_frontend_url'])) {
+        $login = $this->configuration->get('application/backendLogin');
+        $password = $this->configuration->get('application/backendPassword');
+        if (!$login || !$password || !isset($_ENV['app_frontend_url'])) {
             return false;
         }
 
         $url = $_ENV['app_frontend_url'] . $this->adminTokenUrl;
         $data = [
-            'username' => $credentials['login'],
-            'password' => $credentials['password']
+            'username' => $login,
+            'password' => $password
         ];
         $headers = [
             'Content-Type: application/json',

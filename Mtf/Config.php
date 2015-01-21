@@ -82,6 +82,18 @@ class Config
      * @param string $scope
      * @return array|mixed|null
      */
+    public function get($configName = null, $scope = null)
+    {
+        return $this->getParameter($configName, $scope);
+    }
+
+    /**
+     * Get configuration data
+     *
+     * @param string $configName
+     * @param string $scope
+     * @return array|mixed|null
+     */
     public function getParameter($configName = null, $scope = null)
     {
         $parameterPath = null;

@@ -33,7 +33,7 @@ use PHPUnit_Framework_TestSuite;
 
 /**
  * Class Listener.
- * This listener provides strategy of reopening browser according reopen_browser_on config.
+ * This listener provides strategy of reopening browser according reopenBrowser config.
  *
  * @internal
  */
@@ -60,7 +60,7 @@ class Listener implements \PHPUnit_Framework_TestListener
         if (!isset($configuration)) {
             $configuration = \Mtf\ObjectManager::getInstance()->get('Mtf\Config\GlobalConfig');
         }
-        $this->_scope = $configuration->get('application/reopen_browser_on') ? : static::SCOPE_TEST_CASE;
+        $this->_scope = $configuration->get('application/reopenBrowser') ? : static::SCOPE_TEST_CASE;
     }
 
     /**

@@ -50,7 +50,7 @@ class Base implements Driver
     public function __construct()
     {
         $config = \Mtf\ObjectManager::getInstance()->get('Mtf\Config\GlobalConfig');
-        $this->_resetUrl = $_ENV['app_frontend_url'] . $config->get('isolation/reset_url_path');
+        $this->_resetUrl = $_ENV['app_frontend_url'] . $config->get('isolation/resetUrlPath');
     }
 
     /**
