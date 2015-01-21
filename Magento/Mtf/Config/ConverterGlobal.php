@@ -29,7 +29,6 @@ namespace Magento\Mtf\Config;
  */
 class ConverterGlobal implements \Magento\Mtf\Config\ConverterInterface
 {
-    const ACCURACY = 10000;
     /**
      * Unique identifier of node.
      */
@@ -93,12 +92,10 @@ class ConverterGlobal implements \Magento\Mtf\Config\ConverterInterface
     protected function castNumeric($nodeValue)
     {
         if (is_numeric($nodeValue)) {
-            $intNodeValue = (int)$nodeValue * self::ACCURACY;
-            $floatNodeValue = $nodeValue * self::ACCURACY;
-            if ($floatNodeValue - $intNodeValue > 0) {
-                $nodeValue = (double)$nodeValue;
+            if (preg_match('/^\d+$/', $nodeValue)) {
+                $nodeValue = (int) $nodeValue;
             } else {
-                $nodeValue = (int)$nodeValue;
+                $nodeValue = (double) $nodeValue;
             }
         }
 
