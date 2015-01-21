@@ -326,32 +326,27 @@
             <argument name="config" xsi:type="object">Magento\Mtf\Config\GlobalConfig</argument>
         </arguments>
     </type>
-    <type name="Magento\Mtf\TestCase\Config">
+    <virtualType name="Mtf\TestCase\Config\Data" type="Mtf\Config\Data">
         <arguments>
-            <argument name="configuration" xsi:type="object">Magento\Mtf\TestCase\Config\Data</argument>
-        </arguments>
-    </type>
-    <virtualType name="Magento\Mtf\TestCase\Config\Data" type="Magento\Mtf\Config\Data">
-        <arguments>
-            <argument name="reader" xsi:type="object">Magento\Mtf\TestCase\Config\Reader</argument>
+            <argument name="reader" xsi:type="object">Mtf\TestCase\Config\Reader</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Magento\Mtf\TestCase\Config\SchemaLocator" type="Magento\Mtf\Config\SchemaLocator">
+    <virtualType name="Mtf\TestCase\Config\SchemaLocator" type="Mtf\Config\SchemaLocator">
         <arguments>
-            <argument name="schemaPath" xsi:type="string">Magento/Mtf/TestCase/etc/testcase.xsd</argument>
+            <argument name="schemaPath" xsi:type="string">Mtf/TestCase/etc/testcase.xsd</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Magento\Mtf\TestCase\Config\Reader" type="Magento\Mtf\Config\Reader\Filesystem">
+    <virtualType name="Mtf\TestCase\Config\Reader" type="Mtf\Config\Reader\Filesystem">
         <arguments>
-            <argument name="fileResolver" xsi:type="object">Magento\Mtf\Config\FileResolver\Module</argument>
-            <argument name="converter" xsi:type="object">Magento\Mtf\TestCase\Config\Converter</argument>
-            <argument name="schemaLocator" xsi:type="object">Magento\Mtf\TestCase\Config\SchemaLocator</argument>
+            <argument name="fileResolver" xsi:type="object">Mtf\Config\FileResolver\Module</argument>
+            <argument name="converter" xsi:type="object">Mtf\TestCase\Config\Converter</argument>
+            <argument name="schemaLocator" xsi:type="object">Mtf\TestCase\Config\SchemaLocator</argument>
             <argument name="idAttributes" xsi:type="array">
-                <item name="/config/scenario" xsi:type="string">scope</item>
-                <item name="/config/scenario/step" xsi:type="string">namespace</item>
+                <item name="/config/scenario" xsi:type="string">name</item>
+                <item name="/config/scenario/step" xsi:type="string">name</item>
             </argument>
             <argument name="fileName" xsi:type="string">testcase.xml</argument>
-            <argument name="defaultScope" xsi:type="string">Magento/Mtf/TestCase/Config/etc</argument>
+            <argument name="defaultScope" xsi:type="string">etc</argument>
         </arguments>
     </virtualType>
 </config>
