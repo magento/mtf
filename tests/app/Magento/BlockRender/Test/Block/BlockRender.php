@@ -24,8 +24,8 @@
 
 namespace Magento\BlockRender\Test\Block;
 
-use Mtf\Block\Form;
-use Mtf\Fixture\FixtureInterface;
+use Magento\Mtf\Block\Form;
+use Magento\Mtf\Fixture\FixtureInterface;
 use Magento\Mtf\Test\Fixture\Test;
 
 /**
