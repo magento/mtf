@@ -24,64 +24,69 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <preference for="Mtf\Client\Browser" type="Mtf\Client\Driver\Selenium\Browser"/>
-    <preference for="Mtf\System\Event\EventManagerInterface" type="Mtf\System\Event\EventManager"/>
-    <preference for="Mtf\Constraint\AbstractConstraint" type="Mtf\Constraint\Dummy"/>
-    <preference for="Mtf\Util\Generate\Fixture\FieldsProviderInterface"
-                type="Mtf\Util\Generate\Fixture\DummyFieldsProvider"/>
-    <preference for="Mtf\Util\Generate\Repository\CollectionProviderInterface"
-                type="Mtf\Util\Generate\Repository\DummyCollectionProvider"/>
-    <type name="Mtf\Client\Driver\Selenium\Element" shared="false"/>
-    <type name="Mtf\Block\BlockInterface" shared="false"/>
-    <type name="Mtf\Page\PageInterface" shared="false"/>
-    <type name="Mtf\Fixture\InjectableFixture" shared="false"/>
-    <type name="Mtf\Fixture\FixtureInterface" shared="false"/>
-    <type name="Mtf\TestCase\Functional" shared="false"/>
-    <type name="Mtf\Util\Iterator\TestCase">
+    <preference for="Magento\Mtf\Client\DriverInterface" type="Magento\Mtf\Client\Driver\Selenium\Driver"/>
+    <preference for="Magento\Mtf\Client\BrowserInterface" type="Magento\Mtf\Client\Browser"/>
+    <preference for="Magento\Mtf\Client\ElementInterface" type="Magento\Mtf\Client\Element\SimpleElement"/>
+    <preference for="Magento\Mtf\System\Event\EventManagerInterface" type="Magento\Mtf\System\Event\EventManager"/>
+    <preference for="Magento\Mtf\Constraint\AbstractConstraint" type="Magento\Mtf\Constraint\Dummy"/>
+    <preference for="Magento\Mtf\ObjectManagerInterface" type="Magento\Mtf\ObjectManager"/>
+    <preference for="Magento\Mtf\ObjectManager\FactoryInterface" type="Magento\Mtf\ObjectManager\Factory"/>
+    <preference for="Magento\Mtf\ObjectManager\ConfigInterface" type="Magento\Mtf\ObjectManager\Config\Config"/>
+    <preference for="Magento\Mtf\Util\Generate\Fixture\FieldsProviderInterface"
+                type="Magento\Mtf\Util\Generate\Fixture\DummyFieldsProvider"/>
+    <preference for="Magento\Mtf\Util\Generate\Repository\CollectionProviderInterface"
+                type="Magento\Mtf\Util\Generate\Repository\DummyCollectionProvider"/>
+    <type name="Magento\Mtf\Client\Element\SimpleElement" shared="false"/>
+    <type name="Magento\Mtf\Block\BlockInterface" shared="false"/>
+    <type name="Magento\Mtf\Page\PageInterface" shared="false"/>
+    <type name="Magento\Mtf\Fixture\InjectableFixture" shared="false"/>
+    <type name="Magento\Mtf\Fixture\FixtureInterface" shared="false"/>
+    <type name="Magento\Mtf\TestCase\Functional" shared="false"/>
+    <type name="Magento\Mtf\Util\Iterator\TestCase">
         <arguments>
-            <argument name="rule" xsi:type="object">Mtf\TestRunner\Rule\SuiteComposite</argument>
+            <argument name="rule" xsi:type="object">Magento\Mtf\TestRunner\Rule\SuiteComposite</argument>
         </arguments>
     </type>
-    <preference for="Magento\Framework\Config\FileResolverInterface" type="Mtf\Config\FileResolver\Module"/>
-    <preference for="Magento\Framework\Config\ConverterInterface" type="Mtf\Config\Converter"/>
-    <preference for="Magento\Framework\Config\SchemaLocatorInterface" type="Mtf\Config\SchemaLocator"/>
-    <preference for="Magento\Framework\Config\ValidationStateInterface" type="Mtf\Config\ValidationState"/>
-    <type name="Mtf\Config\ValidationState">
+    <preference for="Magento\Mtf\Config\FileResolverInterface" type="Magento\Mtf\Config\FileResolver\Module"/>
+    <preference for="Magento\Mtf\Config\ConverterInterface" type="Magento\Mtf\Config\Converter"/>
+    <preference for="Magento\Mtf\Config\SchemaLocatorInterface" type="Magento\Mtf\Config\SchemaLocator"/>
+    <preference for="Magento\Mtf\Config\ValidationStateInterface" type="Magento\Mtf\Config\ValidationState"/>
+    <type name="Magento\Mtf\Config\ValidationState">
         <arguments>
             <argument name="appMode" xsi:type="string">developer</argument>
         </arguments>
     </type>
-    <type name="Mtf\Util\Filter\TestSuiteNamespace">
+    <type name="Magento\Mtf\Util\Filter\TestSuiteNamespace">
         <arguments>
             <argument name="pathConfig" xsi:type="string">rule/testsuite/namespace</argument>
         </arguments>
     </type>
-    <type name="Mtf\Util\Filter\TestSuiteModule">
+    <type name="Magento\Mtf\Util\Filter\TestSuiteModule">
         <arguments>
             <argument name="pathConfig" xsi:type="string">rule/testsuite/module</argument>
         </arguments>
     </type>
-    <type name="Mtf\Util\Filter\TestSuiteType">
+    <type name="Magento\Mtf\Util\Filter\TestSuiteType">
         <arguments>
             <argument name="pathConfig" xsi:type="string">rule/testsuite/type</argument>
         </arguments>
     </type>
-    <type name="Mtf\Util\Filter\TestSuiteClass">
+    <type name="Magento\Mtf\Util\Filter\TestSuiteClass">
         <arguments>
             <argument name="pathConfig" xsi:type="string">rule/testsuite/class</argument>
         </arguments>
     </type>
-    <type name="Mtf\Util\Filter\TestCaseTag">
+    <type name="Magento\Mtf\Util\Filter\TestCaseTag">
         <arguments>
             <argument name="pathConfig" xsi:type="string">rule/testcase/tag</argument>
         </arguments>
     </type>
-    <type name="Mtf\Util\Filter\VariationTag">
+    <type name="Magento\Mtf\Util\Filter\VariationTag">
         <arguments>
             <argument name="pathConfig" xsi:type="string">rule/variation/tag</argument>
         </arguments>
     </type>
-    <type name="Mtf\Util\Filter\ConstraintTag">
+    <type name="Magento\Mtf\Util\Filter\ConstraintTag">
         <arguments>
             <argument name="pathConfig" xsi:type="string">rule/constraint/tag</argument>
         </arguments>

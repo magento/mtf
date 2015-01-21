@@ -27,7 +27,7 @@
     <preset name="default">
     </preset>
     <preset name="base">
-        <observer class="Mtf\System\Observer\PageUrl">
+        <observer class="Magento\Mtf\System\Observer\PageUrl">
             <tag name="click_after"/>
             <tag name="accept_alert_after"/>
             <tag name="dismiss_alert_after"/>
@@ -35,36 +35,36 @@
             <tag name="forward"/>
             <tag name="back"/>
         </observer>
-        <observer class="Mtf\System\Observer\AppState">
+        <observer class="Magento\Mtf\System\Observer\AppState">
             <tag name="app_state_applied"/>
         </observer>
-        <observer class="Mtf\System\Observer\Fixture">
+        <observer class="Magento\Mtf\System\Observer\Fixture">
             <tag name="persist_before"/>
             <tag name="persist_after"/>
         </observer>
-        <observer class="Mtf\System\Observer\ClientError">
+        <observer class="Magento\Mtf\System\Observer\ClientError">
             <tag name="page_changed"/>
             <tag name="exception"/>
         </observer>
-        <observer class="Mtf\System\Observer\Log">
+        <observer class="Magento\Mtf\System\Observer\Log">
             <tag name="exception"/>
             <tag name="failure"/>
         </observer>
-        <observer class="Mtf\System\Observer\SourceCode">
+        <observer class="Magento\Mtf\System\Observer\SourceCode">
             <tag name="exception"/>
             <tag name="failure"/>
         </observer>
-        <observer class="Mtf\System\Observer\Screenshot">
+        <observer class="Magento\Mtf\System\Observer\Screenshot">
             <tag name="exception"/>
             <tag name="failure"/>
         </observer>
     </preset>
     <preset name="detailed" extends="base">
-        <observer class="Mtf\System\Observer\ClientError">
+        <observer class="Magento\Mtf\System\Observer\ClientError">
             <tag name="page_changed"/>
             <tag name="exception"/>
         </observer>
-        <observer class="Mtf\System\Observer\Log">
+        <observer class="Magento\Mtf\System\Observer\Log">
             <tag name="persist_before"/>
             <tag name="persist_after"/>
             <tag name="exception"/>
@@ -76,11 +76,11 @@
             <tag name="switch_to_frame"/>
             <tag name="get_value"/>
         </observer>
-        <observer class="Mtf\System\Observer\SourceCode">
+        <observer class="Magento\Mtf\System\Observer\SourceCode">
             <tag name="exception"/>
             <tag name="page_changed"/>
         </observer>
-        <observer class="Mtf\System\Observer\Screenshot">
+        <observer class="Magento\Mtf\System\Observer\Screenshot">
             <tag name="click_before"/>
             <tag name="page_changed"/>
             <tag name="exception"/>

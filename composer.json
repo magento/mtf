@@ -11,10 +11,12 @@
         "phpunit/phpunit-selenium": ">=1.2",
         "netwing/selenium-server-standalone": ">=2.35"
     },
+    "suggest": {
+        "facebook/webdriver": "dev-master"
+    },
     "autoload": {
-        "psr-0": {
-            "Mtf\\": "",
-            "": "tests/app"
+        "psr-4": {
+            "Magento\\": ["Magento/", "testsuites/Magento/", "tests/app/Magento/"]
         }
     }
 }

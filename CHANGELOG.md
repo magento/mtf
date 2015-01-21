@@ -1,4 +1,15 @@
-* Fixed wrong screenshot is taken for test failure if tearDown() method is present
+1.0.0-rc.14
+=============
+* Magento vendor name is used as root MTF namespace
+
+1.0.0-rc.13
+=============
+* Added ability to skip injectable test including prepare and inject methods
+* Removed dependency on Magento Framework
+* Added alternative web driver support and adapter for Facebook web driver as an example
+
+1.0.0-rc.12
+=============
 * Fixed issue with applying tagging mechanism on variation scope in parallel mode
 * Code marked with @SuppressWarnings annotations
 
@@ -22,7 +33,7 @@
 =============
 * Sync factory class from Magento/Framework/ObjectManager/Factory
 * Fixed issue with applying placeholders to selectors in fixture data mapping
-* Fixed an issue with method keys() in \Mtf\Client\Driver\Selenium\Element
+* Fixed an issue with method keys() in \Magento\Mtf\Client\Driver\Selenium\Element
 * Added 'Interface' suffix to all interface names within Magento/Framework directory
 
 1.0.0-dev.8

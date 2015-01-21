@@ -36,9 +36,9 @@ $path .= PATH_SEPARATOR . MTF_BP;
 $path .= PATH_SEPARATOR . MTF_BP . '/lib';
 set_include_path($path);
 
-$objectManager = \Mtf\ObjectManagerFactory::getObjectManager();
-/** @var $generate \Mtf\Util\Generate\Fixture */
-$generate = $objectManager->get('Mtf\Util\Generate\Fixture');
+$objectManager = \Magento\Mtf\ObjectManagerFactory::getObjectManager();
+/** @var $generate \Magento\Mtf\Util\Generate\Fixture */
+$generate = $objectManager->get('Magento\Mtf\Util\Generate\Fixture');
 $generate->launch();
 
-\Mtf\Util\Generate\GenerateResult::displayResults();
+\Magento\Mtf\Util\Generate\GenerateResult::displayResults();

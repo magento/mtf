@@ -24,7 +24,7 @@
 
 namespace Magento\Mtf\BlockRender\Fixture\Test;
 
-use Mtf\Fixture\FixtureInterface;
+use Magento\Mtf\Fixture\FixtureInterface;
 
 /**
  * Class Strategy.
