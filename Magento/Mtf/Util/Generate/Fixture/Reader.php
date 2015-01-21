@@ -22,9 +22,9 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Mtf\Util\Generate\Fixture;
+namespace Magento\Mtf\Util\Generate\Fixture;
 
-use Magento\Framework\Config\SchemaLocatorInterface;
+use Magento\Mtf\Config\SchemaLocatorInterface;
 
 /**
  * Reader for fixtures.
@@ -33,7 +33,7 @@ class Reader {
     /**
      * Converter data to array.
      *
-     * @var \Magento\Framework\Config\ConverterInterface
+     * @var \Magento\Mtf\Config\ConverterInterface
      */
     protected $converter;
 
@@ -59,7 +59,7 @@ class Reader {
      */
     public function __construct(
         Converter $converter,
-        $domDocumentClass = 'Magento\Framework\Config\Dom',
+        $domDocumentClass = 'Magento\Mtf\Config\Dom',
         SchemaLocatorInterface $schemaLocator = null
     ) {
         $this->converter = $converter;
@@ -74,13 +74,13 @@ class Reader {
      *
      * @param string $filePath
      * @return array
-     * @throws \Magento\Framework\Exception
+     * @throws \Exception
      */
     public function read($filePath)
     {
         $content = file_get_contents($filePath);
         if (false === $content) {
-            throw new \Magento\Framework\Exception("Can't read file: " . $filePath);
+            throw new \Exception("Can't read file: " . $filePath);
         }
 
         $document = $this->createDocument($this->domDocumentClass, $content);
@@ -88,7 +88,7 @@ class Reader {
             $errors = [];
             if (!$document->validate($this->schema, $errors)) {
                 $message = "Invalid Document \n";
-                throw new \Magento\Framework\Exception($message . implode("\n", $errors));
+                throw new \Exception($message . implode("\n", $errors));
             }
         }
 
@@ -100,13 +100,13 @@ class Reader {
      *
      * @param string $class
      * @param string $initialContents
-     * @return \Magento\Framework\Config\Dom
+     * @return \Magento\Mtf\Config\Dom
      * @throws \UnexpectedValueException
      */
     protected function createDocument($class, $initialContents)
     {
         $result = new $class($initialContents);
-        if (!$result instanceof \Magento\Framework\Config\Dom) {
+        if (!$result instanceof \Magento\Mtf\Config\Dom) {
             throw new \UnexpectedValueException(
                 "Instance of the DOM config merger is expected, got {$class} instead."
             );

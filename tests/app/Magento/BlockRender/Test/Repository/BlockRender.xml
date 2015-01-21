@@ -25,7 +25,7 @@
 
 -->
 <repository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:noNamespaceSchemaLocation="../../../../../../Mtf/Repository/etc/repository.xsd">
+            xsi:noNamespaceSchemaLocation="../../../../../../Magento/Mtf/Repository/etc/repository.xsd">
     <storage class="Magento\BlockRender\Test\Repository\BlockRender">
         <dataset name="dummy_dataset">
             <field name="dummy_simple_field" xsi:type="string">test_value</field>

@@ -25,11 +25,11 @@
 namespace Magento\Mtf\Util\Generate;
 
 use Magento\Mtf\Util\Generate\Fixture\FieldsProviderInterface;
-use Magento\Mtf\Configuration\Reader;
 use Magento\Mtf\ObjectManagerInterface;
 use Magento\Mtf\Util\XmlConverter;
 use Magento\Mtf\Config\FileResolver\Module;
 use Magento\Mtf\Util\Generate\Fixture\Reader;
+use Magento\Mtf\Repository\Reader\Converter;
 
 /**
  * Fixture files generator.
@@ -53,7 +53,7 @@ class Fixture extends AbstractGenerate
     protected $xmlConverter;
 
     /**
-     * Fixture convertor.
+     * Fixture reader.
      *
      * @var Reader
      */

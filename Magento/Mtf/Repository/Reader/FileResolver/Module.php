@@ -22,14 +22,14 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Mtf\Repository\Reader\FileResolver;
+namespace Magento\Mtf\Repository\Reader\FileResolver;
 
-use Mtf\Util\Iterator\File;
+use \Magento\Mtf\Util\Iterator\File;
 
 /**
  * Provides the list of configuration files collected through modules test folders.
  */
-class Module extends \Mtf\Config\FileResolver\Module
+class Module extends \Magento\Mtf\Config\FileResolver\Module
 {
     /**
      * Retrieve the list of configuration files with given name that relate to specified scope.

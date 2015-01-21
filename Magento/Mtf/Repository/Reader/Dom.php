@@ -25,12 +25,12 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Mtf\Repository\Reader;
+namespace Magento\Mtf\Repository\Reader;
 
 /**
  * Repository XML DOM utility.
  */
-class Dom extends \Magento\Framework\Config\Dom
+class Dom extends \Magento\Mtf\Config\Dom
 {
     /**
      * Identify node path based on parent path and node attributes.

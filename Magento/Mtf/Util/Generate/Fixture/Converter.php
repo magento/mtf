@@ -22,35 +22,35 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Mtf\Util\Generate\Fixture;
+namespace Magento\Mtf\Util\Generate\Fixture;
 
 /**
  * Convert fixtures xml to array.
  */
-class Converter implements \Magento\Framework\Config\ConverterInterface
+class Converter implements \Magento\Mtf\Config\ConverterInterface
 {
     /**
      * Interpreter that aggregates named interpreters and delegates every evaluation to one of them.
      *
-     * @var \Magento\Framework\Data\Argument\Interpreter\Composite
+     * @var \Magento\Mtf\Data\Argument\Interpreter\Composite
      */
     protected $argumentInterpreter;
 
     /**
      * Converter for repository xml files.
      *
-     * @var \Mtf\Repository\Reader\Converter
+     * @var \Magento\Mtf\Repository\Reader\Converter
      */
     protected $repositoryConverter;
 
     /**
      * @constructor
-     * @param \Mtf\Repository\Reader\Converter $repositoryConverter
-     * @param \Mtf\ObjectManagerFactory $objectManagerFactory
+     * @param \Magento\Mtf\Repository\Reader\Converter $repositoryConverter
+     * @param \Magento\Mtf\ObjectManagerFactory $objectManagerFactory
      */
     public function __construct(
-        \Mtf\Repository\Reader\Converter $repositoryConverter,
-        \Mtf\ObjectManagerFactory $objectManagerFactory
+        \Magento\Mtf\Repository\Reader\Converter $repositoryConverter,
+        \Magento\Mtf\ObjectManagerFactory $objectManagerFactory
     ) {
         $this->repositoryConverter = $repositoryConverter;
         $objectManager = $objectManagerFactory->getObjectManager();

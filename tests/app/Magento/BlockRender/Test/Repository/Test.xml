@@ -24,7 +24,7 @@
  */
 -->
 <repository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:noNamespaceSchemaLocation="../../../../../../Mtf/Repository/etc/repository.xsd">
+            xsi:noNamespaceSchemaLocation="../../../../../../Magento/Mtf/Repository/etc/repository.xsd">
     <storage class="Magento\Mtf\Test\Repository\Test">
         <dataset name="some_dummy_configuration">
             <field path="path/to/dummy/field" scope="dummy" scope_id="1" label="Label value" xsi:type="string">1</field>

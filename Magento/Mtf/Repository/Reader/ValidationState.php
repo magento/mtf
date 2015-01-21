@@ -22,9 +22,9 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Mtf\Repository\Reader;
+namespace Magento\Mtf\Repository\Reader;
 
-use Magento\Framework\Config\ValidationStateInterface;
+use Magento\Mtf\Config\ValidationStateInterface;
 
 /**
  * Used for Object Manager.

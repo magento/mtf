@@ -21,14 +21,14 @@
  * @copyright   Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-namespace Mtf\Repository\Reader;
+namespace Magento\Mtf\Repository\Reader;
 
-use \Mtf\Repository\Reader\FileResolver\Module;
+use \Magento\Mtf\Repository\Reader\FileResolver\Module;
 
 /**
  * Module declaration reader. Reads repository.xml declaration files from module /Repository directories.
  */
-class Reader extends \Magento\Framework\Config\Reader\Filesystem
+class Reader extends \Magento\Mtf\Config\Reader\Filesystem
 {
     /**
      * List of name attributes for merge.
@@ -60,7 +60,7 @@ class Reader extends \Magento\Framework\Config\Reader\Filesystem
         ValidationState $validationState,
         $fileName = '*.xml',
         $idAttributes = [],
-        $domDocumentClass = 'Mtf\Repository\Reader\Dom',
+        $domDocumentClass = 'Magento\Mtf\Repository\Reader\Dom',
         $defaultScope = 'Repository'
     ) {
         $this->_fileResolver = $fileResolver;

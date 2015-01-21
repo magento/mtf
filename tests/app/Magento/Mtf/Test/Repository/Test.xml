@@ -25,7 +25,7 @@
 
 -->
 <repository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:noNamespaceSchemaLocation="../../../../../../Mtf/Repository/etc/repository.xsd">
+            xsi:noNamespaceSchemaLocation="../../../../../../Magento/Mtf/Repository/etc/repository.xsd">
     <storage class="Magento\Mtf\Test\Repository\Test">
         <dataset name="dummy_currency_config">
             <field path="path\to\currency" scope="dummy_currency" scope_id="1" xsi:type="array">

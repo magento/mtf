@@ -21,25 +21,25 @@
  * @copyright   Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-namespace Mtf\Repository\Reader;
+namespace Magento\Mtf\Repository\Reader;
 
 /**
  * Converter for repository xml files.
  */
-class Converter implements \Magento\Framework\Config\ConverterInterface
+class Converter implements \Magento\Mtf\Config\ConverterInterface
 {
     /**
      * Interpreter that aggregates named interpreters and delegates every evaluation to one of them.
      *
-     * @var \Magento\Framework\Data\Argument\Interpreter\Composite
+     * @var \Magento\Mtf\Data\Argument\Interpreter\Composite
      */
     protected $argumentInterpreter;
 
     /**
      * @constructor
-     * @param \Mtf\ObjectManagerFactory $objectManagerFactory
+     * @param \Magento\Mtf\ObjectManagerFactory $objectManagerFactory
      */
-    public function __construct(\Mtf\ObjectManagerFactory $objectManagerFactory)
+    public function __construct(\Magento\Mtf\ObjectManagerFactory $objectManagerFactory)
     {
         $objectManager = $objectManagerFactory->getObjectManager();
         $this->argumentInterpreter = $objectManager->get('Magento\Framework\Data\Argument\InterpreterInterface');
@@ -96,6 +96,7 @@ class Converter implements \Magento\Framework\Config\ConverterInterface
                         $nodeName = $this->getKey($childNode);
                         $nodeData = $this->convertNode($childNode);
                         if (isset($nodeData['path'])) {
+                            $nodeName = str_replace(["\\", "/"], "_", $nodeName);
                             $childNodeData['section'][$nodeName] = $this->evaluateConfig($nodeData);
                         } else {
                             $childNodeData[$nodeName] = $this->argumentInterpreter->evaluate($nodeData);

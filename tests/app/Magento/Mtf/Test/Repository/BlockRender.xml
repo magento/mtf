@@ -24,7 +24,7 @@
  */
 -->
 <repository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:noNamespaceSchemaLocation="../../../../../../Mtf/Repository/etc/repository.xsd">
+            xsi:noNamespaceSchemaLocation="../../../../../../Magento/Mtf/Repository/etc/repository.xsd">
     <storage class="Magento\BlockRender\Test\Repository\BlockRender">
         <dataset name="block_data">
             <field name="strategy" xsi:type="const">\Magento\Tag\Test\TestCase\TagTest::SEVERITY</field>

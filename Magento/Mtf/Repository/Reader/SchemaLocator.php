@@ -21,12 +21,12 @@
  * @copyright   Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-namespace Mtf\Repository\Reader;
+namespace Magento\Mtf\Repository\Reader;
 
 /**
  * Repository schema locator.
  */
-class SchemaLocator implements \Magento\Framework\Config\SchemaLocatorInterface
+class SchemaLocator implements \Magento\Mtf\Config\SchemaLocatorInterface
 {
     /**
      * Get path to merged config schema.

@@ -22,7 +22,7 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Mtf\TestCase;
+namespace Magento\Mtf\TestCase;
 
 /**
  * A TestCase defines the fixture to run multiple tests.
@@ -202,7 +202,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
             $this->status = \PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE;
             $this->statusMessage = $e->getMessage();
             $this->eventManager->dispatchEvent(['failure'], [$this->statusMessage]);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->status = \PHPUnit_Runner_BaseTestRunner::STATUS_ERROR;
             $this->statusMessage = $e->getMessage();
         }
@@ -222,7 +222,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
                     $this->$method();
                 }
             }
-        } catch (Exception $_e) {
+        } catch (\Exception $_e) {
             if (!isset($e)) {
                 $e = $_e;
             }
@@ -285,7 +285,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
                     $this->assertEquals($this->outputExpectedString, $this->output);
                     $this->outputExpectedString = null;
                 }
-            } catch (Exception $_e) {
+            } catch (\Exception $_e) {
                 $e = $_e;
             }
         }
