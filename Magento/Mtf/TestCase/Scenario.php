@@ -34,7 +34,7 @@ namespace Magento\Mtf\TestCase;
 abstract class Scenario extends Injectable
 {
     /**
-     * @var \Magento\Mtf\Config
+     * @var \Magento\Mtf\TestCase\Config\Data
      */
     protected $config;
 
@@ -47,38 +47,37 @@ abstract class Scenario extends Injectable
      */
     public function __construct($name = null, array $data = [], $dataName = '', $path = '')
     {
-        $this->config = $this->getObjectManager()->get('Magento\Mtf\Config');
+        $this->config = $this->getObjectManager()->get('Magento\Mtf\TestCase\Config\Data');
         parent::__construct($name, $data, $dataName, $path);
     }
 
     /**
      * Executing prepared scenario.
      *
-     * @param string $testMethodName
      * @return void
      */
-    protected function executeScenario($testMethodName = 'test')
+    protected function executeScenario()
     {
-        $result = [];
         $pathToClass = explode('\\', get_called_class());
         $testCaseName = end($pathToClass);
-        $config = $this->config->getParameter('scenario');
+        $config = $this->config->get('scenario');
 
-        if (!empty($config['scenarios'][$testCaseName]['methods'][$testMethodName]['steps'])) {
-            $steps = $this->prepareSteps($config['scenarios'][$testCaseName]['methods'][$testMethodName]['steps']);
-            /** @var \Magento\Mtf\Util\Iterator\Step $stepIterator */
-            $stepIterator = $this->objectManager->create(
-                'Magento\Mtf\Util\Iterator\Step',
-                [
-                    'steps' => $steps,
-                    'testCaseName' => $testCaseName,
-                    'testMethodName' => $testMethodName,
-                    'currentVariation' => $this->currentVariation,
-                    'localArguments' => $this->localArguments
-                ]
-            );
-            $result = $stepIterator->iterate();
-        }
+        $steps = $this->prepareSteps(
+            $config[$testCaseName]['step'],
+            $config[$testCaseName]['firstStep']
+        );
+        /** @var \Mtf\Util\Iterator\Step $stepIterator */
+        $stepIterator = $this->objectManager->create(
+            'Mtf\Util\Iterator\Step',
+            [
+                'module' => $pathToClass[0] . '_' . $pathToClass[1],
+                'steps' => $steps,
+                'testCaseName' => $testCaseName,
+                'currentVariation' => $this->currentVariation,
+                'localArguments' => $this->localArguments
+            ]
+        );
+        $result = $stepIterator->iterate();
         $this->localArguments = array_merge($this->localArguments, $result);
     }
 
@@ -89,15 +88,10 @@ abstract class Scenario extends Injectable
      * @throws \Exception
      * @return array
      */
-    protected function prepareSteps(array $steps)
+    protected function prepareSteps(array $steps, $firstStep)
     {
-        if (!isset($steps['first'])) {
-            throw new \Exception("First step hadn't being declared.\n");
-        }
-
-        $first = $steps['first'];
-        $result = $this->prepareStepSequence($steps, $first);
-        $result['first'] = $first;
+        $result = $this->prepareStepSequence($steps, $firstStep);
+        $result['first'] = $firstStep;
         $steps = array_diff_key($steps, $result);
         $result = empty($steps) ? $result : $this->interposeSteps($steps, $result);
 
@@ -166,7 +160,6 @@ abstract class Scenario extends Injectable
         if (!isset($steps[$stepKey]) || empty($steps[$stepKey]['next'])) {
             return $result;
         }
-
         return $this->prepareStepSequence($steps, $steps[$stepKey]['next'], $result);
     }
 
