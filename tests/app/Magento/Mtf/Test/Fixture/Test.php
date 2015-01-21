@@ -24,7 +24,7 @@
 
 namespace Magento\Mtf\Test\Fixture;
 
-use Mtf\Fixture\InjectableFixture;
+use Magento\Mtf\Fixture\InjectableFixture;
 
 /**
  * Class Test

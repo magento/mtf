@@ -24,8 +24,8 @@
 
 namespace Magento\Mtf\TestSuite;
 
-use Mtf\ObjectManager;
-use Mtf\ObjectManagerFactory;
+use Magento\Mtf\ObjectManager;
+use Magento\Mtf\ObjectManagerFactory;
 
 /**
  * Class runner test suite.
@@ -86,12 +86,12 @@ class MtfTests extends \PHPUnit_Framework_TestSuite
     /**
      * Prepare test suite and apply application state.
      *
-     * @return \Mtf\TestSuite\AppState
+     * @return \Magento\Mtf\TestSuite\AppState
      */
     public function prepareSuite()
     {
         $this->init();
-        return $this->objectManager->create('Mtf\TestSuite\AppState');
+        return $this->objectManager->create('Magento\Mtf\TestSuite\AppState');
     }
 
     /**
@@ -116,11 +116,11 @@ class MtfTests extends \PHPUnit_Framework_TestSuite
                 ? $_ENV['configuration:Magento/Mtf/TestSuite/MtfTests']
                 : 'basic';
 
-            $configData = $objectManagerFactory->getObjectManager()->create('Mtf\Config\TestRunner');
+            $configData = $objectManagerFactory->getObjectManager()->create('Magento\Mtf\Config\TestRunner');
             $configData->setFileName($configFileName . '.xml')->load();
 
             $this->objectManager = $objectManagerFactory->create(
-                ['Mtf\Config\TestRunner' => $configData]
+                ['Magento\Mtf\Config\TestRunner' => $configData]
             );
         }
     }

@@ -24,7 +24,7 @@
 
 namespace Magento\Mtf\Test\TestCase;
 
-use Mtf\TestCase\Functional;
+use Magento\Mtf\TestCase\Functional;
 
 /**
  * Class RegularTestCase

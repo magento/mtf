@@ -36,26 +36,26 @@ $path .= PATH_SEPARATOR . MTF_BP;
 $path .= PATH_SEPARATOR . MTF_BP . '/lib';
 set_include_path($path);
 
-$objectManager = \Mtf\ObjectManagerFactory::getObjectManager();
+$objectManager = \Magento\Mtf\ObjectManagerFactory::getObjectManager();
 
-/** @var $generate \Mtf\Util\Generate\Constraint */
-$generate = $objectManager->get('Mtf\Util\Generate\Constraint');
+/** @var $generate \Magento\Mtf\Util\Generate\Constraint */
+$generate = $objectManager->get('Magento\Mtf\Util\Generate\Constraint');
 $generate->launch();
 
-/** @var $generate \Mtf\Util\Generate\Fixture */
-$generate = $objectManager->get('Mtf\Util\Generate\Fixture');
+/** @var $generate \Magento\Mtf\Util\Generate\Fixture */
+$generate = $objectManager->get('Magento\Mtf\Util\Generate\Fixture');
 $generate->launch();
 
-/** @var $generate \Mtf\Util\Generate\Page */
-$generate = $objectManager->get('Mtf\Util\Generate\Page');
+/** @var $generate \Magento\Mtf\Util\Generate\Page */
+$generate = $objectManager->get('Magento\Mtf\Util\Generate\Page');
 $generate->launch();
 
-/** @var $generate \Mtf\Util\Generate\Repository */
-$generate = $objectManager->get('Mtf\Util\Generate\Repository');
+/** @var $generate \Magento\Mtf\Util\Generate\Repository */
+$generate = $objectManager->get('Magento\Mtf\Util\Generate\Repository');
 $generate->launch();
 
-/** @var $generate \Mtf\Util\Generate\Handler */
-$generate = $objectManager->get('Mtf\Util\Generate\Handler');
+/** @var $generate \Magento\Mtf\Util\Generate\Handler */
+$generate = $objectManager->get('Magento\Mtf\Util\Generate\Handler');
 $generate->launch();
 
-\Mtf\Util\Generate\GenerateResult::displayResults();
+\Magento\Mtf\Util\Generate\GenerateResult::displayResults();

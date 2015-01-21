@@ -1,0 +1,91 @@
+<?php
+ini_set('display_errors', 'stderr');
+set_include_path('{include_path}');
+
+$bootstrap = {bootstrap};
+$phar             = {phar};
+
+if ($bootstrap) {
+    require_once $bootstrap;
+    define('PHPUNIT_COMPOSER_INSTALL', $bootstrap);
+} else if ($phar) {
+    require $phar;
+} else {
+    require 'PHPUnit/Autoload.php';
+}
+
+require 'vendor/autoload.php';
+
+$env = unserialize('{env}');
+foreach($env as $key => $value) {
+  putenv("$key=$value");
+  $_ENV[$key] = $value;
+}
+
+ob_start();
+
+function __phpunit_run_isolated_test()
+{
+    if (!class_exists('{className}')) {
+        require_once '{filename}';
+    }
+
+    $result = new Magento\Mtf\TestRunner\Process\TestResult;
+
+    $listenerConfiguration = unserialize('{listenerConfiguration}');
+
+    defined('MTF_BP') || define('MTF_BP', dirname(MTF_BOOT_FILE));
+    foreach ($listenerConfiguration as $listener) {
+        if ($listener['class'] == 'Magento\Mtf\System\JUnit') {
+            continue;
+        }
+        if (!class_exists($listener['class'], false) && $listener['file'] !== '') {
+            require_once $listener['file'];
+        }
+
+        if (class_exists($listener['class'])) {
+            if (count($listener['arguments']) == 0) {
+                $listener = new $listener['class'];
+            } else {
+                $listenerClass = new ReflectionClass($listener['class']);
+                $listener = $listenerClass->newInstanceArgs($listener['arguments']);
+            }
+
+            if ($listener instanceof PHPUnit_Framework_TestListener) {
+                $result->addListener($listener);
+            }
+        }
+    }
+
+    if ({collectCodeCoverageInformation}) {
+        $result->setCodeCoverage(new PHP_CodeCoverage);
+    }
+
+    $test = new {className}('{methodName}', unserialize('{data}'), '{dataName}', '{filePath}');
+    $test->setParallelRun(FALSE);
+    $test->setInIsolation(TRUE);
+
+    ob_end_clean();
+    ob_start();
+    $test->run($result);
+    $output = ob_get_clean();
+
+    print serialize(
+      array(
+        'testResult'    => $test->getResult(),
+        'numAssertions' => $test->getNumAssertions(),
+        'result'        => $result,
+        'output'        => $output
+      )
+    );
+
+    ob_start();
+}
+
+if (isset($GLOBALS['__PHPUNIT_BOOTSTRAP'])) {
+    require_once $GLOBALS['__PHPUNIT_BOOTSTRAP'];
+    unset($GLOBALS['__PHPUNIT_BOOTSTRAP']);
+}
+
+__phpunit_run_isolated_test();
+ob_end_clean();
