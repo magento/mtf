@@ -26,15 +26,17 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xs:element name="config">
         <xs:complexType>
-            <xs:all>
-                <xs:element name="application" minOccurs="0">
+            <xs:sequence>
+                <xs:element name="application">
                     <xs:complexType>
                         <xs:attribute name="reopenBrowser" type="reopenBrowserType" use="required"/>
                         <xs:attribute name="backendLogin" type="backendLoginType" use="required"/>
                         <xs:attribute name="backendPassword" type="backendPasswordType" use="required"/>
+                        <xs:attribute name="backendLoginUrl" type="backendLoginUrlType" use="required"/>
+                        <xs:attribute name="appBackendUrl" type="appBackendUrlType" use="required"/>
                     </xs:complexType>
                 </xs:element>
-                <xs:element name="isolation" minOccurs="0">
+                <xs:element name="isolation">
                     <xs:complexType>
                         <xs:attribute name="resetUrlPath" type="notEmptyType" use="required"/>
                         <xs:attribute name="testSuite" type="isolationModeType" use="required"/>
@@ -42,7 +44,7 @@
                         <xs:attribute name="test" type="isolationModeType" use="required"/>
                     </xs:complexType>
                 </xs:element>
-                <xs:element name="server" minOccurs="0">
+                <xs:element name="server">
                     <xs:complexType>
                         <xs:sequence>
                             <xs:choice maxOccurs="unbounded" minOccurs="1">
@@ -51,7 +53,7 @@
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
-            </xs:all>
+            </xs:sequence>
         </xs:complexType>
     </xs:element>
     <xs:simpleType name="reopenBrowserType">
@@ -60,6 +62,16 @@
         </xs:restriction>
     </xs:simpleType>
     <xs:simpleType name="backendLoginType">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="backendLoginUrlType">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="appBackendUrlType">
         <xs:restriction base="xs:string">
             <xs:minLength value="1"/>
         </xs:restriction>

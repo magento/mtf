@@ -92,6 +92,16 @@ class Config
         }
 
         switch ($configName) {
+            case null:
+            case 'application':
+            case 'server':
+            case 'isolation':
+            case 'handler':
+                $filePath = is_null($scope) ? null : $scope;
+                return  $this->objectManager->get(
+                    'Mtf\Config\GlobalConfig'
+                )->get($parameterPath);
+                break;
             case 'scenario':
                 if (is_null($this->scenarioConfigReader)) {
                     $this->scenarioConfigReader = $this->objectManager->get(

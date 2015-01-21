@@ -43,7 +43,7 @@ class ConverterGlobal implements \Mtf\Config\ConverterInterface
      */
     public function convert($source)
     {
-        return $this->convertXml($source->getElementsByTagName('config'))['config'];
+        return $this->convertXml($source->documentElement->childNodes);
     }
 
     /**
