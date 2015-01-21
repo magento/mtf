@@ -48,7 +48,7 @@ class Primary implements FileResolverInterface
             return [];
         }
 
-        $mtfDefaultPath = dirname(dirname(dirname(__DIR__)));
+        $mtfDefaultPath = dirname(dirname(dirname(dirname(__DIR__))));
         $mtfDefaultPath = str_replace('\\', '/', $mtfDefaultPath);
         $paths[$mtfDefaultPath] = $mtfDefaultPath . '/' . $scope . '/' . $filename;
         $paths[MTF_BP] = MTF_BP . '/' . $scope . '/' . $filename;
