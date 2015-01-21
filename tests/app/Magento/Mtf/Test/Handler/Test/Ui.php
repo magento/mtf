@@ -24,8 +24,8 @@
 
 namespace Magento\Mtf\Test\Handler\Test;
 
-use Mtf\Fixture\FixtureInterface;
-use Mtf\Handler\Ui as AbstractUi;
+use Magento\Mtf\Fixture\FixtureInterface;
+use Magento\Mtf\Handler\Ui as AbstractUi;
 
 /**
  * Class Ui

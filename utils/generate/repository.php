@@ -36,9 +36,9 @@ $path .= PATH_SEPARATOR . MTF_BP;
 $path .= PATH_SEPARATOR . MTF_BP . '/lib';
 set_include_path($path);
 
-$objectManager = \Mtf\ObjectManagerFactory::getObjectManager();
-/** @var $generate \Mtf\Util\Generate\Repository */
-$generate = $objectManager->get('Mtf\Util\Generate\Repository');
+$objectManager = \Magento\Mtf\ObjectManagerFactory::getObjectManager();
+/** @var $generate \Magento\Mtf\Util\Generate\Repository */
+$generate = $objectManager->get('Magento\Mtf\Util\Generate\Repository');
 $generate->launch();
 
-\Mtf\Util\Generate\GenerateResult::displayResults();
+\Magento\Mtf\Util\Generate\GenerateResult::displayResults();

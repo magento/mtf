@@ -24,7 +24,7 @@
 
 namespace Magento\Mtf\Test\Fixture\Test;
 
-use Mtf\Fixture\FixtureInterface;
+use Magento\Mtf\Fixture\FixtureInterface;
 
 /**
  * Class Curl

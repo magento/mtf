@@ -24,8 +24,8 @@
 
 namespace Magento\Mtf\Test\Handler\Test;
 
-use Mtf\Fixture\FixtureInterface;
-use Mtf\Handler\Curl as AbstractCurl;
+use Magento\Mtf\Fixture\FixtureInterface;
+use Magento\Mtf\Handler\Curl as AbstractCurl;
 
 /**
  * Class Curl

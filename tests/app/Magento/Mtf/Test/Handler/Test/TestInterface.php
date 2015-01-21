@@ -24,7 +24,7 @@
 
 namespace Magento\Mtf\Test\Handler\Test;
 
-use Mtf\Handler\HandlerInterface;
+use Magento\Mtf\Handler\HandlerInterface;
 
 /**
  * Class TestFixtureInterface
