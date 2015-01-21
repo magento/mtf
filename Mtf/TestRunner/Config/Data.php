@@ -22,14 +22,14 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Mtf\TestRunner;
+namespace Mtf\TestRunner\Config;
 
 /**
  * Loader test runner configuration.
  *
  * @api
  */
-class Configuration
+class Data extends \Mtf\Config\Data
 {
     /**
      * Environment field name for allow module list
@@ -42,41 +42,30 @@ class Configuration
     const MODULE_FILTER_STRICT = 'module_filter_strict';
 
     /**
-     * Configuration data.
-     *
-     * @var array
-     */
-    protected $data = [];
-
-    /**
-     * Configuration model.
-     *
-     * @var \Mtf\Config\DataInterface
-     */
-    protected $configuration;
-
-    /**
      * @constructor
-     * @param \Mtf\Config\Data $configuration
+     * @param \Mtf\Config\ReaderInterface $reader
      */
-    public function __construct(\Mtf\Config\Data $configuration)
+    public function __construct(
+        \Mtf\Config\ReaderInterface $reader
+    )
     {
-        $this->configuration = $configuration;
+        parent::__construct($reader);
     }
 
     /**
-     * Load configuration.
+     * Load config data
      *
-     * @param string $configFileName
-     * @return void
+     * @param string|null $scope
      */
-    public function load($configFileName)
+    public function load($scope = null)
     {
-        $this->configuration->setFilename($configFileName)->load();
-        $this->data = $this->configuration->get();
+        parent::load($scope);
+
         if (isset($this->data['rule'])) {
             $this->data['rule'] = $this->prepareRule($this->data['rule']);
         }
+
+        $this->loadEnvConfig();
     }
 
     /**
@@ -84,7 +73,7 @@ class Configuration
      *
      * @return void
      */
-    public function loadEnvConfig()
+    protected function loadEnvConfig()
     {
         $modules = getenv(self::MODULE_FILTER);
         $strict = getenv(self::MODULE_FILTER_STRICT);
@@ -99,52 +88,6 @@ class Configuration
             }
 
         }
-    }
-
-    /**
-     * Get configuration value.
-     *
-     * @param null|string $key
-     * @param null|string $default
-     * @return array|string|null
-     */
-    public function getValue($key = null, $default = null)
-    {
-        if (null === $key) {
-            $param = isset($this->data) ? $this->data : $default;
-        } elseif (strpos($key, '/')) {
-            $param = $this->getParamByPath($key, $default);
-        } elseif (isset($this->data[$key])) {
-            $param = $this->data[$key];
-        } else {
-            $param = $default;
-        }
-
-        return $param;
-    }
-
-    /**
-     * Get parameters by path.
-     *
-     * Method consider the path as chain of keys: a/b/c => ['a']['b']['c']
-     *
-     * @param string $path
-     * @param null|string $default
-     * @return mixed
-     */
-    private function getParamByPath($path, $default = null)
-    {
-        $keys = explode('/', $path);
-
-        $data = $this->data;
-        foreach ($keys as $key) {
-            if (is_array($data) && isset($data[$key])) {
-                $data = $data[$key];
-            } else {
-                return $default;
-            }
-        }
-        return $data;
     }
 
     /**

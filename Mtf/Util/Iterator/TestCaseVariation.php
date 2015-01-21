@@ -26,7 +26,7 @@ namespace Mtf\Util\Iterator;
 
 use Mtf\ObjectManager;
 use Mtf\TestCase\Injectable;
-use Mtf\TestRunner\Configuration;
+use Mtf\Config\DataInterface;
 
 /**
  * Class TestCaseVariation
@@ -46,9 +46,9 @@ class TestCaseVariation extends AbstractIterator
     protected $objectManager;
 
     /**
-     * @var Configuration
+     * @var DataInterface
      */
-    protected $testRunnerConfig;
+    protected $configData;
 
     /**
      * Tmp counter
@@ -61,16 +61,16 @@ class TestCaseVariation extends AbstractIterator
      * @constructor
      * @param ObjectManager $objectManager
      * @param Injectable $testCase
-     * @param Configuration $testRunnerConfig
+     * @param DataInterface $configData
      */
     public function __construct(
         ObjectManager $objectManager,
         Injectable $testCase,
-        Configuration $testRunnerConfig
+        DataInterface $configData
     ) {
         $this->objectManager = $objectManager;
         $this->testCase = $testCase;
-        $this->testRunnerConfig = $testRunnerConfig;
+        $this->configData = $configData;
 
         $this->data = $this->getVariations();
         $this->initFirstElement();

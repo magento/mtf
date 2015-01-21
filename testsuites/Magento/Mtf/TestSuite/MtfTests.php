@@ -26,7 +26,6 @@ namespace Magento\Mtf\TestSuite;
 
 use Mtf\ObjectManager;
 use Mtf\ObjectManagerFactory;
-use Mtf\TestRunner\Configuration;
 
 /**
  * Class runner test suite.
@@ -112,19 +111,17 @@ class MtfTests extends \PHPUnit_Framework_TestSuite
     {
         if (!isset($this->objectManager)) {
             $objectManagerFactory = new ObjectManagerFactory();
+
             $configurationFileName = isset($_ENV['configuration:Magento/Mtf/TestSuite/MtfTests'])
                 ? $_ENV['configuration:Magento/Mtf/TestSuite/MtfTests']
                 : 'basic';
-            $configFileName = $configurationFileName . '.xml';
-            /** @var \Mtf\TestRunner\Configuration $testRunnerConfiguration */
-            $testRunnerConfiguration = $objectManagerFactory->getObjectManager()->get('Mtf\TestRunner\Configuration');
-            $testRunnerConfiguration->load($configFileName);
-            $testRunnerConfiguration->loadEnvConfig();
 
-            $shared = [
-                'Mtf\TestRunner\Configuration' => $testRunnerConfiguration
-            ];
-            $this->objectManager = $objectManagerFactory->create($shared);
+            $configData = $objectManagerFactory->getObjectManager()->create('Mtf\Config\TestRunner');
+            $configData->setFileName($configurationFileName . '.xml')->load();
+
+            $this->objectManager = $objectManagerFactory->create(
+                ['Mtf\Config\TestRunner' => $configData]
+            );
         }
     }
 }

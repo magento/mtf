@@ -25,7 +25,7 @@
 namespace Mtf\Util\Iterator;
 
 use Mtf\ObjectManager;
-use Mtf\TestRunner\Configuration;
+use Mtf\Config\DataInterface;
 
 /**
  * Class ApplicationState
@@ -44,21 +44,21 @@ class ApplicationState extends AbstractIterator
     /**
      * Test Runner Configuration object
      *
-     * @var \Mtf\TestRunner\Configuration
+     * @var DataInterface
      */
-    protected $testRunnerConfig;
+    protected $configData;
 
     /**
      * @constructor
      * @param ObjectManager $objectManager
-     * @param Configuration $testRunnerConfig
+     * @param DataInterface $configData
      */
     public function __construct(
         ObjectManager $objectManager,
-        Configuration $testRunnerConfig
+        DataInterface $configData
     ) {
         $this->objectManager = $objectManager;
-        $this->testRunnerConfig = $testRunnerConfig;
+        $this->configData = $configData;
 
         $this->data = $this->getAppStates();
         $this->initFirstElement();
