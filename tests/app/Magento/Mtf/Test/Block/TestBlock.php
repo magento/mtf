@@ -24,9 +24,9 @@
 
 namespace Magento\Mtf\Test\Block;
 
-use Mtf\Block\Form;
+use Magento\Mtf\Block\Form;
 use Magento\Mtf\Test\Fixture\Test;
-use Mtf\Fixture\FixtureInterface;
+use Magento\Mtf\Fixture\FixtureInterface;
 
 /**
  * Class TestBlock

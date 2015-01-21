@@ -24,9 +24,9 @@
 
 namespace Magento\Tag\Test\Constraint;
 
-use Mtf\Fixture\FixtureFactory;
+use Magento\Mtf\Fixture\FixtureFactory;
 use Magento\Mtf\Test\Fixture\Test;
-use Mtf\Constraint\AbstractConstraint;
+use Magento\Mtf\Constraint\AbstractConstraint;
 use Magento\BlockRender\Test\Page\Area\TestPage;
 
 /**
