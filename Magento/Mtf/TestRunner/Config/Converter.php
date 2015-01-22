@@ -22,7 +22,7 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Magento\Mtf\TestRunner\Configuration;
+namespace Magento\Mtf\TestRunner\Config;
 
 /**
  * Convert test runner configuration.
