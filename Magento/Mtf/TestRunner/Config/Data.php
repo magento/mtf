@@ -73,7 +73,7 @@ class Data extends \Magento\Mtf\Config\Data
      *
      * @return void
      */
-    protected function loadEnvConfig()
+    public function loadEnvConfig()
     {
         $modules = getenv(self::MODULE_FILTER);
         $strict = getenv(self::MODULE_FILTER_STRICT);
