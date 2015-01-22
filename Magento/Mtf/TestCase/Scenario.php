@@ -66,9 +66,9 @@ abstract class Scenario extends Injectable
             $config[$testCaseName]['step'],
             $config[$testCaseName]['firstStep']
         );
-        /** @var \Mtf\Util\Iterator\Step $stepIterator */
+        /** @var \Magento\Mtf\Util\Iterator\Step $stepIterator */
         $stepIterator = $this->objectManager->create(
-            'Mtf\Util\Iterator\Step',
+            'Magento\Mtf\Util\Iterator\Step',
             [
                 'module' => $pathToClass[0] . '_' . $pathToClass[1],
                 'steps' => $steps,
