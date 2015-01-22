@@ -239,7 +239,9 @@ class Driver implements DriverInterface
         $absoluteSelector = $element->getAbsoluteSelector();
         $this->eventManager->dispatchEvent(['click_before'], [__METHOD__, $absoluteSelector]);
 
-        $this->getNativeElement($element)->click();
+        $wrapperElement = $this->getNativeElement($element);
+        $this->driver->moveto($wrapperElement);
+        $wrapperElement->click();
 
         $this->eventManager->dispatchEvent(['click_before'], [__METHOD__, $absoluteSelector]);
     }
@@ -335,7 +337,7 @@ class Driver implements DriverInterface
 
         $this->selectWindow();
         $this->driver->moveto($wrappedElement);
-        $this->driver->click();
+        $wrappedElement->click();
         $this->driver->keys($sequenceKey);
     }
 
