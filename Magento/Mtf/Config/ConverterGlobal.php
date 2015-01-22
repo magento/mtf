@@ -109,15 +109,17 @@ class ConverterGlobal implements \Magento\Mtf\Config\ConverterInterface
      * @param array $result
      * @return int
      */
-    protected function chooseKey(\DOMElement $element, $result)
+    protected function chooseKey(\DOMElement $element, &$result)
     {
         $key = $element->hasAttribute(self::NAME_ATTRIBUTE)
             ? $element->getAttribute(self::NAME_ATTRIBUTE)
             : $element->nodeName;
-        if ($element->nodeName == 'item' && !$element->hasAttribute(self::NAME_ATTRIBUTE)) {
+
+        if (isset($result[$key])) {
+            $result = array_values($result);
             $key = count($result);
-            return $key;
         }
+
         return $key;
     }
 }

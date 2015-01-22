@@ -97,11 +97,22 @@
         </arguments>
     </type>
 
-    <type name="Magento\Mtf\TestRunner\Configuration">
+    <type name="Magento\Mtf\Util\Filter\AbstractFilter">
         <arguments>
-            <argument name="configuration" xsi:type="object">Magento\Mtf\Config\TestRunner</argument>
+            <argument name="configData" xsi:type="object">Magento\Mtf\Config\TestRunner</argument>
         </arguments>
     </type>
+    <type name="Magento\Mtf\Util\Iterator\ApplicationState">
+        <arguments>
+            <argument name="configData" xsi:type="object">Magento\Mtf\Config\TestRunner</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Mtf\Util\Iterator\TestCaseVariation">
+        <arguments>
+            <argument name="configData" xsi:type="object">Magento\Mtf\Config\TestRunner</argument>
+        </arguments>
+    </type>
+
     <type name="Magento\Mtf\TestRunner\Rule\RuleFactory">
         <arguments>
             <argument name="configuration" xsi:type="object">Magento\Mtf\Config\TestRunnerRule</argument>
@@ -148,7 +159,7 @@
         </arguments>
     </type>
 
-    <virtualType name="Magento\Mtf\Config\TestRunner" type="Magento\Mtf\Config\Data">
+    <virtualType name="Magento\Mtf\Config\TestRunner" type="Magento\Mtf\TestRunner\Config\Data">
         <arguments>
             <argument name="reader" xsi:type="object">Magento\Mtf\Config\Reader\TestRunner</argument>
         </arguments>
@@ -213,7 +224,7 @@
     <virtualType name="Magento\Mtf\Config\Reader\TestRunnerRule" type="Magento\Mtf\Config\Reader\Filesystem">
         <arguments>
             <argument name="fileResolver" xsi:type="object">Magento\Mtf\Config\FileResolver\Primary</argument>
-            <argument name="converter" xsi:type="object">Magento\Mtf\TestRunner\Rule\Configuration\Converter</argument>
+            <argument name="converter" xsi:type="object">Magento\Mtf\TestRunner\Rule\Config\Converter</argument>
             <argument name="schemaLocator" xsi:type="object">Magento\Mtf\Config\SchemaLocator\TestRunnerRule</argument>
             <argument name="idAttributes" xsi:type="array">
                 <item name="/config/rule" xsi:type="string">scope</item>
@@ -223,10 +234,10 @@
             <argument name="defaultScope" xsi:type="string">Magento/Mtf/TestRunner/Rule/etc</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Magento\Mtf\Config\Reader\TestRunner" type="Magento\Mtf\Config\Reader\Filesystem">
+    <virtualType name="Magento\Mtf\Config\Reader\TestRunner" type="Magento\Mtf\Config\Reader\Filesystem" shared="false">
         <arguments>
             <argument name="fileResolver" xsi:type="object">Magento\Mtf\Config\FileResolver\Primary</argument>
-            <argument name="converter" xsi:type="object">Magento\Mtf\TestRunner\Configuration\Converter</argument>
+            <argument name="converter" xsi:type="object">Magento\Mtf\TestRunner\Config\Converter</argument>
             <argument name="schemaLocator" xsi:type="object">Magento\Mtf\Config\SchemaLocator\TestRunner</argument>
             <argument name="idAttributes" xsi:type="array">
                 <item name="/config/rule" xsi:type="string">scope</item>
@@ -347,6 +358,34 @@
             </argument>
             <argument name="fileName" xsi:type="string">testcase.xml</argument>
             <argument name="defaultScope" xsi:type="string">etc</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Magento\Mtf\Variation\Config\SchemaLocator" type="Magento\Mtf\Config\SchemaLocator">
+        <arguments>
+            <argument name="schemaPath" xsi:type="string">etc/global/variations.xsd</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Magento\Mtf\Variation\Config\Data" type="Magento\Mtf\Config\Data">
+        <arguments>
+            <argument name="reader" xsi:type="object">Magento\Mtf\Variation\Config\Reader</argument>
+        </arguments>
+    </virtualType>
+    <!--<type name="Magento\Mtf\Util\Iterator\Variation">-->
+        <!--<arguments>-->
+            <!--<argument name="config" xsi:type="object">Magento\Mtf\Variation\Config\Data</argument>-->
+        <!--</arguments>-->
+    <!--</type>-->
+    <virtualType name="Magento\Mtf\Variation\Config\Reader" type="Magento\Mtf\Config\Reader\Filesystem">
+        <arguments>
+            <argument name="fileResolver" xsi:type="object">Magento\Mtf\Config\FileResolver\Mask</argument>
+            <argument name="converter" xsi:type="object">Magento\Mtf\Config\ConverterGlobal</argument>
+            <argument name="schemaLocator" xsi:type="object">Magento\Mtf\Variation\Config\SchemaLocator</argument>
+            <argument name="idAttributes" xsi:type="array">
+                <item name="/config/variations" xsi:type="string">name</item>
+                <item name="/config/variations/variation" xsi:type="string">name</item>
+            </argument>
+            <argument name="fileName" xsi:type="string">/*.xml/</argument>
+            <argument name="defaultScope" xsi:type="string">TestCase</argument>
         </arguments>
     </virtualType>
 </config>

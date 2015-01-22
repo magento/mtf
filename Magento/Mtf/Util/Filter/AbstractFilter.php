@@ -24,13 +24,10 @@
 
 namespace Magento\Mtf\Util\Filter;
 
-use Magento\Mtf\TestRunner\Configuration;
-use Magento\Mtf\Util\CrossModuleReference\Common;
-
 /**
  * Base class filters out classes that are affected by some parameters.
  */
-abstract class AbstractFilter extends Common
+abstract class AbstractFilter extends \Magento\Mtf\Util\CrossModuleReference\Common
 {
     /**
      * List of allow parameters.
@@ -48,19 +45,19 @@ abstract class AbstractFilter extends Common
 
     /**
      * @constructor
-     * @param Configuration $testRunnerConfig
+     * @param \Magento\Mtf\Config\DataInterface $configData
      * @param string $pathConfig
      */
     public function __construct(
-        Configuration $testRunnerConfig,
+        \Magento\Mtf\Config\DataInterface $configData,
         $pathConfig
     ) {
-        $this->allow = $testRunnerConfig->getValue($pathConfig. '/allow');
+        $this->allow = $configData->get($pathConfig . '/allow');
         if (!$this->allow) {
             $this->allow = [];
         }
 
-        $this->deny = $testRunnerConfig->getValue($pathConfig. '/deny');
+        $this->deny = $configData->get($pathConfig . '/deny');
         if (!$this->deny) {
             $this->deny = [];
         }
