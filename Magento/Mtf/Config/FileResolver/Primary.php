@@ -48,14 +48,22 @@ class Primary implements FileResolverInterface
             return [];
         }
 
-        $mtfDefaultPath = dirname(dirname(dirname(dirname(__DIR__))));
-        $mtfDefaultPath = str_replace('\\', '/', $mtfDefaultPath);
-        $paths[$mtfDefaultPath] = $mtfDefaultPath . '/' . $scope . '/' . $filename;
-        $paths[MTF_BP] = MTF_BP . '/' . $scope . '/' . $filename;
-        if (!file_exists($paths[MTF_BP])) {
-            unset($paths[MTF_BP]);
+        $scope = str_replace('\\', '/', $scope);
+
+        if (substr($scope, 0, strlen(MTF_BP)) === MTF_BP) {
+            $paths[$scope] = $scope . '/' . $filename;
+        } else {
+            $mtfDefaultPath = dirname(dirname(dirname(dirname(__DIR__))));
+            $mtfDefaultPath = str_replace('\\', '/', $mtfDefaultPath);
+
+            $paths[$mtfDefaultPath] = $mtfDefaultPath . '/' . $scope . '/' . $filename;
+            $paths[MTF_BP] = MTF_BP . '/' . $scope . '/' . $filename;
+
+            if (!file_exists($paths[MTF_BP])) {
+                unset($paths[MTF_BP]);
+            }
         }
-        $iterator = new File($paths);
-        return $iterator;
+
+        return new File($paths);
     }
 }

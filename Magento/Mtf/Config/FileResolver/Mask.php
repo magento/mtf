@@ -43,13 +43,14 @@ class Mask implements FileResolverInterface
 
         foreach ($modulesPath as $modulePath) {
             $path = $modulePath . '/Test/' . $scope . '/';
-            $regexpIterator = new \RegexIterator(new \DirectoryIterator($path), $filename);
-            /**
-             * @var \SplFileInfo $file
-             */
-            foreach ($regexpIterator as $file) {
-                if ($file->isFile() && $file->isReadable()) {
-                    $paths[] = $path;
+            if (is_readable($path)) {
+                $directoryIterator = new \DirectoryIterator($path);
+                $regexpIterator = new \RegexIterator($directoryIterator, $filename);
+                /** @var \SplFileInfo $file */
+                foreach ($regexpIterator as $file) {
+                    if ($file->isFile() && $file->isReadable()) {
+                        $paths[] = $file->getRealPath();
+                    }
                 }
             }
         }
