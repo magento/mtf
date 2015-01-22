@@ -29,6 +29,7 @@ use Magento\Mtf\TestCase\Injectable;
 use Magento\Mtf\Util\TestClassResolver;
 use Magento\Mtf\TestRunner\Rule\RuleFactory;
 use Magento\Mtf\TestRunner\Rule\RuleInterface;
+use Magento\Mtf\Config\DataInterface;
 
 /**
  * Test Case variations iterator.
@@ -66,16 +67,30 @@ class Variation extends AbstractIterator
     protected $rule;
 
     /**
+     * Configuration data.
+     *
+     * @var DataInterface
+     */
+    protected $configData;
+
+    /**
      * @constructor
      * @param Injectable $testCase
      * @param TestClassResolver $resolver
      * @param RuleFactory $ruleFactory
+     * @param DataInterface $configData
      */
-    public function __construct(Injectable $testCase, TestClassResolver $resolver, RuleFactory $ruleFactory)
+    public function __construct(
+        Injectable $testCase,
+        TestClassResolver $resolver,
+        RuleFactory $ruleFactory,
+        DataInterface $configData
+    )
     {
         $this->testCase = $testCase;
         $this->resolver = $resolver;
         $this->rule = $ruleFactory->create('variation');
+        $this->configData = $configData;
 
         $this->data = $this->getTestCaseMethodVariations();
         $this->initFirstElement();
@@ -113,16 +128,10 @@ class Variation extends AbstractIterator
      */
     protected function getTestCaseMethodVariations()
     {
-        $data = [];
-        $variationFilePath = $this->getTestCaseMethodVariationFilePath();
-
-        if ($variationFilePath && is_readable($variationFilePath)) {
-            $data = $this->readCsv($variationFilePath);
-        } else {
-            $data['Default'] = [];
-        }
-
-        return $data;
+        return $this->configData->get(
+            basename($this->testCase->getFilePath(), '.php'),
+            ['Default' => []]
+        );
     }
 
     /**
@@ -144,7 +153,7 @@ class Variation extends AbstractIterator
 
         if ($testFilePath) {
             $testMethodName = $this->testCase->getName(false);
-            $variationFilePath = str_replace('.php', "/{$testMethodName}.csv", $testFilePath);
+            $variationFilePath = str_replace('.php', "/{$testMethodName}.xml", $testFilePath);
         }
 
         return $variationFilePath;
