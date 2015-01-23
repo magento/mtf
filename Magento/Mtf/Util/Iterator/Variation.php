@@ -128,10 +128,14 @@ class Variation extends AbstractIterator
      */
     protected function getTestCaseMethodVariations()
     {
-        return $this->configData->get(
-            basename($this->testCase->getFilePath(), '.php'),
+        $variations = $this->configData->get(
+            end(explode('\\',get_class($this->testCase))),
             ['Default' => []]
         );
+        if (isset($variations['name'])) {
+            unset($variations['name']);
+        }
+        return $variations;
     }
 
     /**
