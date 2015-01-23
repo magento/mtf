@@ -160,7 +160,8 @@ class Factory extends \Magento\Mtf\ObjectManager\Factory\Dynamic\Developer
                         $isShared = $argument['shared'];
                         unset($argument['shared']);
                     } else {
-                        $isShared = $this->config->isShared($argumentType);
+                        $isShared = $this->config->isShared($argumentType)
+                            && !strpos($argumentType, '\\Fixture\\');
                     }
                 } else {
                     $argumentType = $paramType;
