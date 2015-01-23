@@ -58,7 +58,9 @@ class Listener implements \PHPUnit_Framework_TestListener
     public function __construct(Data $configuration = null)
     {
         if (!isset($configuration)) {
-            $configuration = \Magento\Mtf\ObjectManager::getInstance()->get('Magento\Mtf\Config\GlobalConfig');
+            $configuration = \Magento\Mtf\ObjectManagerFactory::getObjectManager()
+                ->getInstance()
+                ->get('Magento\Mtf\Config\GlobalConfig');
         }
         $this->_scope = $configuration->get('application/reopenBrowser') ? : static::SCOPE_TEST_CASE;
     }
