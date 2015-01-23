@@ -150,7 +150,7 @@ class Fixture extends AbstractGenerate
         $content .= '<fixture class="' . $className . '"' . "\n";
         $content .= '         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"' . "\n";
         $content .= '         xsi:noNamespaceSchemaLocation="';
-        $content .= '../../../../../../vendor/magento/mtf/Mtf/Fixture/etc/fixture.xsd">' . "\n";
+        $content .= '../../../../../../vendor/magento/mtf/Magento/Mtf/Fixture/etc/fixture.xsd">' . "\n";
 
         $fields = $this->fieldsProvider->getFields($item);
         if (!empty($item['fields']) && is_array($item['fields'])) {
@@ -276,7 +276,7 @@ class Fixture extends AbstractGenerate
         $dataConfig = isset($item['data_config']) ? $item['data_config'] : null;
         $fields = isset($item['fields']) ? $item['fields'] : [];
         $defaultDataSet = isset($item['dataset']) ? $item['dataset'] : $this->getDefaultValues((array)$fields);
-        $extends = isset($item['extends']) ? $item['extends'] : '\Mtf\Fixture\InjectableFixture';
+        $extends = isset($item['extends']) ? $item['extends'] : '\Magento\Mtf\Fixture\InjectableFixture';
         $phpDocVarString = "    /**\n     * @var string\n     */\n";
         $phpDocVarArray = "    /**\n     * @var array\n     */\n";
         $phpDocReturnMixed = "    /**\n     * @return mixed\n     */\n";

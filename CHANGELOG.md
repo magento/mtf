@@ -1,6 +1,8 @@
 1.0.0-rc.14
 =============
 * Magento vendor name is used as root MTF namespace
+* Implemented fixture and repository merger
+* Changed generators of fixtures and repositories
 
 1.0.0-rc.13
 =============

@@ -26,7 +26,7 @@
 -->
 <fixture class="Magento\Mtf\Test\Fixture\Test"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="../../../../../../Mtf/Fixture/etc/fixture.xsd">
+         xsi:noNamespaceSchemaLocation="../../../../../../Magento/Mtf/Fixture/etc/fixture.xsd">
     <module>Magento_Mtf</module>
     <type>blank</type>
     <entity_type>test_fixture</entity_type>
@@ -44,7 +44,7 @@
             <frontend_label>Strategy</frontend_label>
             <is_required>1</is_required>
             <default_value xsi:type="string">link text</default_value>
-            <source>Magento\Mtf\Test\Fixture\Test\Strategy</source>
+            <source>Magento\Mtf\Test\Fixture\BlockRenderMtf\Strategy</source>
         </field>
         <field name="search">
             <attribute_code>search</attribute_code>

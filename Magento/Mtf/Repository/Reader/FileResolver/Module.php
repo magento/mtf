@@ -36,7 +36,7 @@ class Module extends \Magento\Mtf\Config\FileResolver\Module
      *
      * @param string $filename
      * @param string $scope
-     * @return array|\Iterator,\Countable
+     * @return File
      */
     public function get($filename, $scope)
     {

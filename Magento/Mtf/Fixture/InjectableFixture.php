@@ -28,6 +28,7 @@ use Magento\Mtf\Handler\HandlerFactory;
 use Magento\Mtf\Repository\RepositoryFactory;
 use Magento\Mtf\System\Config;
 use Magento\Mtf\System\Event\EventManagerInterface;
+use Magento\Mtf\Fixture\InjectableFixture\Replacer;
 
 /**
  * Class InjectableFixture

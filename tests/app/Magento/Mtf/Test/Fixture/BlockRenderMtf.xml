@@ -25,7 +25,7 @@
 -->
 <fixture class="Magento\Mtf\Test\Fixture\BlockRenderMtf"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="../../../../../../Mtf/Fixture/etc/fixture.xsd">
+         xsi:noNamespaceSchemaLocation="../../../../../../Magento/Mtf/Fixture/etc/fixture.xsd">
     <extends>\Magento\BlockRender\Test\Fixture\BlockRender</extends>
     <fields>
         <field name="strategy">
@@ -34,7 +34,7 @@
             <frontend_label>Strategy</frontend_label>
             <is_required>1</is_required>
             <default_value xsi:type="string">link text</default_value>
-            <source>Magento\Mtf\BlockRender\Fixture\Test\Strategy</source>
+            <source>Magento\Mtf\Test\Fixture\BlockRenderMtf\Strategy</source>
         </field>
         <field name="type">
             <attribute_code>type</attribute_code>

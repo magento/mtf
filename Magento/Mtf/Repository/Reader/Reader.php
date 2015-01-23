@@ -21,6 +21,7 @@
  * @copyright   Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+
 namespace Magento\Mtf\Repository\Reader;
 
 use \Magento\Mtf\Repository\Reader\FileResolver\Module;
@@ -69,8 +70,9 @@ class Reader extends \Magento\Mtf\Config\Reader\Filesystem
         $this->_idAttributes = array_replace($this->_idAttributes, $idAttributes);
         $this->_schemaFile = $schemaLocator->getSchema();
         $this->_isValidated = $validationState->isValidated();
-        $this->_perFileSchema = $schemaLocator->getPerFileSchema() &&
-        $this->_isValidated ? $schemaLocator->getPerFileSchema() : null;
+        $this->_perFileSchema = $schemaLocator->getPerFileSchema() && $this->_isValidated
+            ? $schemaLocator->getPerFileSchema()
+            : null;
         $this->_domDocumentClass = $domDocumentClass;
         $this->_defaultScope = $defaultScope;
     }

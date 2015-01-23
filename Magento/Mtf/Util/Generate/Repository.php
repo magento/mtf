@@ -129,7 +129,7 @@ class Repository extends AbstractGenerate
         $content .= '-->' . "\n";
         $content .= "<repository xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n";
         $content .= "            xsi:noNamespaceSchemaLocation=";
-        $content .= "\"../../../../../../vendor/magento/mtf/Mtf/Repository/etc/repository.xsd\">\n";
+        $content .= "\"../../../../../../vendor/magento/mtf/Magento/Mtf/Repository/etc/repository.xsd\">\n";
         $content .= "    <storage class=\"{$className}\">\n";
         $collection = $this->collectionProvider->getCollection($item);
         foreach ($collection as $record) {

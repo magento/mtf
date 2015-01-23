@@ -22,16 +22,17 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Mtf\Fixture\InjectableFixture\Replacer;
+namespace Magento\Mtf\Fixture\InjectableFixture\Replacer;
 
 /**
  * Reader for replacing values.
  */
-class Reader {
+class Reader
+{
     /**
      * Converter data to array.
      *
-     * @var \Magento\Framework\Config\ConverterInterface
+     * @var \Magento\Mtf\Config\ConverterInterface
      */
     protected $converter;
 

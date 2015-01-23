@@ -22,12 +22,12 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Mtf\Fixture\InjectableFixture\Replacer;
+namespace Magento\Mtf\Fixture\InjectableFixture\Replacer;
 
 /**
  * Convert replacing values.
  */
-class Converter implements \Magento\Framework\Config\ConverterInterface
+class Converter implements \Magento\Mtf\Config\ConverterInterface
 {
     /**
      * Mapping primary attribute of elements.
@@ -46,8 +46,7 @@ class Converter implements \Magento\Framework\Config\ConverterInterface
      */
     public function convert($source)
     {
-        $replace = $source->getElementsByTagName('replace');
-        return $this->convertElement($replace->item(0));
+        return $this->convertElement($source->documentElement);
     }
 
     /**

@@ -25,7 +25,7 @@
 -->
 <fixture class="Magento\BlockRender\Test\Fixture\BlockRender"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="../../../../../../Mtf/Fixture/etc/fixture.xsd">
+         xsi:noNamespaceSchemaLocation="../../../../../../Magento/Mtf/Fixture/etc/fixture.xsd">
     <module>Magento_BlockRender</module>
     <type>blank</type>
     <entity_type>test_fixture</entity_type>

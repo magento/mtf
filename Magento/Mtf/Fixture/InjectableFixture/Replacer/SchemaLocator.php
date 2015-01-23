@@ -22,12 +22,12 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Mtf\Fixture\InjectableFixture\Replacer;
+namespace Magento\Mtf\Fixture\InjectableFixture\Replacer;
 
 /**
  * Replacing values schema locator.
  */
-class SchemaLocator implements \Magento\Framework\Config\SchemaLocatorInterface
+class SchemaLocator implements \Magento\Mtf\Config\SchemaLocatorInterface
 {
     /**
      * Return path to schema.
@@ -40,7 +40,7 @@ class SchemaLocator implements \Magento\Framework\Config\SchemaLocatorInterface
     }
 
     /**
-     * Get path to pre file validation schema.
+     * Get path to per file validation schema.
      *
      * @return null
      */

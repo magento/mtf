@@ -22,18 +22,19 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Mtf\Fixture\InjectableFixture;
+namespace Magento\Mtf\Fixture\InjectableFixture;
 
-use Mtf\Fixture\InjectableFixture\Replacer\Reader;
+use Magento\Mtf\Fixture\InjectableFixture\Replacer\Reader;
 
 /**
  * Class replace values by path in fixture.
  */
-class Replacer {
+class Replacer
+{
     /**
      * Environment name variable for file with replacing values.
      */
-    const REPLACING_VALUES_FILE_PATH = 'replacing_values_file_path';
+    const CREDENTIALS_FILE_PATH = 'credentials_file_path';
 
     /**
      * File reader for replacing values.
@@ -73,7 +74,7 @@ class Replacer {
      */
     protected function init()
     {
-        $filePath = getenv(self::REPLACING_VALUES_FILE_PATH);
+        $filePath = getenv(self::CREDENTIALS_FILE_PATH);
 
         if ($filePath) {
             $this->values = $this->reader->read($filePath);

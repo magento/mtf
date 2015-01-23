@@ -21,6 +21,7 @@
  * @copyright   Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+
 namespace Magento\Mtf\Repository\Reader;
 
 /**
@@ -42,7 +43,7 @@ class Converter implements \Magento\Mtf\Config\ConverterInterface
     public function __construct(\Magento\Mtf\ObjectManagerFactory $objectManagerFactory)
     {
         $objectManager = $objectManagerFactory->getObjectManager();
-        $this->argumentInterpreter = $objectManager->get('Magento\Framework\Data\Argument\InterpreterInterface');
+        $this->argumentInterpreter = $objectManager->get('Magento\Mtf\Data\Argument\InterpreterInterface');
     }
 
     /**
@@ -132,7 +133,6 @@ class Converter implements \Magento\Mtf\Config\ConverterInterface
                 break;
             default:
                 throw new \Exception("Invalid repository data. Unknown node: {$node->nodeName}.");
-                break;
         }
 
         return $data;
@@ -156,7 +156,7 @@ class Converter implements \Magento\Mtf\Config\ConverterInterface
     }
 
     /**
-     * Compute and return effective value of an config argument.
+     * Compute and return effective value of a config argument.
      *
      * @param array $data
      * @return array

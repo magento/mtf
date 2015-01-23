@@ -54,7 +54,7 @@ class Converter implements \Magento\Mtf\Config\ConverterInterface
     ) {
         $this->repositoryConverter = $repositoryConverter;
         $objectManager = $objectManagerFactory->getObjectManager();
-        $this->argumentInterpreter = $objectManager->get('Magento\Framework\Data\Argument\InterpreterInterface');
+        $this->argumentInterpreter = $objectManager->get('Magento\Mtf\Data\Argument\InterpreterInterface');
     }
 
     /**
@@ -65,9 +65,7 @@ class Converter implements \Magento\Mtf\Config\ConverterInterface
      */
     public function convert($source)
     {
-        $config = $source->getElementsByTagName('fixture');
-        $convertedNode = $this->convertFixture($config->item(0));
-
+        $convertedNode = $this->convertFixture($source->documentElement);
         return $convertedNode['value'];
     }
 
