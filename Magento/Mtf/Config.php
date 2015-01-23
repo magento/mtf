@@ -60,7 +60,7 @@ class Config
     /**
      * Default configuration reader
      *
-     * @var \Magento\Mtf\Configuration\Reader
+     * @var \Magento\Mtf\Config\Reader
      */
     protected $defaultConfigReader;
 
@@ -150,7 +150,7 @@ class Config
                 $scope = is_null($scope) ? null : 'etc';
                 if (is_null($this->defaultConfigReader)) {
                     $this->defaultConfigReader = $this->objectManager->get(
-                        'Magento\Mtf\Configuration\Reader'
+                        'Magento\Mtf\Config\Reader'
                     );
                 }
                 return $this->defaultConfigReader->read($configName, $scope);
