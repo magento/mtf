@@ -68,28 +68,18 @@ class Step extends AbstractIterator
     protected $firstStep;
 
     /**
-     * Target module
-     *
-     * @var string
-     */
-    protected $module;
-
-    /**
      * @constructor
      * @param TestStepFactory $factory
      * @param array $steps
      * @param array $currentVariation
      * @param array $localArguments
-     * @param string $module
      */
     public function __construct(
         TestStepFactory $factory,
         array $steps,
         array $currentVariation,
-        array $localArguments,
-        $module
+        array $localArguments
     ) {
-        $this->module = $module;
         $this->data = $steps;
         $this->firstStep = $steps['first'];
         $this->factory = $factory;
@@ -157,7 +147,7 @@ class Step extends AbstractIterator
     {
         $class = isset($step['class'])
             ? $step['class']
-            : str_replace('_', '\\', $this->module)
+            : str_replace('_', '\\', $step['module'])
             . '\Test\TestStep'
             . '\\' . ucfirst($this->key) . 'Step';
 
