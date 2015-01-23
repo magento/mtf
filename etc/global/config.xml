@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="config.xsd">
+    <application reopenBrowser="testCase" backendLogin="admin" backendPassword="123123q" appBackendUrl="http://magento.dev/backend/" backendLoginUrl="admin"/>
+    <isolation resetUrlPath="dev/tests/mtf/isolation.php" testSuite="before" testCase="none" test="none"/>
+    <server>
+        <item name="selenium" type="default" browser="Mozilla Firefox" browserName="firefox" host="localhost" port="4444" seleniumServerRequestsTimeout="90" sessionStrategy="shared">
+            <desiredCapabilities>
+                <platform>ANY</platform>
+            </desiredCapabilities>
+        </item>
+    </server>
+</config>
