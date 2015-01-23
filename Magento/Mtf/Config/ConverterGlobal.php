@@ -59,9 +59,11 @@ class ConverterGlobal implements \Magento\Mtf\Config\ConverterInterface
             if ($element instanceof \DOMElement) {
                 $key = $this->chooseKey($element, $result);
                 $result[$key] = [];
+
                 if ($element->hasAttributes()) {
+                    /** @var \DomAttr $attribute */
                     foreach ($element->attributes as $attribute) {
-                        if (trim($attribute->nodeValue) != '') {
+                        if (trim($attribute->nodeValue) != '' && $attribute->name != self::NAME_ATTRIBUTE) {
                             $result[$key][$attribute->nodeName] = $this->castNumeric($attribute->nodeValue);
                         }
                     }
@@ -75,6 +77,9 @@ class ConverterGlobal implements \Magento\Mtf\Config\ConverterInterface
                     $result[$key] = $convert;
                 }
 
+                if (empty($result[$key])) {
+                    unset($result[$key]);
+                }
             } elseif ($element->nodeType == XML_TEXT_NODE && trim($element->nodeValue) != '') {
                 return $element->nodeValue;
             }
