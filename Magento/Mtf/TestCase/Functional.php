@@ -434,6 +434,7 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
      */
     public function setInIsolation($inIsolation)
     {
+        parent::setInIsolation($inIsolation);
         if (is_bool($inIsolation)) {
             $this->inIsolation = $inIsolation;
         } else {
