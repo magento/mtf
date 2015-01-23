@@ -11,19 +11,27 @@
             <xs:all>
                 <xs:element name="application" maxOccurs="1" minOccurs="0">
                     <xs:complexType>
-                        <xs:attribute name="reopenBrowser" type="reopenBrowserType" use="required"/>
-                        <xs:attribute name="backendLogin" type="backendLoginType" use="required"/>
-                        <xs:attribute name="backendPassword" type="backendPasswordType" use="required"/>
-                        <xs:attribute name="backendLoginUrl" type="backendLoginUrlType" use="required"/>
-                        <xs:attribute name="appBackendUrl" type="appBackendUrlType" use="required"/>
+                        <xs:sequence>
+                            <xs:choice maxOccurs="unbounded">
+                                <xs:element name="reopenBrowser" type="reopenBrowserType"/>
+                                <xs:element name="backendLogin" type="backendLoginType" />
+                                <xs:element name="backendPassword" type="backendPasswordType" />
+                                <xs:element name="backendLoginUrl" type="backendLoginUrlType" />
+                                <xs:element name="appBackendUrl" type="appBackendUrlType" />
+                            </xs:choice>
+                        </xs:sequence>
                     </xs:complexType>
                 </xs:element>
                 <xs:element name="isolation" maxOccurs="1" minOccurs="0">
                     <xs:complexType>
-                        <xs:attribute name="resetUrlPath" type="notEmptyType" use="required"/>
-                        <xs:attribute name="testSuite" type="isolationModeType" use="required"/>
-                        <xs:attribute name="testCase" type="isolationModeType" use="required"/>
-                        <xs:attribute name="test" type="isolationModeType" use="required"/>
+                        <xs:sequence>
+                            <xs:choice maxOccurs="unbounded">
+                                <xs:element name="resetUrlPath" type="notEmptyType"/>
+                                <xs:element name="testSuite" type="isolationModeType" />
+                                <xs:element name="testCase" type="isolationModeType" />
+                                <xs:element name="test" type="isolationModeType" />
+                            </xs:choice>
+                        </xs:sequence>
                     </xs:complexType>
                 </xs:element>
                 <xs:element name="server">
