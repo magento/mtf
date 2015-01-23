@@ -51,26 +51,26 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
     /**
      * @var array
      */
-    private $data = [];
+    protected $data = [];
 
     /**
      * @var string
      */
-    private $dataName = '';
+    protected $dataName = '';
 
     /**
      * The name of the test suite.
      *
      * @var    string
      */
-    private $name = '';
+    protected $name = '';
 
     /**
      * The instance of the process manager.
      *
      * @var ProcessManager
      */
-    private $processManager;
+    protected $processManager;
 
     /**
      * @var \Magento\Mtf\System\Event\EventManagerInterface
@@ -83,111 +83,66 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
     private static $codeGenerationFlag = false;
 
     /**
-     * Enable or disable the backup and restoration of the $GLOBALS array.
-     * Overwrite this attribute in a child class of TestCase.
-     * Setting this attribute in setUp() has no effect!
-     *
-     * @var boolean
-     */
-    protected $backupGlobals = null;
-
-    /**
-     * @var array
-     */
-    protected $backupGlobalsBlacklist = [];
-
-    /**
-     * Enable or disable the backup and restoration of static attributes.
-     * Overwrite this attribute in a child class of TestCase.
-     * Setting this attribute in setUp() has no effect!
-     *
-     * @var boolean
-     */
-    protected $backupStaticAttributes = null;
-
-    /**
-     * @var array
-     */
-    protected $backupStaticAttributesBlacklist = [];
-
-    /**
-     * Whether or not this test is to be run in a separate PHP process.
-     *
-     * @var boolean
-     */
-    protected $runTestInSeparateProcess = null;
-
-    /**
      * Whether or not this test is running in a separate PHP process.
      *
      * @var boolean
      */
-    private $inIsolation = false;
+    protected $inIsolation = false;
 
     /**
      * @var array
      */
-    private $iniSettings = [];
+    protected $iniSettings = [];
 
     /**
      * @var array
      */
-    private $locale = [];
-
-    /**
-     * @var array
-     */
-    private $mockObjects = [];
+    protected $locale = [];
 
     /**
      * @var integer
      */
-    private $status;
+    protected $status;
 
     /**
      * @var string
      */
-    private $statusMessage = '';
+    protected $statusMessage = '';
 
     /**
      * @var integer
      */
-    private $numAssertions = 0;
-
-    /**
-     * @var mixed
-     */
-    private $testResult;
+    protected $numAssertions = 0;
 
     /**
      * @var string
      */
-    private $output = '';
+    protected $output = '';
 
     /**
      * @var string
      */
-    private $outputExpectedRegex = null;
+    protected $outputExpectedRegex = null;
 
     /**
      * @var string
      */
-    private $outputExpectedString = null;
+    protected $outputExpectedString = null;
 
     /**
      * @var bool
      */
-    private $hasPerformedExpectationsOnOutput = false;
+    protected $hasPerformedExpectationsOnOutput = false;
 
     /**
      * @var mixed
      */
-    private $outputCallback = false;
+    protected $outputCallback = false;
 
     /**
      * @var boolean
      */
-    private $outputBufferingActive = false;
+    protected $outputBufferingActive = false;
 
     /**
      * Constructs a test case with the given name.
@@ -361,7 +316,7 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
             }
 
             $this->assertPreConditions();
-            $this->testResult = $this->runTest();
+            $this->setResult($this->runTest());
             $this->verifyMockObjects();
             $this->assertPostConditions();
             $this->status = \PHPUnit_Runner_BaseTestRunner::STATUS_PASSED;
@@ -468,5 +423,237 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
         if (isset($e)) {
             $this->onNotSuccessfulTest($e);
         }
+    }
+
+    /**
+     * Set inIsolation parameter.
+     *
+     * @param  boolean $inIsolation
+     * @throws \PHPUnit_Framework_Exception
+     * @return void
+     */
+    public function setInIsolation($inIsolation)
+    {
+        if (is_bool($inIsolation)) {
+            $this->inIsolation = $inIsolation;
+        } else {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+        }
+    }
+
+    /**
+     * This method is a wrapper for the ini_set() function that automatically
+     * resets the modified php.ini setting to its original value after the
+     * test is run.
+     *
+     * @param  string $varName
+     * @param  string $newValue
+     * @throws PHPUnit_Framework_Exception
+     * @return void
+     */
+    protected function iniSet($varName, $newValue)
+    {
+        if (!is_string($varName)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $currentValue = ini_set($varName, $newValue);
+
+        if ($currentValue !== false) {
+            $this->iniSettings[$varName] = $currentValue;
+        } else {
+            throw new PHPUnit_Framework_Exception(
+                sprintf(
+                    'INI setting "%s" could not be set to "%s".',
+                    $varName,
+                    $newValue
+                )
+            );
+        }
+    }
+
+    /**
+     * This method is a wrapper for the setlocale() function that automatically
+     * resets the locale to its original value after the test is run.
+     *
+     * @throws PHPUnit_Framework_Exception
+     * @return void
+     */
+    protected function setLocale()
+    {
+        $args = func_get_args();
+
+        if (count($args) < 2) {
+            throw new PHPUnit_Framework_Exception;
+        }
+
+        $category = $args[0];
+        $locale = $args[1];
+
+        $categories = array(
+            LC_ALL, LC_COLLATE, LC_CTYPE, LC_MONETARY, LC_NUMERIC, LC_TIME
+        );
+
+        if (defined('LC_MESSAGES')) {
+            $categories[] = LC_MESSAGES;
+        }
+
+        if (!in_array($category, $categories)) {
+            throw new PHPUnit_Framework_Exception;
+        }
+
+        if (!is_array($locale) && !is_string($locale)) {
+            throw new PHPUnit_Framework_Exception;
+        }
+
+        $this->locale[$category] = setlocale($category, null);
+
+        $result = call_user_func_array('setlocale', $args);
+
+        if ($result === false) {
+            throw new PHPUnit_Framework_Exception(
+                'The locale functionality is not implemented on your platform, ' .
+                'the specified locale does not exist or the category name is ' .
+                'invalid.'
+            );
+        }
+    }
+
+    /**
+     * Returns the status of this test.
+     *
+     * @return integer
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * Returns the status message of this test.
+     *
+     * @return string
+     */
+    public function getStatusMessage()
+    {
+        return $this->statusMessage;
+    }
+
+    /**
+     * Adds a value to the assertion counter.
+     *
+     * @param integer $count
+     * @return void
+     */
+    public function addToAssertionCount($count)
+    {
+        $this->numAssertions += $count;
+    }
+
+    /**
+     * Returns the number of assertions performed by this test.
+     *
+     * @return integer
+     */
+    public function getNumAssertions()
+    {
+        return $this->numAssertions;
+    }
+
+    /**
+     * Get actual output.
+     *
+     * @return string
+     */
+    public function getActualOutput()
+    {
+        if (!$this->outputBufferingActive) {
+            return $this->output;
+        } else {
+            return ob_get_contents();
+        }
+    }
+
+    /**
+     * Checks for the presence output data.
+     *
+     * @return boolean
+     */
+    public function hasOutput()
+    {
+        if (strlen($this->output) === 0) {
+            return false;
+        }
+
+        if ($this->outputExpectedString !== null ||
+            $this->outputExpectedRegex !== null ||
+            $this->hasPerformedExpectationsOnOutput
+        ) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Expect output Regex.
+     *
+     * @param  string $expectedRegex
+     * @throws PHPUnit_Framework_Exception
+     * @return void
+     */
+    public function expectOutputRegex($expectedRegex)
+    {
+        if ($this->outputExpectedString !== null) {
+            throw new PHPUnit_Framework_Exception;
+        }
+
+        if (is_string($expectedRegex) || is_null($expectedRegex)) {
+            $this->outputExpectedRegex = $expectedRegex;
+        }
+    }
+
+    /**
+     * Expect output string.
+     *
+     * @param string $expectedString
+     * @throws PHPUnit_Framework_Exception
+     * @return void
+     */
+    public function expectOutputString($expectedString)
+    {
+        if ($this->outputExpectedRegex !== null) {
+            throw new PHPUnit_Framework_Exception;
+        }
+
+        if (is_string($expectedString) || is_null($expectedString)) {
+            $this->outputExpectedString = $expectedString;
+        }
+    }
+
+    /**
+     * Has performed expectations on output.
+     *
+     * @return bool
+     */
+    public function hasPerformedExpectationsOnOutput()
+    {
+        return $this->hasPerformedExpectationsOnOutput;
+    }
+
+    /**
+     * Set Output Callback
+     *
+     * @param  callable $callback
+     * @throws PHPUnit_Framework_Exception
+     * @return void
+     */
+    public function setOutputCallback($callback)
+    {
+        if (!is_callable($callback)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'callback');
+        }
+
+        $this->outputCallback = $callback;
     }
 }
