@@ -123,7 +123,7 @@ class Converter implements \Magento\Mtf\Config\ConverterInterface
     }
 
     /**
-     * Convert "rule" node to array.
+     * Convert "fixture" node to array.
      *
      * @param \DOMElement $element
      * @return array
@@ -143,7 +143,7 @@ class Converter implements \Magento\Mtf\Config\ConverterInterface
     }
 
     /**
-     * Convert "rule" node to array.
+     * Convert "field" node to array.
      *
      * @param \DOMElement $element
      * @return array

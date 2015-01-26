@@ -29,7 +29,8 @@ use Magento\Mtf\Config\SchemaLocatorInterface;
 /**
  * Reader for fixtures.
  */
-class Reader {
+class Reader
+{
     /**
      * Converter data to array.
      *

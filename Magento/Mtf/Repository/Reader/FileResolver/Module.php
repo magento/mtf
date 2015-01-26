@@ -24,7 +24,7 @@
 
 namespace Magento\Mtf\Repository\Reader\FileResolver;
 
-use \Magento\Mtf\Util\Iterator\File;
+use Magento\Mtf\Util\Iterator\File;
 
 /**
  * Provides the list of configuration files collected through modules test folders.
