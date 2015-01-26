@@ -39,39 +39,32 @@ use Magento\Mtf\Config\DataInterface;
 class Variation extends AbstractIterator
 {
     /**
-     * Column Names.
-     *
-     * @var array
-     */
-    protected $header = [];
-
-    /**
      * Parent Test Case Object.
      *
      * @var Injectable
      */
-    protected $testCase;
+    private $testCase;
 
     /**
      * Test class resolver.
      *
      * @var TestClassResolver
      */
-    protected $resolver;
+    private $resolver;
 
     /**
      * Filtering rule.
      *
      * @var RuleInterface
      */
-    protected $rule;
+    private $rule;
 
     /**
      * Configuration data.
      *
      * @var DataInterface
      */
-    protected $configData;
+    private $configData;
 
     /**
      * @constructor
@@ -85,13 +78,11 @@ class Variation extends AbstractIterator
         TestClassResolver $resolver,
         RuleFactory $ruleFactory,
         DataInterface $configData
-    )
-    {
+    ) {
         $this->testCase = $testCase;
         $this->resolver = $resolver;
         $this->rule = $ruleFactory->create('variation');
         $this->configData = $configData;
-
         $this->data = $this->getTestCaseMethodVariations();
         $this->initFirstElement();
     }
@@ -126,65 +117,14 @@ class Variation extends AbstractIterator
      *
      * @return array
      */
-    protected function getTestCaseMethodVariations()
+    private function getTestCaseMethodVariations()
     {
-        $classPath = explode('\\',get_class($this->testCase));
+        $classPath = explode('\\', get_class($this->testCase));
         $variations = $this->configData->get(
             end($classPath),
             ['Default' => []]
         );
-        if (isset($variations['name'])) {
-            unset($variations['name']);
-        }
         return $variations;
-    }
-
-    /**
-     * Return file path of test case method variations.
-     *
-     * @return string|null
-     */
-    protected function getTestCaseMethodVariationFilePath()
-    {
-        $testFilePath = $this->testCase->getFilePath();
-        $variationFilePath = null;
-
-        if (!$testFilePath) {
-            $testCaseData = $this->resolver->get('TestCase', [get_class($this->testCase)]);
-            if (isset($testCaseData[0]['path'])) {
-                $testFilePath = $testCaseData[0]['path'];
-            }
-        }
-
-        if ($testFilePath) {
-            $testMethodName = $this->testCase->getName(false);
-            $variationFilePath = str_replace('.php', "/{$testMethodName}.xml", $testFilePath);
-        }
-
-        return $variationFilePath;
-    }
-
-    /**
-     * Parse source file, extract column names information and prepare data array.
-     *
-     * @param string $variationFilePath
-     * @return array
-     */
-    protected function readCsv($variationFilePath)
-    {
-        $handle = fopen($variationFilePath, 'r');
-
-        $data = $this->header = [];
-
-        while (($line = fgetcsv($handle, 10000, ';', '"', '\\')) !== false) {
-            if ($this->header) {
-                $data[] = array_combine($this->header, $line);
-            } else {
-                $this->header = $line;
-            }
-        }
-
-        return $data;
     }
 
     /**
@@ -192,7 +132,7 @@ class Variation extends AbstractIterator
      *
      * @return array
      */
-    protected function prepare()
+    private function prepare()
     {
         $data = [];
         if ($this->current) {
@@ -215,7 +155,7 @@ class Variation extends AbstractIterator
      * @param mixed $value
      * @return void
      */
-    protected function setArrayPathValue(array &$data, $key, $value)
+    private function setArrayPathValue(array &$data, $key, $value)
     {
         $keys = explode('/', $key);
         $key = array_shift($keys);
