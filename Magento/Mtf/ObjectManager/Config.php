@@ -48,11 +48,13 @@ class Config extends ObjectManagerConfig
      */
     public function isShared($type)
     {
-        return parent::isShared($type);
         if (isset($this->_nonShared[$type])) {
             return false;
         }
-
+        // @TODO:: refactor
+        if (isset($this->_virtualTypes[$type])) {
+            return true;
+        }
         if (!isset($this->_nonSharedRefClasses[$type])) {
             $this->_nonSharedRefClasses[$type] = new \ReflectionClass($type);
         }
