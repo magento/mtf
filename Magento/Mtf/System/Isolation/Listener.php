@@ -99,7 +99,9 @@ class Listener implements \PHPUnit_Framework_TestListener
     public function __construct(Driver $driver, $configuration = null)
     {
         if (!isset($configuration)) {
-            $configuration = \Magento\Mtf\ObjectManager::getInstance()->get('Magento\Mtf\Config\GlobalConfig');
+            $configuration = $configuration = \Magento\Mtf\ObjectManagerFactory::getObjectManager()
+                ->getInstance()
+                ->get('Magento\Mtf\Config\GlobalConfig');
         }
         $this->_driver = $driver;
         $this->_lastDefaultModes = [
