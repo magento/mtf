@@ -1,3 +1,5 @@
+* Fixed wrong screenshot is taken for test failure if tearDown() method is present
+
 1.0.0-rc.14
 =============
 * Magento vendor name is used as root MTF namespace
