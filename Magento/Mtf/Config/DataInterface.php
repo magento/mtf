@@ -44,4 +44,20 @@ interface DataInterface
      * @return mixed
      */
     public function get($key = null, $default = null);
+
+    /**
+     * Load config data
+     *
+     * @param string|null $scope
+     * @return void
+     */
+    public function load($scope = null);
+
+    /**
+     * Set name of the config file
+     *
+     * @param string $fileName
+     * @return self
+     */
+    public function setFileName($fileName);
 }
