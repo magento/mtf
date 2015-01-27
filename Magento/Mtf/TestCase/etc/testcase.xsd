@@ -6,6 +6,15 @@
                 The root element for configuration data.
             </xs:documentation>
         </xs:annotation>
+        <xs:unique name="uniqueScenarioType">
+            <xs:annotation>
+                <xs:documentation>
+                    Scenario name must be unique.
+                </xs:documentation>
+            </xs:annotation>
+            <xs:selector xpath="scenario" />
+            <xs:field xpath="@name" />
+        </xs:unique>
     </xs:element>
 
     <xs:complexType name="stepType" mixed="true">
