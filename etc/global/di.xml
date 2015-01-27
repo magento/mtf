@@ -216,7 +216,7 @@
             <argument name="defaultScope" xsi:type="string">Magento/Mtf/TestRunner/Rule/etc</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Magento\Mtf\Config\Reader\TestRunner" type="Magento\Mtf\Config\Reader\Filesystem" shared="false">
+    <virtualType name="Magento\Mtf\Config\Reader\TestRunner" type="Magento\Mtf\Config\Reader\Filesystem">
         <arguments>
             <argument name="fileResolver" xsi:type="object">Magento\Mtf\Config\FileResolver\Primary</argument>
             <argument name="converter" xsi:type="object">Magento\Mtf\TestRunner\Config\Converter</argument>
