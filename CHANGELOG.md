@@ -1,6 +1,9 @@
+1.0.0-rc.15
+=============
 * Fixed wrong screenshot is taken for test failure if tearDown() method is present
 * Implemented fixture and repository merger
 * Changed generators of fixtures and repositories
+* Updated setValue() method to trigger JS events
 
 1.0.0-rc.14
 =============
