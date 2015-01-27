@@ -51,8 +51,18 @@ class Config extends ObjectManagerConfig
         if (isset($this->_nonShared[$type])) {
             return false;
         }
+
         if (isset($this->_virtualTypes[$type])) {
             return true;
+        }
+
+        if (!isset($this->_nonSharedRefClasses[$type])) {
+            $this->_nonSharedRefClasses[$type] = new \ReflectionClass($type);
+        }
+        foreach ($this->_nonShared as $noneShared => $flag) {
+            if ($this->_nonSharedRefClasses[$type]->isSubclassOf($noneShared)) {
+                return false;
+            }
         }
 
         return true;
