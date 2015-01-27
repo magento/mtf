@@ -70,12 +70,13 @@ class ObjectManagerFactory
         $diConfig = new $this->configClassName();
         $systemConfig = new SystemConfig();
         $configuration = $systemConfig->getConfigParam();
-        $diConfig->extend($configuration);
+        $diConfig->extend((array)$configuration);
 
         $factory = new Factory($diConfig);
         $argInterpreter = $this->createArgumentInterpreter(new BooleanUtils());
         $argumentMapper = new \Magento\Mtf\ObjectManager\Config\Mapper\Dom($argInterpreter);
 
+        $sharedInstances['Magento\Mtf\Data\Argument\InterpreterInterface'] = $argInterpreter;
         $sharedInstances['Magento\Mtf\ObjectManager\Config\Mapper\Dom'] = $argumentMapper;
         /** @var \Magento\Mtf\ObjectManager $objectManager */
         $objectManager = new $this->locatorClassName($factory, $diConfig, $sharedInstances);
