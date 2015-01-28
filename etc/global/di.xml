@@ -5,7 +5,7 @@
  * See COPYING.txt for license details.
  */
 -->
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xsi:noNamespaceSchemaLocation="../di.xsd">
     <preference for="Magento\Mtf\Client\DriverInterface" type="Magento\Mtf\Client\Driver\Selenium\Driver"/>
     <preference for="Magento\Mtf\Client\BrowserInterface" type="Magento\Mtf\Client\Browser"/>
     <preference for="Magento\Mtf\Client\ElementInterface" type="Magento\Mtf\Client\Element\SimpleElement"/>
@@ -368,6 +368,35 @@
             </argument>
             <argument name="fileName" xsi:type="string">#\.xml$#</argument>
             <argument name="defaultScope" xsi:type="string">TestCase</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Mtf\Util\Generate\Page">
+        <arguments>
+            <argument name="configuration" xsi:type="object">Magento\Mtf\Page\Config\Data</argument>
+        </arguments>
+    </type>
+    <virtualType name="Magento\Mtf\Page\Config\SchemaLocator" type="Magento\Mtf\Config\SchemaLocator">
+        <arguments>
+            <argument name="schemaPath" xsi:type="string">etc/pages.xsd</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Magento\Mtf\Page\Config\Data" type="Magento\Mtf\Config\Data">
+        <arguments>
+            <argument name="reader" xsi:type="object">Magento\Mtf\Page\Config\Reader</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Magento\Mtf\Page\Config\Reader" type="Magento\Mtf\Config\Reader\Filesystem">
+        <arguments>
+            <argument name="fileResolver" xsi:type="object">Magento\Mtf\Config\FileResolver\Mask</argument>
+            <argument name="converter" xsi:type="object">Magento\Mtf\Config\ConverterPages</argument>
+            <argument name="schemaLocator" xsi:type="object">Magento\Mtf\Page\Config\SchemaLocator</argument>
+            <argument name="idAttributes" xsi:type="array">
+                <item name="/config/page" xsi:type="string">name</item>
+                <item name="/config/page/block" xsi:type="string">name</item>
+                <item name="/config/page/block/render" xsi:type="string">name</item>
+            </argument>
+            <argument name="fileName" xsi:type="string">#\.xml$#</argument>
+            <argument name="defaultScope" xsi:type="string">Page</argument>
         </arguments>
     </virtualType>
 </config>
