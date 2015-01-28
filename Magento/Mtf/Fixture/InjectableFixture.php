@@ -181,7 +181,6 @@ class InjectableFixture implements FixtureInterface
         }
 
         $this->data = $this->replacer->apply($this->data);
-        $this->_applyPlaceholders($this->data, ['isolation' => mt_rand()]);
         if ($persist === true) {
             $this->persist();
         }
@@ -394,35 +393,5 @@ class InjectableFixture implements FixtureInterface
     protected function getDataByKey($key)
     {
         return isset($this->data[$key]) ? $this->data[$key] : null;
-    }
-
-    /**
-     * Recursively apply placeholders to each data element
-     *
-     * @param array $data
-     * @param array $placeholders
-     * @return void
-     */
-    protected function _applyPlaceholders(array & $data, array $placeholders)
-    {
-        if ($placeholders) {
-            $replacePairs = [];
-            foreach ($placeholders as $pattern => $replacement) {
-                $replacePairs['%' . $pattern . '%'] = $replacement;
-            }
-            $callback = function (&$value) use ($replacePairs) {
-                foreach ($replacePairs as $pattern => $replacement) {
-                    if (is_string($value) && strpos($value, $pattern) !== false) {
-                        if (is_callable($replacement)) {
-                            $param = trim($pattern, '%');
-                            $replacement = $replacement($param);
-                        }
-
-                        $value = str_replace($pattern, $replacement, $value);
-                    }
-                }
-            };
-            array_walk_recursive($data, $callback);
-        }
     }
 }

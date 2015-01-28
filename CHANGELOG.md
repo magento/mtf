@@ -1,4 +1,5 @@
 * Fixed fatal error after create screenshot or report on Windows
+* Implemented mechanism of applying 3rd party credentials
 
 1.0.0-rc.17
 =============
