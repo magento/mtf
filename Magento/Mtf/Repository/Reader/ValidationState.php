@@ -22,27 +22,22 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Magento\Mtf\Util\Generate\Fixture;
+namespace Magento\Mtf\Repository\Reader;
+
+use Magento\Mtf\Config\ValidationStateInterface;
 
 /**
- * Class FieldsProviderInterface
- *
- * @api
+ * Used for Object Manager.
  */
-interface FieldsProviderInterface
+class ValidationState implements ValidationStateInterface
 {
     /**
-     * Collect fields for given fixture
-     *
-     * @param array $fixture
-     * @return array
-     */
-    public function getFields(array $fixture);
-
-    /**
-     * Check connection to DB.
+     * Retrieve current validation state.
      *
      * @return bool
      */
-    public function checkConnection();
+    public function isValidated()
+    {
+        return true;
+    }
 }

@@ -19,6 +19,13 @@ use Magento\Mtf\Client\Locator;
 class SelectElement extends SimpleElement
 {
     /**
+     * Option locator
+     *
+     * @var string
+     */
+    protected $optionByIndex = './option[%d]';
+
+    /**
      * Set the value
      *
      * @param string|array $value
@@ -59,16 +66,15 @@ class SelectElement extends SimpleElement
     {
         $this->eventManager->dispatchEvent(['get_value'], [__METHOD__, $this->getAbsoluteSelector()]);
 
-        $selectedOption = $this->find('option[selected]');
-        if ($selectedOption->isVisible() && $selectedOption->isSelected()) {
-            return $selectedOption->getText();
-        }
-
-        $options = $this->getElements('option');
-        foreach ($options as $option) {
+        $index = 1;
+        $option = $this->find(sprintf($this->optionByIndex, $index), Locator::SELECTOR_XPATH);
+        while ($option->isVisible()) {
             if ($option->isSelected()) {
                 return $option->getText();
             }
+
+            ++$index;
+            $option = $this->find(sprintf($this->optionByIndex, $index), Locator::SELECTOR_XPATH);
         }
 
         return '';

@@ -20,6 +20,16 @@ use Magento\Mtf\System\Event\EventManagerInterface;
 class Driver implements DriverInterface
 {
     /**
+     * "Backspace" key code
+     */
+    const BACKSPACE = "\xEE\x80\x83";
+
+    /**
+     * "Tab" key code
+     */
+    const TAB = "\xEE\x80\x84";
+
+    /**
      * Driver configuration
      *
      * @var Config
@@ -229,7 +239,9 @@ class Driver implements DriverInterface
         $absoluteSelector = $element->getAbsoluteSelector();
         $this->eventManager->dispatchEvent(['click_before'], [__METHOD__, $absoluteSelector]);
 
-        $this->getNativeElement($element)->click();
+        $wrapperElement = $this->getNativeElement($element);
+        $this->driver->moveto($wrapperElement);
+        $wrapperElement->click();
 
         $this->eventManager->dispatchEvent(['click_before'], [__METHOD__, $absoluteSelector]);
     }
@@ -312,9 +324,21 @@ class Driver implements DriverInterface
     public function setValue(ElementInterface $element, $value)
     {
         $this->eventManager->dispatchEvent(['set_value'], [__METHOD__, $element->getAbsoluteSelector()]);
+
         $wrappedElement = $this->getNativeElement($element);
-        $wrappedElement->clear();
-        $wrappedElement->value($value);
+        $currentValue = $wrappedElement->value();
+        $sequenceKey = '';
+
+        if (!empty($currentValue)) {
+            $sequenceKey .= str_repeat(self::BACKSPACE, strlen($currentValue));
+        }
+        $sequenceKey .= $value;
+        $sequenceKey .= self::TAB;
+
+        $this->selectWindow();
+        $this->driver->moveto($wrappedElement);
+        $wrappedElement->click();
+        $this->driver->keys($sequenceKey);
     }
 
     /**
