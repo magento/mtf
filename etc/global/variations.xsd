@@ -50,11 +50,26 @@
                         </xs:documentation>
                     </xs:annotation>
                 </xs:element>
+                <xs:element ref="constraint" maxOccurs="unbounded" minOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>
+                            An element that contains a constraint className and order.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
             </xs:sequence>
             <xs:attribute type="xs:string" name="name" use="required"/>
+            <xs:attribute type="xs:string" name="firstConstraint" use="required"/>
+            <xs:attribute type="xs:string" name="method" use="required"/>
         </xs:complexType>
     </xs:element>
-
+    <xs:element name="constraint">
+        <xs:complexType>
+            <xs:attribute type="xs:string" name="name" use="required"/>
+            <xs:attribute type="xs:string" name="next" use="optional"/>
+            <xs:attribute type="xs:string" name="prev" use="optional"/>
+        </xs:complexType>
+    </xs:element>
     <xs:element name="data">
         <xs:complexType>
             <xs:simpleContent>
