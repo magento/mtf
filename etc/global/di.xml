@@ -34,6 +34,7 @@
             <argument name="ruleFactory" xsi:type="object">Magento\Mtf\TestRunner\Rule\RuleFactory</argument>
         </arguments>
     </type>
+    <type name="Magento\Mtf\Util\SequencesSorter"/>
     <preference for="Magento\Mtf\Config\FileResolverInterface" type="Magento\Mtf\Config\FileResolver\Module"/>
     <preference for="Magento\Mtf\Config\ConverterInterface" type="Magento\Mtf\Config\Converter"/>
     <preference for="Magento\Mtf\Config\SchemaLocatorInterface" type="Magento\Mtf\Config\SchemaLocator"/>
