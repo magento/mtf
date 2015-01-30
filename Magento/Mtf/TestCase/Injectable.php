@@ -311,7 +311,7 @@ abstract class Injectable extends Functional
         unset($constraintsArray['first']);
         return $this->getObjectManager()->create(
             'Magento\Mtf\Constraint\Composite',
-            ['codeConstraints' => $constraintsArray]
+            ['codeConstraints' => array_keys($constraintsArray)]
         );
     }
 
