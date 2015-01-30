@@ -63,6 +63,7 @@
             <xs:attribute type="xs:string" name="method" use="required"/>
         </xs:complexType>
     </xs:element>
+
     <xs:element name="constraint">
         <xs:complexType>
             <xs:attribute type="xs:string" name="name" use="required"/>
@@ -70,6 +71,7 @@
             <xs:attribute type="xs:string" name="prev" use="optional"/>
         </xs:complexType>
     </xs:element>
+    
     <xs:element name="data">
         <xs:complexType>
             <xs:simpleContent>
