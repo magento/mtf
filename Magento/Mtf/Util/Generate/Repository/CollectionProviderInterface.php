@@ -38,4 +38,11 @@ interface CollectionProviderInterface
      * @return array
      */
     public function getCollection(array $fixture);
+
+    /**
+     * Check connection to DB.
+     *
+     * @return bool
+     */
+    public function checkConnection();
 }
