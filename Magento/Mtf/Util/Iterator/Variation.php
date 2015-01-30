@@ -121,7 +121,7 @@ class Variation extends AbstractIterator
     {
         $classPath = explode('\\', get_class($this->testCase));
         $variations = $this->configData->get(
-            end($classPath),
+            'testCase/' . end($classPath) . '/variation',
             ['Default' => []]
         );
         return $variations;
@@ -136,6 +136,8 @@ class Variation extends AbstractIterator
     {
         $data = [];
         if ($this->current) {
+            $this->current = array_replace($this->current, $this->current['data']);
+            unset($this->current['data']);
             foreach ($this->current as $key => $value) {
                 if (strpos($key, '/') === false) {
                     $data[$key] = $value;
@@ -168,6 +170,6 @@ class Variation extends AbstractIterator
             }
             $key = array_shift($keys);
         }
-        $data = $value;
+        $data = $value['value'];
     }
 }

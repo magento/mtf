@@ -38,7 +38,7 @@
             </xs:sequence>
             <xs:attribute type="xs:string" name="name" use="required"/>
             <xs:attribute type="xs:string" name="module" use="required"/>
-            <xs:attribute type="xs:string" name="severity" use="required"/>
+            <xs:attribute type="xs:string" name="severity" use="optional"/>
         </xs:complexType>
     </xs:element>
     <xs:simpleType name="constraintName">

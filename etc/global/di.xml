@@ -195,7 +195,7 @@
     </virtualType>
     <virtualType name="Magento\Mtf\Config\SchemaLocator\Constraint" type="Magento\Mtf\Config\SchemaLocator">
         <arguments>
-            <argument name="schemaPath" xsi:type="string">Magento/Mtf/Constraint/etc/constraint.xsd</argument>
+            <argument name="schemaPath" xsi:type="string">etc/global/constraints.xsd</argument>
         </arguments>
     </virtualType>
     <virtualType name="Magento\Mtf\Config\SchemaLocator\Page" type="Magento\Mtf\Config\SchemaLocator">
@@ -203,7 +203,6 @@
             <argument name="schemaPath" xsi:type="string">Magento/Mtf/Page/etc/page.xsd</argument>
         </arguments>
     </virtualType>
-
     <virtualType name="Magento\Mtf\Config\Reader\TestRunnerRule" type="Magento\Mtf\Config\Reader\Filesystem">
         <arguments>
             <argument name="fileResolver" xsi:type="object">Magento\Mtf\Config\FileResolver\Primary</argument>
@@ -265,6 +264,11 @@
             <argument name="fileResolver" xsi:type="object">Magento\Mtf\Config\FileResolver\Module</argument>
             <argument name="converter" xsi:type="object">Magento\Mtf\Config\Converter</argument>
             <argument name="schemaLocator" xsi:type="object">Magento\Mtf\Config\SchemaLocator\Constraint</argument>
+            <argument name="idAttributes" xsi:type="array">
+                <item name="/config" xsi:type="string">scope</item>
+                <item name="/config/constraint" xsi:type="string">name</item>
+                <item name="/config/constraint/argument" xsi:type="string">name</item>
+            </argument>
             <argument name="fileName" xsi:type="string">constraint.xml</argument>
             <argument name="defaultScope" xsi:type="string">etc</argument>
         </arguments>
@@ -366,6 +370,7 @@
             <argument name="idAttributes" xsi:type="array">
                 <item name="/config/testCase" xsi:type="string">name</item>
                 <item name="/config/testCase/variation" xsi:type="string">name</item>
+                <item name="/config/testCase/variation/data" xsi:type="string">name</item>
             </argument>
             <argument name="fileName" xsi:type="string">#\.xml$#</argument>
             <argument name="defaultScope" xsi:type="string">TestCase</argument>
