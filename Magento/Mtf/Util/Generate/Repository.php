@@ -26,7 +26,7 @@ namespace Magento\Mtf\Util\Generate;
 
 use Magento\Mtf\Util\Generate\Repository\CollectionProviderInterface;
 use Magento\Mtf\Config\DataInterface;
-use Magento\Mtf\Config\Reader;
+use Magento\Mtf\Configuration\Reader;
 use Magento\Mtf\Repository\Reader\Reader as RepositoryReader;
 use Magento\Mtf\ObjectManagerInterface;
 
