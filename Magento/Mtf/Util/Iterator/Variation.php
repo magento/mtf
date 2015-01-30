@@ -94,7 +94,7 @@ class Variation extends AbstractIterator
      */
     protected function isValid()
     {
-        $cellTag = isset($this->current['tag']) ? $this->current['tag'] : '';
+        $cellTag = isset($this->current['data']['tag']['value']) ? $this->current['data']['tag']['value'] : '';
 
         if (!$this->rule->apply($cellTag)) {
             return false;
@@ -140,6 +140,9 @@ class Variation extends AbstractIterator
             unset($this->current['data']);
             foreach ($this->current as $key => $value) {
                 if (strpos($key, '/') === false) {
+                    if (isset($value['value'])) {
+                        $value = $value['value'];
+                    }
                     $data[$key] = $value;
                 } else {
                     $this->setArrayPathValue($data, $key, $value);
