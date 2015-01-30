@@ -307,7 +307,7 @@ abstract class Injectable extends Functional
         /** @var \Magento\Mtf\Util\SequencesSorter $sorter */
         $sorter = $this->getObjectManager()->create('Magento\Mtf\Util\SequencesSorter');
         $constraintsArray = $sorter->sort($constraints, $firstConstraint);
-        //TODO move to sorter when refactored steps Magento/Mtf/Util/Iterator/Step.php:84
+        //TODO MAGETWO-33438
         unset($constraintsArray['first']);
         return $this->getObjectManager()->create(
             'Magento\Mtf\Constraint\Composite',
