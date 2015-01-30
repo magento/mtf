@@ -59,7 +59,7 @@ class Reader
     public function __construct(
         Converter $converter,
         SchemaLocator $schemaLocator,
-        $domDocumentClass = 'Magento\Framework\Config\Dom'
+        $domDocumentClass = 'Magento\Mtf\Config\Dom'
     ) {
         $this->converter = $converter;
         $this->schema = $schemaLocator->getSchema();
@@ -71,13 +71,13 @@ class Reader
      *
      * @param string $filePath
      * @return array
-     * @throws \Magento\Framework\Exception
+     * @throws \Exception
      */
     public function read($filePath)
     {
         $content = file_get_contents($filePath);
         if (false === $content) {
-            throw new \Magento\Framework\Exception("Can't read file: " . $filePath);
+            throw new \Exception("Can't read file: " . $filePath);
         }
 
         $document = $this->createDocument($this->domDocumentClass, $content);
@@ -85,7 +85,7 @@ class Reader
             $errors = [];
             if (!$document->validate($this->schema, $errors)) {
                 $message = "Invalid Document \n";
-                throw new \Magento\Framework\Exception($message . implode("\n", $errors));
+                throw new \Exception($message . implode("\n", $errors));
             }
         }
 
@@ -97,13 +97,13 @@ class Reader
      *
      * @param string $class
      * @param string $initialContents
-     * @return \Magento\Framework\Config\Dom
+     * @return \Magento\Mtf\Config\Dom
      * @throws \UnexpectedValueException
      */
     protected function createDocument($class, $initialContents)
     {
         $result = new $class($initialContents);
-        if (!$result instanceof \Magento\Framework\Config\Dom) {
+        if (!$result instanceof \Magento\Mtf\Config\Dom) {
             throw new \UnexpectedValueException(
                 "Instance of the DOM config merger is expected, got {$class} instead."
             );
