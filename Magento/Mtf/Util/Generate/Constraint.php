@@ -68,7 +68,7 @@ class Constraint extends AbstractGenerate
     public function generateClasses()
     {
         $this->cnt = 0;
-        foreach ($this->configData->get() as $name => $item) {
+        foreach ($this->configData->get('constraint') as $name => $item) {
             $this->generateClass($name, $item);
         }
         \Magento\Mtf\Util\Generate\GenerateResult::addResult('Constraint Classes', $this->cnt);
@@ -95,9 +95,9 @@ class Constraint extends AbstractGenerate
         $use[] = 'use Magento\Mtf\\Constraint\\AbstractConstraint;';
 
         $requiredArguments = [];
-        if (isset($item['require'])) {
-            foreach ($item['require'] as $argName => $requiredArgument) {
-                $class = $requiredArgument['class'];
+        if (isset($item['argument'])) {
+            foreach ($item['argument'] as $argName => $argValue) {
+                $class = $argValue['value'];
                 list($argClassName) = array_reverse(explode('\\', $class));
                 $requiredArguments[] = [
                     'name' => $argName,
@@ -128,13 +128,14 @@ class Constraint extends AbstractGenerate
         foreach ($requiredArguments as $argument) {
             $requiredArgumentsArray[] = $argument['class'] . ' $' . $argument['name'];
         }
-        $argumentsString = implode(', ', $requiredArgumentsArray);
+        $argumentsString = implode(",\n        ", $requiredArgumentsArray);
 
         $content .= "    /**\n";
         $content .= "     * @return void\n";
         $content .= "     */\n";
-        $content .= '    public function processAssert(' . $argumentsString . ')' . "\n";
-        $content .= "    {\n";
+        $content .= '    public function processAssert(' . "\n";
+        $content .= '        ' . $argumentsString . "\n";
+        $content .= "    ) {\n";
         $content .= "        //\n";
         $content .= "    }\n\n";
 
