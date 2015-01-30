@@ -128,12 +128,12 @@
     </type>
     <type name="Magento\Mtf\Constraint\ConstraintFactory">
         <arguments>
-            <argument name="configData" xsi:type="object">Magento\Mtf\Config\Constraint</argument>
+            <argument name="configData" xsi:type="object">Magento\Mtf\Constraint\Config\Data</argument>
         </arguments>
     </type>
     <type name="Magento\Mtf\Util\Generate\Constraint">
         <arguments>
-            <argument name="configData" xsi:type="object">Magento\Mtf\Config\Constraint</argument>
+            <argument name="configData" xsi:type="object">Magento\Mtf\Constraint\Config\Data</argument>
         </arguments>
     </type>
     <type name="Magento\Mtf\Page\Page">
@@ -162,9 +162,9 @@
             <argument name="reader" xsi:type="object">Magento\Mtf\Config\Reader\Fixture</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Magento\Mtf\Config\Constraint" type="Magento\Mtf\Config\Data">
+    <virtualType name="Magento\Mtf\Constraint\Config\Data" type="Magento\Mtf\Config\Data">
         <arguments>
-            <argument name="reader" xsi:type="object">Magento\Mtf\Config\Reader\Constraint</argument>
+            <argument name="reader" xsi:type="object">Magento\Mtf\Constraint\Config\Reader</argument>
         </arguments>
     </virtualType>
     <virtualType name="Magento\Mtf\Config\Page" type="Magento\Mtf\Config\Data">
@@ -193,7 +193,7 @@
             <argument name="schemaPath" xsi:type="string">Magento/Mtf/Fixture/etc/fixture.xsd</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Magento\Mtf\Config\SchemaLocator\Constraint" type="Magento\Mtf\Config\SchemaLocator">
+    <virtualType name="Magento\Mtf\Constraint\Config\SchemaLocator" type="Magento\Mtf\Config\SchemaLocator">
         <arguments>
             <argument name="schemaPath" xsi:type="string">etc/global/constraints.xsd</argument>
         </arguments>
@@ -259,11 +259,11 @@
             <argument name="defaultScope" xsi:type="string">etc</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Magento\Mtf\Config\Reader\Constraint" type="Magento\Mtf\Config\Reader\Filesystem">
+    <virtualType name="Magento\Mtf\Constraint\Config\Reader" type="Magento\Mtf\Config\Reader\Filesystem">
         <arguments>
             <argument name="fileResolver" xsi:type="object">Magento\Mtf\Config\FileResolver\Module</argument>
-            <argument name="converter" xsi:type="object">Magento\Mtf\Config\Converter</argument>
-            <argument name="schemaLocator" xsi:type="object">Magento\Mtf\Config\SchemaLocator\Constraint</argument>
+            <argument name="converter" xsi:type="object">Magento\Mtf\Config\ConverterPages</argument>
+            <argument name="schemaLocator" xsi:type="object">Magento\Mtf\Constraint\Config\SchemaLocator</argument>
             <argument name="idAttributes" xsi:type="array">
                 <item name="/config" xsi:type="string">scope</item>
                 <item name="/config/constraint" xsi:type="string">name</item>
