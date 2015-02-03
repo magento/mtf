@@ -23,6 +23,9 @@
  */
 namespace Magento\Mtf\Config;
 
+use Magento\Mtf\ObjectManager\Config\Mapper\ArgumentParser;
+use Magento\Mtf\Data\Argument\InterpreterInterface;
+
 /**
  * Class Converter.
  *
@@ -34,6 +37,36 @@ class ConverterPages implements \Magento\Mtf\Config\ConverterInterface
      * Unique identifier of node.
      */
     const NAME_ATTRIBUTE = 'name';
+
+    /**
+     * @var ArgumentParser
+     */
+    protected $argumentParser;
+
+    /**
+     * @var InterpreterInterface
+     */
+    protected $argumentInterpreter;
+
+    /**
+     * @var string
+     */
+    protected $argumentNodeName;
+
+    /**
+     * @param ArgumentParser $argumentParser
+     * @param InterpreterInterface $argumentInterpreter
+     * @param $argumentNodeName
+     */
+    public function __construct(
+        ArgumentParser $argumentParser,
+        InterpreterInterface $argumentInterpreter,
+        $argumentNodeName
+    ) {
+        $this->argumentParser = $argumentParser;
+        $this->argumentInterpreter = $argumentInterpreter;
+        $this->argumentNodeName = $argumentNodeName;
+    }
 
     /**
      * Convert XML to array.
@@ -60,15 +93,21 @@ class ConverterPages implements \Magento\Mtf\Config\ConverterInterface
 
         foreach ($elements as $element) {
             if ($element instanceof \DOMElement) {
-                $elementData = array_merge(
-                    $this->getAttributes($element), $this->getChildNodes($element)
-                );
+                if ($element->nodeName == $this->argumentNodeName) {
+                    $array = $this->argumentParser->parse($element);
+                    $result[$element->nodeName][$array['name']]['value'] = $this->argumentInterpreter->evaluate($array);
+                } else {
+                    $elementData = array_merge(
+                        $this->getAttributes($element),
+                        $this->getChildNodes($element)
+                    );
 
-                if (!empty($elementData)) {
-                    if ($element->hasAttribute(self::NAME_ATTRIBUTE)) {
-                        $result[$element->nodeName][$element->getAttribute(self::NAME_ATTRIBUTE)] = $elementData;
-                    } else {
-                        $result[$element->nodeName][] = $elementData;
+                    if (!empty($elementData)) {
+                        if ($element->hasAttribute(self::NAME_ATTRIBUTE)) {
+                            $result[$element->nodeName][$element->getAttribute(self::NAME_ATTRIBUTE)] = $elementData;
+                        } else {
+                            $result[$element->nodeName][] = $elementData;
+                        }
                     }
                 }
             } elseif ($element->nodeType == XML_TEXT_NODE && trim($element->nodeValue) != '') {

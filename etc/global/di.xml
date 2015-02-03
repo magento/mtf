@@ -39,6 +39,7 @@
     <preference for="Magento\Mtf\Config\ConverterInterface" type="Magento\Mtf\Config\Converter"/>
     <preference for="Magento\Mtf\Config\SchemaLocatorInterface" type="Magento\Mtf\Config\SchemaLocator"/>
     <preference for="Magento\Mtf\Config\ValidationStateInterface" type="Magento\Mtf\Config\ValidationState"/>
+    <preference for="Magento\Mtf\Data\Argument\InterpreterInterface" type="Magento\Mtf\Data\Argument\Interpreter\Composite"/>
     <type name="Magento\Mtf\Config\ValidationState">
         <arguments>
             <argument name="appMode" xsi:type="string">developer</argument>
@@ -141,7 +142,40 @@
             <argument name="configData" xsi:type="object">Magento\Mtf\Config\Page</argument>
         </arguments>
     </type>
-
+    <type name="Magento\Mtf\Config\ConverterPages">
+        <arguments>
+            <argument name="argumentParser" xsi:type="object">Magento\Mtf\ObjectManager\Config\Mapper\ArgumentParser</argument>
+            <argument name="argumentInterpreter" xsi:type="object">Magento\Mtf\Data\Argument\Interpreter\Composite</argument>
+            <argument name="argumentNodeName" xsi:type="string">data</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Mtf\Data\Argument\Interpreter\Composite">
+        <arguments>
+            <argument name="interpreters" xsi:type="array">
+                <item name="object" xsi:type="object">Magento\Mtf\Data\Argument\Interpreter\Object</item>
+                <item name="array" xsi:type="object">arrayArgumentInterpreterProxy</item>
+                <item name="boolean" xsi:type="object">Magento\Mtf\Data\Argument\Interpreter\Boolean</item>
+                <item name="number" xsi:type="object">Magento\Mtf\Data\Argument\Interpreter\Number</item>
+                <item name="string" xsi:type="object">Magento\Mtf\Data\Argument\Interpreter\String</item>
+                <item name="null" xsi:type="object">Magento\Mtf\Data\Argument\Interpreter\NullType</item>
+            </argument>
+            <argument name="discriminator" xsi:type="string">xsi:type</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Mtf\Data\Argument\Interpreter\ArrayType">
+        <arguments>
+            <argument name="itemInterpreter" xsi:type="object">Magento\Mtf\Data\Argument\Interpreter\Composite</argument>
+        </arguments>
+    </type>
+    <!--
+    Array item can be of any type just like an argument, including array type itself, which creates circular dependency.
+    Proxy is used to resolve the circular dependency, so that array items undergo the same interpretation as arguments.
+    -->
+    <virtualType name="arrayArgumentInterpreterProxy" type="Magento\Mtf\Data\Argument\InterpreterInterface\Proxy">
+        <arguments>
+            <argument name="instanceName" xsi:type="string">Magento\Mtf\Data\Argument\Interpreter\ArrayType</argument>
+        </arguments>
+    </virtualType>
     <virtualType name="Magento\Mtf\Config\TestRunner" type="Magento\Mtf\TestRunner\Config\Data">
         <arguments>
             <argument name="reader" xsi:type="object">Magento\Mtf\Config\Reader\TestRunner</argument>
