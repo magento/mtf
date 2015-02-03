@@ -103,7 +103,7 @@ class ConverterPages implements \Magento\Mtf\Config\ConverterInterface
                         $this->getChildNodes($element)
                     );
                 }
-                if (!empty($elementData)) {
+                if (!empty($elementData) || $element->hasAttribute(self::NAME_ATTRIBUTE)) {
                     if ($element->hasAttribute(self::NAME_ATTRIBUTE)) {
                         $result[$element->nodeName][$element->getAttribute(self::NAME_ATTRIBUTE)] = $elementData;
                     } else {
