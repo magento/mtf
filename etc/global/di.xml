@@ -142,9 +142,14 @@
             <argument name="configData" xsi:type="object">Magento\Mtf\Config\Page</argument>
         </arguments>
     </type>
+    <virtualType name="converterArgumentParser" type="Magento\Mtf\ObjectManager\Config\Mapper\ArgumentParser">
+        <arguments>
+            <argument name="argumentNodeName" xsi:type="string">data</argument>
+        </arguments>
+    </virtualType>
     <type name="Magento\Mtf\Config\ConverterPages">
         <arguments>
-            <argument name="argumentParser" xsi:type="object">Magento\Mtf\ObjectManager\Config\Mapper\ArgumentParser</argument>
+            <argument name="argumentParser" xsi:type="object">converterArgumentParser</argument>
             <argument name="argumentInterpreter" xsi:type="object">Magento\Mtf\Data\Argument\Interpreter\Composite</argument>
             <argument name="argumentNodeName" xsi:type="string">data</argument>
         </arguments>
@@ -206,7 +211,6 @@
             <argument name="reader" xsi:type="object">Magento\Mtf\Config\Reader\Page</argument>
         </arguments>
     </virtualType>
-
     <virtualType name="Magento\Mtf\Config\SchemaLocator\TestRunner" type="Magento\Mtf\Config\SchemaLocator">
         <arguments>
             <argument name="schemaPath" xsi:type="string">Magento/Mtf/TestRunner/etc/testRunner.xsd</argument>

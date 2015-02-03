@@ -38,6 +38,20 @@ class ArgumentParser
     private $converter;
 
     /**
+     * @var string
+     */
+    private $argumentNodeName;
+
+    /**
+     * @param string $argumentNodeName
+     */
+    public function __construct($argumentNodeName = 'argument')
+    {
+        $this->argumentNodeName = $argumentNodeName;
+    }
+
+
+    /**
      * Build and return array representation of DI argument node
      *
      * @param \DOMNode $argumentNode
@@ -46,7 +60,7 @@ class ArgumentParser
     public function parse(\DOMNode $argumentNode)
     {
         // Base path is specified to use more meaningful XPaths in config
-        return $this->getConverter()->convert($argumentNode, 'argument');
+        return $this->getConverter()->convert($argumentNode, $this->argumentNodeName);
     }
 
     /**
@@ -57,7 +71,10 @@ class ArgumentParser
     protected function getConverter()
     {
         if (!$this->converter) {
-            $arrayNodeConfig = new ArrayNodeConfig(new NodePathMatcher(), array('argument(/item)+' => 'name'));
+            $arrayNodeConfig = new ArrayNodeConfig(
+                new NodePathMatcher(),
+                [$this->argumentNodeName . '(/item)+' => 'name']
+            );
             $this->converter = new FlatConverter($arrayNodeConfig);
         }
         return $this->converter;
