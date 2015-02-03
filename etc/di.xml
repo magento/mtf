@@ -184,7 +184,7 @@
     </virtualType>
     <virtualType name="Magento\Mtf\Config\SchemaLocator\SystemEvent" type="Magento\Mtf\Config\SchemaLocator">
         <arguments>
-            <argument name="schemaPath" xsi:type="string">etc/global/events.xsd</argument>
+            <argument name="schemaPath" xsi:type="string">etc/events.xsd</argument>
         </arguments>
     </virtualType>
     <virtualType name="Magento\Mtf\Config\SchemaLocator\Fixture" type="Magento\Mtf\Config\SchemaLocator">
@@ -247,7 +247,7 @@
                 <item name="/config/preset" xsi:type="string">name</item>
             </argument>
             <argument name="fileName" xsi:type="string">events.xml</argument>
-            <argument name="defaultScope" xsi:type="string">etc/global</argument>
+            <argument name="defaultScope" xsi:type="string">etc</argument>
         </arguments>
     </virtualType>
     <virtualType name="Magento\Mtf\Config\Reader\Fixture" type="Magento\Mtf\Config\Reader\Filesystem">
@@ -279,7 +279,7 @@
     </virtualType>
     <virtualType name="Magento\Mtf\Config\SchemaLocator\Config" type="Magento\Mtf\Config\SchemaLocator">
         <arguments>
-            <argument name="schemaPath" xsi:type="string">etc/global/config.xsd</argument>
+            <argument name="schemaPath" xsi:type="string">etc/config.xsd</argument>
         </arguments>
     </virtualType>
     <virtualType name="Magento\Mtf\Config\Reader\Config" type="Magento\Mtf\Config\Reader\Filesystem">
@@ -291,7 +291,7 @@
                 <item name="/config" xsi:type="string">scope</item>
             </argument>
             <argument name="fileName" xsi:type="string">config.xml</argument>
-            <argument name="defaultScope" xsi:type="string">etc/global</argument>
+            <argument name="defaultScope" xsi:type="string">etc</argument>
         </arguments>
     </virtualType>
     <virtualType name="Magento\Mtf\Config\GlobalConfig" type="Magento\Mtf\Config\Data">
@@ -344,7 +344,7 @@
     </virtualType>
     <virtualType name="Magento\Mtf\Variation\Config\SchemaLocator" type="Magento\Mtf\Config\SchemaLocator">
         <arguments>
-            <argument name="schemaPath" xsi:type="string">etc/global/variations.xsd</argument>
+            <argument name="schemaPath" xsi:type="string">etc/variations.xsd</argument>
         </arguments>
     </virtualType>
     <virtualType name="Magento\Mtf\Variation\Config\Data" type="Magento\Mtf\Config\Data">
