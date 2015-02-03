@@ -94,20 +94,19 @@ class ConverterPages implements \Magento\Mtf\Config\ConverterInterface
         foreach ($elements as $element) {
             if ($element instanceof \DOMElement) {
                 if ($element->nodeName == $this->argumentNodeName) {
-                    $array = $this->argumentParser->parse($element);
-                    $result[$element->nodeName][$array['name']]['value'] = $this->argumentInterpreter->evaluate($array);
+                    $data = $this->argumentParser->parse($element);
+                    $elementData['value'] = $this->argumentInterpreter->evaluate($data);
                 } else {
                     $elementData = array_merge(
                         $this->getAttributes($element),
                         $this->getChildNodes($element)
                     );
-
-                    if (!empty($elementData)) {
-                        if ($element->hasAttribute(self::NAME_ATTRIBUTE)) {
-                            $result[$element->nodeName][$element->getAttribute(self::NAME_ATTRIBUTE)] = $elementData;
-                        } else {
-                            $result[$element->nodeName][] = $elementData;
-                        }
+                }
+                if (!empty($elementData)) {
+                    if ($element->hasAttribute(self::NAME_ATTRIBUTE)) {
+                        $result[$element->nodeName][$element->getAttribute(self::NAME_ATTRIBUTE)] = $elementData;
+                    } else {
+                        $result[$element->nodeName][] = $elementData;
                     }
                 }
             } elseif ($element->nodeType == XML_TEXT_NODE && trim($element->nodeValue) != '') {
