@@ -94,8 +94,9 @@ class ConverterPages implements \Magento\Mtf\Config\ConverterInterface
         foreach ($elements as $element) {
             if ($element instanceof \DOMElement) {
                 if ($element->nodeName == $this->argumentNodeName) {
-                    $data = $this->argumentParser->parse($element);
-                    $elementData['value'] = $this->argumentInterpreter->evaluate($data);
+                    $elementData['value'] = $this->argumentInterpreter->evaluate(
+                        $this->argumentParser->parse($element)
+                    );
                 } else {
                     $elementData = array_merge(
                         $this->getAttributes($element),
