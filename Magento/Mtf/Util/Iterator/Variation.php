@@ -124,9 +124,11 @@ class Variation extends AbstractIterator
             'testCase/' . end($classPath) . '/variation',
             ['Default' => []]
         );
-        if (isset($variations['data'])) {
-            $variations = array_replace($this->current, $this->current['data']);
-            unset($variations['data']);
+        foreach ($variations as $key => $variation) {
+            if (isset($variation['data'])) {
+                $variations[$key] = array_replace($variation, $variation['data']);
+                unset($variations[$key]['data']);
+            }
         }
         return $variations;
     }
