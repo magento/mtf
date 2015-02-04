@@ -21,28 +21,30 @@
  * @copyright   Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
-namespace Magento\Mtf\Util\Generate\Fixture;
+namespace Magento\Mtf\Repository\Reader;
 
 /**
- * Class FieldsProviderInterface
- *
- * @api
+ * Repository schema locator.
  */
-interface FieldsProviderInterface
+class SchemaLocator implements \Magento\Mtf\Config\SchemaLocatorInterface
 {
     /**
-     * Collect fields for given fixture
+     * Get path to merged config schema.
      *
-     * @param array $fixture
-     * @return array
+     * @return string
      */
-    public function getFields(array $fixture);
+    public function getSchema()
+    {
+        return realpath(__DIR__ . '/../etc/repository.xsd');
+    }
 
     /**
-     * Check connection to DB.
+     * Get path to pre file validation schema.
      *
-     * @return bool
+     * @return null
      */
-    public function checkConnection();
+    public function getPerFileSchema()
+    {
+        return null;
+    }
 }

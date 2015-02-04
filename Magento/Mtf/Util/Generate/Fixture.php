@@ -25,13 +25,15 @@
 namespace Magento\Mtf\Util\Generate;
 
 use Magento\Mtf\Util\Generate\Fixture\FieldsProviderInterface;
-use Magento\Mtf\Config\DataInterface;
-use Magento\Mtf\Util\XmlConverter;
 use Magento\Mtf\ObjectManagerInterface;
+use Magento\Mtf\Util\XmlConverter;
+use Magento\Mtf\Config\FileResolver\Module;
+use Magento\Mtf\Util\Generate\Fixture\Reader;
+use Magento\Mtf\Repository\Reader\Converter;
+use Magento\Mtf\Config\DataInterface;
 
 /**
- * Class Fixture
- * Fixture files generator
+ * Fixture files generator.
  *
  * @internal
  */
@@ -41,38 +43,57 @@ class Fixture extends AbstractGenerate
      * @var DataInterface
      */
     protected $configData;
-
+    
     /**
-     * @var FieldsProviderInterface
+     * File Resolver.
+     *
+     * @var Module
      */
-    protected $fieldsProvider;
+    protected $fileResolver;
 
     /**
-     * @var XmlConverter
+     * Converter xml data to array.
+     *
+     * @var XmlConverter.
      */
     protected $xmlConverter;
 
     /**
+     * Fixture reader.
+     *
+     * @var Reader
+     */
+    protected $fixtureReader;
+
+    /**
      * @constructor
      * @param ObjectManagerInterface $objectManager
-     * @param DataInterface $configData
+     * @param Module $fileResolver
      * @param FieldsProviderInterface $fieldsProvider
      * @param XmlConverter $xmlConverter
+     * @param Reader $fixtureReader
+     * @param Converter $repositoryConverter
      */
     public function __construct(
         ObjectManagerInterface $objectManager,
-        DataInterface $configData,
+        Module $fileResolver,
+//       DataInterface $configData,
         FieldsProviderInterface $fieldsProvider,
-        XmlConverter $xmlConverter
+        XmlConverter $xmlConverter,
+        Reader $fixtureReader,
+        Converter $repositoryConverter
     ) {
         parent::__construct($objectManager);
-        $this->configData = $configData;
+        $this->fileResolver = $fileResolver;
+//        $this->configData = $configData;
         $this->fieldsProvider = $fieldsProvider;
         $this->xmlConverter = $xmlConverter;
+        $this->fixtureReader = $fixtureReader;
+        $this->repositoryConverter = $repositoryConverter;
     }
 
     /**
-     * Launch Fixture generators
+     * Launch Fixture generators.
      *
      * @return void
      */
@@ -83,21 +104,38 @@ class Fixture extends AbstractGenerate
     }
 
     /**
-     * Generate Fixtures XML
+     * Generate Fixtures XML.
      *
      * @return void
      */
     protected function generateXml()
     {
         $this->cnt = 0;
-        foreach ($this->configData->get() as $name => $item) {
-            $this->generateFixtureXml($name, $item);
+        if (!$this->fieldsProvider->checkConnection()) {
+            \Magento\Mtf\Util\Generate\GenerateResult::addResult('Fixture XML Files', $this->cnt);
+            return;
+        }
+        // @TODO fix it
+//        foreach ($this->configData->get() as $name => $item) {
+//            $this->generateFixtureXml($name, $item);
+//        }
+        $configs = $this->fileResolver->get('fixture.xml', 'etc');
+        foreach ($configs as $config) {
+            $configXml = simplexml_load_string($config);
+
+            if ($configXml instanceof \SimpleXMLElement) {
+                $fixtures = $this->xmlConverter->convert($configXml);
+
+                foreach ($fixtures as $code => $fixture) {
+                    $this->generateFixtureXml($code, $fixture);
+                }
+            }
         }
         \Magento\Mtf\Util\Generate\GenerateResult::addResult('Fixture XML Files', $this->cnt);
     }
 
     /**
-     * Generate fixtures XML definition files
+     * Generate fixtures XML definition files.
      *
      * @param string $name
      * @param array $item
@@ -112,7 +150,6 @@ class Fixture extends AbstractGenerate
         $className = str_replace('_', '\\', $moduleName) . '\\Test\\Fixture\\' . $classShortName;
         $folderName = MTF_TESTS_PATH . $path;
         if (file_exists($folderName . '/' . $fileName)) {
-            //unlink($folderName . '/' . $fileName);
             return;
         }
         if (!is_dir($folderName)) {
@@ -122,7 +159,10 @@ class Fixture extends AbstractGenerate
         $content .= '<!--' . "\n";
         $content .= $this->getFilePhpDoc();
         $content .= '-->' . "\n";
-        $content .= '<fixture class="' . $className . '">' . "\n";
+        $content .= '<fixture class="' . $className . '"' . "\n";
+        $content .= '         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"' . "\n";
+        $content .= '         xsi:noNamespaceSchemaLocation="';
+        $content .= '../../../../../../vendor/magento/mtf/Magento/Mtf/Fixture/etc/fixture.xsd">' . "\n";
 
         $fields = $this->fieldsProvider->getFields($item);
         if (!empty($item['fields']) && is_array($item['fields'])) {
@@ -148,22 +188,25 @@ class Fixture extends AbstractGenerate
     }
 
     /**
-     * Generate Fixtures Classes
+     * Generate Fixtures Classes.
      *
      * @return void
      */
     protected function generateClasses()
     {
         $this->cnt = 0;
-        $items = $this->collectFixturesXml();
-        foreach ($items as $item) {
-            $this->generateClass($item);
+        $fixtures = $this->collectFixturesXml();
+
+        foreach ($fixtures as $fixtureData) {
+            $fixture = $this->mergeFixtureXml($fixtureData);
+            $this->generateClass($fixture);
         }
+
         \Magento\Mtf\Util\Generate\GenerateResult::addResult('Fixture Classes', $this->cnt);
     }
 
     /**
-     * Collect all fixtures .xml files
+     * Collect all fixtures .xml files.
      *
      * @return array
      */
@@ -171,8 +214,8 @@ class Fixture extends AbstractGenerate
     {
         $items = [];
         $path = MTF_TESTS_PATH . '*/*';
-        $modulesPages = glob($path);
-        foreach ($modulesPages as $modulePath) {
+        $modules = glob($path);
+        foreach ($modules as $modulePath) {
             $modulePathArray = explode('/', $modulePath);
             $module = array_pop($modulePathArray);
             $namespace = array_pop($modulePathArray);
@@ -189,8 +232,9 @@ class Fixture extends AbstractGenerate
                 /** @var $fileInfo \SplFileInfo */
                 $fileExt = $fileInfo->getExtension();
                 if ($fileExt === 'xml') {
-                    $items[] = [
-                        'file_name' => $fileInfo->getBasename('.xml'),
+                    $fileName = $fileInfo->getBasename('.xml');
+                    $items[$fileName][] = [
+                        'file_name' => $fileName,
                         'module_path' => str_replace('\\', '/', $modulePath),
                         'folder_path' => str_replace('\\', '/', $fileInfo->getPath()),
                         'real_path' => str_replace('\\', '/', $fileInfo->getRealPath()),
@@ -204,7 +248,25 @@ class Fixture extends AbstractGenerate
     }
 
     /**
-     * Generate fixture classes from XML sources
+     * Merge xml fixture data.
+     *
+     * @param array $fixtureData
+     * @return array
+     */
+    protected function mergeFixtureXml(array $fixtureData)
+    {
+        $config = [];
+
+        foreach ($fixtureData as $file) {
+            $config = array_replace_recursive($config, $this->fixtureReader->read($file['real_path']));
+        }
+
+        return $config;
+    }
+
+
+    /**
+     * Generate fixture classes from sources.
      *
      * @param array $item
      * @return void
@@ -213,124 +275,152 @@ class Fixture extends AbstractGenerate
      */
     protected function generateClass(array $item)
     {
-        $className = $item['file_name'];
-        $modulePath = $item['module_path'];
-        $folderPath = $item['folder_path'];
-        $realPath = $item['real_path'];
-        $namespace = $item['namespace'];
-        $module = $item['module'];
-        $contentXml = simplexml_load_file($realPath);
-        $mTime = filemtime($realPath);
-        $fields = [];
-        $fieldsXml = $contentXml->xpath('fields');
-        if ($fieldsXml) {
-            foreach ($fieldsXml[0] as $fieldXml) {
-                $name = $fieldXml->getName();
-                $fields[$name] = (array)$fieldXml;
-            }
-        }
-        $relativeFilePath = str_replace($modulePath . '/', '', $folderPath);
-        $ns = $namespace . '\\' . $module . '\\' . str_replace('/', '\\', $relativeFilePath);
+        $class = $item['class'];
+        $classNameArray = explode('\\', $class);
+        $className = end($classNameArray);
+        $fileName = $className . '.php';
+        $relativeFilePath = str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
+        $relativeFolderPath = str_replace(DIRECTORY_SEPARATOR . $fileName, '', $relativeFilePath);
+
+        $ns = implode("\\", array_slice($classNameArray, 0, -1));
+        $repository = isset($item['repository_class']) ? $item['repository_class'] : null;
+        $handlerInterface = isset($item['handler_interface']) ? $item['handler_interface'] : null;
+        $dataConfig = isset($item['data_config']) ? $item['data_config'] : null;
+        $fields = isset($item['fields']) ? $item['fields'] : [];
+        $defaultDataSet = isset($item['dataset']) ? $item['dataset'] : $this->getDefaultValues((array)$fields);
+        $extends = isset($item['extends']) ? $item['extends'] : '\Magento\Mtf\Fixture\InjectableFixture';
+        $phpDocVarString = "    /**\n     * @var string\n     */\n";
+        $phpDocVarArray = "    /**\n     * @var array\n     */\n";
+        $phpDocReturnMixed = "    /**\n     * @return mixed\n     */\n";
+
         $content = "<?php\n";
         $content .= $this->getFilePhpDoc();
         $content .= "namespace {$ns};\n\n";
-        $content .= "use Magento\Mtf\\Fixture\\InjectableFixture;\n\n";
         $content .= "/**\n";
         $content .= " * Class {$className}\n";
         $content .= " */\n";
-        $content .= "class {$className} extends InjectableFixture\n";
+        $content .= "class {$className} extends {$extends}\n";
         $content .= "{\n";
 
-        if (isset($contentXml->{'repository_class'})) {
-            $content .= "    /**\n";
-            $content .= "     * @var string\n";
-            $content .= "     */\n";
-            $content .= "    protected \$repositoryClass = '{$contentXml->{'repository_class'}}';\n\n";
+        if (isset($repository)) {
+            $content .= $phpDocVarString;
+            $content .= "    protected \$repositoryClass = '{$repository}';\n\n";
         }
-        if (isset($contentXml->{'handler_interface'})) {
-            $content .= "    /**\n";
-            $content .= "     * @var string\n";
-            $content .= "     */\n";
-            $content .= "    protected \$handlerInterface = '{$contentXml->{'handler_interface'}}';\n\n";
+        if (isset($handlerInterface)) {
+            $content .= $phpDocVarString;
+            $content .= "    protected \$handlerInterface = '{$handlerInterface}';\n\n";
         }
-
-        if (isset($contentXml->{'data_config'})) {
-            $dataConfig = $this->xmlConverter->convert($contentXml->{'data_config'}[0]);
+        if (isset($dataConfig)) {
             if (is_array($dataConfig)) {
+                $content .= $phpDocVarArray;
                 $content .= "    protected \$dataConfig = ";
                 $content .= $this->toArrayDefinition($dataConfig, '    ');
                 $content .= ";\n\n";
             }
         }
 
-        $content .= "    protected \$defaultDataSet = [\n";
-        foreach ($fields as $name => $field) {
-            if (empty($field['default_value'])) {
-                continue;
-            }
-            $content .= "        '{$name}' => null,\n";
-        }
+        $content .= $phpDocVarArray;
+        $content .= "    protected \$defaultDataSet = ";
+        $content .= $this->generateArray('', $defaultDataSet, '    ');
         $content .= "    ];\n";
         foreach ($fields as $name => $field) {
-            $content .= "\n    protected \${$name} = [\n";
+            $content .= "\n" . $phpDocVarArray;
+            $content .= "    protected \${$name} = [\n";
             foreach ($field as $key => $value) {
-                $content .= "        '{$key}' => '{$value}',\n";
+                if (is_array($value)) {
+                    $content .= "        '{$key}' => ";
+                    $content .= $this->generateArray('', $value, '        ');
+                    $content .= "        ],\n";
+                } else {
+                    $content .= "        '{$key}' => '{$value}',\n";
+                }
             }
             $content .= "    ];\n";
         }
         foreach ($fields as $name => $field) {
-            $content .= "\n" . '    public function get' . $this->toCamelCase($name) . '()' . "\n";
+            $content .= "\n" . $phpDocReturnMixed;
+            $content .= '    public function get' . $this->toCamelCase($name) . '()' . "\n";
             $content .= "    {\n";
             $content .= "        return \$this->getData('" . $name . "');" . "\n";
             $content .= "    }\n";
         }
         $content .= "}\n";
-        $newFilename = $className . '.php';
-        if (file_exists($folderPath . '/' . $newFilename)) {
-            $mmTime = filemtime($folderPath . '/' . $newFilename);
-            if ($mTime > $mmTime) {
-                return; // in order to not overwrite old fixtures
-                unlink($folderPath . '/' . $newFilename);
-            } else {
-                return;
-            }
+
+        $filePath = MTF_BP . '/generated/' . $relativeFilePath;
+        if (file_exists($filePath)) {
+            unlink($filePath);
         }
+
+        $folderPath = MTF_BP . '/generated/' . $relativeFolderPath;
         if (!is_dir($folderPath)) {
             mkdir($folderPath, 0777, true);
         }
-        file_put_contents($folderPath . '/' . $newFilename, $content);
-        touch($folderPath . '/' . $newFilename, $mTime);
+
+        file_put_contents($filePath, $content);
         $this->cnt++;
     }
 
     /**
+     * Get default values of all fields.
+     *
+     * @param array $fields
+     * @return array
+     */
+    protected function getDefaultValues(array $fields)
+    {
+        $data = [];
+        foreach ($fields as $name => $field) {
+            if (empty($field['default_value'])) {
+                continue;
+            }
+            $data[$name] = $field['default_value'];
+        }
+
+        return $data;
+    }
+
+    /**
+     * Convert array to xml string.
+     *
      * @param array $data
      * @param string $tab
-     * @param string $tag
+     * @param bool $fields
+     * @param string $nodeName
      * @return string
      */
-    protected function toXml(array $data, $tab, $tag = '')
+    protected function toXml(array $data, $tab, $fields = false, $nodeName = '')
     {
+        $nodeList = ['fields', 'entities', 'data_config'];
+        $entityType = $tab . "<entity name=\"%s\" />\n";
+        $arrayField = $tab . "<field name=\"%s\">\n%s" . $tab . "</field>\n";
+        $stringField = $tab . "<field name=\"%s\">%s</field>\n";
+        $array = $tab . "<%s>\n%s" . $tab . "</%s>\n";
+        $string = $tab . "<%s>%s</%s>\n";
         $xml = '';
         foreach ($data as $fieldName => $fieldValue) {
             if (is_array($fieldValue)) {
-                $fieldValue = $this->toXml($fieldValue, $tab . '    ');
-                $xml .= $tab . "<{$fieldName}>\n";
-                $xml .= $fieldValue;
-                $xml .= $tab . "</{$fieldName}>\n";
+                $fieldValue = $this->toXml($fieldValue, $tab . '    ', in_array($fieldName, $nodeList), $fieldName);
+                $fieldNameWithAttributes = $fieldName === 'default_value' ? $fieldName . ' xsi:type="array"' : $fieldName;
+                $xml .= $fields
+                    ? sprintf($arrayField, $fieldName, $fieldValue)
+                    : sprintf($array, $fieldNameWithAttributes, $fieldValue, $fieldName);
             } else {
-                $xml .= $tab . "<{$fieldName}>{$fieldValue}</{$fieldName}>\n";
+                $fieldNameWithAttributes = $fieldName === 'default_value' ? $fieldName . ' xsi:type="string"' : $fieldName;
+                if ($fields) {
+                    $xml .= $nodeName === 'entities'
+                        ? sprintf($entityType, $fieldValue)
+                        : sprintf($stringField, $fieldName, $fieldValue);
+                } else {
+                    $xml .= sprintf($string, $fieldNameWithAttributes, $fieldValue, $fieldName);
+                }
             }
-        }
-        if ($tag) {
-            $xml = $tab . "<{$tag}>\n"
-                . $xml . "\n"
-                . $tab . "</{$tag}>\n";
         }
         return $xml;
     }
 
     /**
+     * Convert array to string.
+     *
      * @param array $array
      * @param string $tab
      * @return string
@@ -348,5 +438,27 @@ class Fixture extends AbstractGenerate
         }
         $result .= $tab . "]";
         return $result;
+    }
+
+    /**
+     * Generate dataSet array.
+     *
+     * @param string $arrayKey
+     * @param array|string $params
+     * @param string $indent
+     * @param bool $flag
+     * @return string
+     */
+    protected function generateArray($arrayKey, $params, $indent = '', $flag = false)
+    {
+        $content = $arrayKey == '' ? "[\n" : $indent . "'{$arrayKey}' => [\n";
+        foreach ($params as $key => $value) {
+            $content .= is_array($value)
+                ? $this->generateArray($key, $value, $indent . '    ', true)
+                : ($indent . "    '{$key}' => '" . $value . "',\n");
+        }
+        $content .= !$flag ? '' : $indent . "],\n";
+
+        return $content;
     }
 }

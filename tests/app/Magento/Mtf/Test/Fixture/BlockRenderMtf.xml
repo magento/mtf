@@ -1,4 +1,5 @@
-<?php
+<?xml version="1.0" ?>
+<!--
 /**
  * Magento
  *
@@ -21,28 +22,22 @@
  * @copyright   Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
-namespace Magento\Mtf\Util\Generate\Fixture;
-
-/**
- * Class FieldsProviderInterface
- *
- * @api
- */
-interface FieldsProviderInterface
-{
-    /**
-     * Collect fields for given fixture
-     *
-     * @param array $fixture
-     * @return array
-     */
-    public function getFields(array $fixture);
-
-    /**
-     * Check connection to DB.
-     *
-     * @return bool
-     */
-    public function checkConnection();
-}
+-->
+<fixture class="Magento\Mtf\Test\Fixture\BlockRenderMtf"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="../../../../../../Magento/Mtf/Fixture/etc/fixture.xsd">
+    <extends>\Magento\BlockRender\Test\Fixture\BlockRender</extends>
+    <fields>
+        <field name="strategy">
+            <attribute_code>strategy</attribute_code>
+            <frontend_input>text</frontend_input>
+            <frontend_label>Strategy</frontend_label>
+            <is_required>1</is_required>
+            <default_value xsi:type="string">link text</default_value>
+            <source>Magento\Mtf\Test\Fixture\BlockRenderMtf\Strategy</source>
+        </field>
+        <field name="type">
+            <attribute_code>type</attribute_code>
+        </field>
+    </fields>
+</fixture>
