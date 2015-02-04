@@ -1,3 +1,6 @@
+* Unified Format for framework configuration
+* Unified Format for TestCase Variations, TestCase Scenario declarations
+
 1.0.0-rc.15
 =============
 * Fixed wrong screenshot is taken for test failure if tearDown() method is present
