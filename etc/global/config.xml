@@ -10,8 +10,7 @@
         <reopenBrowser>testCase</reopenBrowser>
         <backendLogin>admin</backendLogin>
         <backendPassword>123123q</backendPassword>
-        <appBackendUrl>http://magento.dev/backend/</appBackendUrl>
-        <backendLoginUrl>admin</backendLoginUrl>
+        <backendLoginUrl>admin/auth/login</backendLoginUrl>
     </application>
     <isolation>
         <resetUrlPath>dev/tests/mtf/isolation.php</resetUrlPath>
