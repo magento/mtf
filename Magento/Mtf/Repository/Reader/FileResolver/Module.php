@@ -22,27 +22,35 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Magento\Mtf\Util\Generate\Fixture;
+namespace Magento\Mtf\Repository\Reader\FileResolver;
+
+use Magento\Mtf\Util\Iterator\File;
 
 /**
- * Class FieldsProviderInterface
- *
- * @api
+ * Provides the list of configuration files collected through modules test folders.
  */
-interface FieldsProviderInterface
+class Module extends \Magento\Mtf\Config\FileResolver\Module
 {
     /**
-     * Collect fields for given fixture
+     * Retrieve the list of configuration files with given name that relate to specified scope.
      *
-     * @param array $fixture
-     * @return array
+     * @param string $filename
+     * @param string $scope
+     * @return File
      */
-    public function getFields(array $fixture);
-
-    /**
-     * Check connection to DB.
-     *
-     * @return bool
-     */
-    public function checkConnection();
+    public function get($filename, $scope)
+    {
+        $modulesPath = $this->moduleResolver->getModulesPath();
+        $paths = [];
+        foreach ($modulesPath as $modulePath) {
+            $files = glob($modulePath . '/Test/' . $scope . '/' . $filename);
+            foreach ($files as $file) {
+                if (is_readable($file)) {
+                    $paths[] = $file;
+                }
+            }
+        }
+        $iterator = new File($paths);
+        return $iterator;
+    }
 }

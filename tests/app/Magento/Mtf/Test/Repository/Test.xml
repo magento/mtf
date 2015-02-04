@@ -1,4 +1,5 @@
-<?php
+<?xml version="1.0" ?>
+<!--
 /**
  * Magento
  *
@@ -22,27 +23,16 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Magento\Mtf\Util\Generate\Fixture;
-
-/**
- * Class FieldsProviderInterface
- *
- * @api
- */
-interface FieldsProviderInterface
-{
-    /**
-     * Collect fields for given fixture
-     *
-     * @param array $fixture
-     * @return array
-     */
-    public function getFields(array $fixture);
-
-    /**
-     * Check connection to DB.
-     *
-     * @return bool
-     */
-    public function checkConnection();
-}
+-->
+<repository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="../../../../../../Magento/Mtf/Repository/etc/repository.xsd">
+    <storage class="Magento\Mtf\Test\Repository\Test">
+        <dataset name="dummy_currency_config">
+            <field path="path\to\currency" scope="dummy_currency" scope_id="1" xsi:type="array">
+                <item label="US Dollar" xsi:type="string">USD</item>
+                <item label="Ukrainian Hryvnia" xsi:type="string">UAH</item>
+            </field>
+            <field path="path\to\some\field" scope="dummy_scope_name" scope_id="1" label="US Dollar" xsi:type="string">USD</field>
+        </dataset>
+    </storage>
+</repository>

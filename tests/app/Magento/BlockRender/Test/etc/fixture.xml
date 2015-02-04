@@ -27,5 +27,14 @@
     <blockRender module="Magento_BlockRender">
         <type>blank</type>
         <entity_type>test_fixture</entity_type>
+        <fields>
+            <locator>
+                <attribute_code>locator</attribute_code>
+                <frontend_input>text</frontend_input>
+                <frontend_label>Locator</frontend_label>
+                <is_required>1</is_required>
+                <default_value>body</default_value>
+            </locator>
+        </fields>
     </blockRender>
 </fixture>

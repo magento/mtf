@@ -23,11 +23,21 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 -->
-<fixture class="Magento\BlockRender\Test\Fixture\BlockRender">
+<fixture class="Magento\BlockRender\Test\Fixture\BlockRender"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="../../../../../../Magento/Mtf/Fixture/etc/fixture.xsd">
     <module>Magento_BlockRender</module>
     <type>blank</type>
     <entity_type>test_fixture</entity_type>
-    <fields />
+    <fields>
+        <field name="locator">
+            <attribute_code>locator</attribute_code>
+            <frontend_input>text</frontend_input>
+            <frontend_label>Locator</frontend_label>
+            <is_required>1</is_required>
+            <default_value xsi:type="string">body</default_value>
+        </field>
+    </fields>
     <repository_class>Magento\BlockRender\Test\Repository\BlockRender</repository_class>
     <handler_interface>Magento\BlockRender\Test\Handler\BlockRender\BlockRenderInterface</handler_interface>
 </fixture>

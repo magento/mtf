@@ -26,16 +26,20 @@ namespace Magento\Mtf\Util\Generate;
 
 use Magento\Mtf\Util\Generate\Repository\CollectionProviderInterface;
 use Magento\Mtf\Config\DataInterface;
+use Magento\Mtf\Configuration\Reader;
+use Magento\Mtf\Repository\Reader\Reader as RepositoryReader;
 use Magento\Mtf\ObjectManagerInterface;
 
 /**
- * Class Repository
- * Repository files generator
- *
- * @internal
+ * Repository files generator.
  */
 class Repository extends AbstractGenerate
 {
+    /**
+     * @var Reader
+     */
+    protected $configReader;
+    
     /**
      * @var DataInterface
      */
@@ -47,50 +51,67 @@ class Repository extends AbstractGenerate
     protected $collectionProvider;
 
     /**
+     * Reader for all repository xml files.
+     *
+     * @var RepositoryReader
+     */
+    protected $repositoryReader;
+
+    /**
      * @constructor
      * @param ObjectManagerInterface $objectManager
-     * @param DataInterface $configData
+     * @param Reader $configReader
      * @param CollectionProviderInterface $collectionProvider
+     * @param RepositoryReader $repositoryReader
      */
     public function __construct(
         ObjectManagerInterface $objectManager,
-        DataInterface $configData,
-        CollectionProviderInterface $collectionProvider
+//        DataInterface $configData,
+        Reader $configReader,
+        CollectionProviderInterface $collectionProvider,
+        RepositoryReader $repositoryReader
     ) {
         parent::__construct($objectManager);
-        $this->configData = $configData;
+//        $this->configData = $configData;
         $this->collectionProvider = $collectionProvider;
+        $this->repositoryReader = $repositoryReader;
     }
 
     /**
-     * Launch Repository generators
+     * Launch Repository generators.
      *
      * @return void
      */
     public function launch()
     {
-        $this->generateXml();
+        // $this->generateXml(); @TODO: Fix issue MTA-1478
         $this->generateClasses();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Generate Repositories XML
+     * Generate Repositories XML.
      *
      * @return void
      */
     protected function generateXml()
     {
         $this->cnt = 0;
-        foreach ($this->configData->get() as $name => $item) {
+        if (!$this->collectionProvider->checkConnection()) {
+            \Magento\Mtf\Util\Generate\GenerateResult::addResult('Fixture XML Files', $this->cnt);
+            return;
+        }
+        $configuration = $this->configReader->read('fixture');
+        foreach ($configuration as $name => $item) {
+//        foreach ($this->configData->get() as $name => $item) {
             $this->generateRepositoryXml($name, $item);
         }
         \Magento\Mtf\Util\Generate\GenerateResult::addResult('Repository XML Files', $this->cnt);
     }
 
     /**
-     * Generate repository XML definition files
+     * Generate repository XML definition files.
      *
      * @param string $name
      * @param array $item
@@ -105,7 +126,6 @@ class Repository extends AbstractGenerate
         $className = str_replace('_', '\\', $moduleName) . '\\Test\\Repository\\' . $classShortName;
         $folderName = MTF_TESTS_PATH . $path;
         if (file_exists($folderName . '/' . $fileName)) {
-            //unlink($folderName . '/' . $fileName);
             return;
         }
         if (!is_dir($folderName)) {
@@ -115,13 +135,19 @@ class Repository extends AbstractGenerate
         $content .= '<!--' . "\n";
         $content .= $this->getFilePhpDoc();
         $content .= '-->' . "\n";
-
-        $content .= '<repository class="' . $className . '" >' . "\n";
+        $content .= "<repository xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n";
+        $content .= "            xsi:noNamespaceSchemaLocation=";
+        $content .= "\"../../../../../../vendor/magento/mtf/Magento/Mtf/Repository/etc/repository.xsd\">\n";
+        $content .= "    <storage class=\"{$className}\">\n";
         $collection = $this->collectionProvider->getCollection($item);
         foreach ($collection as $record) {
             $record['mtf_dataset_name'] = $this->buildDataSetName($item, $record);
             $content .= $this->toXml($record);
         }
+        if (count($collection) === 0) {
+            $content .= $this->getDummyXml();
+        }
+        $content .= "    </storage>\n";
         $content .= "</repository>\n";
 
         $fh = fopen($folderName . '/' . $fileName, 'w+');
@@ -149,13 +175,13 @@ class Repository extends AbstractGenerate
     }
 
     /**
-     * Convert array to XML format
+     * Convert array to XML format.
      *
      * @param array $data
      * @param string $tag
      * @return string
      */
-    protected function toXml(array $data, $tag = 'item')
+    protected function toXml(array $data, $tag = 'dataset')
     {
         $xml = '';
         foreach ($data as $fieldName => $fieldValue) {
@@ -166,138 +192,96 @@ class Repository extends AbstractGenerate
             if (!is_numeric($fieldValue)) {
                 $fieldValue = "<![CDATA[$fieldValue]]>";
             }
-
-            $xml .= "<{$fieldName}>{$fieldValue}</{$fieldName}>\n";
+            $xml .= "            ";
+            $xml .= "<field name=\"{$fieldName}\" xsi:type=\"string\">{$fieldValue}</field>\n";
         }
-        $xml = "<{$tag}>\n{$xml}</{$tag}>\n";
+        $xml = "        <{$tag} name=\"{$data['mtf_dataset_name']}\">\n{$xml}        </{$tag}>\n";
         return $xml;
     }
 
     /**
-     * Generate Repositories Classes
+     * Returns dummy dataSet xml.
+     *
+     * @return string
+     */
+    protected function getDummyXml()
+    {
+        $content = "        <dataset name=\"dummy_dataset\">\n";
+        $content .= "            <field name=\"dummy_simple_field\" xsi:type=\"string\">test_value</field>\n";
+        $content .= "            <field name=\"dummy_array_field\" xsi:type=\"array\">\n";
+        $content .= "                <item name=\"dummy_array_0\" xsi:type=\"string\">test_value_0</item>\n";
+        $content .= "                <item name=\"dummy_array_1\" xsi:type=\"string\">test_value_1</item>\n";
+        $content .= "            </field>\n";
+        $content .= "        </dataset>\n";
+
+        return $content;
+    }
+
+    /**
+     * Generate Repositories Classes.
      *
      * @return void
      */
     protected function generateClasses()
     {
         $this->cnt = 0;
-
-        $items = $this->collectRepositoriesXml();
-
-        foreach ($items as $item) {
-            $this->generateClass($item);
+        $items = $this->repositoryReader->read();
+        foreach ($items as $class => $item) {
+            $this->generateClass($item, $class);
         }
         \Magento\Mtf\Util\Generate\GenerateResult::addResult('Repository Classes', $this->cnt);
     }
 
     /**
-     * Collect all repository .xml files
+     * Generate repository classes from XML sources.
      *
-     * @return array
-     */
-    protected function collectRepositoriesXml()
-    {
-        $items = [];
-
-        $path = MTF_TESTS_PATH . '*/*';
-
-        $modulesPages = glob($path);
-
-        foreach ($modulesPages as $modulePath) {
-            $modulePathArray = explode('/', $modulePath);
-            $module = array_pop($modulePathArray);
-            $namespace = array_pop($modulePathArray);
-
-            if (!is_readable($modulePath . '/Test/Repository')) {
-                continue;
-            }
-
-            $dirIterator = new \RecursiveIteratorIterator(
-                new \RecursiveDirectoryIterator(
-                    $modulePath . '/Test/Repository',
-                    \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::FOLLOW_SYMLINKS
-                )
-            );
-            foreach ($dirIterator as $fileInfo) {
-                /** @var $fileInfo \SplFileInfo */
-                $fileExt = $fileInfo->getExtension();
-                if ($fileExt === 'xml') {
-                    $items[] = [
-                        'file_name' => $fileInfo->getBasename('.xml'),
-                        'module_path' => str_replace('\\', '/', $modulePath),
-                        'folder_path' => str_replace('\\', '/', $fileInfo->getPath()),
-                        'real_path' => str_replace('\\', '/', $fileInfo->getRealPath()),
-                        'module' => $module,
-                        'namespace' => $namespace
-                    ];
-                }
-            }
-        }
-
-        return $items;
-    }
-
-    /**
-     * Generate repository classes from XML sources
-     *
-     * @param array $item
+     * @param array $items
+     * @param string $class
      * @return void
      */
-    protected function generateClass(array $item)
+    protected function generateClass(array $items, $class)
     {
-        $className = $item['file_name'];
-        $modulePath = $item['module_path'];
-        $folderPath = $item['folder_path'];
-        $realPath = $item['real_path'];
-        $namespace = $item['namespace'];
-        $module = $item['module'];
+        $class = explode("\\", $class);
 
-        $contentXml = simplexml_load_file($realPath);
+        $className = end($class);
+        $namespace = $class[0];
+        $module = $class[1];
+        $modulePath = MTF_BP . '/generated/' . $namespace . "/" . $module;
+        $folderPath = $modulePath . '/Test/Repository';
+        $realPath = realpath($folderPath);
+
         $mTime = filemtime($realPath);
-
-        $items = [];
-        $itemsXml = $contentXml->xpath('item');
-        foreach ($itemsXml as $itemXml) {
-            $items[] = (array)$itemXml;
-        }
 
         $relativeFilePath = str_replace($modulePath . '/', '', $folderPath);
         $ns = $namespace . '\\' . $module . '\\' . str_replace('/', '\\', $relativeFilePath);
         $content = "<?php\n";
         $content .= $this->getFilePhpDoc();
         $content .= "namespace {$ns};\n\n";
-        $content .= "use Magento\Mtf\\Repository\\AbstractRepository;\n\n";
+        $content .= "use Magento\\Mtf\\Repository\\AbstractRepository;\n\n";
         $content .= "/**\n";
         $content .= " * Class {$className}\n";
         $content .= " */\n";
         $content .= "class {$className} extends AbstractRepository\n";
         $content .= "{\n";
 
+        $content .= "    /**\n     * @constructor\n";
+        $content .= "     * @param array \$defaultConfig\n";
+        $content .= "     * @param array \$defaultData\n     */\n";
         $content .= '    public function __construct(array $defaultConfig = [], array $defaultData = [])' . "\n";
         $content .= "    {\n";
-        foreach ($items as $item) {
-            $name = $item['mtf_dataset_name'];
-            $content .= "        \$this->_data['{$name}'] = [\n";
-            foreach ($item as $key => $value) {
-                $content .= "            '{$key}' => '" . addslashes($value) . "',\n";
-            }
-            $content .= "        ];\n\n";
+        end($items);
+        $lastItemName = key($items);
+        foreach ($items as $name => $item) {
+            $content .= "        \$this->_data['{$name}'] = ";
+            $content .= $this->generateArray('', $item, '        ');
+            $content .= "        ];\n";
+            $content .= $lastItemName === $name ? "" : "\n";
         }
         $content .= "    }\n";
 
         $content .= "}\n";
 
         $newFilename = $className . '.php';
-
-        if (file_exists($folderPath . '/' . $newFilename)) {
-            $mmTime = filemtime($folderPath . '/' . $newFilename);
-            if ($mTime > $mmTime) {
-                return; // in order to not overwrite old repositories
-                unlink($folderPath . '/' . $newFilename);
-            } else {
-                return;
-            }
-        }
 
         if (!is_dir($folderPath)) {
             mkdir($folderPath, 0777, true);
@@ -308,5 +292,27 @@ class Repository extends AbstractGenerate
         touch($folderPath . '/' . $newFilename, $mTime);
 
         $this->cnt++;
+    }
+
+    /**
+     * Generate dataSet array.
+     *
+     * @param string $arrayKey
+     * @param array $params
+     * @param string $indent
+     * @param bool $flag
+     * @return string
+     */
+    protected function generateArray($arrayKey, array $params, $indent = '', $flag = false)
+    {
+        $content = $arrayKey == '' ? "[\n" : $indent . "'{$arrayKey}' => [\n";
+        foreach ($params as $key => $value) {
+            $content .= is_array($value)
+                ? $this->generateArray($key, $value, $indent . '    ', true)
+                : ($indent . "    '{$key}' => '" . $value . "',\n");
+        }
+        $content .= !$flag ? '' : $indent . "],\n";
+
+        return $content;
     }
 }

@@ -24,8 +24,9 @@
 namespace Magento\Mtf\Config;
 
 /**
- * Class Converter
- * Convert Global configuration.
+ * Class Converter.
+ *
+ * Converts configuration data.
  */
 class ConverterPages implements \Magento\Mtf\Config\ConverterInterface
 {
@@ -35,18 +36,20 @@ class ConverterPages implements \Magento\Mtf\Config\ConverterInterface
     const NAME_ATTRIBUTE = 'name';
 
     /**
-     * Convert xml to array.
+     * Convert XML to array.
      *
      * @param \DOMDocument $source
      * @return array
      */
     public function convert($source)
     {
-        return $this->convertXml($source->documentElement->childNodes);
+        return $this->convertXml(
+            $source->documentElement->childNodes
+        );
     }
 
     /**
-     * Convert xml node to array or string recursive.
+     * Convert XML node to array or string recursive.
      *
      * @param mixed $elements
      * @return array
@@ -56,22 +59,20 @@ class ConverterPages implements \Magento\Mtf\Config\ConverterInterface
         $result = [];
 
         foreach ($elements as $element) {
-            if (!($element instanceof \DOMElement)) {
-                continue;
-            }
+            if ($element instanceof \DOMElement) {
+                $elementData = array_merge(
+                    $this->getAttributes($element), $this->getChildNodes($element)
+                );
 
-            $elementData = array_merge($this->getAttributes($element), $this->getChildNodes($element));
-
-            if (!$element->hasChildNodes() && $element->nodeType == XML_TEXT_NODE && trim($element->nodeValue) != '') {
-                $elementData['value'] = trim($element->nodeValue);
-            }
-
-            if (!empty($elementData)) {
-                if ($element->hasAttribute(self::NAME_ATTRIBUTE)) {
-                    $result[$element->nodeName][$element->getAttribute(self::NAME_ATTRIBUTE)] = $elementData;
-                } else {
-                    $result[$element->nodeName][] = $elementData;
+                if (!empty($elementData)) {
+                    if ($element->hasAttribute(self::NAME_ATTRIBUTE)) {
+                        $result[$element->nodeName][$element->getAttribute(self::NAME_ATTRIBUTE)] = $elementData;
+                    } else {
+                        $result[$element->nodeName][] = $elementData;
+                    }
                 }
+            } elseif ($element->nodeType == XML_TEXT_NODE && trim($element->nodeValue) != '') {
+                return ['value' => $element->nodeValue];
             }
         }
 
@@ -79,7 +80,7 @@ class ConverterPages implements \Magento\Mtf\Config\ConverterInterface
     }
 
     /**
-     * Get node attributes
+     * Get node attributes.
      *
      * @param \DOMElement $element
      * @return array
@@ -99,7 +100,7 @@ class ConverterPages implements \Magento\Mtf\Config\ConverterInterface
     }
 
     /**
-     * Get child nodes data
+     * Get child nodes data.
      *
      * @param \DOMElement $element
      * @return array
@@ -114,7 +115,7 @@ class ConverterPages implements \Magento\Mtf\Config\ConverterInterface
     }
 
     /**
-     * Cast nodeValue to int or double
+     * Cast nodeValue to int or double.
      *
      * @param $nodeValue
      * @return float|int

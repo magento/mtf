@@ -29,10 +29,7 @@ use Magento\Mtf\Config\FileResolverInterface;
 use Magento\Mtf\Util\ModuleResolver;
 
 /**
- * Class Module
- * Provides the list of configuration files collected through modules test folders
- *
- * @internal
+ * Provides the list of configuration files collected through modules test folders.
  */
 class Module implements FileResolverInterface
 {

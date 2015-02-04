@@ -1,5 +1,4 @@
-<?xml version="1.0" ?>
-<!--
+<?php
 /**
  * Magento
  *
@@ -22,6 +21,31 @@
  * @copyright   Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
--->
-<repository class="Magento\Mtf\Test\Repository\TestRepository">
-</repository>
+
+namespace Magento\Mtf\Fixture\InjectableFixture\Replacer;
+
+/**
+ * Replacing values schema locator.
+ */
+class SchemaLocator implements \Magento\Mtf\Config\SchemaLocatorInterface
+{
+    /**
+     * Return path to schema.
+     *
+     * @return string
+     */
+    public function getSchema()
+    {
+        return realpath(__DIR__ . '/../etc') . '/replace.xsd';
+    }
+
+    /**
+     * Get path to per file validation schema.
+     *
+     * @return null
+     */
+    public function getPerFileSchema()
+    {
+        return null;
+    }
+}

@@ -1,3 +1,13 @@
+* Unified Format for framework configuration
+* Unified Format for TestCase Variations, TestCase Scenario declarations
+
+1.0.0-rc.15
+=============
+* Fixed wrong screenshot is taken for test failure if tearDown() method is present
+* Implemented fixture and repository merger
+* Changed generators of fixtures and repositories
+* Updated setValue() method to trigger JS events
+
 1.0.0-rc.14
 =============
 * Magento vendor name is used as root MTF namespace
@@ -104,12 +114,12 @@
   * Running the Magento Test Framework (MTF)
   * Installing and Configuring the Magento Test Framework (MTF)
 * MTF Improvements
-  * Fixed Magento\Mtf\Fixture\InjectableFixture::__construct() method
-  * Moved __prepare() method call from __construct() to run() method in Magento\Mtf\Constraint\AbstractConstraint\Injectable class
-  * Added validations for Magento\Mtf\Block\Form class methods
-  * Updated return value for Magento\Mtf\Client\Driver\Selenium\Element\CheckboxElement::getValue() method
+  * Fixed Mtf\Fixture\InjectableFixture::__construct() method
+  * Moved __prepare() method call from __construct() to run() method in Mtf\Constraint\AbstractConstraint\Injectable class
+  * Added validations for Mtf\Block\Form class methods
+  * Updated return value for Mtf\Client\Driver\Selenium\Element\CheckboxElement::getValue() method
 * Fixed bugs:
-  * Fixed an issue in Magento\Mtf\ObjectManager\Factory with resolving arguments in __construct() during new instance creation
+  * Fixed an issue in Mtf\ObjectManager\Factory with resolving arguments in __construct() during new instance creation
 
 1.0.0-dev.1
 =============

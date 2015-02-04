@@ -76,6 +76,7 @@ class ObjectManagerFactory
         $argInterpreter = $this->createArgumentInterpreter(new BooleanUtils());
         $argumentMapper = new \Magento\Mtf\ObjectManager\Config\Mapper\Dom($argInterpreter);
 
+        $sharedInstances['Magento\Mtf\Data\Argument\InterpreterInterface'] = $argInterpreter;
         $sharedInstances['Magento\Mtf\ObjectManager\Config\Mapper\Dom'] = $argumentMapper;
         /** @var \Magento\Mtf\ObjectManager $objectManager */
         $objectManager = new $this->locatorClassName($factory, $diConfig, $sharedInstances);

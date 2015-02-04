@@ -22,29 +22,37 @@
  * @copyright   Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+
 -->
-<fixture class="Magento\Mtf\Test\Fixture\Test">
+<fixture class="Magento\Mtf\Test\Fixture\Test"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="../../../../../../Magento/Mtf/Fixture/etc/fixture.xsd">
+    <module>Magento_Mtf</module>
+    <type>blank</type>
+    <entity_type>test_fixture</entity_type>
     <fields>
-        <locator>
+        <field name="locator">
             <attribute_code>locator</attribute_code>
             <frontend_input>text</frontend_input>
             <frontend_label>Locator</frontend_label>
             <is_required>1</is_required>
-            <default_value>About</default_value>
-        </locator>
-        <strategy>
+            <default_value xsi:type="string">About</default_value>
+        </field>
+        <field name="strategy">
             <attribute_code>strategy</attribute_code>
             <frontend_input>text</frontend_input>
             <frontend_label>Strategy</frontend_label>
             <is_required>1</is_required>
-            <default_value>link text</default_value>
-            <fixture>Magento\Mtf\Test\Fixture\Test\Strategy</fixture>
-        </strategy>
-        <search>
+            <default_value xsi:type="string">link text</default_value>
+            <source>Magento\Mtf\Test\Fixture\BlockRenderMtf\Strategy</source>
+        </field>
+        <field name="search">
             <attribute_code>search</attribute_code>
-        </search>
-        <type>
+        </field>
+        <field name="type">
             <attribute_code>type</attribute_code>
-        </type>
+        </field>
     </fields>
+    <repository_class>Magento\Mtf\Test\Repository\Test</repository_class>
+    <handler_interface>Magento\Mtf\Test\Handler\Test\TestInterface</handler_interface>
 </fixture>

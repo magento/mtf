@@ -399,4 +399,5 @@
             <argument name="defaultScope" xsi:type="string">Page</argument>
         </arguments>
     </virtualType>
+    <type name="Mtf\Fixture\InjectableFixture\Replacer" shared="true" />
 </config>
