@@ -88,15 +88,7 @@ For more information about web browser support, see <a href="http://docs.seleniu
    <li><tt>symfony</tt> </li>
    <li><tt>autoload.php</tt> (file)</li></ul>
 
-4.	Run the page generator from `[your Magento install dir]/dev/tests/functional/utils/generate/page.php`
-
-	```
-	php utils/generate/page.php
-	```
-
-	The generator creates php classes for pages considering Magento modularity.
-
-5.	Run the generator from `[your Magento install dir]/dev/tests/functional/utils/generate/factory.php`
+4.	Run the generator from `[your Magento install dir]/dev/tests/functional/utils/generate.php`
 
 	```
 	php utils/generate/factory.php
@@ -112,18 +104,16 @@ This section discusses how to configure the MTF.
 
 ### Non-Firefox Browser Prerequisite
 
-If you run your tests using a web browser _other than_ Firefox, change the value of `browserName` in `[your Magento install dir]/dev/tests/functional/config/server.yml`. A sample follows:
+If you run your tests using a web browser _other than_ Firefox, add configuration for your browser to `[your Magento install dir]/dev/tests/functional/etc/config.xml`. A sample follows:
 
-```yml
-selenium:
-    browser: 'Google Chrome'
-    browserName: 'chrome'
-    host: 'localhost'
-    port: 4444
-    seleniumServerRequestsTimeout: 90
-    sessionStrategy: shared
-    desiredCapabilities:
-        platform: ANY
+```xml
+<server>
+	<item name="selenium" type="default" browser="Google Chrome" browserName="chrome" host="localhost" port="4444" seleniumServerRequestsTimeout="90" sessionStrategy="shared">
+		<desiredCapabilities>
+			<platform>ANY</platform>
+		</desiredCapabilities>
+	</item>
+</server>
 ```
 
 For more information about web browser support, see <a href="http://docs.seleniumhq.org/docs/01_introducing_selenium.jsp#supported-browsers-and-platforms" target="_blank">the Selenium documentation</a>.
@@ -132,61 +122,51 @@ For more information about web browser support, see <a href="http://docs.seleniu
 
 Specify your storefront and Magento Admin URLs in `phpunit.xml`:
 
-	```
-	<env name="app_frontend_url" value="http://localhost/magento2/index.php/"/>
-	<env name="app_backend_url" value="http://localhost/magento2/index.php/backend/"/>
-	```
+```xml
+<env name="app_frontend_url" value="http://localhost/magento2/index.php/"/>
+<env name="app_backend_url" value="http://localhost/magento2/index.php/backend/"/>
+```
 	
-## Configuration File Reference
+## Configuration Reference
 
-This section provides information about MTF configuration files. All files discussed in this section are located in `[your Magento install dir]/dev/tests/functional/config` and `[your Magento install dir]/dev/tests/functional/utils/config`
+This section provides information about MTF configuration sections. All sections discussed here are located in `[your Magento install dir]/dev/tests/functional/etc/config.xml`
 
 For more information, see:
 
-*	[application.yml](#applicationyml)
-*	[handler.yml](#handleryml)
-*	[isolation.yml](#isolationyml)
-*	[server.yml](#serveryml)
+*	[application](#application)
+*	[isolation](#isolationyml)
+*	[server](#serveryml)
 
-#### application.yml
-
-Sample:
-
-```yml
-reopen_browser_on: testCase # test|testCase
-backend_user_credentials:
-    login: 'admin'
-    password: '123123q'
-backend_login_url: admin/auth/login
-```
-
-*	`reopen_browser_on` defines whether a browser should be reopened before every test or before every test case. Default behavior is for browser to open before every test case.
-*	`backend_user_credentials` defines the Magento Admin administrator user name and password.
-*	`backend_login_url` defines the Magento Admin login URL.
-
-#### handler.yml 
-
-Responsible for specifying additional settings for different types of handlers. 
+#### application
 
 Sample:
 
-```yml
-ui:
-curl:
-direct:
+```xml
+<application>
+	<reopenBrowser>testCase</reopenBrowser>
+	<backendLogin>admin</backendLogin>
+	<backendPassword>123123q</backendPassword>
+	<backendLoginUrl>admin/auth/login</backendLoginUrl>
+</application>
 ```
 
-#### isolation.yml
+*	`reopenBrowser` defines whether a browser should be reopened before every test or before every test case. Default behavior is for browser to open before every test case.
+*	`backendLogin` and `backendPassword` defines the Magento Admin administrator user name and password.
+*	`backendLoginUrl` defines the Magento Admin login URL.
+
+#### isolation
 
 Responsible for specifying the isolation strategies for tests, cases, and suites. 
 
 Sample:
 
-```yml
-reset_url_path: dev/tests/mtf/isolation.php
-testSuite: none
-testCase: none
-test: none
+```xml
+<isolation>
+	<resetUrlPath>dev/tests/mtf/isolation.php</resetUrlPath>
+	<testSuite>before</testSuite>
+	<testCase>none</testCase>
+	<test>none</test>
+</isolation>
 ```
 
 Your _isolation strategy_ determines when a system should return to its initial state. Isolation strategy can apply to any scope; that is, to a test, case, or suite. There are four isolation strategies available in the MTF:
@@ -196,7 +176,7 @@ Your _isolation strategy_ determines when a system should return to its initial 
 *	`after`: Implies that the isolation script should be run after a test, case, or suite.
 *	`both`: Implies that the isolation script should be run both before and after a test, case, or suite.
 
-#### server.yml
+#### server
 
 Specify the Selenium web browser (if not Firefox) and other options. For a list of valid `browserName` values, see:
 
@@ -205,16 +185,14 @@ Specify the Selenium web browser (if not Firefox) and other options. For a list 
 
 Sample:
 
-```yml
-selenium:
-    browser: 'Google Chrome'
-    browserName: 'chrome'
-    host: 'localhost'
-    port: 4444
-    seleniumServerRequestsTimeout: 90
-    sessionStrategy: shared
-    desiredCapabilities:
-        platform: ANY
+```xml
+<server>
+	<item name="selenium" type="default" browser="Mozilla Firefox" browserName="firefox" host="localhost" port="4444" seleniumServerRequestsTimeout="90" sessionStrategy="shared">
+		<desiredCapabilities>
+			<platform>ANY</platform>
+		</desiredCapabilities>
+	</item>
+</server>
 ```
 
 ## Next Steps
