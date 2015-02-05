@@ -6,6 +6,14 @@
  */
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:redefine schemaLocation="../../Magento/Mtf/Data/etc/types.xsd">
+        <xs:complexType name="argumentType" mixed="false">
+            <xs:complexContent>
+                <xs:extension base="argumentType" />
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:redefine>
+
     <xs:element name="config">
         <xs:annotation>
             <xs:documentation>
@@ -43,7 +51,7 @@
     <xs:element name="variation">
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="data" maxOccurs="unbounded" minOccurs="0">
+                <xs:element name="data" type="argumentType" maxOccurs="unbounded" minOccurs="0">
                     <xs:annotation>
                         <xs:documentation>
                             An element that contains a single configuration data set of a test case variation.
@@ -69,16 +77,6 @@
             <xs:attribute type="xs:string" name="name" use="required"/>
             <xs:attribute type="xs:string" name="next" use="optional"/>
             <xs:attribute type="xs:string" name="prev" use="optional"/>
-        </xs:complexType>
-    </xs:element>
-    
-    <xs:element name="data">
-        <xs:complexType>
-            <xs:simpleContent>
-                <xs:extension base="xs:string">
-                    <xs:attribute type="xs:string" name="name" use="required"/>
-                </xs:extension>
-            </xs:simpleContent>
         </xs:complexType>
     </xs:element>
 </xs:schema>
