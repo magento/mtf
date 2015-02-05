@@ -1,4 +1,8 @@
 <?php
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
 namespace Magento\Mtf\Data\Argument\InterpreterInterface;
 
 /**
@@ -44,8 +48,8 @@ class Proxy implements \Magento\Mtf\Data\Argument\InterpreterInterface
     public function __construct(
         \Magento\Mtf\ObjectManagerInterface $objectManager,
         $instanceName = 'Magento\\Mtf\\Data\\Argument\\InterpreterInterface',
-        $shared = true)
-    {
+        $shared = true
+    ) {
         $this->objectManager = $objectManager;
         $this->instanceName = $instanceName;
         $this->isShared = $shared;
