@@ -25,25 +25,16 @@
 namespace Magento\Mtf\Client\Element;
 
 /**
- * Class StrictmultiselectElement
- * Class provides an ability to work with page element multiselect which select strict values
+ * Class provides an ability to work with page element multiselect which select strict values.
  *
  * @api
  */
 class StrictmultiselectElement extends MultiselectElement
 {
     /**
-     * Select Options by Label in Multiple Select
+     * Option locator by value.
      *
-     * @param string|array $values
-     * @return void
+     * @var string
      */
-    public function setValue($values)
-    {
-        $this->eventManager->dispatchEvent(['set_value'], [__METHOD__, $this->getAbsoluteSelector()]);
-        $this->deselectAll();
-        foreach ((array)$values as $value) {
-            parent::setValue($value);
-        }
-    }
+    protected $optionByValue = ".//option[text() = '%s']";
 }

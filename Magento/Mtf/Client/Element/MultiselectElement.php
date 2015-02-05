@@ -27,16 +27,15 @@ namespace Magento\Mtf\Client\Element;
 use Magento\Mtf\Client\Locator;
 
 /**
- * Class MultiselectElement
  * Class provides ability to work with page element multiselect
- * (Such as setting/getting value, clicking, drag-n-drop element, etc)
+ * (such as setting/getting value, clicking, drag-n-drop element, etc).
  *
  * @api
  */
 class MultiselectElement extends SelectElement
 {
     /**
-     * Get value of the selected option of the element
+     * Get value of the selected option of the element.
      *
      * @return array
      */
@@ -46,7 +45,7 @@ class MultiselectElement extends SelectElement
     }
 
     /**
-     * Get Selected Options Labels
+     * Get Selected Options Labels.
      *
      * @return array
      */
@@ -68,7 +67,7 @@ class MultiselectElement extends SelectElement
     }
 
     /**
-     * Select Options by Label in Multiple Select
+     * Select Options by Label in Multiple Select.
      *
      * @param string|array $values
      * @return void
@@ -81,8 +80,7 @@ class MultiselectElement extends SelectElement
         foreach ((array)$values as $value) {
             $matched = false;
 
-            $xpath = './/option[contains(normalize-space(.), ' . $this->escapeQuotes($value) . ')]';
-            $options = $this->getElements($xpath, Locator::SELECTOR_XPATH);
+            $options = $this->getElements(sprintf($this->optionByValue, $value), Locator::SELECTOR_XPATH);
 
             /** @var SimpleElement $option */
             foreach ($options as $option) {

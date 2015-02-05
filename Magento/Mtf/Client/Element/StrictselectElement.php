@@ -25,34 +25,23 @@
 namespace Magento\Mtf\Client\Element;
 
 /**
- * Class StrictselectElement
- * Class provides an ability to work with page element select which select strict values
+ * Class provides an ability to work with page element select which select strict values.
  *
  * @api
  */
 class StrictselectElement extends SelectElement
 {
     /**
-     * Set the value
+     * Option locator by value.
      *
-     * @param string|array $value
-     * @return void
+     * @var string
      */
-    public function setValue($value)
-    {
-        $this->eventManager->dispatchEvent(['set_value'], [__METHOD__, $this->getAbsoluteSelector()]);
-        parent::setValue($value);
-    }
+    protected $optionByValue = ".//option[text() = '%s']";
 
     /**
-     * Select value in dropdown which has option groups
+     * Option locator.
      *
-     * @param string $optionGroup
-     * @param string $value
-     * @return void
+     * @var string
      */
-    public function setOptionGroupValue($optionGroup, $value)
-    {
-        parent::setOptionGroupValue($optionGroup, $value);
-    }
+    protected $optionByIndex = './/option[%d]';
 }
