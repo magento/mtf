@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified">
+    <xs:element name="config" type="configType"/>
+    <xs:complexType name="fieldType" mixed="true">
+        <xs:sequence>
+            <xs:element type="itemType" name="item" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element name="default_value" minOccurs="0">
+                <xs:complexType mixed="true">
+                    <xs:sequence>
+                        <xs:element type="itemType" name="item" maxOccurs="unbounded" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+        <xs:attribute type="xs:string" name="backend_type" use="optional"/>
+        <xs:attribute type="xs:byte" name="is_required" use="optional"/>
+        <xs:attribute type="xs:string" name="input" use="optional"/>
+        <xs:attribute type="xs:string" name="group" use="optional"/>
+        <xs:attribute type="xs:string" name="source" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="itemType" mixed="true">
+        <xs:sequence>
+            <xs:element type="itemType" name="item" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="datasetType">
+        <xs:sequence>
+            <xs:element type="fieldType" name="field" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name"/>
+    </xs:complexType>
+    <xs:complexType name="data_configType">
+        <xs:sequence>
+            <xs:element type="itemType" name="item" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="default_valueType">
+        <xs:sequence>
+            <xs:element type="itemType" name="item" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="fixtureType">
+        <xs:sequence>
+            <xs:element type="datasetType" name="dataset"/>
+            <xs:element type="data_configType" name="data_config"/>
+            <xs:element type="fieldType" name="field" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="module"/>
+        <xs:attribute type="xs:string" name="type"/>
+        <xs:attribute type="xs:string" name="entity_type"/>
+        <xs:attribute type="xs:string" name="product_type"/>
+        <xs:attribute type="xs:string" name="collection"/>
+        <xs:attribute type="xs:string" name="identifier"/>
+        <xs:attribute type="xs:string" name="repository_class"/>
+        <xs:attribute type="xs:string" name="handler_interface"/>
+        <xs:attribute type="xs:string" name="class"/>
+    </xs:complexType>
+    <xs:complexType name="configType">
+        <xs:sequence>
+            <xs:element type="fixtureType" name="fixture"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>
