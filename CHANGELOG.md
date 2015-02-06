@@ -1,3 +1,5 @@
+* Fixed fatal error after create screenshot or report on Windows
+
 1.0.0-rc.17
 =============
 * Unified Format for pages configuration
