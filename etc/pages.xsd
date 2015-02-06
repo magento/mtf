@@ -28,7 +28,7 @@
     <xs:element name="page">
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="block" maxOccurs="unbounded" minOccurs="1">
+                <xs:element ref="block" maxOccurs="1" minOccurs="1">
                     <xs:annotation>
                         <xs:documentation>
                             An element that contains configuration data of a page block.
@@ -95,14 +95,14 @@
             <xs:attribute type="notEmptyType" name="locator">
                 <xs:annotation>
                     <xs:documentation>
-                        CSS or xPath locator of the block. For example, CSS selector "#maincontent".
+                        Locator of the block. For example, CSS selector "#maincontent".
                     </xs:documentation>
                 </xs:annotation>
             </xs:attribute>
             <xs:attribute type="strategyType" name="strategy">
                 <xs:annotation>
                     <xs:documentation>
-                        CSS or xPath strategy according to value of "locator" attribute.
+                        Strategy according to value of "locator" attribute.
                     </xs:documentation>
                 </xs:annotation>
             </xs:attribute>
@@ -128,14 +128,14 @@
             <xs:attribute type="notEmptyType" name="locator">
                 <xs:annotation>
                     <xs:documentation>
-                        CSS or xPath locator of the render. For example, CSS selector "#maincontent".
+                        Locator of the render. For example, CSS selector "#maincontent".
                     </xs:documentation>
                 </xs:annotation>
             </xs:attribute>
-            <xs:attribute type="notEmptyType" name="strategy">
+            <xs:attribute type="strategyType" name="strategy">
                 <xs:annotation>
                     <xs:documentation>
-                        CSS or xPath strategy according to value of "locator" attribute.
+                        Strategy according to value of "locator" attribute.
                     </xs:documentation>
                 </xs:annotation>
             </xs:attribute>
@@ -145,11 +145,6 @@
     <xs:simpleType name="strategyType">
         <xs:restriction base="xs:string">
             <xs:pattern value="css selector|xpath|id|name|class name|tag name|link text"/>
-        </xs:restriction>
-    </xs:simpleType>
-    <xs:simpleType name="areaType">
-        <xs:restriction base="xs:string">
-            <xs:pattern value="adminhtml|frontend"/>
         </xs:restriction>
     </xs:simpleType>
     <xs:simpleType name="notEmptyType">
