@@ -23,6 +23,9 @@
  */
 namespace Magento\Mtf\Config;
 
+use Magento\Mtf\ObjectManager\Config\Mapper\ArgumentParser;
+use Magento\Mtf\Data\Argument\InterpreterInterface;
+
 /**
  * Class Converter.
  *
@@ -34,6 +37,36 @@ class ConverterPages implements \Magento\Mtf\Config\ConverterInterface
      * Unique identifier of node.
      */
     const NAME_ATTRIBUTE = 'name';
+
+    /**
+     * @var ArgumentParser
+     */
+    protected $argumentParser;
+
+    /**
+     * @var InterpreterInterface
+     */
+    protected $argumentInterpreter;
+
+    /**
+     * @var string
+     */
+    protected $argumentNodeName;
+
+    /**
+     * @param ArgumentParser $argumentParser
+     * @param InterpreterInterface $argumentInterpreter
+     * @param $argumentNodeName
+     */
+    public function __construct(
+        ArgumentParser $argumentParser,
+        InterpreterInterface $argumentInterpreter,
+        $argumentNodeName
+    ) {
+        $this->argumentParser = $argumentParser;
+        $this->argumentInterpreter = $argumentInterpreter;
+        $this->argumentNodeName = $argumentNodeName;
+    }
 
     /**
      * Convert XML to array.
@@ -60,11 +93,17 @@ class ConverterPages implements \Magento\Mtf\Config\ConverterInterface
 
         foreach ($elements as $element) {
             if ($element instanceof \DOMElement) {
-                $elementData = array_merge(
-                    $this->getAttributes($element), $this->getChildNodes($element)
-                );
-
-                if (!empty($elementData)) {
+                if ($element->nodeName == $this->argumentNodeName) {
+                    $elementData['value'] = $this->argumentInterpreter->evaluate(
+                        $this->argumentParser->parse($element)
+                    );
+                } else {
+                    $elementData = array_merge(
+                        $this->getAttributes($element),
+                        $this->getChildNodes($element)
+                    );
+                }
+                if (!empty($elementData) || $element->hasAttribute(self::NAME_ATTRIBUTE)) {
                     if ($element->hasAttribute(self::NAME_ATTRIBUTE)) {
                         $result[$element->nodeName][$element->getAttribute(self::NAME_ATTRIBUTE)] = $elementData;
                     } else {
