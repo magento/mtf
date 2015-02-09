@@ -6,7 +6,7 @@
  */
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <xs:redefine schemaLocation="../../Magento/Mtf/Data/etc/types.xsd">
+    <xs:redefine schemaLocation="../Magento/Mtf/Data/etc/types.xsd">
         <xs:complexType name="argumentType" mixed="false">
             <xs:complexContent>
                 <xs:extension base="argumentType" />
