@@ -26,7 +26,6 @@ namespace Magento\Mtf;
 
 use Magento\Mtf\ObjectManager\Factory;
 use Magento\Mtf\Stdlib\BooleanUtils;
-use Magento\Mtf\System\Config as SystemConfig;
 use Magento\Mtf\ObjectManager as MagentoObjectManager;
 
 /**
@@ -59,18 +58,19 @@ class ObjectManagerFactory
      */
     public function create(array $sharedInstances = [])
     {
+        if (!defined('MTF_BP')) {
+            $basePath = str_replace('\\', '/', dirname(__DIR__));
+            define('MTF_BP', $basePath);
+        }
         if (!defined('MTF_TESTS_PATH')) {
             define('MTF_TESTS_PATH', MTF_BP . '/tests/app/');
         }
         if (!defined('MTF_STATES_PATH')) {
-            define('MTF_STATES_PATH', MTF_BP . '/Mtf/App/State/');
+            define('MTF_STATES_PATH', MTF_BP . '/Magento/Mtf/App/State/');
         }
 
         /** @var \Magento\Mtf\ObjectManager\Config $diConfig */
         $diConfig = new $this->configClassName();
-        $systemConfig = new SystemConfig();
-        $configuration = $systemConfig->getConfigParam();
-        $diConfig->extend((array)$configuration);
 
         $factory = new Factory($diConfig);
         $argInterpreter = $this->createArgumentInterpreter(new BooleanUtils());

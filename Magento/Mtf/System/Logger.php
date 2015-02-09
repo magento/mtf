@@ -22,6 +22,7 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 namespace Magento\Mtf\System;
+use Magento\Mtf\Config as MtfConfig;
 
 /**
  * Class for working with log directory and file
@@ -43,10 +44,10 @@ class Logger implements LoggerInterface
     /**
      * Constructor
      *
-     * @param Config $config
+     * @param MtfConfig $config
      * @param null $customLogDirectory
      */
-    public function __construct(\Magento\Mtf\System\Config $config, $customLogDirectory = null)
+    public function __construct(MtfConfig $config, $customLogDirectory = null)
     {
         $logDirectoryFallback = [
             $customLogDirectory,
@@ -122,7 +123,7 @@ class Logger implements LoggerInterface
      */
     protected function getRootPath()
     {
-        $rootPath = dirname(dirname(dirname(__DIR__)));
+        $rootPath = dirname(dirname(__DIR__));
         return str_replace('\\', '/', $rootPath);
     }
 

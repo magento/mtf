@@ -25,7 +25,7 @@
 namespace Magento\Mtf\Util\Generate;
 
 use Magento\Mtf\ObjectManagerInterface;
-use Magento\Mtf\Configuration\Reader;
+use Magento\Mtf\Config\DataInterface;
 
 /**
  * Class Constraint
@@ -36,22 +36,21 @@ use Magento\Mtf\Configuration\Reader;
 class Handler extends AbstractGenerate
 {
     /**
-     * @var Reader
+     * @var DataInterface
      */
-    protected $configReader;
+    protected $configData;
 
     /**
      * @constructor
      * @param ObjectManagerInterface $objectManager
-     * @param Reader $configReader
+     * @param DataInterface $configData
      */
     public function __construct(
         ObjectManagerInterface $objectManager,
-        Reader $configReader
+        DataInterface $configData
     ) {
         parent::__construct($objectManager);
-
-        $this->configReader = $configReader;
+        $this->configData = $configData;
     }
 
     /**
@@ -72,9 +71,7 @@ class Handler extends AbstractGenerate
     protected function generateHandlers()
     {
         $this->cnt = 0;
-
-        $configuration = $this->configReader->read('fixture');
-        foreach ($configuration as $name => $item) {
+        foreach ($this->configData->get() as $name => $item) {
             $this->generateInterface($name, $item);
             $this->generateCurl($name, $item);
             $this->generateUi($name, $item);

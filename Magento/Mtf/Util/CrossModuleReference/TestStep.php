@@ -43,16 +43,16 @@ class TestStep extends Common implements CheckerInterface
     protected $testStepCrossModuleMap = null;
 
     /**
-     * @var \Magento\Mtf\Config\Reader
+     * @var \Magento\Mtf\Config
      */
-    protected $scenarioConfigReader;
+    protected $config;
 
     /**
-     * @param \Magento\Mtf\Config\Reader $scenarioConfigReader
+     * @param \Magento\Mtf\Config $config
      */
-    public function __construct(\Magento\Mtf\Config\Reader $scenarioConfigReader)
+    public function __construct(\Magento\Mtf\Config $config)
     {
-        $this->scenarioConfigReader = $scenarioConfigReader;
+        $this->config = $config;
     }
 
     /**
@@ -87,7 +87,7 @@ class TestStep extends Common implements CheckerInterface
      */
     protected function initialize()
     {
-        $scenarioConfig = $this->scenarioConfigReader->read('etc');
+        $scenarioConfig = $this->config->getParameter('scenario');
         if (empty($scenarioConfig) || empty($scenarioConfig['scenarios'])) {
             $this->testStepCrossModuleMap = [];
             return;

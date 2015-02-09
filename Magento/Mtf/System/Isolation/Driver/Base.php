@@ -25,7 +25,7 @@
 namespace Magento\Mtf\System\Isolation\Driver;
 
 use Magento\Mtf\System\Isolation\Driver;
-use Magento\Mtf\System\Config;
+use Magento\Mtf\Config; // Magento\Mtf\SystemConfig
 
 /**
  * Class Base
@@ -49,8 +49,8 @@ class Base implements Driver
      */
     public function __construct()
     {
-        $config = new Config();
-        $this->_resetUrl = $_ENV['app_frontend_url'] . $config->getConfigParam('isolation/reset_url_path');
+        $config = \Magento\Mtf\ObjectManager::getInstance()->get('Magento\Mtf\Config\GlobalConfig');
+        $this->_resetUrl = $_ENV['app_frontend_url'] . $config->get('isolation/reset_url_path');
     }
 
     /**

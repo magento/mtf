@@ -25,7 +25,7 @@
 namespace Magento\Mtf\Fixture;
 
 use Magento\Mtf\Repository\AbstractRepository;
-use Magento\Mtf\System\Config;
+use Magento\Mtf\Config; // Magento\Mtf\SystemConfig
 
 /**
  * Class DataFixture

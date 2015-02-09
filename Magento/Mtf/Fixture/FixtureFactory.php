@@ -24,16 +24,12 @@
 
 namespace Magento\Mtf\Fixture;
 
-use Magento\Mtf\Factory\AbstractFactory;
-use Magento\Mtf\Configuration\Reader;
-use Magento\Mtf\ObjectManager;
-
 /**
  * Factory for Fixtures
  *
  * @api
  */
-class FixtureFactory extends AbstractFactory
+class FixtureFactory extends \Magento\Mtf\Factory\AbstractFactory
 {
     /**
      * Fixtures definition array
@@ -51,15 +47,15 @@ class FixtureFactory extends AbstractFactory
 
     /**
      * @constructor
-     * @param ObjectManager $objectManager
-     * @param Reader $fixtureReader
+     * @param \Magento\Mtf\ObjectManager $objectManager
+     * @param \Magento\Mtf\Config\DataInterface $configData
      */
     public function __construct(
-        ObjectManager $objectManager,
-        Reader $fixtureReader
+        \Magento\Mtf\ObjectManager $objectManager,
+        \Magento\Mtf\Config\DataInterface $configData
     ) {
         parent::__construct($objectManager);
-        $this->configuration = $fixtureReader->read('fixture');
+        $this->configuration = $configData->get();
     }
 
     /**

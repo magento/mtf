@@ -24,7 +24,7 @@
 
 namespace Magento\Mtf\Handler;
 
-use Magento\Mtf\System\Config;
+use Magento\Mtf\Config; // Magento\Mtf\SystemConfig
 
 /**
  * Class Direct

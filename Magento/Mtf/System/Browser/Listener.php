@@ -26,14 +26,14 @@ namespace Magento\Mtf\System\Browser;
 
 use Exception;
 use Magento\Mtf\Factory\Factory;
-use Magento\Mtf\System\Config;
+use Magento\Mtf\Config\Data;
 use PHPUnit_Framework_AssertionFailedError;
 use PHPUnit_Framework_Test;
 use PHPUnit_Framework_TestSuite;
 
 /**
  * Class Listener.
- * This listener provides strategy of reopening browser according reopen_browser_on config.
+ * This listener provides strategy of reopening browser according reopenBrowser config.
  *
  * @internal
  */
@@ -53,14 +53,16 @@ class Listener implements \PHPUnit_Framework_TestListener
     protected $_scope;
 
     /**
-     * @param Config $configuration
+     * @param Data $configuration
      */
-    public function __construct(Config $configuration = null)
+    public function __construct(Data $configuration = null)
     {
         if (!isset($configuration)) {
-            $configuration = new Config();
+            $configuration = \Magento\Mtf\ObjectManagerFactory::getObjectManager()
+                ->getInstance()
+                ->get('Magento\Mtf\Config\GlobalConfig');
         }
-        $this->_scope = $configuration->getConfigParam('application/reopen_browser_on') ? : static::SCOPE_TEST_CASE;
+        $this->_scope = $configuration->get('application/reopenBrowser') ? : static::SCOPE_TEST_CASE;
     }
 
     /**

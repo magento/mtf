@@ -28,7 +28,7 @@ use Magento\Mtf\Block\BlockFactory;
 use Magento\Mtf\Block\BlockInterface;
 use Magento\Mtf\Fixture\FixtureInterface;
 use Magento\Mtf\Client\BrowserInterface;
-use Magento\Mtf\System\Config;
+use Magento\Mtf\Config\DataInterface;
 
 /**
  * Class Page
@@ -61,9 +61,9 @@ class Page implements PageInterface
     /**
      * Configuration instance
      *
-     * @var Config
+     * @var DataInterface
      */
-    protected $_configuration;
+    protected $_configData;
 
     /**
      * Page blocks definitions array
@@ -91,13 +91,17 @@ class Page implements PageInterface
      * Set configuration instance, client browser and call _init method
      *
      * @constructor
-     * @param Config $configuration
+     * @param DataInterface $configData
      * @param BrowserInterface $browser
      * @param BlockFactory $blockFactory
      */
-    public function __construct(Config $configuration, BrowserInterface $browser, BlockFactory $blockFactory)
+    public function __construct(
+        DataInterface $configData,
+        BrowserInterface $browser,
+        BlockFactory $blockFactory
+    )
     {
-        $this->_configuration = $configuration;
+        $this->_configuData = $configData;
         $this->_browser = $browser;
         $this->_blockFactory = $blockFactory;
 

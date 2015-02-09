@@ -37,4 +37,12 @@ interface ReaderInterface
      * @return array
      */
     public function read($scope = null);
+
+    /**
+     * Set name of the config file
+     *
+     * @param string $fileName
+     * @return void
+     */
+    public function setFileName($fileName);
 }

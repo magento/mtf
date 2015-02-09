@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="config" type="configType">
+        <xs:annotation>
+            <xs:documentation>
+                The root element for configuration data.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:unique name="uniqueScenarioType">
+            <xs:annotation>
+                <xs:documentation>
+                    Scenario name must be unique.
+                </xs:documentation>
+            </xs:annotation>
+            <xs:selector xpath="scenario" />
+            <xs:field xpath="@name" />
+        </xs:unique>
+    </xs:element>
+
+    <xs:complexType name="stepType" mixed="true">
+        <xs:sequence>
+            <xs:element type="itemType" name="item" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        An element that contains configuration data of a step's item.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name" use="required"/>
+        <xs:attribute type="xs:string" name="module" use="required"/>
+        <xs:attribute type="xs:string" name="next" use="optional"/>
+        <xs:attribute type="xs:string" name="prev" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="scenarioType">
+        <xs:sequence>
+            <xs:element type="stepType" name="step" maxOccurs="unbounded" minOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        An element that contains configuration data of a scenario's step.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+        <xs:attribute type="xs:string" name="firstStep" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="itemType">
+        <xs:sequence>
+            <xs:element type="itemType" name="item" maxOccurs="unbounded" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        An element that contains configuration data of an item's item.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name" use="required"/>
+        <xs:attribute type="xs:string" name="value" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="configType">
+        <xs:sequence>
+            <xs:element type="scenarioType" name="scenario" maxOccurs="unbounded" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        An element that contains configuration data of a scenario.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

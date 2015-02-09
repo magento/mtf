@@ -25,7 +25,7 @@
 namespace Magento\Mtf\System\Isolation;
 
 use Magento\Mtf\System\Isolation\Driver;
-use Magento\Mtf\System\Config;
+use Magento\Mtf\Config; // Magento\Mtf\SystemConfig
 
 /**
  * Class Listener
@@ -94,18 +94,20 @@ class Listener implements \PHPUnit_Framework_TestListener
 
     /**
      * @param \Magento\Mtf\System\Isolation\Driver $driver
-     * @param null|\Magento\Mtf\System\Config $configuration
+     * @param null|Config $configuration
      */
     public function __construct(Driver $driver, $configuration = null)
     {
         if (!isset($configuration)) {
-            $configuration = new Config();
+            $configuration = $configuration = \Magento\Mtf\ObjectManagerFactory::getObjectManager()
+                ->getInstance()
+                ->get('Magento\Mtf\Config\GlobalConfig');
         }
         $this->_driver = $driver;
         $this->_lastDefaultModes = [
-            self::SCOPE_TEST_SUITE => $configuration->getConfigParam('isolation/' . self::SCOPE_TEST_SUITE),
-            self::SCOPE_TEST_CASE => $configuration->getConfigParam('isolation/' . self::SCOPE_TEST_CASE),
-            self::SCOPE_TEST => $configuration->getConfigParam('isolation/' . self::SCOPE_TEST),
+            self::SCOPE_TEST_SUITE => $configuration->get('isolation/' . self::SCOPE_TEST_SUITE),
+            self::SCOPE_TEST_CASE => $configuration->get('isolation/' . self::SCOPE_TEST_CASE),
+            self::SCOPE_TEST => $configuration->get('isolation/' . self::SCOPE_TEST),
         ];
     }
 

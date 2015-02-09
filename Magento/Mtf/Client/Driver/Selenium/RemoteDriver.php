@@ -24,7 +24,7 @@
 
 namespace Magento\Mtf\Client\Driver\Selenium;
 
-use Magento\Mtf\System\Config;
+use Magento\Mtf\Config;
 
 /**
  * Class RemoteDriver
@@ -44,11 +44,11 @@ class RemoteDriver extends \PHPUnit_Extensions_Selenium2TestCase
     /**
      * Constructor
      *
-     * @param Config $config
+     * @param \Magento\Mtf\Config\Data $config
      */
-    public function __construct(Config $config)
+    public function __construct(\Magento\Mtf\Config\Data $config)
     {
-        $this->timeout = $config->getConfigParam('server/selenium/seleniumServerRequestsTimeout', 10) * 1000;
+        $this->timeout = $config->get('server/selenium/seleniumServerRequestsTimeout', 10) * 1000;
     }
 
     /**

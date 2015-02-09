@@ -20,8 +20,8 @@
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magentocommerce.com for more information.
  *
- * @copyright   Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
- * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 namespace Magento\Mtf\Config;
 
@@ -35,49 +35,24 @@ class Data implements \Magento\Mtf\Config\DataInterface
      *
      * @var \Magento\Mtf\Config\ReaderInterface
      */
-    protected $_reader;
-
-    /**
-     * Configuration cache model
-     *
-     * @var \Magento\Mtf\Config\CacheInterface
-     */
-    protected $_cache;
-
-    /**
-     * Cache tag
-     *
-     * @var string
-     */
-    protected $_cacheId;
+    protected $reader;
 
     /**
      * Config data
      *
      * @var array
      */
-    protected $_data = array();
+    protected $data = [];
 
     /**
      * Constructor
      *
      * @param \Magento\Mtf\Config\ReaderInterface $reader
-     * @param \Magento\Mtf\Config\CacheInterface $cache
-     * @param string $cacheId
      */
-    public function __construct(
-        \Magento\Mtf\Config\ReaderInterface $reader,
-        \Magento\Mtf\Config\CacheInterface $cache,
-        $cacheId
-    ) {
-        $data = $cache->load($cacheId);
-        if (false === $data) {
-            $data = $reader->read();
-            $cache->save(serialize($data), $cacheId);
-        } else {
-            $data = unserialize($data);
-        }
-        $this->merge($data);
+    public function __construct(\Magento\Mtf\Config\ReaderInterface $reader)
+    {
+        $this->reader = $reader;
+        $this->load();
     }
 
     /**
@@ -88,7 +63,7 @@ class Data implements \Magento\Mtf\Config\DataInterface
      */
     public function merge(array $config)
     {
-        $this->_data = array_replace_recursive($this->_data, $config);
+        $this->data = array_replace_recursive($this->data, $config);
     }
 
     /**
@@ -101,10 +76,10 @@ class Data implements \Magento\Mtf\Config\DataInterface
     public function get($path = null, $default = null)
     {
         if ($path === null) {
-            return $this->_data;
+            return $this->data;
         }
         $keys = explode('/', $path);
-        $data = $this->_data;
+        $data = $this->data;
         foreach ($keys as $key) {
             if (is_array($data) && array_key_exists($key, $data)) {
                 $data = $data[$key];
@@ -113,5 +88,31 @@ class Data implements \Magento\Mtf\Config\DataInterface
             }
         }
         return $data;
+    }
+
+    /**
+     * Set name of the config file
+     *
+     * @param string $fileName
+     * @return self
+     */
+    public function setFileName($fileName)
+    {
+        if (!is_null($fileName)) {
+            $this->reader->setFileName($fileName);
+        }
+        return $this;
+    }
+
+    /**
+     * Load config data
+     *
+     * @param string|null $scope
+     */
+    public function load($scope = null)
+    {
+        $this->merge(
+            $this->reader->read($scope)
+        );
     }
 }

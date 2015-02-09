@@ -26,7 +26,7 @@ namespace Magento\Mtf\Fixture;
 
 use Magento\Mtf\Handler\HandlerFactory;
 use Magento\Mtf\Repository\RepositoryFactory;
-use Magento\Mtf\System\Config;
+use Magento\Mtf\Config; // Magento\Mtf\SystemConfig
 use Magento\Mtf\System\Event\EventManagerInterface;
 use Magento\Mtf\Fixture\InjectableFixture\Replacer;
 

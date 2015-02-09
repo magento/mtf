@@ -39,7 +39,7 @@ class RemoteDriverFactory
      *
      * @return \Magento\Mtf\Client\Driver\Selenium\RemoteDriver
      */
-    public function crate()
+    public function create()
     {
         return $this->objectManager->create(static::CLASS_NAME);
     }

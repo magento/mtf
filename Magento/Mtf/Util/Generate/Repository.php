@@ -25,6 +25,7 @@
 namespace Magento\Mtf\Util\Generate;
 
 use Magento\Mtf\Util\Generate\Repository\CollectionProviderInterface;
+use Magento\Mtf\Config\DataInterface;
 use Magento\Mtf\Configuration\Reader;
 use Magento\Mtf\Repository\Reader\Reader as RepositoryReader;
 use Magento\Mtf\ObjectManagerInterface;
@@ -38,6 +39,11 @@ class Repository extends AbstractGenerate
      * @var Reader
      */
     protected $configReader;
+    
+    /**
+     * @var DataInterface
+     */
+    protected $configData;
 
     /**
      * @var CollectionProviderInterface
@@ -60,12 +66,13 @@ class Repository extends AbstractGenerate
      */
     public function __construct(
         ObjectManagerInterface $objectManager,
+//        DataInterface $configData,
         Reader $configReader,
         CollectionProviderInterface $collectionProvider,
         RepositoryReader $repositoryReader
     ) {
         parent::__construct($objectManager);
-        $this->configReader = $configReader;
+//        $this->configData = $configData;
         $this->collectionProvider = $collectionProvider;
         $this->repositoryReader = $repositoryReader;
     }
@@ -97,6 +104,7 @@ class Repository extends AbstractGenerate
         }
         $configuration = $this->configReader->read('fixture');
         foreach ($configuration as $name => $item) {
+//        foreach ($this->configData->get() as $name => $item) {
             $this->generateRepositoryXml($name, $item);
         }
         \Magento\Mtf\Util\Generate\GenerateResult::addResult('Repository XML Files', $this->cnt);

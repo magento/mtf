@@ -143,6 +143,16 @@ class Filesystem implements \Magento\Mtf\Config\ReaderInterface
     }
 
     /**
+     * Set name of the config file
+     *
+     * @param string $fileName
+     */
+    public function setFileName($fileName)
+    {
+        $this->_fileName = $fileName;
+    }
+
+    /**
      * Read configuration files
      *
      * @param array $fileList

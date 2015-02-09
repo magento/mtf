@@ -8,7 +8,7 @@
 namespace Magento\Mtf\Client\Driver\Facebook;
 
 use Magento\Mtf\ObjectManager;
-use Magento\Mtf\System\Config;
+use Magento\Mtf\Config\Data;
 use Magento\Mtf\System\Event\EventManagerInterface;
 
 /**
@@ -63,11 +63,11 @@ final class RemoteDriver extends \RemoteWebDriver
     /**
      * Constructor
      *
-     * @param Config $config
+     * @param Data $config
      * @param EventManagerInterface $eventManager
      * @param ObjectManager $objectManager
      */
-    public function __construct(Config $config, EventManagerInterface $eventManager, ObjectManager $objectManager)
+    public function __construct(Data $config, EventManagerInterface $eventManager, ObjectManager $objectManager)
     {
         $this->eventManager = $eventManager;
         $this->objectManager = $objectManager;
@@ -75,11 +75,11 @@ final class RemoteDriver extends \RemoteWebDriver
         $url = strtr(
             static::URL_TEMPLATE,
             [
-                '{host}' => $config->getConfigParam(
+                '{host}' => $config->get(
                     'server/selenium/host',
                     'localhost'
                 ),
-                '{port}' => $config->getConfigParam(
+                '{port}' => $config->get(
                     'server/selenium/port',
                     4444
                 )
@@ -88,13 +88,13 @@ final class RemoteDriver extends \RemoteWebDriver
         $this->url = rtrim($url, '/');
 
         $this->desiredCapabilities = $this->getDesiredCapabilities(
-            $config->getConfigParam('server/selenium/browserName')
+            $config->get('server/selenium/browserName')
         );
         if ($this->desiredCapabilities instanceof \DesiredCapabilities) {
             $this->desiredCapabilities = $this->desiredCapabilities->toArray();
         }
 
-        $this->connectionTimeoutInMs = $config->getConfigParam(
+        $this->connectionTimeoutInMs = $config->get(
             'server/selenium/seleniumServerRequestsTimeout',
             static::DEFAULT_CONNECTION_TIMEOUT
         );

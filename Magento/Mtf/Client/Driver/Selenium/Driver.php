@@ -7,7 +7,7 @@
  */
 namespace Magento\Mtf\Client\Driver\Selenium;
 
-use Magento\Mtf\System\Config;
+use Magento\Mtf\Config\Data;
 use Magento\Mtf\ObjectManager;
 use Magento\Mtf\Client\Locator;
 use Magento\Mtf\Client\DriverInterface;
@@ -32,7 +32,7 @@ class Driver implements DriverInterface
     /**
      * Driver configuration
      *
-     * @var Config
+     * @var Data
      */
     protected $configuration;
 
@@ -56,11 +56,11 @@ class Driver implements DriverInterface
     /**
      * Constructor
      *
-     * @param Config $configuration
+     * @param Data $configuration
      * @param RemoteDriverFactory $remoteDriverFactory
      */
     public function __construct(
-        Config $configuration,
+        Data $configuration,
         RemoteDriverFactory $remoteDriverFactory,
         EventManagerInterface $eventManager,
         ObjectManager $objectManager
@@ -92,10 +92,11 @@ class Driver implements DriverInterface
      */
     protected function init()
     {
-        $this->driver = $this->remoteDriverFactory->crate();
+        $this->driver = $this->remoteDriverFactory->create();
 
         $this->driver->setBrowserUrl('about:blank');
-        $this->driver->setupSpecificBrowser($this->configuration->getConfigParam('server/selenium'));
+        $params = $this->configuration->get('server/selenium');
+        $this->driver->setupSpecificBrowser($params);
         $this->driver->prepareSession();
         $this->driver->currentWindow()->maximize();
         $this->driver->cookie()->clear();
@@ -436,7 +437,9 @@ class Driver implements DriverInterface
      */
     public function keys(ElementInterface $element, array $keys)
     {
-        $this->getNativeElement($element)->click();
+        $wrappedElement = $this->getNativeElement($element);
+        $wrappedElement->clear();
+        $wrappedElement->click();
         foreach ($keys as $key) {
             $this->driver->keys($key);
         }
@@ -616,7 +619,7 @@ class Driver implements DriverInterface
         if ($this->driver->getSessionId()) {
             $this->driver->stop();
         }
-        if ($sessionStrategy = $this->configuration->getConfigParam('server/selenium/sessionStrategy')) {
+        if ($sessionStrategy = $this->configuration->get('server/selenium/sessionStrategy')) {
             $this->driver->setSessionStrategy($sessionStrategy);
         } else {
             $this->driver->setSessionStrategy('isolated');

@@ -317,13 +317,13 @@ abstract class Injectable extends Functional
             $confFilePath = realpath(
                 MTF_BP . '/testsuites/' . $_ENV['testsuite_rule_path'] . '/' . $configurationFile . '.xml'
             );
-            /** @var \Magento\Mtf\TestRunner\Configuration $testRunnerConfiguration */
-            $testRunnerConfiguration = $objectManagerFactory->getObjectManager()->get('\Magento\Mtf\TestRunner\Configuration');
+            /** @var \Magento\Mtf\Config\TestRunner $testRunnerConfiguration */
+            $testRunnerConfiguration = $objectManagerFactory->getObjectManager()->get('Magento\Mtf\Config\TestRunner');
             $testRunnerConfiguration->load($confFilePath);
             $testRunnerConfiguration->loadEnvConfig();
 
             $shared = [
-                'Magento\Mtf\TestRunner\Configuration' => $testRunnerConfiguration
+                'Magento\Mtf\Config\TestRunner' => $testRunnerConfiguration
             ];
             $objectManagerFactory = new \Magento\Mtf\ObjectManagerFactory();
             $this->objectManager = $objectManagerFactory->create($shared);

@@ -21,36 +21,19 @@
  * @copyright   Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-namespace Magento\Mtf\System\Event;
-
-use Magento\Mtf\System\Event\Config\Reader;
-use Magento\Mtf\Config\Data;
+namespace Magento\Mtf\System\Event\Config;
 
 /**
  * Class for dealing wth events.xml config file and adoption it as Config to an application
  */
-class Config extends Data
+class Data extends \Magento\Mtf\Config\Data
 {
-    /**
-     * Configuration reader model
-     *
-     * @var \Magento\Mtf\Config\ReaderInterface
-     */
-    protected $reader;
-
     /**
      * Preset name for observers configuration
      *
      * @var string
      */
     protected $presetName;
-
-    /**
-     * Map of events-observers
-     *
-     * @var array
-     */
-    protected $observers;
 
     /**
      * Parsed presets
@@ -62,59 +45,18 @@ class Config extends Data
     /**
      * Constructor
      *
-     * @param Reader $reader
+     * @param \Magento\Mtf\Config\ReaderInterface $reader
      */
     public function __construct(
-        Reader $reader
+        \Magento\Mtf\Config\ReaderInterface $reader
     ) {
-        $this->reader = $reader;
-        $data = $reader->read();
+        parent::__construct($reader);
+
         $this->presetName = isset($_ENV['events_preset'])
             ? $_ENV['events_preset']
             : 'default';
-        $this->merge($data);
-    }
 
-    /**
-     * Config data
-     *
-     * @var array
-     */
-    protected $_data = array();
-
-    /**
-     * Merge config data to the object
-     *
-     * @param array $config
-     * @return void
-     */
-    public function merge(array $config)
-    {
-        $this->_data = array_replace_recursive($this->_data, $config);
-    }
-
-    /**
-     * Get config value by key
-     *
-     * @param string $path
-     * @param mixed $default
-     * @return array|string|null
-     */
-    public function get($path = null, $default = null)
-    {
-        if ($path === null) {
-            return $this->_data;
-        }
-        $keys = explode('/', $path);
-        $data = $this->_data;
-        foreach ($keys as $key) {
-            if (is_array($data) && array_key_exists($key, $data)) {
-                $data = $data[$key];
-            } else {
-                return $default;
-            }
-        }
-        return $data;
+        $this->data['observers'] = $this->getObservers();
     }
 
     /**
@@ -122,7 +64,7 @@ class Config extends Data
      *
      * @return array
      */
-    public function getObservers()
+    protected function getObservers()
     {
         if (!isset($this->presetName)) {
             return [];

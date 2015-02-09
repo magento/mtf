@@ -52,6 +52,10 @@ class Config extends ObjectManagerConfig
             return false;
         }
 
+        if (isset($this->_virtualTypes[$type])) {
+            return true;
+        }
+
         if (!isset($this->_nonSharedRefClasses[$type])) {
             $this->_nonSharedRefClasses[$type] = new \ReflectionClass($type);
         }

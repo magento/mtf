@@ -25,7 +25,7 @@
 namespace Magento\Mtf\Constraint;
 
 use Magento\Mtf\ObjectManager;
-use Magento\Mtf\Configuration\Reader;
+use Magento\Mtf\Config\DataInterface;
 
 /**
  * Factory for Constraints.
@@ -41,7 +41,7 @@ class ConstraintFactory
     /**
      * Object Manager.
      *
-     * @var \Magento\Mtf\ObjectManager
+     * @var ObjectManager
      */
     protected $objectManager;
 
@@ -55,12 +55,12 @@ class ConstraintFactory
     /**
      * @constructor
      * @param ObjectManager $objectManager
-     * @param Reader $constraintReader
+     * @param DataInterface $configData
      */
-    public function __construct(ObjectManager $objectManager, Reader $constraintReader)
+    public function __construct(ObjectManager $objectManager, DataInterface $configData)
     {
         $this->objectManager = $objectManager;
-        $this->configuration = $constraintReader->read('constraint');
+        $this->configuration = $configData->get();
     }
 
     /**

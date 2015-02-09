@@ -30,6 +30,7 @@ use Magento\Mtf\Util\XmlConverter;
 use Magento\Mtf\Config\FileResolver\Module;
 use Magento\Mtf\Util\Generate\Fixture\Reader;
 use Magento\Mtf\Repository\Reader\Converter;
+use Magento\Mtf\Config\DataInterface;
 
 /**
  * Fixture files generator.
@@ -38,6 +39,11 @@ use Magento\Mtf\Repository\Reader\Converter;
  */
 class Fixture extends AbstractGenerate
 {
+    /**
+     * @var DataInterface
+     */
+    protected $configData;
+    
     /**
      * File Resolver.
      *
@@ -71,6 +77,7 @@ class Fixture extends AbstractGenerate
     public function __construct(
         ObjectManagerInterface $objectManager,
         Module $fileResolver,
+//       DataInterface $configData,
         FieldsProviderInterface $fieldsProvider,
         XmlConverter $xmlConverter,
         Reader $fixtureReader,
@@ -78,6 +85,7 @@ class Fixture extends AbstractGenerate
     ) {
         parent::__construct($objectManager);
         $this->fileResolver = $fileResolver;
+//        $this->configData = $configData;
         $this->fieldsProvider = $fieldsProvider;
         $this->xmlConverter = $xmlConverter;
         $this->fixtureReader = $fixtureReader;
@@ -107,6 +115,10 @@ class Fixture extends AbstractGenerate
             \Magento\Mtf\Util\Generate\GenerateResult::addResult('Fixture XML Files', $this->cnt);
             return;
         }
+        // @TODO fix it
+//        foreach ($this->configData->get() as $name => $item) {
+//            $this->generateFixtureXml($name, $item);
+//        }
         $configs = $this->fileResolver->get('fixture.xml', 'etc');
         foreach ($configs as $config) {
             $configXml = simplexml_load_string($config);

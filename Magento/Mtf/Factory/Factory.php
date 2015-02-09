@@ -24,8 +24,7 @@
 
 namespace Magento\Mtf\Factory;
 
-use Mtf;
-use Magento\Mtf\System\Config;
+use Magento\Mtf;
 use Magento\Mtf\Factory as FactoryInterface;
 
 /**
@@ -38,13 +37,6 @@ use Magento\Mtf\Factory as FactoryInterface;
  */
 class Factory implements FactoryInterface
 {
-    /**
-     * Configuration
-     *
-     * @var Config
-     */
-    protected static $_config;
-
     /**
      * Handlers Factory
      *
@@ -107,16 +99,6 @@ class Factory implements FactoryInterface
     public static function initObjectManager()
     {
         self::$_objectManager = \Magento\Mtf\ObjectManager::getInstance();
-    }
-
-    /**
-     * Init configuration
-     *
-     * @return void
-     */
-    public static function initConfig()
-    {
-        self::$_config = self::getObjectManager()->get('Magento\Mtf\System\Config');
     }
 
     /**
@@ -190,19 +172,6 @@ class Factory implements FactoryInterface
             self::initObjectManager();
         }
         return self::$_objectManager;
-    }
-
-    /**
-     * Get handlers factory
-     *
-     * @return Config
-     */
-    public static function getConfig()
-    {
-        if (!self::$_config) {
-            self::initConfig();
-        }
-        return self::$_config;
     }
 
     /**

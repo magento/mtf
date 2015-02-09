@@ -23,8 +23,6 @@
  */
 namespace Magento\Mtf\System\Event;
 
-use Magento\Mtf\System\Event\Config;
-
 /**
  * Class EventManager
  */
@@ -70,16 +68,17 @@ class EventManager implements EventManagerInterface
      *
      * @param EventFactory $eventFactory
      * @param ObserverPool $observerPool
-     * @param Config $config
+     * @param \Magento\Mtf\Config\DataInterface $configuration
      */
     public function __construct(
         EventFactory $eventFactory,
         ObserverPool $observerPool,
-        Config $config
+        \Magento\Mtf\Config\DataInterface $configuration
     ) {
         $this->observerPool = $observerPool;
         $this->eventFactory = $eventFactory;
-        $this->map = $config->getObservers();
+
+        $this->map = $configuration->get('observers');
     }
 
     /**

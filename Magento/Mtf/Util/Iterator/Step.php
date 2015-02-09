@@ -152,14 +152,37 @@ class Step extends AbstractIterator
             . '\\' . ucfirst($this->key) . 'Step';
 
         $arguments = $this->result;
-        if (isset($step['arguments'])) {
-            $arguments = array_merge($step['arguments'], $arguments);
+        if (isset($step['item'])) {
+            $stepArguments = $this->resolveArguments($step['item']);
+            $arguments = array_merge($stepArguments, $arguments);
         }
         if (isset($this->currentVariation['arguments'])) {
             $arguments = array_merge($this->currentVariation['arguments'], $arguments);
         }
 
         return $this->factory->create($class, $arguments);
+    }
+
+    /**
+     * Resolve arguments
+     *
+     * @param array $arguments
+     * @return array
+     */
+    protected function resolveArguments($arguments)
+    {
+        $output = [];
+        if (isset($arguments['item'])) {
+            $arguments = $arguments['item'];
+        }
+        foreach ($arguments as $key => $item) {
+            if (isset($item['name']) && $item['name'] == $key && !isset($item['value'])) {
+                $output[$key] = $this->resolveArguments($item);
+            } else if (is_array($item)){
+                $output[$key] = $item['value'];
+            }
+        }
+        return $output;
     }
 
     /**

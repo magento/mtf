@@ -24,8 +24,6 @@
 
 namespace Magento\Mtf\Util;
 
-use Magento\Mtf\System\Config;
-
 /**
  * Class ModuleResolver, resolve module path based on enabled modules of target Magento instance
  *
@@ -49,7 +47,7 @@ class ModuleResolver
     protected $enabledModulePaths = null;
 
     /**
-     * @var \Magento\Mtf\System\Config
+     * @var \Magento\Mtf\Config\Data
      */
     protected $configuration;
 
@@ -89,14 +87,14 @@ class ModuleResolver
     /**
      * Constructor
      *
-     * @param Config $configuration
+     * @param \Magento\Mtf\Config\Data $configuration
      */
-    private function __construct(Config $configuration = null)
+    private function __construct(\Magento\Mtf\Config\Data $configuration = null)
     {
         if ($configuration) {
             $this->configuration = $configuration;
         } else {
-            $this->configuration = new Config();
+            $this->configuration = \Magento\Mtf\ObjectManagerFactory::getObjectManager()->get('Magento\Mtf\Config\GlobalConfig');
         }
     }
 
@@ -194,15 +192,16 @@ class ModuleResolver
      */
     protected function getAdminToken()
     {
-        $credentials = $this->configuration->getConfigParam('application/backend_user_credentials');
-        if (!$credentials || !isset($_ENV['app_frontend_url'])) {
+        $login = $this->configuration->get('application/backendLogin');
+        $password = $this->configuration->get('application/backendPassword');
+        if (!$login || !$password || !isset($_ENV['app_frontend_url'])) {
             return false;
         }
 
         $url = $_ENV['app_frontend_url'] . $this->adminTokenUrl;
         $data = [
-            'username' => $credentials['login'],
-            'password' => $credentials['password']
+            'username' => $login,
+            'password' => $password
         ];
         $headers = [
             'Content-Type: application/json',
