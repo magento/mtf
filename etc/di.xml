@@ -233,7 +233,7 @@
     </virtualType>
     <virtualType name="Magento\Mtf\Constraint\Config\SchemaLocator" type="Magento\Mtf\Config\SchemaLocator">
         <arguments>
-            <argument name="schemaPath" xsi:type="string">etc/global/constraints.xsd</argument>
+            <argument name="schemaPath" xsi:type="string">etc/constraints.xsd</argument>
         </arguments>
     </virtualType>
     <virtualType name="Magento\Mtf\Config\SchemaLocator\Page" type="Magento\Mtf\Config\SchemaLocator">
