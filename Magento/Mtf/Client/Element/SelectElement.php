@@ -46,7 +46,7 @@ class SelectElement extends SimpleElement
      *
      * @var string
      */
-    protected $optionByValue = ".//option[contains(normalize-space(.), '%s')]";
+    protected $optionByValue = './/option[contains(normalize-space(.), %s)]';
 
     /**
      * Set the value.
@@ -58,7 +58,7 @@ class SelectElement extends SimpleElement
     public function setValue($value)
     {
         $this->eventManager->dispatchEvent(['set_value'], [__METHOD__, $this->getAbsoluteSelector()]);
-        $option = $this->find(sprintf($this->optionByValue, $value), Locator::SELECTOR_XPATH);
+        $option = $this->find(sprintf($this->optionByValue, $this->escapeQuotes($value)), Locator::SELECTOR_XPATH);
         $option->click();
     }
 

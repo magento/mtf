@@ -36,5 +36,5 @@ class StrictmultiselectElement extends MultiselectElement
      *
      * @var string
      */
-    protected $optionByValue = ".//option[text() = '%s']";
+    protected $optionByValue = './/option[text() = %s]';
 }

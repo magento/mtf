@@ -36,7 +36,7 @@ class StrictselectElement extends SelectElement
      *
      * @var string
      */
-    protected $optionByValue = ".//option[text() = '%s']";
+    protected $optionByValue = ".//option[text() = %s]";
 
     /**
      * Option locator.

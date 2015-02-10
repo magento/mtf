@@ -80,7 +80,10 @@ class MultiselectElement extends SelectElement
         foreach ((array)$values as $value) {
             $matched = false;
 
-            $options = $this->getElements(sprintf($this->optionByValue, $value), Locator::SELECTOR_XPATH);
+            $options = $this->getElements(
+                sprintf($this->optionByValue, $this->escapeQuotes($value)),
+                Locator::SELECTOR_XPATH
+            );
 
             /** @var SimpleElement $option */
             foreach ($options as $option) {
