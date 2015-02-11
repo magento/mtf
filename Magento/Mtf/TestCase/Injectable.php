@@ -278,6 +278,11 @@ abstract class Injectable extends Functional
 
         if (isset($arguments['constraint'])) {
             $parameters = $this->getObjectManager()->getParameters($this, $this->getName(false));
+            if (!isset($arguments['firstConstraint'])) {
+                $arguments['firstConstraint'] = key(
+                    current($arguments['constraint'])
+                );
+            }
             $preparedConstraint = $this->prepareConstraintObject(
                 $arguments['constraint'],
                 $arguments['firstConstraint']

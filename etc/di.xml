@@ -444,4 +444,14 @@
         </arguments>
     </virtualType>
     <type name="Mtf\Fixture\InjectableFixture\Replacer" shared="true" />
+    <type name="Magento\Mtf\Util\CrossModuleReference\Constraint">
+        <arguments>
+            <argument name="configVariation" xsi:type="object">Magento\Mtf\Variation\Config\Data</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Mtf\Util\CrossModuleReference\TestStep">
+        <arguments>
+            <argument name="config" xsi:type="object">Magento\Mtf\TestCase\Config\Data</argument>
+        </arguments>
+    </type>
 </config>
