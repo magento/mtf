@@ -139,7 +139,7 @@
     </type>
     <type name="Magento\Mtf\Page\Page">
         <arguments>
-            <argument name="configData" xsi:type="object">Magento\Mtf\Config\Page</argument>
+            <argument name="configData" xsi:type="object">Magento\Mtf\Page\Config\Data</argument>
         </arguments>
     </type>
     <virtualType name="converterArgumentParser" type="Magento\Mtf\ObjectManager\Config\Mapper\ArgumentParser">
@@ -206,9 +206,9 @@
             <argument name="reader" xsi:type="object">Magento\Mtf\Constraint\Config\Reader</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Magento\Mtf\Config\Page" type="Magento\Mtf\Config\Data">
+    <virtualType name="Magento\Mtf\Page\Config\Data" type="Magento\Mtf\Config\Data">
         <arguments>
-            <argument name="reader" xsi:type="object">Magento\Mtf\Config\Reader\Page</argument>
+            <argument name="reader" xsi:type="object">Magento\Mtf\Page\Config\Reader</argument>
         </arguments>
     </virtualType>
     <virtualType name="Magento\Mtf\Config\SchemaLocator\TestRunner" type="Magento\Mtf\Config\SchemaLocator">
@@ -416,17 +416,12 @@
     </virtualType>
     <type name="Magento\Mtf\Util\Generate\Page">
         <arguments>
-            <argument name="configuration" xsi:type="object">Magento\Mtf\Page\Config\Data</argument>
+            <argument name="configData" xsi:type="object">Magento\Mtf\Page\Config\Data</argument>
         </arguments>
     </type>
     <virtualType name="Magento\Mtf\Page\Config\SchemaLocator" type="Magento\Mtf\Config\SchemaLocator">
         <arguments>
             <argument name="schemaPath" xsi:type="string">etc/pages.xsd</argument>
-        </arguments>
-    </virtualType>
-    <virtualType name="Magento\Mtf\Page\Config\Data" type="Magento\Mtf\Config\Data">
-        <arguments>
-            <argument name="reader" xsi:type="object">Magento\Mtf\Page\Config\Reader</argument>
         </arguments>
     </virtualType>
     <virtualType name="Magento\Mtf\Page\Config\Reader" type="Magento\Mtf\Config\Reader\Filesystem">

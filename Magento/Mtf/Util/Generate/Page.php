@@ -1,31 +1,9 @@
 <?php
 /**
- * Magento
- *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@magentocommerce.com so we can send you a copy immediately.
- *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade Magento to newer
- * versions in the future. If you wish to customize Magento for your
- * needs please refer to http://www.magentocommerce.com for more information.
- *
- * @copyright   Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
- * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
-
 namespace Magento\Mtf\Util\Generate;
-
-use Magento\Mtf\ObjectManagerInterface;
-use Magento\Mtf\Config\DataInterface as Configuration;
 
 /**
  * Class Page
@@ -36,37 +14,53 @@ use Magento\Mtf\Config\DataInterface as Configuration;
 class Page extends AbstractGenerate
 {
     /**
-     * @var Configuration
+     * @var array
      */
-    protected $configuration;
+    protected $pages;
 
     /**
      * @constructor
-     * @param ObjectManagerInterface $objectManager
-     * @param Configuration $configuration
+     * @param \Magento\Mtf\ObjectManagerInterface $objectManager
+     * @param \Magento\Mtf\Config\DataInterface $configData
      */
     public function __construct(
-        ObjectManagerInterface $objectManager,
-        Configuration $configuration
+        \Magento\Mtf\ObjectManagerInterface $objectManager,
+        \Magento\Mtf\Config\DataInterface $configData
     ) {
         parent::__construct($objectManager);
-        $this->configuration = $configuration;
+        $this->pages = $configData->get('page');
     }
 
     /**
-     * Launch Page generators
+     * Launch generation of all page classes
+     *
      * @return void
      */
     public function launch()
     {
         $this->cnt = 0;
 
-        $pages = $this->configuration->get('page');
-
-        foreach ($pages as $name => $data) {
+        foreach ($this->pages as $name => $data) {
             $this->generatePageClass($name, $data);
         }
+
         \Magento\Mtf\Util\Generate\GenerateResult::addResult('Page Classes', $this->cnt);
+    }
+
+    /**
+     * Generate single page class
+     *
+     * @param string $name
+     * @return string|bool
+     */
+    public function generate($name = null)
+    {
+        if (is_null($name) || !isset($this->pages[$name])) {
+            $this->addError('Invalid class name: ' . $name);
+            return false;
+        }
+
+        return $this->generatePageClass($name, $this->pages[$name]);
     }
 
     /**
@@ -74,7 +68,7 @@ class Page extends AbstractGenerate
      *
      * @param string $name
      * @param array $data
-     * @return void
+     * @return string|bool
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function generatePageClass($name, array $data)
@@ -132,9 +126,14 @@ class Page extends AbstractGenerate
             mkdir($realFolderPath, 0777, true);
         }
 
-        file_put_contents($realFolderPath . '/' . $newFilename, $content);
+        if (!file_put_contents($realFolderPath . '/' . $newFilename, $content)) {
+            $this->addError('Unable to generate class ' . $className);
+            return false;
+        }
 
         $this->cnt++;
+
+        return $realFolderPath . '/' . $newFilename;
     }
 
     /**
