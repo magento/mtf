@@ -46,21 +46,12 @@ class ConstraintFactory
     protected $objectManager;
 
     /**
-     * Constraints definition array.
-     *
-     * @var array
-     */
-    protected $configuration;
-
-    /**
      * @constructor
      * @param ObjectManager $objectManager
-     * @param DataInterface $configData
      */
-    public function __construct(ObjectManager $objectManager, DataInterface $configData)
+    public function __construct(ObjectManager $objectManager)
     {
         $this->objectManager = $objectManager;
-        $this->configuration = $configData->get('constraint');
     }
 
     /**
@@ -80,15 +71,5 @@ class ConstraintFactory
         }
 
         return $object;
-    }
-
-    /**
-     * Return constraint configuration.
-     *
-     * @return array
-     */
-    public function getConfiguration()
-    {
-        return $this->configuration;
     }
 }
