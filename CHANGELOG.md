@@ -1,3 +1,5 @@
+1.0.0-rc.16
+=============
 * Unified Format for framework configuration
 * Unified Format for TestCase Variations, TestCase Scenario declarations
 
