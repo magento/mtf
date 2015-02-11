@@ -1,3 +1,10 @@
+1.0.0-rc.17
+=============
+* Unified Format for pages configuration
+* Unified Format for TestCase Variations, TestCase Scenario declarations
+
+1.0.0-rc.16
+=============
 * Unified Format for framework configuration
 * Unified Format for TestCase Variations, TestCase Scenario declarations
 
