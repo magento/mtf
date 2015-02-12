@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+ -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../etc/variations.xsd">
+  <testCase name="TagTest">
+    <variation name="TagTestVariation1" firstConstraint="tagSeverityHigh" method="test">
+      <data name="fixture/data/locator" xsi:type="string">#hplogo</data>
+      <data name="fixture/data/strategy" xsi:type="string">css selector</data>
+      <data name="fixture/data/search" xsi:type="string">variation priority:high</data>
+      <data name="tag" xsi:type="string">priority:high</data>
+      <constraint name="tagSeverityHigh" next="tagSeverityMiddle"/>
+      <constraint name="tagSeverityMiddle" next="tagSeverityLow" prev="tagSeverityHigh"/>
+      <constraint name="tagSeverityLow" prev="tagSeverityMiddle"/>
+    </variation>
+    <variation name="TagTestVariation2" firstConstraint="tagSeverityHigh" method="test">
+      <data name="fixture/data/locator" xsi:type="string">#hplogo</data>
+      <data name="fixture/data/strategy" xsi:type="string">css selector</data>
+      <data name="fixture/data/search" xsi:type="string">variation priority:middle</data>
+      <data name="tag" xsi:type="string">priority:middle</data>
+      <constraint name="tagSeverityHigh" next="tagSeverityMiddle"/>
+      <constraint name="tagSeverityMiddle" next="tagSeverityLow" prev="tagSeverityHigh"/>
+      <constraint name="tagSeverityLow" prev="tagSeverityMiddle"/>
+    </variation>
+    <variation name="TagTestVariation3" firstConstraint="tagSeverityHigh" method="test">
+      <data name="fixture/data/locator" xsi:type="string">#hplogo</data>
+      <data name="fixture/data/strategy" xsi:type="string">css selector</data>
+      <data name="fixture/data/search" xsi:type="string">variation priority:low</data>
+      <data name="tag" xsi:type="string">priority:low</data>
+      <constraint name="tagSeverityHigh" next="tagSeverityMiddle"/>
+      <constraint name="tagSeverityMiddle" next="tagSeverityLow" prev="tagSeverityHigh"/>
+      <constraint name="tagSeverityLow" prev="tagSeverityMiddle"/>
+    </variation>
+  </testCase>
+</config>

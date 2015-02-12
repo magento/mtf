@@ -94,7 +94,7 @@ class Variation extends AbstractIterator
      */
     protected function isValid()
     {
-        $cellTag = isset($this->current['tag']) ? $this->current['tag'] : '';
+        $cellTag = isset($this->current['tag']['value']) ? $this->current['tag']['value'] : '';
 
         if (!$this->rule->apply($cellTag)) {
             return false;
@@ -121,9 +121,15 @@ class Variation extends AbstractIterator
     {
         $classPath = explode('\\', get_class($this->testCase));
         $variations = $this->configData->get(
-            end($classPath),
+            'testCase/' . end($classPath) . '/variation',
             ['Default' => []]
         );
+        foreach ($variations as $key => $variation) {
+            if (isset($variation['data'])) {
+                $variations[$key] = array_replace($variation, $variation['data']);
+                unset($variations[$key]['data']);
+            }
+        }
         return $variations;
     }
 
@@ -138,6 +144,9 @@ class Variation extends AbstractIterator
         if ($this->current) {
             foreach ($this->current as $key => $value) {
                 if (strpos($key, '/') === false) {
+                    if (isset($value['value'])) {
+                        $value = $value['value'];
+                    }
                     $data[$key] = $value;
                 } else {
                     $this->setArrayPathValue($data, $key, $value);
@@ -168,6 +177,6 @@ class Variation extends AbstractIterator
             }
             $key = array_shift($keys);
         }
-        $data = $value;
+        $data = $value['value'];
     }
 }

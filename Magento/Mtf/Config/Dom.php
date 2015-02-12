@@ -282,7 +282,13 @@ class Dom
             }
         } catch (\Exception $exception) {
             libxml_use_internal_errors(false);
-            throw $exception;
+            throw new \Exception(
+                sprintf(
+                    'Failed to validate xml using schema: %s. Exception: %s',
+                    $schemaFileName,
+                    $exception->getMessage()
+                )
+            );
         }
         libxml_use_internal_errors(false);
         return $errors;

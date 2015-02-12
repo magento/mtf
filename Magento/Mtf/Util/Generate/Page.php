@@ -25,10 +25,7 @@
 namespace Magento\Mtf\Util\Generate;
 
 use Magento\Mtf\ObjectManagerInterface;
-use Magento\Mtf\Config\FileResolver\Module;
-use Magento\Mtf\Util\Generate\Fixture\FieldsProviderInterface;
-use Magento\Mtf\Util\XmlConverter;
-use Magento\Mtf\Util\ModuleResolver;
+use Magento\Mtf\Config\DataInterface as Configuration;
 
 /**
  * Class Page
@@ -39,49 +36,21 @@ use Magento\Mtf\Util\ModuleResolver;
 class Page extends AbstractGenerate
 {
     /**
-     * @var FieldsProviderInterface
+     * @var Configuration
      */
-    protected $fieldsProvider;
-
-    /**
-     * File Resolver
-     *
-     * @var Module
-     */
-    protected $fileResolver;
-
-    /**
-     * @var XmlConverter
-     */
-    protected $xmlConverter;
-
-    /**
-     * @var ModuleResolver
-     */
-    protected $moduleResolver;
+    protected $configuration;
 
     /**
      * @constructor
      * @param ObjectManagerInterface $objectManager
-     * @param Module $fileResolver
-     * @param XmlConverter $xmlConverter
-     * @param ModuleResolver $moduleResolver
+     * @param Configuration $configuration
      */
     public function __construct(
         ObjectManagerInterface $objectManager,
-        Module $fileResolver,
-        XmlConverter $xmlConverter,
-        ModuleResolver $moduleResolver = null
+        Configuration $configuration
     ) {
         parent::__construct($objectManager);
-
-        $this->fileResolver = $fileResolver;
-        $this->xmlConverter = $xmlConverter;
-        if ($moduleResolver) {
-            $this->moduleResolver = $moduleResolver;
-        } else {
-            $this->moduleResolver = ModuleResolver::getInstance();
-        }
+        $this->configuration = $configuration;
     }
 
     /**
@@ -90,248 +59,39 @@ class Page extends AbstractGenerate
      */
     public function launch()
     {
-        $this->generateXml();
-        $this->generateClasses();
-    }
-
-    /**
-     * Generate Pages XML
-     * @return void
-     */
-    public function generateXml()
-    {
         $this->cnt = 0;
 
-        $pages = $this->fileResolver->get('page.xml', 'etc');
-        foreach ($pages as $page) {
-            $configXml = simplexml_load_string($page);
-            if ($configXml instanceof \SimpleXMLElement) {
-                $config = $this->xmlConverter->convert($configXml);
-                $modulePath = $config['module'];
-                unset($config['module']);
+        $pages = $this->configuration->get('page');
 
-                foreach ($config as $class => $pageItem) {
-                    $pageItem['module_path'] = $modulePath;
-                    $pageItem['class'] = $class;
-                    $this->generatePageXml($pageItem);
-                }
-            }
-        }
-
-        \Magento\Mtf\Util\Generate\GenerateResult::addResult('Page XML Files', $this->cnt);
-    }
-
-    /**
-     * Generate page XML configuration file from source definition
-     *
-     * @param array $item
-     * @return void
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     */
-    protected function generatePageXml(array $item)
-    {
-        $className = ucfirst($item['class']);
-        $area = isset($item['area']) ? ('/' . ucfirst($item['area'])) : '';
-        $modulePath = str_replace('_', '/', $item['module_path']);
-        $path = '/' . $modulePath . '/Test/Page' . $area;
-        $newFilename = $className . '.xml';
-        $newFolderName = MTF_TESTS_PATH . $path;
-
-        if (file_exists($newFolderName . '/' . $newFilename)) {
-            return;
-        }
-
-        $content = '<?xml version="1.0" ?>' . "\n";
-        $content .= '<!--' . "\n";
-        $content .= $this->getFilePhpDoc();
-        $content .= '-->' . "\n";
-
-        $attrModule = empty($item['module']) ? '' : ' module="' . $item['module'] . '"';
-        $content .= '<page mca="' . $item['mca'] . '"' . $attrModule . ">\n";
-
-        $blocks = $this->getExamplePageBlocks();
-        foreach ($blocks as $blockName => $block) {
-            $content .= '    <blocks>' . "\n";
-            $content .= $this->generatePageXmlBlock($blockName, $block, '        ');
-            $content .= '    </blocks>' . "\n";
-        }
-
-        $content .= "</page>\n";
-
-        if (!is_dir($newFolderName)) {
-            mkdir($newFolderName, 0777, true);
-        }
-
-        file_put_contents($newFolderName . '/' . $newFilename, $content);
-
-        $this->cnt++;
-    }
-
-    /**
-     * Generate block for page xml
-     *
-     * @param string $blockName
-     * @param array $params
-     * @param string $indent [optional]
-     * @return string
-     */
-    protected function generatePageXmlBlock($blockName, array $params, $indent = '')
-    {
-        $content = $indent . '<' . $blockName .'>' . "\n";
-        foreach ($params as $key => $value) {
-            $content .= is_array($value)
-                ? $this->generatePageXmlBlock($key, $value, $indent . '    ')
-                : ($indent . "    <{$key}>{$value}</$key>\n");
-        }
-        $content.= $indent . '</' . $blockName .'>' . "\n";
-
-        return $content;
-    }
-
-    /**
-     * Collect all blocks for page
-     *
-     * @return array
-     */
-    protected function getExamplePageBlocks()
-    {
-        return [
-            'testBlock' => [
-                'class' => 'Magento\Mtf\Test\Block\TestBlock',
-                'locator' => 'body',
-                'strategy' => 'tag name',
-                'renders' => [
-                    'simple' => [
-                        'class' => 'Magento\Mtf\Test\Block\TestBlockSimple',
-                        'locator' => '#viewport',
-                        'strategy' => 'css selector',
-                    ]
-                ]
-            ]
-        ];
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * Generate Pages Classes
-     * @return void
-     */
-    public function generateClasses()
-    {
-        $this->cnt = 0;
-
-        $pagesXml = $this->collectPagesXml();
-        $pages = $this->mergePagesXml($pagesXml);
-
-        foreach ($pages as $page) {
-            $this->generatePageClass($page);
+        foreach ($pages as $name => $data) {
+            $this->generatePageClass($name, $data);
         }
         \Magento\Mtf\Util\Generate\GenerateResult::addResult('Page Classes', $this->cnt);
     }
 
     /**
-     * Collect all xml pages
-     *
-     * @return array
-     */
-    protected function collectPagesXml()
-    {
-        $items = [];
-
-        $modules = $this->moduleResolver->getModulesPath();
-        foreach ($modules as $modulePath) {
-            $modulePathArray = explode('/', $modulePath);
-            $module = array_pop($modulePathArray);
-
-            if (!is_readable($modulePath . '/Test/Page')) {
-                continue;
-            }
-
-            $dirIterator = new \RegexIterator(
-                new \RecursiveIteratorIterator(
-                    new \RecursiveDirectoryIterator(
-                        $modulePath . '/Test/Page',
-                        \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::FOLLOW_SYMLINKS
-                    )
-                ),
-                '/.xml$/i'
-            );
-
-            foreach ($dirIterator as $fileInfo) {
-                /** @var $fileInfo \SplFileInfo */
-                $fileName = $fileInfo->getBasename('.xml');
-                $modulePath = str_replace('\\', '/', $modulePath);
-                $folderPath = str_replace('\\', '/', $fileInfo->getPath());
-                $area = trim(str_replace($modulePath . '/Test/Page', '', $folderPath), '/');
-
-                $key = ($area ? "{$area}_" : '') . $fileName;
-                $items[$key][] = [
-                    'file_name' => $fileName,
-                    'area' => $area,
-                    'real_path' => str_replace('\\', '/', $fileInfo->getRealPath()),
-                    'module' => $module,
-                ];
-            }
-        }
-
-        return $items;
-    }
-
-    /**
-     * Merge xml pages
-     *
-     * @param array $pages
-     * @return array
-     */
-    protected function mergePagesXml(array $pages)
-    {
-        $result = [];
-
-        foreach ($pages as $key => $page) {
-            $file = reset($page);
-            $pageConfig = [
-                'file_name' => $file['file_name'],
-                'area' => $file['area'],
-            ];
-
-            foreach ($page as $file) {
-                $content = file_get_contents($file['real_path']);
-                $configXml = simplexml_load_string($content);
-
-                if ($configXml instanceof \SimpleXMLElement) {
-                    $pageConfig = array_replace_recursive($pageConfig, $this->xmlConverter->convert($configXml));
-                }
-            }
-
-            $result[$key] = $pageConfig;
-        }
-
-        return $result;
-    }
-
-    /**
      * Generate page classes from sources
      *
-     * @param array $item
+     * @param string $name
+     * @param array $data
      * @return void
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    protected function generatePageClass(array $item)
+    protected function generatePageClass($name, array $data)
     {
-        $className = $item['file_name'];
-        $module =  str_replace('_', '/', $item['module']);
-        $folderPath = $module . '/Test/Page' . (empty($item['area']) ? '' : ('/' . $item['area']));
+        $className = ucfirst($name);
+        $module =  str_replace('_', '/', $data['module']);
+        $folderPath = $module . '/Test/Page' . (empty($data['area']) ? '' : ('/' . $data['area']));
         $realFolderPath = MTF_BP . '/generated/' . $folderPath;
         $namespace = str_replace('/', '\\', $folderPath);
         $areaMtfPage = strpos($folderPath, 'Adminhtml') === false ? 'FrontendPage' : 'BackendPage';
-        $mca = isset($item['mca']) ? $item['mca'] : '';
-        $blocks = isset($item['blocks']) ? $item['blocks'] : [];
+        $mca = isset($data['mca']) ? $data['mca'] : '';
+        $blocks = isset($data['block']) ? $data['block'] : [];
 
         $content = "<?php\n";
         $content .= $this->getFilePhpDoc();
         $content .= "namespace {$namespace};\n\n";
-        $content .= "use Magento\Mtf\\Page\\{$areaMtfPage};\n\n";
+        $content .= "use Magento\\Mtf\\Page\\{$areaMtfPage};\n\n";
         $content .= "/**\n";
         $content .= " * Class {$className}\n";
         $content .= " */\n";
@@ -389,9 +149,12 @@ class Page extends AbstractGenerate
     {
         $content = $indent . "'{$blockName}' => [\n";
         foreach ($params as $key => $value) {
-            $content .= is_array($value)
-                ? $this->generatePageClassBlock($key, $value, $indent . '    ')
-                : ($indent . "    '{$key}' => '{$value}',\n");
+            if (is_array($value)) {
+                $content .= $this->generatePageClassBlock($key, $value, $indent . '    ');
+            } else {
+                $escaped = str_replace('\'', '"', $value);
+                $content .= $indent . "    '{$key}' => '{$escaped}',\n";
+            }
         }
         $content .= $indent . "],\n";
 

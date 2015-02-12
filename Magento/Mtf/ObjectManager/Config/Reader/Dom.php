@@ -65,7 +65,7 @@ class Dom extends \Magento\Mtf\Config\Reader\Filesystem
         $fileName = 'di.xml',
         $idAttributes = array(),
         $domDocumentClass = 'Magento\Mtf\Config\Dom',
-        $defaultScope = 'etc/global'
+        $defaultScope = 'etc'
     ) {
         parent::__construct(
             $fileResolver,
