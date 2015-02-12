@@ -67,8 +67,7 @@ class FixtureFactory extends \Magento\Mtf\Factory\AbstractFactory
      */
     public function createByCode($code, array $arguments = [])
     {
-        $class = $this->resolveClassName($code);
-        return $this->create($class, $arguments);
+        return $this->create($this->resolveClassName($code), $arguments);
     }
 
     /**
@@ -81,13 +80,8 @@ class FixtureFactory extends \Magento\Mtf\Factory\AbstractFactory
     {
         $config = $this->configuration->get('fixture/' . $code);
         if (!empty($config)) {
-            $classShortName = ucfirst($code);
-            $moduleName = $config['module'];
-            $class = str_replace('_', '\\', $moduleName) . '\\Test\\Fixture\\' . $classShortName;
-        } else {
-            $class = false;
+            return false;
         }
-
-        return $class;
+        return str_replace('_', '\\', $config['module']) . '\\Test\\Fixture\\' . ucfirst($code);
     }
 }

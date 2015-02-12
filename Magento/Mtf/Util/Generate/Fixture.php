@@ -116,7 +116,8 @@ class Fixture extends AbstractGenerate
         $ns = implode("\\", array_slice($classNameArray, 0, -1));
         $repository = isset($item['repository_class']) ? $item['repository_class'] : null;
         $handlerInterface = isset($item['handler_interface']) ? $item['handler_interface'] : null;
-//        resolveArguments
+
+        //Resolve arguments
         $dataConfig = null;
         if (isset($item['data_config'])) {
             $dataConfig = $this->resolveArguments($item['data_config'][0]);
@@ -130,13 +131,7 @@ class Fixture extends AbstractGenerate
         } else {
             $defaultDataSet = $this->getDefaultValues((array)$fields);
         }
-//        $defaultDataSet = isset($item['dataset']) ? $item['dataset'] : $this->getDefaultValues((array)$fields);
-//        $defaultDataSet = null;
-//        if (isset($item['dataset'])) {
-//            $defaultDataSet = $this->resolveArguments($item['dataset']);
-//        } else {
-//            $defaultDataSet = $this->getDefaultValues((array)$fields);
-//        }
+
         $extends = isset($item['extends']) ? $item['extends'] : '\Magento\Mtf\Fixture\InjectableFixture';
         $phpDocVarString = "    /**\n     * @var string\n     */\n";
         $phpDocVarArray = "    /**\n     * @var array\n     */\n";
