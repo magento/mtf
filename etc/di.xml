@@ -127,11 +127,6 @@
             <argument name="configData" xsi:type="object">Magento\Mtf\Config\Fixture</argument>
         </arguments>
     </type>
-    <type name="Magento\Mtf\Util\Generate\Constraint">
-        <arguments>
-            <argument name="configData" xsi:type="object">Magento\Mtf\Constraint\Config\Data</argument>
-        </arguments>
-    </type>
     <type name="Magento\Mtf\Page\Page">
         <arguments>
             <argument name="configData" xsi:type="object">Magento\Mtf\Config\Page</argument>

@@ -93,7 +93,7 @@ class Composite extends AbstractConstraint
             }
 
             $constraint = $this->factory->get($constraintClass);
-            if ($constraint) {
+            if ($constraint && $constraint->isActive()) {
                 $constraints[] = $constraint;
             }
         }
