@@ -278,10 +278,15 @@ abstract class Injectable extends Functional
 
         if (isset($arguments['constraint'])) {
             $parameters = $this->getObjectManager()->getParameters($this, $this->getName(false));
+            $preparedConstraint = $this->prepareConstraintObject(
+                $arguments['constraint'],
+                $arguments['firstConstraint']
+            );
+
             if (isset($parameters['constraint'])) {
-                $resolvedArguments['constraint'] = $this->prepareConstraintObject($arguments['constraint']);
+                $resolvedArguments['constraint'] = $preparedConstraint;
             } else {
-                $variation['constraint'] = $this->prepareConstraintObject($arguments['constraint']);
+                $variation['constraint'] = $preparedConstraint;
             }
         }
 
@@ -293,13 +298,21 @@ abstract class Injectable extends Functional
     /**
      * Prepare configuration object
      *
-     * @param string $constraints
+     * @param array $constraints
+     * @param string $firstConstraint
      * @return \Magento\Mtf\Constraint\Composite
      */
-    protected function prepareConstraintObject($constraints)
+    protected function prepareConstraintObject(array $constraints, $firstConstraint)
     {
-        $constraintsArray = array_map('trim', explode(',', $constraints));
-        return $this->getObjectManager()->create('Magento\Mtf\Constraint\Composite', ['codeConstraints' => $constraintsArray]);
+        /** @var \Magento\Mtf\Util\SequencesSorter $sorter */
+        $sorter = $this->getObjectManager()->create('Magento\Mtf\Util\SequencesSorter');
+        $constraintsArray = $sorter->sort($constraints, $firstConstraint);
+        //TODO MAGETWO-33438
+        unset($constraintsArray['first']);
+        return $this->getObjectManager()->create(
+            'Magento\Mtf\Constraint\Composite',
+            ['codeConstraints' => array_keys($constraintsArray)]
+        );
     }
 
     /**

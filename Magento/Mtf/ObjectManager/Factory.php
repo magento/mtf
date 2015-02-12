@@ -242,10 +242,6 @@ class Factory extends \Magento\Mtf\ObjectManager\Factory\Dynamic\Developer
         $type = $this->config->getInstanceType($requestedType);
         $parameters = $this->definitions->getParameters($type);
         if ($parameters == null) {
-            if (false !== strpos($type, 'Magento\Framework\ObjectManagerInterface')) {
-                echo 'Test123';
-                debug_print_backtrace();
-            }
             return new $type();
         }
         if (isset($this->creationStack[$requestedType])) {

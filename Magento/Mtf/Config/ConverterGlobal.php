@@ -77,9 +77,6 @@ class ConverterGlobal implements \Magento\Mtf\Config\ConverterInterface
                     $result[$key] = $convert;
                 }
 
-                if (empty($result[$key])) {
-                    unset($result[$key]);
-                }
             } elseif ($element->nodeType == XML_TEXT_NODE && trim($element->nodeValue) != '') {
                 return $element->nodeValue;
             }

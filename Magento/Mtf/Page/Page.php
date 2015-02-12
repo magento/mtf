@@ -189,7 +189,7 @@ class Page implements PageInterface
             if ($class) {
                 $element = $this->_browser->find($blockMeta['locator'], $blockMeta['strategy']);
                 $config = [
-                    'renders' => isset($blockMeta['renders']) ? $blockMeta['renders'] : []
+                    'renders' => isset($blockMeta['render']) ? $blockMeta['render'] : []
                 ];
                 $block = $this->_blockFactory->create(
                     $class,

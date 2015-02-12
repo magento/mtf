@@ -265,8 +265,7 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
 
         /** @var $generate \Magento\Mtf\Util\Generate\Page */
         $generator = $this->objectManager->get('Magento\Mtf\Util\Generate\Page');
-        $generator->generateClasses();
-        return;
+        $generator->launch();
     }
 
     /**

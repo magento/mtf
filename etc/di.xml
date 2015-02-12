@@ -5,7 +5,7 @@
  * See COPYING.txt for license details.
  */
 -->
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../Magento/Mtf/ObjectManager/etc/config.xsd">
     <preference for="Magento\Mtf\Client\DriverInterface" type="Magento\Mtf\Client\Driver\Selenium\Driver"/>
     <preference for="Magento\Mtf\Client\BrowserInterface" type="Magento\Mtf\Client\Browser"/>
     <preference for="Magento\Mtf\Client\ElementInterface" type="Magento\Mtf\Client\Element\SimpleElement"/>
@@ -34,10 +34,12 @@
             <argument name="ruleFactory" xsi:type="object">Magento\Mtf\TestRunner\Rule\RuleFactory</argument>
         </arguments>
     </type>
+    <type name="Magento\Mtf\Util\SequencesSorter"/>
     <preference for="Magento\Mtf\Config\FileResolverInterface" type="Magento\Mtf\Config\FileResolver\Module"/>
     <preference for="Magento\Mtf\Config\ConverterInterface" type="Magento\Mtf\Config\Converter"/>
     <preference for="Magento\Mtf\Config\SchemaLocatorInterface" type="Magento\Mtf\Config\SchemaLocator"/>
     <preference for="Magento\Mtf\Config\ValidationStateInterface" type="Magento\Mtf\Config\ValidationState"/>
+    <preference for="Magento\Mtf\Data\Argument\InterpreterInterface" type="Magento\Mtf\Data\Argument\Interpreter\Composite"/>
     <type name="Magento\Mtf\Config\ValidationState">
         <arguments>
             <argument name="appMode" xsi:type="string">developer</argument>
@@ -117,12 +119,12 @@
     </type>
     <type name="Magento\Mtf\Constraint\ConstraintFactory">
         <arguments>
-            <argument name="configData" xsi:type="object">Magento\Mtf\Config\Constraint</argument>
+            <argument name="configData" xsi:type="object">Magento\Mtf\Constraint\Config\Data</argument>
         </arguments>
     </type>
     <type name="Magento\Mtf\Util\Generate\Constraint">
         <arguments>
-            <argument name="configData" xsi:type="object">Magento\Mtf\Config\Constraint</argument>
+            <argument name="configData" xsi:type="object">Magento\Mtf\Constraint\Config\Data</argument>
         </arguments>
     </type>
     <type name="Magento\Mtf\Page\Page">
@@ -130,7 +132,45 @@
             <argument name="configData" xsi:type="object">Magento\Mtf\Config\Page</argument>
         </arguments>
     </type>
-
+    <virtualType name="converterArgumentParser" type="Magento\Mtf\ObjectManager\Config\Mapper\ArgumentParser">
+        <arguments>
+            <argument name="argumentNodeName" xsi:type="string">data</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Mtf\Config\ConverterPages">
+        <arguments>
+            <argument name="argumentParser" xsi:type="object">converterArgumentParser</argument>
+            <argument name="argumentInterpreter" xsi:type="object">Magento\Mtf\Data\Argument\Interpreter\Composite</argument>
+            <argument name="argumentNodeName" xsi:type="string">data</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Mtf\Data\Argument\Interpreter\Composite">
+        <arguments>
+            <argument name="interpreters" xsi:type="array">
+                <item name="object" xsi:type="object">Magento\Mtf\Data\Argument\Interpreter\Object</item>
+                <item name="array" xsi:type="object">arrayArgumentInterpreterProxy</item>
+                <item name="boolean" xsi:type="object">Magento\Mtf\Data\Argument\Interpreter\Boolean</item>
+                <item name="number" xsi:type="object">Magento\Mtf\Data\Argument\Interpreter\Number</item>
+                <item name="string" xsi:type="object">Magento\Mtf\Data\Argument\Interpreter\String</item>
+                <item name="null" xsi:type="object">Magento\Mtf\Data\Argument\Interpreter\NullType</item>
+            </argument>
+            <argument name="discriminator" xsi:type="string">xsi:type</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Mtf\Data\Argument\Interpreter\ArrayType">
+        <arguments>
+            <argument name="itemInterpreter" xsi:type="object">Magento\Mtf\Data\Argument\Interpreter\Composite</argument>
+        </arguments>
+    </type>
+    <!--
+    Array item can be of any type just like an argument, including array type itself, which creates circular dependency.
+    Proxy is used to resolve the circular dependency, so that array items undergo the same interpretation as arguments.
+    -->
+    <virtualType name="arrayArgumentInterpreterProxy" type="Magento\Mtf\Data\Argument\InterpreterInterface\Proxy">
+        <arguments>
+            <argument name="instanceName" xsi:type="string">Magento\Mtf\Data\Argument\Interpreter\ArrayType</argument>
+        </arguments>
+    </virtualType>
     <virtualType name="Magento\Mtf\Config\TestRunner" type="Magento\Mtf\TestRunner\Config\Data">
         <arguments>
             <argument name="reader" xsi:type="object">Magento\Mtf\Config\Reader\TestRunner</argument>
@@ -151,9 +191,9 @@
             <argument name="reader" xsi:type="object">Magento\Mtf\Config\Reader\Fixture</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Magento\Mtf\Config\Constraint" type="Magento\Mtf\Config\Data">
+    <virtualType name="Magento\Mtf\Constraint\Config\Data" type="Magento\Mtf\Config\Data">
         <arguments>
-            <argument name="reader" xsi:type="object">Magento\Mtf\Config\Reader\Constraint</argument>
+            <argument name="reader" xsi:type="object">Magento\Mtf\Constraint\Config\Reader</argument>
         </arguments>
     </virtualType>
     <virtualType name="Magento\Mtf\Config\Page" type="Magento\Mtf\Config\Data">
@@ -161,7 +201,6 @@
             <argument name="reader" xsi:type="object">Magento\Mtf\Config\Reader\Page</argument>
         </arguments>
     </virtualType>
-
     <virtualType name="Magento\Mtf\Config\SchemaLocator\TestRunner" type="Magento\Mtf\Config\SchemaLocator">
         <arguments>
             <argument name="schemaPath" xsi:type="string">Magento/Mtf/TestRunner/etc/testRunner.xsd</argument>
@@ -174,7 +213,7 @@
     </virtualType>
     <virtualType name="Magento\Mtf\Config\SchemaLocator\SystemEvent" type="Magento\Mtf\Config\SchemaLocator">
         <arguments>
-            <argument name="schemaPath" xsi:type="string">etc/global/events.xsd</argument>
+            <argument name="schemaPath" xsi:type="string">etc/events.xsd</argument>
         </arguments>
     </virtualType>
     <virtualType name="Magento\Mtf\Config\SchemaLocator\Fixture" type="Magento\Mtf\Config\SchemaLocator">
@@ -182,9 +221,9 @@
             <argument name="schemaPath" xsi:type="string">Magento/Mtf/Fixture/etc/fixture.xsd</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Magento\Mtf\Config\SchemaLocator\Constraint" type="Magento\Mtf\Config\SchemaLocator">
+    <virtualType name="Magento\Mtf\Constraint\Config\SchemaLocator" type="Magento\Mtf\Config\SchemaLocator">
         <arguments>
-            <argument name="schemaPath" xsi:type="string">Magento/Mtf/Constraint/etc/constraint.xsd</argument>
+            <argument name="schemaPath" xsi:type="string">etc/constraints.xsd</argument>
         </arguments>
     </virtualType>
     <virtualType name="Magento\Mtf\Config\SchemaLocator\Page" type="Magento\Mtf\Config\SchemaLocator">
@@ -192,7 +231,6 @@
             <argument name="schemaPath" xsi:type="string">Magento/Mtf/Page/etc/page.xsd</argument>
         </arguments>
     </virtualType>
-
     <virtualType name="Magento\Mtf\Config\Reader\TestRunnerRule" type="Magento\Mtf\Config\Reader\Filesystem">
         <arguments>
             <argument name="fileResolver" xsi:type="object">Magento\Mtf\Config\FileResolver\Primary</argument>
@@ -237,7 +275,7 @@
                 <item name="/config/preset" xsi:type="string">name</item>
             </argument>
             <argument name="fileName" xsi:type="string">events.xml</argument>
-            <argument name="defaultScope" xsi:type="string">etc/global</argument>
+            <argument name="defaultScope" xsi:type="string">etc</argument>
         </arguments>
     </virtualType>
     <virtualType name="Magento\Mtf\Config\Reader\Fixture" type="Magento\Mtf\Config\Reader\Filesystem">
@@ -249,11 +287,16 @@
             <argument name="defaultScope" xsi:type="string">etc</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Magento\Mtf\Config\Reader\Constraint" type="Magento\Mtf\Config\Reader\Filesystem">
+    <virtualType name="Magento\Mtf\Constraint\Config\Reader" type="Magento\Mtf\Config\Reader\Filesystem">
         <arguments>
             <argument name="fileResolver" xsi:type="object">Magento\Mtf\Config\FileResolver\Module</argument>
-            <argument name="converter" xsi:type="object">Magento\Mtf\Config\Converter</argument>
-            <argument name="schemaLocator" xsi:type="object">Magento\Mtf\Config\SchemaLocator\Constraint</argument>
+            <argument name="converter" xsi:type="object">Magento\Mtf\Config\ConverterPages</argument>
+            <argument name="schemaLocator" xsi:type="object">Magento\Mtf\Constraint\Config\SchemaLocator</argument>
+            <argument name="idAttributes" xsi:type="array">
+                <item name="/config" xsi:type="string">scope</item>
+                <item name="/config/constraint" xsi:type="string">name</item>
+                <item name="/config/constraint/argument" xsi:type="string">name</item>
+            </argument>
             <argument name="fileName" xsi:type="string">constraint.xml</argument>
             <argument name="defaultScope" xsi:type="string">etc</argument>
         </arguments>
@@ -269,7 +312,7 @@
     </virtualType>
     <virtualType name="Magento\Mtf\Config\SchemaLocator\Config" type="Magento\Mtf\Config\SchemaLocator">
         <arguments>
-            <argument name="schemaPath" xsi:type="string">etc/global/config.xsd</argument>
+            <argument name="schemaPath" xsi:type="string">etc/config.xsd</argument>
         </arguments>
     </virtualType>
     <virtualType name="Magento\Mtf\Config\Reader\Config" type="Magento\Mtf\Config\Reader\Filesystem">
@@ -281,7 +324,7 @@
                 <item name="/config" xsi:type="string">scope</item>
             </argument>
             <argument name="fileName" xsi:type="string">config.xml</argument>
-            <argument name="defaultScope" xsi:type="string">etc/global</argument>
+            <argument name="defaultScope" xsi:type="string">etc</argument>
         </arguments>
     </virtualType>
     <virtualType name="Magento\Mtf\Config\GlobalConfig" type="Magento\Mtf\Config\Data">
@@ -334,7 +377,7 @@
     </virtualType>
     <virtualType name="Magento\Mtf\Variation\Config\SchemaLocator" type="Magento\Mtf\Config\SchemaLocator">
         <arguments>
-            <argument name="schemaPath" xsi:type="string">etc/global/variations.xsd</argument>
+            <argument name="schemaPath" xsi:type="string">etc/variations.xsd</argument>
         </arguments>
     </virtualType>
     <virtualType name="Magento\Mtf\Variation\Config\Data" type="Magento\Mtf\Config\Data">
@@ -350,14 +393,44 @@
     <virtualType name="Magento\Mtf\Variation\Config\Reader" type="Magento\Mtf\Config\Reader\Filesystem">
         <arguments>
             <argument name="fileResolver" xsi:type="object">Magento\Mtf\Config\FileResolver\Mask</argument>
-            <argument name="converter" xsi:type="object">Magento\Mtf\Config\ConverterGlobal</argument>
+            <argument name="converter" xsi:type="object">Magento\Mtf\Config\ConverterPages</argument>
             <argument name="schemaLocator" xsi:type="object">Magento\Mtf\Variation\Config\SchemaLocator</argument>
             <argument name="idAttributes" xsi:type="array">
                 <item name="/config/testCase" xsi:type="string">name</item>
                 <item name="/config/testCase/variation" xsi:type="string">name</item>
+                <item name="/config/testCase/variation/data" xsi:type="string">name</item>
             </argument>
             <argument name="fileName" xsi:type="string">#\.xml$#</argument>
             <argument name="defaultScope" xsi:type="string">TestCase</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Mtf\Util\Generate\Page">
+        <arguments>
+            <argument name="configuration" xsi:type="object">Magento\Mtf\Page\Config\Data</argument>
+        </arguments>
+    </type>
+    <virtualType name="Magento\Mtf\Page\Config\SchemaLocator" type="Magento\Mtf\Config\SchemaLocator">
+        <arguments>
+            <argument name="schemaPath" xsi:type="string">etc/pages.xsd</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Magento\Mtf\Page\Config\Data" type="Magento\Mtf\Config\Data">
+        <arguments>
+            <argument name="reader" xsi:type="object">Magento\Mtf\Page\Config\Reader</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Magento\Mtf\Page\Config\Reader" type="Magento\Mtf\Config\Reader\Filesystem">
+        <arguments>
+            <argument name="fileResolver" xsi:type="object">Magento\Mtf\Config\FileResolver\Mask</argument>
+            <argument name="converter" xsi:type="object">Magento\Mtf\Config\ConverterPages</argument>
+            <argument name="schemaLocator" xsi:type="object">Magento\Mtf\Page\Config\SchemaLocator</argument>
+            <argument name="idAttributes" xsi:type="array">
+                <item name="/config/page" xsi:type="string">name</item>
+                <item name="/config/page/block" xsi:type="string">name</item>
+                <item name="/config/page/block/render" xsi:type="string">name</item>
+            </argument>
+            <argument name="fileName" xsi:type="string">#\.xml$#</argument>
+            <argument name="defaultScope" xsi:type="string">Page</argument>
         </arguments>
     </virtualType>
     <type name="Mtf\Fixture\InjectableFixture\Replacer" shared="true" />
