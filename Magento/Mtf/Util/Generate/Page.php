@@ -42,7 +42,7 @@ class Page extends AbstractGenerate
         $this->cnt = 0;
 
         foreach ($this->configData->get('page') as $name => $data) {
-            $this->generatePageClass($name, $data);
+            $this->generateClass($name, $data);
         }
 
         \Magento\Mtf\Util\Generate\GenerateResult::addResult('Page Classes', $this->cnt);
@@ -61,7 +61,7 @@ class Page extends AbstractGenerate
             throw new \InvalidArgumentException('Invalid class name: ' . $name);
         }
 
-        return $this->generatePageClass(
+        return $this->generateClass(
             $name, $this->configData->get('page/' . $name)
         );
     }
@@ -74,7 +74,7 @@ class Page extends AbstractGenerate
      * @return string|bool
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    protected function generatePageClass($name, array $data)
+    protected function generateClass($name, array $data)
     {
         $className = ucfirst($name);
         $module =  str_replace('_', '/', $data['module']);

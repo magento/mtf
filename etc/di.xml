@@ -17,8 +17,6 @@
     <preference for="Magento\Mtf\ObjectManager\ConfigInterface" type="Magento\Mtf\ObjectManager\Config\Config"/>
     <preference for="Magento\Mtf\Util\Generate\Fixture\FieldsProviderInterface"
                 type="Magento\Mtf\Util\Generate\Fixture\DummyFieldsProvider"/>
-    <preference for="Magento\Mtf\Util\Generate\Repository\CollectionProviderInterface"
-                type="Magento\Mtf\Util\Generate\Repository\DummyCollectionProvider"/>
     <type name="Magento\Mtf\Client\Element\SimpleElement" shared="false"/>
     <type name="Magento\Mtf\Block\BlockInterface" shared="false"/>
     <type name="Magento\Mtf\Page\PageInterface" shared="false"/>
@@ -124,7 +122,7 @@
     </type>
     <type name="Magento\Mtf\Util\Generate\Repository">
         <arguments>
-            <argument name="configData" xsi:type="object">Magento\Mtf\Config\Fixture</argument>
+            <argument name="configData" xsi:type="object">Magento\Mtf\Repository\Reader\Reader</argument>
         </arguments>
     </type>
     <type name="Magento\Mtf\Constraint\ConstraintFactory">
