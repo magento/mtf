@@ -6,17 +6,18 @@
 namespace Magento\Mtf\Util\Generate;
 
 /**
- * Class Page
- * Page files generator
+ * Class Page.
+ *
+ * Page classes generator.
  *
  * @internal
  */
 class Page extends AbstractGenerate
 {
     /**
-     * @var array
+     * @var \Magento\Mtf\Config\DataInterface
      */
-    protected $pages;
+    protected $configData;
 
     /**
      * @constructor
@@ -28,11 +29,11 @@ class Page extends AbstractGenerate
         \Magento\Mtf\Config\DataInterface $configData
     ) {
         parent::__construct($objectManager);
-        $this->pages = $configData->get('page');
+        $this->configData = $configData;
     }
 
     /**
-     * Launch generation of all page classes
+     * Launch generation of all page classes.
      *
      * @return void
      */
@@ -40,7 +41,7 @@ class Page extends AbstractGenerate
     {
         $this->cnt = 0;
 
-        foreach ($this->pages as $name => $data) {
+        foreach ($this->configData->get('page') as $name => $data) {
             $this->generatePageClass($name, $data);
         }
 
@@ -48,23 +49,25 @@ class Page extends AbstractGenerate
     }
 
     /**
-     * Generate single page class
+     * Generate single page class.
      *
      * @param string $name
      * @return string|bool
+     * @throws \InvalidArgumentException
      */
-    public function generate($name = null)
+    public function generate($name)
     {
-        if (is_null($name) || !isset($this->pages[$name])) {
-            $this->addError('Invalid class name: ' . $name);
-            return false;
+        if (!$this->configData->get('page/' . $name)) {
+            throw new \InvalidArgumentException('Invalid class name: ' . $name);
         }
 
-        return $this->generatePageClass($name, $this->pages[$name]);
+        return $this->generatePageClass(
+            $name, $this->configData->get('page/' . $name)
+        );
     }
 
     /**
-     * Generate page classes from sources
+     * Generate page class from sources.
      *
      * @param string $name
      * @param array $data
@@ -126,8 +129,11 @@ class Page extends AbstractGenerate
             mkdir($realFolderPath, 0777, true);
         }
 
-        if (!file_put_contents($realFolderPath . '/' . $newFilename, $content)) {
-            $this->addError('Unable to generate class ' . $className);
+        $result = @file_put_contents($realFolderPath . '/' . $newFilename, $content);
+
+        if ($result === false) {
+            $error = error_get_last();
+            $this->addError(sprintf('Unable to generate %s class. Error: %s', $className, $error['message']));
             return false;
         }
 
@@ -137,7 +143,7 @@ class Page extends AbstractGenerate
     }
 
     /**
-     * Generate block for page class
+     * Generate block for page class.
      *
      * @param string $blockName
      * @param array $params

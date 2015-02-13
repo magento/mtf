@@ -5,14 +5,22 @@
  */
 namespace Magento\Mtf\Code;
 
+/**
+ * Class Generator.
+ *
+ * Classes generator.
+ */
 class Generator
 {
+    /**#@+
+     * Generation statuses.
+     */
     const GENERATION_SUCCESS = 'success';
-
     const GENERATION_ERROR = 'error';
+    /**#@- */
 
     /**
-     * @var array
+     * @var string[]
      */
     protected $generatedEntities;
 
@@ -25,7 +33,7 @@ class Generator
     }
 
     /**
-     * Get generated entities
+     * Get generated entities.
      *
      * @return string[]
      */
@@ -35,7 +43,7 @@ class Generator
     }
 
     /**
-     * Generate Class
+     * Generate class.
      *
      * @param string $className
      * @return string
@@ -44,35 +52,29 @@ class Generator
      */
     public function generateClass($className)
     {
-        $entityType = $entityName = null;
+        $classNameRegexp = '/\\\Test\\\([^\\\]+)(?:\\\[^\\\]+)*\\\([^\\\]+)$/';
 
-        foreach ($this->generatedEntities as $entityType => $generatorClass) {
-            $entitySuffix = '\Test\\' . ucfirst($entityType);
-
-            if (strpos($className, $entitySuffix) !== false) {
-                $entityName = substr(
-                    $className, strrpos($className, $entitySuffix) + strlen($entitySuffix)
-                );
-                $entityName = explode("\\", $entityName);
-                $entityName = end($entityName);
-                break;
-            }
+        if (!preg_match($classNameRegexp, $className, $matches)) {
+            throw new \InvalidArgumentException('Corrupted class name: ' . $className);
         }
 
-        if (!$entityName) {
-            return self::GENERATION_ERROR;
-        }
+        $entityType = lcfirst($matches[1]);
+        $entityName = $matches[2];
+
         if (!isset($this->generatedEntities[$entityType])) {
-            throw new \InvalidArgumentException('Unknown generation entity.');
+            throw new \InvalidArgumentException('Unknown entity type: ' . $entityType);
         }
 
         /** @var \Magento\Mtf\Util\Generate\AbstractGenerate $generator */
         $generator = $this->createGeneratorInstance($this->generatedEntities[$entityType]);
 
-        if (!($file = $generator->generate($entityName))) {
+        $classFilePath = $generator->generate($entityName);
+
+        if (!$classFilePath) {
             throw new \Exception(implode(' ', $generator->getErrors()));
         }
-        $this->includeFile($file);
+
+        $this->includeFile($classFilePath);
 
         return self::GENERATION_SUCCESS;
     }
@@ -87,7 +89,7 @@ class Generator
     }
 
     /**
-     * Create entity generator
+     * Create entity generator.
      *
      * @param string $generatorClass
      * @return \Magento\Mtf\Util\Generate\AbstractGenerate

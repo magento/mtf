@@ -60,7 +60,7 @@ class ObjectManagerFactory
         $autoloader = new \Magento\Mtf\Code\Generator\Autoloader(
             new \Magento\Mtf\Code\Generator(
                 [
-                    'page' => '\Magento\Mtf\Util\Generate\Page'
+                    'page' => 'Magento\Mtf\Util\Generate\Page'
                 ]
             )
         );

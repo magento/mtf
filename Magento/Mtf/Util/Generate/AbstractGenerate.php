@@ -59,7 +59,7 @@ abstract class AbstractGenerate
      * @param string $name
      * @return string
      */
-    abstract public function generate($name = null);
+    abstract public function generate($name);
 
     /**
      * Convert class name to camel-case
