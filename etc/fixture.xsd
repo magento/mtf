@@ -142,7 +142,21 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:attribute>
-            <xs:attribute type="notEmptyType" name="is_required" use="required">
+            <xs:attribute type="notEmptyType" name="is_required">
+                <xs:annotation>
+                    <xs:documentation>
+                        Is field required for filling.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute type="notEmptyType" name="group">
+                <xs:annotation>
+                    <xs:documentation>
+                        Is field required for filling.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute type="notEmptyType" name="source">
                 <xs:annotation>
                     <xs:documentation>
                         Is field required for filling.
