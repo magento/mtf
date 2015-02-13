@@ -99,14 +99,14 @@
         </xs:sequence>
     </xs:complexType>
 
-    <xs:element name="repository">
+    <xs:element name="config">
         <xs:complexType>
             <xs:choice maxOccurs="unbounded">
-                <xs:element name="storage" type="storageType" minOccurs="1" maxOccurs="unbounded">
-                    <xs:unique name="uniqueStorageParam">
+                <xs:element name="repository" type="repositoryType" minOccurs="1" maxOccurs="unbounded">
+                    <xs:unique name="uniqueRepositoryParam">
                         <xs:annotation>
                             <xs:documentation>
-                                Class name should be unique in scope of storage
+                                Class name should be unique in scope of repository
                             </xs:documentation>
                         </xs:annotation>
                         <xs:selector xpath="param"/>
@@ -116,13 +116,13 @@
             </xs:choice>
         </xs:complexType>
 
-        <xs:unique name="uniqueStorage">
+        <xs:unique name="uniqueRepository">
             <xs:annotation>
                 <xs:documentation>
-                    Class for each storage should be unique
+                    Class for each repository should be unique
                 </xs:documentation>
             </xs:annotation>
-            <xs:selector xpath="storage"/>
+            <xs:selector xpath="repository"/>
             <xs:field xpath="@class"/>
         </xs:unique>
         <xs:unique name="uniqueDataset">
@@ -160,10 +160,10 @@
         </xs:complexContent>
     </xs:complexType>
 
-    <xs:complexType name="storageType">
+    <xs:complexType name="repositoryType">
         <xs:annotation>
             <xs:documentation>
-                With 'storage' tag you can create repositories
+                With 'repository' tag you can create repositories
             </xs:documentation>
         </xs:annotation>
         <xs:choice maxOccurs="unbounded">
