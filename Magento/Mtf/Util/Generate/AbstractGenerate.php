@@ -56,10 +56,10 @@ abstract class AbstractGenerate
     /**
      * Generate single class
      *
-     * @param string $name
-     * @return string
+     * @param string $className
+     * @return string|bool
      */
-    abstract public function generate($name);
+    abstract public function generate($className);
 
     /**
      * Convert class name to camel-case

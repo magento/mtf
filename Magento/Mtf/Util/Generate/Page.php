@@ -51,18 +51,20 @@ class Page extends AbstractGenerate
     /**
      * Generate single page class.
      *
-     * @param string $name
+     * @param string $className
      * @return string|bool
      * @throws \InvalidArgumentException
      */
-    public function generate($name)
+    public function generate($className)
     {
-        if (!$this->configData->get('page/' . $name)) {
-            throw new \InvalidArgumentException('Invalid class name: ' . $name);
+        $classNameParts = explode('\\', $className);
+
+        if (!$this->configData->get('page/' . end($classNameParts))) {
+            throw new \InvalidArgumentException('Invalid class name: ' . $className);
         }
 
         return $this->generateClass(
-            $name, $this->configData->get('page/' . $name)
+            end($classNameParts), $this->configData->get('page/' . end($classNameParts))
         );
     }
 

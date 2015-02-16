@@ -52,23 +52,22 @@ class Generator
      */
     public function generateClass($className)
     {
-        $classNameRegexp = '/\\\Test\\\([^\\\]+)(?:\\\[^\\\]+)*\\\([^\\\]+)$/';
+        $classNameRegexp = '/\\\Test\\\([^\\\]+)(?:\\\[^\\\]+)+$/';
 
         if (!preg_match($classNameRegexp, $className, $matches)) {
             throw new \InvalidArgumentException('Corrupted class name: ' . $className);
         }
 
-        $entityType = lcfirst($matches[1]);
-        $entityName = $matches[2];
+        $classType = lcfirst($matches[1]);
 
-        if (!isset($this->generatedEntities[$entityType])) {
-            throw new \InvalidArgumentException('Unknown entity type: ' . $entityType);
+        if (!isset($this->generatedEntities[$classType])) {
+            throw new \InvalidArgumentException('Unknown class type: ' . $classType);
         }
 
         /** @var \Magento\Mtf\Util\Generate\AbstractGenerate $generator */
-        $generator = $this->createGeneratorInstance($this->generatedEntities[$entityType]);
+        $generator = $this->createGeneratorInstance($this->generatedEntities[$classType]);
 
-        $classFilePath = $generator->generate($entityName);
+        $classFilePath = $generator->generate($className);
 
         if (!$classFilePath) {
             throw new \Exception(implode(' ', $generator->getErrors()));

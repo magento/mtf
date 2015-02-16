@@ -122,7 +122,7 @@
     </type>
     <type name="Magento\Mtf\Util\Generate\Repository">
         <arguments>
-            <argument name="configData" xsi:type="object">Magento\Mtf\Repository\Reader\Reader</argument>
+            <argument name="configData" xsi:type="object">Magento\Mtf\Repository\Config\Data</argument>
         </arguments>
     </type>
     <type name="Magento\Mtf\Constraint\ConstraintFactory">
@@ -207,6 +207,11 @@
     <virtualType name="Magento\Mtf\Page\Config\Data" type="Magento\Mtf\Config\Data">
         <arguments>
             <argument name="reader" xsi:type="object">Magento\Mtf\Page\Config\Reader</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Magento\Mtf\Repository\Config\Data" type="Magento\Mtf\Config\Data">
+        <arguments>
+            <argument name="reader" xsi:type="object">Magento\Mtf\Repository\Reader\Reader</argument>
         </arguments>
     </virtualType>
     <virtualType name="Magento\Mtf\Config\SchemaLocator\TestRunner" type="Magento\Mtf\Config\SchemaLocator">

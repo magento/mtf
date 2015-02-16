@@ -11,18 +11,18 @@ namespace Magento\Mtf\Util\Generate;
 class Repository extends AbstractGenerate
 {
     /**
-     * @var \Magento\Mtf\Repository\Reader\Reader
+     * @var \Magento\Mtf\Config\DataInterface
      */
     protected $configData;
 
     /**
      * @constructor
      * @param \Magento\Mtf\ObjectManagerInterface $objectManager
-     * @param \Magento\Mtf\Repository\Reader\Reader $configData
+     * @param \Magento\Mtf\Config\DataInterface $configData
      */
     public function __construct(
         \Magento\Mtf\ObjectManagerInterface $objectManager,
-        \Magento\Mtf\Repository\Reader\Reader $configData
+        \Magento\Mtf\Config\DataInterface $configData
     ) {
         parent::__construct($objectManager);
         $this->configData = $configData;
@@ -37,7 +37,7 @@ class Repository extends AbstractGenerate
     {
         $this->cnt = 0;
 
-        foreach ($this->configData->read() as $name => $data) {
+        foreach ($this->configData->get() as $name => $data) {
             $this->generateClass($name, $data);
         }
 
@@ -47,18 +47,18 @@ class Repository extends AbstractGenerate
     /**
      * Generate single repository class.
      *
-     * @param string $name
+     * @param string $className
      * @return string|bool
      * @throws \InvalidArgumentException
      */
-    public function generate($name)
+    public function generate($className)
     {
-        if (!$this->configData->read($name)) {
-            throw new \InvalidArgumentException('Invalid class name: ' . $name);
+        if (!$this->configData->get($className)) {
+            throw new \InvalidArgumentException('Invalid class name: ' . $className);
         }
 
         return $this->generateClass(
-            $name, $this->configData->read($name)
+            $className, $this->configData->get($className)
         );
     }
 
