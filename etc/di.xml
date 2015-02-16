@@ -105,16 +105,6 @@
             <argument name="configuration" xsi:type="object">Magento\Mtf\Config\SystemEvent</argument>
         </arguments>
     </type>
-    <type name="Magento\Mtf\Fixture\FixtureFactory">
-        <arguments>
-            <argument name="configData" xsi:type="object">Magento\Mtf\Config\Fixture</argument>
-        </arguments>
-    </type>
-    <type name="Magento\Mtf\Util\Generate\Fixture">
-        <arguments>
-            <argument name="configData" xsi:type="object">Magento\Mtf\Config\Fixture</argument>
-        </arguments>
-    </type>
     <type name="Magento\Mtf\Util\Generate\Handler">
         <arguments>
             <argument name="configData" xsi:type="object">Magento\Mtf\Config\Fixture</argument>
@@ -442,4 +432,37 @@
         </arguments>
     </virtualType>
     <type name="Mtf\Fixture\InjectableFixture\Replacer" shared="true" />
+
+    <virtualType name="Magento\Mtf\Fixture\Config\Data" type="Magento\Mtf\Config\Data">
+        <arguments>
+            <argument name="reader" xsi:type="object">Magento\Mtf\Fixture\Config\Reader</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Magento\Mtf\Fixture\Config\SchemaLocator" type="Magento\Mtf\Config\SchemaLocator">
+        <arguments>
+            <argument name="schemaPath" xsi:type="string">Magento/Mtf/Fixture/etc/datafixture.xsd</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Magento\Mtf\Fixture\Config\Reader" type="Magento\Mtf\Config\Reader\Filesystem">
+        <arguments>
+            <argument name="fileResolver" xsi:type="object">Magento\Mtf\Config\FileResolver\Mask</argument>
+            <argument name="converter" xsi:type="object">Magento\Mtf\Config\ConverterPages</argument>
+            <argument name="schemaLocator" xsi:type="object">Magento\Mtf\Fixture\Config\SchemaLocator</argument>
+            <argument name="idAttributes" xsi:type="array">
+                <item name="/config/fixture" xsi:type="string">name</item>
+            </argument>
+            <argument name="fileName" xsi:type="string">#\.xml$#</argument>
+            <argument name="defaultScope" xsi:type="string">Fixture</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Mtf\Util\Generate\Fixture">
+        <arguments>
+            <argument name="configData" xsi:type="object">Magento\Mtf\Fixture\Config\Data</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Mtf\Fixture\FixtureFactory">
+        <arguments>
+            <argument name="configData" xsi:type="object">Magento\Mtf\Fixture\Config\Data</argument>
+        </arguments>
+    </type>
 </config>

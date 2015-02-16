@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="types.xsd"/>
+    <xs:element name="config">
+        <xs:annotation>
+            <xs:documentation>
+                The root element for configuration data.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fixture" maxOccurs="unbounded" minOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>
+                            An element that contains configuration data of a fixture.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="fixture">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="dataset" maxOccurs="unbounded" minOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>
+                            An element that contains the name of data set.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element ref="fixtureField" maxOccurs="unbounded" minOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>
+                            An element that contains fixture field settings.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute type="notEmptyType" name="name" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                        The name of the fixture.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute type="notEmptyType" name="module" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                        Module of the fixture
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute type="notEmptyType" name="type">
+                <xs:annotation>
+                    <xs:documentation>
+                        Fixture type
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute type="notEmptyType" name="entity_type">
+                <xs:annotation>
+                    <xs:documentation>
+                        Fixture entity type
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute type="notEmptyType" name="collection">
+                <xs:annotation>
+                    <xs:documentation>
+                        Entity collection class name
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute type="notEmptyType" name="repository_class">
+                <xs:annotation>
+                    <xs:documentation>
+                        Repository class name
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute type="notEmptyType" name="handler_interface">
+                <xs:annotation>
+                    <xs:documentation>
+                        Handler interface name (for persisting fixture)
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute type="notEmptyType" name="class">
+                <xs:annotation>
+                    <xs:documentation>
+                        Class name of the fixture
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="dataset">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="datasetField" maxOccurs="unbounded" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>
+                            An element that contains fixture field settings.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute type="notEmptyType" name="name" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                        The name of the dataset.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="fixtureField">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="default_value" maxOccurs="unbounded" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>
+                            An element that contains default value of a field.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute type="notEmptyType" name="name" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                        The name of the field.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute type="notEmptyType" name="is_required">
+                <xs:annotation>
+                    <xs:documentation>
+                        Is field required for filling.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute type="notEmptyType" name="group">
+                <xs:annotation>
+                    <xs:documentation>
+                        Is field required for filling.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute type="notEmptyType" name="source">
+                <xs:annotation>
+                    <xs:documentation>
+                        Is field required for filling.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="datasetField">
+        <xs:complexType>
+            <xs:attribute type="notEmptyType" name="name" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                        The name of the dataset.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="default_value"/>
+
+    <xs:simpleType name="notEmptyType">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

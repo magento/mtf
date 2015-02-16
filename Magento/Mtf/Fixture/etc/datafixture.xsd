@@ -26,7 +26,8 @@
  */
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <xs:element name="fixtures">
+    <xs:include schemaLocation="types.xsd"/>
+    <xs:element name="config">
         <xs:complexType>
             <xs:sequence>
                 <xs:element ref="fixture" maxOccurs="unbounded" minOccurs="1" />
