@@ -79,8 +79,11 @@ class FixtureFactory extends \Magento\Mtf\Factory\AbstractFactory
     protected function resolveClassName($code)
     {
         $config = $this->configuration->get('fixture/' . $code);
-        if (!empty($config)) {
+        if (empty($config)) {
             return false;
+        }
+        if (isset($config['class'])) {
+            return $config['class'];
         }
         return str_replace('_', '\\', $config['module']) . '\\Test\\Fixture\\' . ucfirst($code);
     }
