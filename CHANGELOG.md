@@ -1,3 +1,4 @@
+* Fixed wrong tests number is displayed for functional tests on Bamboo
 * Fixed fatal error after create screenshot or report on Windows
 * Implemented mechanism of applying 3rd party credentials
 * Fixed setValue() method for StrictselectElement class

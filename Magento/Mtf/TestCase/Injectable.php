@@ -125,6 +125,16 @@ abstract class Injectable extends Functional
     }
 
     /**
+     * Get variation name
+     *
+     * @return string
+     */
+    public function getVariationName()
+    {
+        return $this->variationName;
+    }
+
+    /**
      * Run with Variations Iterator
      *
      * @param \PHPUnit_Framework_TestResult $result

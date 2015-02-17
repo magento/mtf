@@ -25,7 +25,6 @@ namespace Magento\Mtf\TestRunner\Process;
 
 /**
  * Class Process
- *
  */
 class PHPUnitUtils extends \PHPUnit_Util_PHP
 {
@@ -38,9 +37,7 @@ class PHPUnitUtils extends \PHPUnit_Util_PHP
      */
     public function runJob($job, array $settings = [])
     {
-        throw new \PHPUnit_Framework_Exception(
-            'Should not call this method.'
-        );
+        throw new \PHPUnit_Framework_Exception('Should not call this method.');
     }
 
     /**
@@ -53,7 +50,7 @@ class PHPUnitUtils extends \PHPUnit_Util_PHP
      */
     protected function process($pipe, $job)
     {
-        /* do nothing */
+        //
     }
 
     /**
@@ -76,11 +73,7 @@ class PHPUnitUtils extends \PHPUnit_Util_PHP
         $time = 0;
 
         if (!empty($stderr)) {
-            $result->addError(
-                $test,
-                new \PHPUnit_Framework_Exception(trim($stderr)),
-                $time
-            );
+            $result->addError($test, new \PHPUnit_Framework_Exception(trim($stderr)), $time);
         } else {
             set_error_handler(
                 function ($errno, $errstr, $errfile, $errline) {
@@ -98,11 +91,7 @@ class PHPUnitUtils extends \PHPUnit_Util_PHP
                 restore_error_handler();
                 $childResult = false;
 
-                $result->addError(
-                    $test,
-                    new \PHPUnit_Framework_Exception(trim($stdout), 0, $e),
-                    $time
-                );
+                $result->addError($test, new \PHPUnit_Framework_Exception(trim($stdout), 0, $e), $time);
             }
 
             if ($childResult !== false) {
@@ -116,9 +105,7 @@ class PHPUnitUtils extends \PHPUnit_Util_PHP
                 $childResult = $childResult['result'];
 
                 if ($result->getCollectCodeCoverageInformation()) {
-                    $result->getCodeCoverage()->merge(
-                        $childResult->getCodeCoverage()
-                    );
+                    $result->getCodeCoverage()->merge($childResult->getCodeCoverage());
                 }
 
                 $time = $childResult->time();
@@ -129,38 +116,43 @@ class PHPUnitUtils extends \PHPUnit_Util_PHP
                 $failures = $childResult->failures();
 
                 if (!empty($notImplemented)) {
-                    $result->addError(
-                        $test,
-                        $this->getException($notImplemented[0]),
-                        $time
-                    );
-                } elseif (!empty($risky)) {
-                    $result->addError(
-                        $test,
-                        $this->getException($risky[0]),
-                        $time
-                    );
-                } elseif (!empty($skipped)) {
-                    $result->addError(
-                        $test,
-                        $this->getException($skipped[0]),
-                        $time
-                    );
-                } elseif (!empty($errors)) {
-                    foreach ($errors as $error) {
-                        $result->addError(
-                            $test,
-                            $this->getException($error),
-                            $time
-                        );
+                    foreach ($notImplemented as $variation => $error) {
+                        $name = $test->getName();
+                        $test->setName($name . " variation $variation");
+                        $result->addError($test, $this->getException($error), $time);
+                        $test->setName($name);
                     }
-                } elseif (!empty($failures)) {
-                    foreach ($failures as $failure) {
-                        $result->addFailure(
-                            $test,
-                            $this->getException($failure),
-                            $time
-                        );
+                }
+                if (!empty($risky)) {
+                    foreach ($risky as $variation => $error) {
+                        $name = $test->getName();
+                        $test->setName($name . " variation $variation");
+                        $result->addError($test, $this->getException($error), $time);
+                        $test->setName($name);
+                    }
+                }
+                if (!empty($skipped)) {
+                    foreach ($skipped as $variation => $error) {
+                        $name = $test->getName();
+                        $test->setName($name . " variation $variation");
+                        $result->addError($test, $this->getException($error), $time);
+                        $test->setName($name);
+                    }
+                }
+                if (!empty($errors)) {
+                    foreach ($errors as $variation => $error) {
+                        $name = $test->getName();
+                        $test->setName($name . " variation $variation");
+                        $result->addError($test, $this->getException($error), $time);
+                        $test->setName($name);
+                    }
+                }
+                if (!empty($failures)) {
+                    foreach ($failures as $variation => $failure) {
+                        $name = $test->getName();
+                        $test->setName($name . " variation $variation");
+                        $result->addFailure($test, $this->getException($failure), $time);
+                        $test->setName($name);
                     }
                 }
             }
@@ -189,11 +181,7 @@ class PHPUnitUtils extends \PHPUnit_Util_PHP
             }
 
             $exception = new \PHPUnit_Framework_SyntheticError(
-                sprintf(
-                    '%s: %s',
-                    $exceptionArray['_PHP_Incomplete_Class_Name'],
-                    $exceptionArray['message']
-                ),
+                sprintf('%s: %s', $exceptionArray['_PHP_Incomplete_Class_Name'], $exceptionArray['message']),
                 $exceptionArray['code'],
                 $exceptionArray['file'],
                 $exceptionArray['line'],
