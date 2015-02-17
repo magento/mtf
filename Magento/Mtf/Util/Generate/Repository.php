@@ -6,7 +6,9 @@
 namespace Magento\Mtf\Util\Generate;
 
 /**
- * Repository files generator.
+ * Class Repository.
+ *
+ * Repository classes generator.
  */
 class Repository extends AbstractGenerate
 {
@@ -63,7 +65,7 @@ class Repository extends AbstractGenerate
     }
 
     /**
-     * Generate repository class from sources.
+     * Generate repository class from XML source.
      *
      * @param string $name
      * @param array $data

@@ -58,18 +58,19 @@ class Page extends AbstractGenerate
     public function generate($className)
     {
         $classNameParts = explode('\\', $className);
+        $classDataKey = 'page/' . end($classNameParts);
 
-        if (!$this->configData->get('page/' . end($classNameParts))) {
+        if (!$this->configData->get($classDataKey)) {
             throw new \InvalidArgumentException('Invalid class name: ' . $className);
         }
 
         return $this->generateClass(
-            end($classNameParts), $this->configData->get('page/' . end($classNameParts))
+            end($classNameParts), $this->configData->get($classDataKey)
         );
     }
 
     /**
-     * Generate page class from sources.
+     * Generate page class from XML source.
      *
      * @param string $name
      * @param array $data

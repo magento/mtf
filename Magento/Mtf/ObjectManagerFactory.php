@@ -61,7 +61,8 @@ class ObjectManagerFactory
             new \Magento\Mtf\Code\Generator(
                 [
                     'page' => 'Magento\Mtf\Util\Generate\Page',
-                    'repository' => 'Magento\Mtf\Util\Generate\Repository'
+                    'repository' => 'Magento\Mtf\Util\Generate\Repository',
+                    'fixture' => 'Magento\Mtf\Util\Generate\Fixture'
                 ]
             )
         );

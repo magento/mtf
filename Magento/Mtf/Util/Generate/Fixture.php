@@ -1,106 +1,79 @@
 <?php
 /**
- * Magento
- *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@magentocommerce.com so we can send you a copy immediately.
- *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade Magento to newer
- * versions in the future. If you wish to customize Magento for your
- * needs please refer to http://www.magentocommerce.com for more information.
- *
- * @copyright   Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
- * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
-
 namespace Magento\Mtf\Util\Generate;
 
-use Magento\Mtf\ObjectManagerInterface;
-use Magento\Mtf\Repository\Reader\Converter;
-use Magento\Mtf\Config\DataInterface;
-
 /**
- * Fixture files generator.
+ * Class Fixture.
+ *
+ * Fixture classes generator.
  *
  * @internal
  */
 class Fixture extends AbstractGenerate
 {
     /**
-     * @var DataInterface
+     * @var \Magento\Mtf\Config\DataInterface
      */
     protected $configData;
 
     /**
      * @constructor
-     * @param ObjectManagerInterface $objectManager
-     * @param Converter $repositoryConverter
+     * @param \Magento\Mtf\ObjectManagerInterface $objectManager
+     * @param \Magento\Mtf\Config\DataInterface $configData
      */
     public function __construct(
-        ObjectManagerInterface $objectManager,
-        DataInterface $configData,
-        Converter $repositoryConverter
+        \Magento\Mtf\ObjectManagerInterface $objectManager,
+        \Magento\Mtf\Config\DataInterface $configData
     ) {
         parent::__construct($objectManager);
         $this->configData = $configData;
-        $this->repositoryConverter = $repositoryConverter;
     }
 
     /**
-     * Launch Fixture generators.
+     * Launch generation of all fixture classes.
      *
      * @return void
      */
     public function launch()
     {
-        $this->generateClasses();
-    }
-
-    /**
-     * Generate Fixtures Classes.
-     *
-     * @return void
-     */
-    protected function generateClasses()
-    {
         $this->cnt = 0;
-        $fixtures = $this->configData->get('fixture');
-        foreach ($fixtures as $key => $fixtureData) {
-            $this->generateClass($fixtureData);
+
+        foreach ($this->configData->get('fixture') as $name => $data) {
+            $this->generateClass($data);
         }
+
         \Magento\Mtf\Util\Generate\GenerateResult::addResult('Fixture Classes', $this->cnt);
     }
 
-    protected function resolveArguments($arguments)
+    /**
+     * Generate single fixture class.
+     *
+     * @param string $className
+     * @return string|bool
+     * @throws \InvalidArgumentException
+     */
+    public function generate($className)
     {
-        $output = [];
-        if (isset($arguments['item'])) {
-            $arguments = $arguments['item'];
+        $classNameParts = explode('\\', $className);
+        $classDataKey = 'fixture/' . lcfirst(end($classNameParts));
+
+        if (!$this->configData->get($classDataKey)) {
+            throw new \InvalidArgumentException('Invalid class name: ' . $className);
         }
-        foreach ($arguments as $key => $item) {
-            if (isset($item['xsi:type']) && $item['xsi:type'] == 'array') {
-                $output[$key] = $this->resolveArguments($item);
-            } else if (is_array($item)){
-                $output[$key] = $item['value'];
-            }
-        }
-        return $output;
+
+        return $this->generateClass(
+            $this->configData->get($classDataKey)
+        );
     }
 
     /**
-     * Generate fixture classes from sources.
+     * Generate fixture class from XML source.
      *
      * @param array $item
-     * @return void
+     * @return string|bool
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
@@ -203,8 +176,39 @@ class Fixture extends AbstractGenerate
             mkdir($folderPath, 0777, true);
         }
 
-        file_put_contents($filePath, $content);
+        $result = @file_put_contents($filePath, $content);
+
+        if ($result === false) {
+            $error = error_get_last();
+            $this->addError(sprintf('Unable to generate %s class. Error: %s', $className, $error['message']));
+            return false;
+        }
+
         $this->cnt++;
+
+        return $filePath;
+    }
+
+    /**
+     * Resolve arguments.
+     *
+     * @param array $arguments
+     * @return array
+     */
+    protected function resolveArguments($arguments)
+    {
+        $output = [];
+        if (isset($arguments['item'])) {
+            $arguments = $arguments['item'];
+        }
+        foreach ($arguments as $key => $item) {
+            if (isset($item['xsi:type']) && $item['xsi:type'] == 'array') {
+                $output[$key] = $this->resolveArguments($item);
+            } else if (is_array($item)){
+                $output[$key] = $item['value'];
+            }
+        }
+        return $output;
     }
 
     /**
