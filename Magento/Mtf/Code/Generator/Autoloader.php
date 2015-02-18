@@ -31,7 +31,7 @@ class Autoloader
     public function load($className)
     {
         if (!class_exists($className)) {
-            return Generator::GENERATION_ERROR != $this->generator->generateClass($className);
+            return Generator::GENERATION_SUCCESS == $this->generator->generateClass($className);
         }
         return true;
     }

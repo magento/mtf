@@ -78,11 +78,6 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
     protected $eventManager;
 
     /**
-     * @var bool
-     */
-    private static $codeGenerationFlag = false;
-
-    /**
      * Whether or not this test is running in a separate PHP process.
      *
      * @var boolean
@@ -170,8 +165,6 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
 
         $this->eventManager = $this->getObjectManager()->get('Magento\Mtf\System\Event\EventManagerInterface');
 
-        $this->generateCode();
-
         $this->_construct();
     }
 
@@ -249,23 +242,6 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
     public function __sleep()
     {
         return [];
-    }
-
-    /**
-     * Run code generator if necessary
-     *
-     * @return void
-     */
-    protected function generateCode()
-    {
-        if (self::$codeGenerationFlag) {
-            return;
-        }
-        self::$codeGenerationFlag = true;
-
-        /** @var $generate \Magento\Mtf\Util\Generate\Page */
-        $generator = $this->objectManager->get('Magento\Mtf\Util\Generate\Page');
-        $generator->launch();
     }
 
     /**

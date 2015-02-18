@@ -17,6 +17,7 @@ class Generator
      */
     const GENERATION_SUCCESS = 'success';
     const GENERATION_ERROR = 'error';
+    const GENERATION_SKIP = 'skip';
     /**#@- */
 
     /**
@@ -54,28 +55,28 @@ class Generator
     {
         $classNameRegexp = '/\\\Test\\\([^\\\]+)(?:\\\[^\\\]+)+$/';
 
-        if (!preg_match($classNameRegexp, $className, $matches)) {
-            throw new \InvalidArgumentException('Corrupted class name: ' . $className);
+        if (preg_match($classNameRegexp, $className, $matches)) {
+            $classType = lcfirst($matches[1]);
+
+            if (!isset($this->generatedEntities[$classType])) {
+                throw new \InvalidArgumentException('Unknown type of class: ' . $classType);
+            }
+
+            /** @var \Magento\Mtf\Util\Generate\AbstractGenerate $generator */
+            $generator = $this->createGeneratorInstance($this->generatedEntities[$classType]);
+
+            $classFilePath = $generator->generate($className);
+
+            if (!$classFilePath) {
+                throw new \Exception(implode(' ', $generator->getErrors()));
+            }
+
+            $this->includeFile($classFilePath);
+
+            return self::GENERATION_SUCCESS;
         }
 
-        $classType = lcfirst($matches[1]);
-
-        if (!isset($this->generatedEntities[$classType])) {
-            throw new \InvalidArgumentException('Unknown class type: ' . $classType);
-        }
-
-        /** @var \Magento\Mtf\Util\Generate\AbstractGenerate $generator */
-        $generator = $this->createGeneratorInstance($this->generatedEntities[$classType]);
-
-        $classFilePath = $generator->generate($className);
-
-        if (!$classFilePath) {
-            throw new \Exception(implode(' ', $generator->getErrors()));
-        }
-
-        $this->includeFile($classFilePath);
-
-        return self::GENERATION_SUCCESS;
+        return self::GENERATION_SKIP;
     }
 
     /**
