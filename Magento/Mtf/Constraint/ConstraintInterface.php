@@ -38,4 +38,11 @@ interface ConstraintInterface
      * @return void
      */
     public function configure(array $arguments = []);
+
+    /**
+     * Is Constraint enabled
+     *
+     * @return boolean
+     */
+    public function isActive();
 }

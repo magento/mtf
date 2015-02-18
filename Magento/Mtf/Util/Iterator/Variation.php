@@ -119,9 +119,8 @@ class Variation extends AbstractIterator
      */
     private function getTestCaseMethodVariations()
     {
-        $classPath = explode('\\', get_class($this->testCase));
         $variations = $this->configData->get(
-            'testCase/' . end($classPath) . '/variation',
+            'testCase/' . get_class($this->testCase) . '/variation',
             ['Default' => []]
         );
         foreach ($variations as $key => $variation) {

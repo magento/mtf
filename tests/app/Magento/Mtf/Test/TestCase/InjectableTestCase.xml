@@ -6,17 +6,17 @@
  */
  -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../etc/variations.xsd">
-  <testCase name="InjectableTestCase">
+  <testCase name="Magento\Mtf\Test\TestCase\InjectableTestCase">
     <variation name="InjectableTestCaseVariation1" firstConstraint="pageOpenSuccess" method="test">
       <data name="fixture/data/locator" xsi:type="string">#hplogo</data>
       <data name="fixture/data/strategy" xsi:type="string">css selector</data>
-      <constraint name="pageOpenSuccess"/>
+      <constraint name="Magento\Mtf\Test\Constraint\PageOpenSuccess"/>
     </variation>
     <variation name="InjectableTestCaseVariation2" firstConstraint="pageOpenSuccess" method="test">
       <data name="fixture/data/locator" xsi:type="string">#hplogo</data>
       <data name="fixture/data/strategy" xsi:type="string">css selector</data>
       <data name="tag" xsi:type="string">success</data>
-      <constraint name="pageOpenSuccess"/>
+      <constraint name="Magento\Mtf\Test\Constraint\PageOpenSuccess"/>
     </variation>
   </testCase>
 </config>

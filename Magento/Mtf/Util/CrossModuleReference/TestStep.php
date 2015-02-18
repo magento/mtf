@@ -30,10 +30,7 @@ namespace Magento\Mtf\Util\CrossModuleReference;
 class TestStep extends Common implements CheckerInterface
 {
     const KEY_PROP_SCENARIO = 'scenario';
-    const KEY_METHODS = 'methods';
     const KEY_STEP_MODULE = 'module';
-    const KEY_STEPS = 'steps';
-    const KEY_SCENARIO_MODULE = 'module';
 
     /**
      * Map of testcases that cross reference test steps in other modules
@@ -43,14 +40,14 @@ class TestStep extends Common implements CheckerInterface
     protected $testStepCrossModuleMap = null;
 
     /**
-     * @var \Magento\Mtf\Config
+     * @var \Magento\Mtf\Config\DataInterface
      */
     protected $config;
 
     /**
-     * @param \Magento\Mtf\Config $config
+     * @param \Magento\Mtf\Config\DataInterface $config
      */
-    public function __construct(\Magento\Mtf\Config $config)
+    public function __construct(\Magento\Mtf\Config\DataInterface $config)
     {
         $this->config = $config;
     }
@@ -87,8 +84,8 @@ class TestStep extends Common implements CheckerInterface
      */
     protected function initialize()
     {
-        $scenarioConfig = $this->config->getParameter('scenario');
-        if (empty($scenarioConfig) || empty($scenarioConfig['scenarios'])) {
+        $scenarios = $this->config->get(self::KEY_PROP_SCENARIO);
+        if (empty($scenarios)) {
             $this->testStepCrossModuleMap = [];
             return;
         }
@@ -100,23 +97,18 @@ class TestStep extends Common implements CheckerInterface
                 continue;
             }
             $testClassShortName = $testCaseClass->getShortName();
-            if (!isset($scenarioConfig['scenarios'][$testClassShortName])) {
+            if (!isset($scenarios[$testClassShortName])) {
                 continue;
             }
 
-            $config = $scenarioConfig['scenarios'][$testClassShortName];
+            $config = $scenarios[$testClassShortName];
             $testStepModules = [];
-            $testCaseModule = $config[self::KEY_SCENARIO_MODULE];
-            foreach ($config[self::KEY_METHODS] as $testMethod) {
-                foreach ($testMethod[self::KEY_STEPS] as $step) {
-                    if (!is_array($step)) {
-                        continue;
-                    }
-                    $stepModule = $step[self::KEY_STEP_MODULE];
-                    if ($stepModule != $testCaseModule) {
-                        $testStepModules[$stepModule] = true;
-                    }
+            foreach ($config['step'] as $step) {
+                if (!is_array($step)) {
+                    continue;
                 }
+                $stepModule = $step[self::KEY_STEP_MODULE];
+                $testStepModules[$stepModule] = true;
             }
 
             if (!empty($testStepModules)) {

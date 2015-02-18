@@ -113,16 +113,6 @@
             <argument name="configData" xsi:type="object">Magento\Mtf\Repository\Config\Data</argument>
         </arguments>
     </type>
-    <type name="Magento\Mtf\Constraint\ConstraintFactory">
-        <arguments>
-            <argument name="configData" xsi:type="object">Magento\Mtf\Constraint\Config\Data</argument>
-        </arguments>
-    </type>
-    <type name="Magento\Mtf\Util\Generate\Constraint">
-        <arguments>
-            <argument name="configData" xsi:type="object">Magento\Mtf\Constraint\Config\Data</argument>
-        </arguments>
-    </type>
     <type name="Magento\Mtf\Page\Page">
         <arguments>
             <argument name="configData" xsi:type="object">Magento\Mtf\Page\Config\Data</argument>
@@ -187,11 +177,6 @@
             <argument name="reader" xsi:type="object">Magento\Mtf\Config\Reader\Fixture</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Magento\Mtf\Constraint\Config\Data" type="Magento\Mtf\Config\Data">
-        <arguments>
-            <argument name="reader" xsi:type="object">Magento\Mtf\Constraint\Config\Reader</argument>
-        </arguments>
-    </virtualType>
     <virtualType name="Magento\Mtf\Page\Config\Data" type="Magento\Mtf\Config\Data">
         <arguments>
             <argument name="reader" xsi:type="object">Magento\Mtf\Page\Config\Reader</argument>
@@ -220,11 +205,6 @@
     <virtualType name="Magento\Mtf\Config\SchemaLocator\Fixture" type="Magento\Mtf\Config\SchemaLocator">
         <arguments>
             <argument name="schemaPath" xsi:type="string">Magento/Mtf/Fixture/etc/fixture.xsd</argument>
-        </arguments>
-    </virtualType>
-    <virtualType name="Magento\Mtf\Constraint\Config\SchemaLocator" type="Magento\Mtf\Config\SchemaLocator">
-        <arguments>
-            <argument name="schemaPath" xsi:type="string">etc/constraints.xsd</argument>
         </arguments>
     </virtualType>
     <virtualType name="Magento\Mtf\Config\SchemaLocator\Page" type="Magento\Mtf\Config\SchemaLocator">
@@ -285,20 +265,6 @@
             <argument name="converter" xsi:type="object">Magento\Mtf\Config\Converter</argument>
             <argument name="schemaLocator" xsi:type="object">Magento\Mtf\Config\SchemaLocator\Fixture</argument>
             <argument name="fileName" xsi:type="string">fixture.xml</argument>
-            <argument name="defaultScope" xsi:type="string">etc</argument>
-        </arguments>
-    </virtualType>
-    <virtualType name="Magento\Mtf\Constraint\Config\Reader" type="Magento\Mtf\Config\Reader\Filesystem">
-        <arguments>
-            <argument name="fileResolver" xsi:type="object">Magento\Mtf\Config\FileResolver\Module</argument>
-            <argument name="converter" xsi:type="object">Magento\Mtf\Config\ConverterPages</argument>
-            <argument name="schemaLocator" xsi:type="object">Magento\Mtf\Constraint\Config\SchemaLocator</argument>
-            <argument name="idAttributes" xsi:type="array">
-                <item name="/config" xsi:type="string">scope</item>
-                <item name="/config/constraint" xsi:type="string">name</item>
-                <item name="/config/constraint/argument" xsi:type="string">name</item>
-            </argument>
-            <argument name="fileName" xsi:type="string">constraint.xml</argument>
             <argument name="defaultScope" xsi:type="string">etc</argument>
         </arguments>
     </virtualType>
@@ -430,6 +396,16 @@
         </arguments>
     </virtualType>
     <type name="Mtf\Fixture\InjectableFixture\Replacer" shared="true" />
+    <type name="Magento\Mtf\Util\CrossModuleReference\Constraint">
+        <arguments>
+            <argument name="configVariation" xsi:type="object">Magento\Mtf\Variation\Config\Data</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Mtf\Util\CrossModuleReference\TestStep">
+        <arguments>
+            <argument name="config" xsi:type="object">Magento\Mtf\TestCase\Config\Data</argument>
+        </arguments>
+    </type>
 
     <virtualType name="Magento\Mtf\Fixture\Config\Data" type="Magento\Mtf\Config\Data">
         <arguments>
