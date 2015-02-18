@@ -1,3 +1,11 @@
+1.0.0-rc.18
+=============
+* Fixed wrong tests number is displayed for functional tests on Bamboo
+* Fixed fatal error after create screenshot or report on Windows
+* Implemented mechanism of applying 3rd party credentials
+* Fixed setValue() method for StrictselectElement class
+* Fixed an issue with applying variations rules in parallel run after configuration unification
+
 1.0.0-rc.17
 =============
 * Unified Format for pages configuration

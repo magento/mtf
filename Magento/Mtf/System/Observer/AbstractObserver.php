@@ -61,14 +61,24 @@ abstract class AbstractObserver implements ObserverInterface
      */
     protected function createDestinationDirectory($suffix = '')
     {
+        $testClass = str_replace('\\', '-', EventState::getTestClassName());
+        preg_match('`^\w*?-(\w*?)-.*?-(\w*?)$`', $testClass, $path);
+
+        $testSuite = (preg_match('`\\\`', EventState::getTestSuiteName()) == false)
+            ? EventState::getTestSuiteName()
+            : 'magento';
+
         $directory = sprintf(
-            '%s/%s/%s/' . $suffix,
-            strtolower(str_replace('\\', '-', EventState::getTestSuiteName())),
-            strtolower(str_replace('\\', '-', EventState::getTestClassName())),
+            '%s/%s/%s/%s/' . $suffix,
+            $testSuite,
+            $path[1],
+            $path[2],
             EventState::getTestMethodName()
         );
-        if (!is_dir($this->logger->getLogDirectoryPath() . '/' . $directory)) {
-            mkdir(MTF_BP . '/' . $this->logger->getLogDirectoryPath() . '/' . $directory, 0777, true);
+
+        $dir = MTF_BP . '/' . $this->logger->getLogDirectoryPath() . DIRECTORY_SEPARATOR . $directory;
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777, true);
         }
         return $directory;
     }

@@ -52,44 +52,49 @@ class JUnit extends \PHPUnit_Util_Log_JUnit
     public function endTest(\PHPUnit_Framework_Test $test, $time)
     {
         if (!$test instanceof \PHPUnit_Framework_Warning) {
-            if ($this->attachCurrentTestCase) {
-                if ($test instanceof \PHPUnit_Framework_TestCase) {
-                    $numAssertions = $test->getNumAssertions();
-                    $this->testSuiteAssertions[$this->testSuiteLevel] += $numAssertions;
+            if ($test instanceof \PHPUnit_Framework_TestCase) {
+                $numAssertions = $test->getNumAssertions();
+                $this->testSuiteAssertions[$this->testSuiteLevel] += $numAssertions;
 
-                    $this->currentTestCase->setAttribute('assertions', $numAssertions);
-                }
+                $this->currentTestCase->setAttribute('assertions', $numAssertions);
+            }
 
-                $this->currentTestCase->setAttribute(
-                    'time',
-                    sprintf('%F', $time)
+            $this->currentTestCase->setAttribute(
+                'time',
+                sprintf('%F', $time)
+            );
+
+            $class = new \ReflectionClass($test);
+
+            $xpath = new \DOMXPath($this->document);
+
+            $queryForRemoveEmptyTestSuite = '//testsuite/testsuite/testsuite/testsuite';
+            $entriesForRemoveEmptyTestSuite = $xpath->query($queryForRemoveEmptyTestSuite)->item(0);
+            if ($entriesForRemoveEmptyTestSuite) {
+                $entriesForRemoveEmptyTestSuite->parentNode->removeChild($entriesForRemoveEmptyTestSuite);
+            }
+
+            $query = '//testsuite[@name="' . $class->name . '"]';
+            $entries = $xpath->query($query);
+
+            $entries->item(0)->appendChild($this->currentTestCase);
+
+            $entries->item(0)->setAttribute("tests", $entries->item(0)->childNodes->length);
+
+            $errors = $xpath->query('//testsuite[@name="' . $class->name . '"]//error')->length;
+            $entries->item(0)->setAttribute("errors", $errors);
+
+            $errors = $xpath->query('//testsuite[@name="' . $class->name . '"]//failure')->length;
+            $entries->item(0)->setAttribute("failures", $errors);
+
+            $entries->item(0)->setAttribute("time", $entries->item(0)->getAttribute("time") + $time);
+
+            if (method_exists($test, 'hasOutput') && $test->hasOutput()) {
+                $systemOut = $this->document->createElement('system-out');
+                $systemOut->appendChild(
+                    $this->document->createTextNode($test->getActualOutput())
                 );
-
-                $class = new \ReflectionClass($test);
-
-                $xpath = new \DOMXPath($this->document);
-                $query = '//testsuite[@name="' . $class->name . '"]';
-                $entries = $xpath->query($query);
-
-                $entries->item(0)->appendChild($this->currentTestCase);
-
-                $entries->item(0)->setAttribute("tests", $entries->item(0)->childNodes->length);
-
-                $errors = $xpath->query('//testsuite[@name="' . $class->name . '"]//error')->length;
-                $entries->item(0)->setAttribute("errors", $errors);
-
-                $errors = $xpath->query('//testsuite[@name="' . $class->name . '"]//failure')->length;
-                $entries->item(0)->setAttribute("failures", $errors);
-
-                $entries->item(0)->setAttribute("time", $entries->item(0)->getAttribute("time") + $time);
-
-                if (method_exists($test, 'hasOutput') && $test->hasOutput()) {
-                    $systemOut = $this->document->createElement('system-out');
-                    $systemOut->appendChild(
-                        $this->document->createTextNode($test->getActualOutput())
-                    );
-                    $this->currentTestCase->appendChild($systemOut);
-                }
+                $this->currentTestCase->appendChild($systemOut);
             }
         }
 
