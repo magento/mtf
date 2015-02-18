@@ -97,7 +97,6 @@ abstract class Injectable extends Functional
      */
     public function __construct($name = null, array $data = [], $dataName = '', $path = '')
     {
-        $this->initObjectManager();
         parent::__construct($name, $data, $dataName);
         $this->dataId = get_class($this) . '::' . $name;
         $this->filePath = $path;
@@ -323,34 +322,5 @@ abstract class Injectable extends Functional
             'Magento\Mtf\Constraint\Composite',
             ['codeConstraints' => array_keys($constraintsArray)]
         );
-    }
-
-    /**
-     * Initialize ObjectManager.
-     *
-     * @return void
-     */
-    protected function initObjectManager()
-    {
-        if (!$objectManager = \Magento\Mtf\ObjectManager::getInstance()) {
-            $objectManagerFactory = new \Magento\Mtf\ObjectManagerFactory();
-            $configurationFile = isset($_ENV['testsuite_rule'])
-                ? $_ENV['testsuite_rule']
-                : 'basic';
-            $confFilePath = realpath(
-                MTF_BP . '/testsuites/' . $_ENV['testsuite_rule_path'] . '/' . $configurationFile . '.xml'
-            );
-            /** @var \Magento\Mtf\Config\TestRunner $testRunnerConfiguration */
-            $testRunnerConfiguration = $objectManagerFactory->getObjectManager()->get('Magento\Mtf\Config\TestRunner');
-            $testRunnerConfiguration->load($confFilePath);
-            $testRunnerConfiguration->loadEnvConfig();
-
-            $shared = [
-                'Magento\Mtf\Config\TestRunner' => $testRunnerConfiguration
-            ];
-            $objectManagerFactory = new \Magento\Mtf\ObjectManagerFactory();
-            $this->objectManager = $objectManagerFactory->create($shared);
-        }
-        $this->objectManager = $objectManager;
     }
 }
