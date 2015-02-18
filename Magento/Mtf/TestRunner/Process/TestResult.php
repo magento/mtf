@@ -106,7 +106,7 @@ class TestResult extends \PHPUnit_Framework_TestResult
     public function addFailure(\PHPUnit_Framework_Test $test, \PHPUnit_Framework_AssertionFailedError $e, $time)
     {
         $variation = null;
-        if ($test instanceof \Magento\Mtf\TestCase\Functional) {
+        if ($test instanceof Injectable) {
             $variation = $test->getVariationName();
         }
 
