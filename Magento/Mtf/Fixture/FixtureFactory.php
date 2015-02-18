@@ -63,6 +63,9 @@ class FixtureFactory extends \Magento\Mtf\Factory\AbstractFactory
         if (empty($config)) {
             return false;
         }
+        if (isset($config['class'])) {
+            return $config['class'];
+        }
         return str_replace('_', '\\', $config['module']) . '\\Test\\Fixture\\' . ucfirst($code);
     }
 }
