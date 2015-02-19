@@ -30,15 +30,6 @@ namespace Magento\Mtf\Fixture\InjectableFixture\Replacer;
 class Converter implements \Magento\Mtf\Config\ConverterInterface
 {
     /**
-     * Mapping primary attribute of elements.
-     *
-     * @var array
-     */
-    protected $mappingKey = [
-        'field' => 'path'
-    ];
-
-    /**
      * Convert xml to array.
      *
      * @param \DOMDocument $source
@@ -57,24 +48,16 @@ class Converter implements \Magento\Mtf\Config\ConverterInterface
      */
     protected function convertElement(\DOMElement $element)
     {
+        $data = ['path' => [], 'replace' => []];
         if ($element->hasChildNodes()) {
-            $data = [];
-
             foreach ($element->childNodes as $node) {
                 if ($node instanceof \DOMElement) {
-                    $tag = $node->nodeName;
-                    $key = null;
                     $value = $this->convertElement($node);
-
-                    if (isset($this->mappingKey[$tag])) {
-                        $attribute = $this->mappingKey[$tag];
-                        $key = $node->hasAttribute($attribute) ? $node->getAttribute($attribute) : null;
-                    }
-
+                    $key = $this->getKey($node);
                     if ($key) {
-                        $data[$key] = $value;
+                        $data[$key][$node->getAttribute($key)] = $value;
                     } else {
-                        $data[] = $value;
+                        $data[$key][] = $value;
                     }
                 }
             }
@@ -83,5 +66,22 @@ class Converter implements \Magento\Mtf\Config\ConverterInterface
         }
 
         return $data;
+    }
+
+    /**
+     * Get unique identifier of element.
+     *
+     * @param \DOMElement $node
+     * @return string|null
+     */
+    protected function getKey(\DOMElement $node)
+    {
+        $attributes = ['path', 'replace'];
+        foreach ($attributes as $attribute) {
+            if ($node->hasAttribute($attribute)) {
+                return $attribute;
+            }
+        }
+        return null;
     }
 }

@@ -46,7 +46,8 @@
             </xs:documentation>
         </xs:annotation>
         <xs:complexType>
-            <xs:attribute name="path" type="xs:string" use="required" />
+            <xs:attribute name="path" type="xs:string" use="optional" />
+            <xs:attribute name="replace" type="xs:string" use="optional" />
             <xs:attribute name="value" type="xs:string" use="required" />
         </xs:complexType>
     </xs:element>

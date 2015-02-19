@@ -40,47 +40,47 @@ class Factory implements FactoryInterface
     /**
      * Handlers Factory
      *
-     * @var Magento\Mtf\Handler\HandlerFactoryDeprecated
+     * @var \Magento\Mtf\Handler\HandlerFactoryDeprecated
      */
     protected static $_app;
 
     /**
-     * @var Magento\Mtf\Client\ElementInterface
+     * @var \Magento\Mtf\Client\ElementInterface
      */
     protected static $_rootElement;
 
     /**
      * Client Browser instance
      *
-     * @var Magento\Mtf\Client\BrowserInterface
+     * @var \Magento\Mtf\Client\BrowserInterface
      */
     protected static $_clientBrowser;
 
     /**
      * Page Factory
      *
-     * @var Magento\Mtf\Page\PageFactoryDeprecated
+     * @var \Magento\Mtf\Page\PageFactoryDeprecated
      */
     protected static $_pageFactory;
 
     /**
      * Block Factory
      *
-     * @var Magento\Mtf\Block\BlockFactoryDeprecated
+     * @var \Magento\Mtf\Block\BlockFactoryDeprecated
      */
     protected static $_blockFactory;
 
     /**
      * Fixture Factory
      *
-     * @var Magento\Mtf\Fixture\FixtureFactoryDeprecated
+     * @var \Magento\Mtf\Fixture\FixtureFactoryDeprecated
      */
     protected static $_fixtureFactory;
 
     /**
      * Repository Factory
      *
-     * @var Magento\Mtf\Repository\RepositoryFactoryDeprecated
+     * @var \Magento\Mtf\Repository\RepositoryFactoryDeprecated
      */
     protected static $_repositoryFactory;
 
@@ -177,7 +177,7 @@ class Factory implements FactoryInterface
     /**
      * Get handlers factory
      *
-     * @return Magento\Mtf\Handler\HandlerFactoryDeprecated
+     * @return \Magento\Mtf\Handler\HandlerFactoryDeprecated
      */
     public static function getApp()
     {
@@ -191,7 +191,7 @@ class Factory implements FactoryInterface
      * Get Client Browser
      *
      * @spi
-     * @return Magento\Mtf\Client\BrowserInterface
+     * @return \Magento\Mtf\Client\BrowserInterface
      */
     public static function getClientBrowser()
     {
@@ -205,7 +205,7 @@ class Factory implements FactoryInterface
      * Get Page factory
      *
      * @api
-     * @return Magento\Mtf\Page\PageFactoryDeprecated
+     * @return \Magento\Mtf\Page\PageFactoryDeprecated
      */
     public static function getPageFactory()
     {
@@ -219,7 +219,7 @@ class Factory implements FactoryInterface
      * Get block factory
      *
      * @api
-     * @return Magento\Mtf\Block\BlockFactoryDeprecated
+     * @return \Magento\Mtf\Block\BlockFactoryDeprecated
      */
     public static function getBlockFactory()
     {
@@ -233,7 +233,7 @@ class Factory implements FactoryInterface
      * Get fixture factory
      *
      * @api
-     * @return Magento\Mtf\Fixture\FixtureFactoryDeprecated
+     * @return \Magento\Mtf\Fixture\FixtureFactoryDeprecated
      */
     public static function getFixtureFactory()
     {
@@ -247,7 +247,7 @@ class Factory implements FactoryInterface
      * Get repository factory
      *
      * @api
-     * @return Magento\Mtf\Repository\RepositoryFactoryDeprecated
+     * @return \Magento\Mtf\Repository\RepositoryFactoryDeprecated
      */
     public static function getRepositoryFactory()
     {

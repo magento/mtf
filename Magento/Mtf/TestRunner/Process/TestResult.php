@@ -28,6 +28,7 @@ use Magento\Mtf\TestRunner\Process\Exception\Failure;
 use Magento\Mtf\TestRunner\Process\Exception\Skipped;
 use Magento\Mtf\TestRunner\Process\Exception\Risky;
 use Magento\Mtf\TestRunner\Process\Exception\Incomplete;
+use Magento\Mtf\TestCase\Injectable;
 
 /**
  * Class ProcessTestResult
@@ -48,21 +49,105 @@ class TestResult extends \PHPUnit_Framework_TestResult
      */
     public function addError(\PHPUnit_Framework_Test $test, \Exception $e, $time)
     {
-        parent::addError($test, $this->wrapException($e), $time);
+        $variation = 0;
+        if ($test instanceof Injectable) {
+            $variation = $test->getVariationName();
+        }
+
+        if ($e instanceof \PHPUnit_Framework_RiskyTest) {
+            $this->risky[$variation] = new \PHPUnit_Framework_TestFailure($test, $e);
+
+            $notifyMethod = 'addRiskyTest';
+
+            if ($this->stopOnRisky) {
+                $this->stop();
+            }
+        } elseif ($e instanceof \PHPUnit_Framework_IncompleteTest) {
+            $this->notImplemented[$variation] = new \PHPUnit_Framework_TestFailure($test, $e);
+
+            $notifyMethod = 'addIncompleteTest';
+
+            if ($this->stopOnIncomplete) {
+                $this->stop();
+            }
+        } elseif ($e instanceof \PHPUnit_Framework_SkippedTest) {
+            $this->skipped[$variation] = new \PHPUnit_Framework_TestFailure($test, $e);
+            $notifyMethod = 'addSkippedTest';
+
+            if ($this->stopOnSkipped) {
+                $this->stop();
+            }
+        } else {
+            $this->errors[$variation] = new \PHPUnit_Framework_TestFailure($test, $e);
+            $notifyMethod = 'addError';
+
+            if ($this->stopOnError || $this->stopOnFailure) {
+                $this->stop();
+            }
+        }
+
+        foreach ($this->listeners as $listener) {
+            $listener->$notifyMethod($test, $e, $time);
+        }
+
+        $this->lastTestFailed = true;
+        $this->time += $time;
     }
 
     /**
      * Adds a failure to the list of failures.
      * The passed in exception caused the failure.
      *
-     * @param \PHPUnit_Framework_Test                 $test
+     * @param \PHPUnit_Framework_Test $test
      * @param \PHPUnit_Framework_AssertionFailedError $e
-     * @param float                                  $time
+     * @param float $time
      * @return void
      */
     public function addFailure(\PHPUnit_Framework_Test $test, \PHPUnit_Framework_AssertionFailedError $e, $time)
     {
-        parent::addFailure($test, $this->wrapException($e), $time);
+        $variation = null;
+        if ($test instanceof Injectable) {
+            $variation = $test->getVariationName();
+        }
+
+        if ($e instanceof \PHPUnit_Framework_RiskyTest) {
+            $this->risky[$variation] = new \PHPUnit_Framework_TestFailure($test, $e);
+
+            $notifyMethod = 'addRiskyTest';
+
+            if ($this->stopOnRisky) {
+                $this->stop();
+            }
+        } elseif ($e instanceof \PHPUnit_Framework_IncompleteTest) {
+            $this->notImplemented[$variation] = new \PHPUnit_Framework_TestFailure($test, $e);
+
+            $notifyMethod = 'addIncompleteTest';
+
+            if ($this->stopOnIncomplete) {
+                $this->stop();
+            }
+        } elseif ($e instanceof \PHPUnit_Framework_SkippedTest) {
+            $this->skipped[$variation] = new \PHPUnit_Framework_TestFailure($test, $e);
+            $notifyMethod = 'addSkippedTest';
+
+            if ($this->stopOnSkipped) {
+                $this->stop();
+            }
+        } else {
+            $this->failures[$variation] = new \PHPUnit_Framework_TestFailure($test, $e);
+            $notifyMethod = 'addFailure';
+
+            if ($this->stopOnFailure) {
+                $this->stop();
+            }
+        }
+
+        foreach ($this->listeners as $listener) {
+            $listener->$notifyMethod($test, $e, $time);
+        }
+
+        $this->lastTestFailed = true;
+        $this->time += $time;
     }
 
     /**

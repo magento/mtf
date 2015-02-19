@@ -48,7 +48,7 @@ class Replacer
      *
      * @var array
      */
-    protected $values;
+    protected $values = ['path' => [], 'replace' => []];
 
     /**
      * Temporary source data.
@@ -78,8 +78,6 @@ class Replacer
 
         if ($filePath) {
             $this->values = $this->reader->read($filePath);
-        } else {
-            $this->values = [];
         }
     }
 
@@ -94,9 +92,10 @@ class Replacer
         if ($this->values) {
             $this->data = $data;
 
-            foreach ($this->values as $path => $value) {
-                $this->replaceValue($path, $value);
+            foreach ($this->values['path'] as $path => $value) {
+                $this->applyValueByPath($path, $value);
             }
+            $this->applyPlaceholders(array_merge($this->values['replace'], ['isolation' => mt_rand()]));
             $data = $this->data;
         }
 
@@ -110,25 +109,54 @@ class Replacer
      * @param string $value
      * @return void
      */
-    protected function replaceValue($path, $value)
+    protected function applyValueByPath($path, $value)
     {
         $data = &$this->data;
         $keys = explode('/', $path);
         $isSetValue = true;
 
         $key = array_shift($keys);
-        while (null !== $key && $isSetValue) {
+        while ($key !== null && $isSetValue) {
             if (!isset($data[$key])) {
                 $isSetValue = false;
                 break;
             }
 
-            $data = & $data[$key];
+            $data = &$data[$key];
             $key = array_shift($keys);
         }
 
         if ($isSetValue) {
             $data = $value;
+        }
+    }
+
+    /**
+     * Recursively apply placeholders to each data element
+     *
+     * @param array $placeholders
+     * @return void
+     */
+    protected function applyPlaceholders(array $placeholders)
+    {
+        if ($placeholders) {
+            $replacePairs = [];
+            foreach ($placeholders as $pattern => $replacement) {
+                $replacePairs['%' . $pattern . '%'] = $replacement;
+            }
+            $callback = function (&$value) use ($replacePairs) {
+                foreach ($replacePairs as $pattern => $replacement) {
+                    if (is_string($value) && strpos($value, $pattern) !== false) {
+                        if (is_callable($replacement)) {
+                            $param = trim($pattern, '%');
+                            $replacement = $replacement($param);
+                        }
+
+                        $value = str_replace($pattern, $replacement, $value);
+                    }
+                }
+            };
+            array_walk_recursive($this->data, $callback);
         }
     }
 }
