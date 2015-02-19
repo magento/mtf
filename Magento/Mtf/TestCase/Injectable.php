@@ -179,6 +179,8 @@ abstract class Injectable extends Functional
                 $testVariationIterator->next();
                 $this->localArguments = [];
             }
+        } catch (\PHPUnit_Framework_IncompleteTestError $phpUnitException) {
+            $result->addError($this, $phpUnitException, \PHP_Timer::stop());
         } catch (\PHPUnit_Framework_AssertionFailedError $phpUnitException) {
             $this->eventManager->dispatchEvent(['failure'], [$phpUnitException->getMessage()]);
             $result->addFailure($this, $phpUnitException, \PHP_Timer::stop());
