@@ -49,6 +49,7 @@ class TestResult extends \PHPUnit_Framework_TestResult
      */
     public function addError(\PHPUnit_Framework_Test $test, \Exception $e, $time)
     {
+        $e = $this->wrapException($e);
         $variation = 0;
         if ($test instanceof Injectable) {
             $variation = $test->getVariationName();
@@ -105,6 +106,7 @@ class TestResult extends \PHPUnit_Framework_TestResult
      */
     public function addFailure(\PHPUnit_Framework_Test $test, \PHPUnit_Framework_AssertionFailedError $e, $time)
     {
+        $e = $this->wrapException($e);
         $variation = null;
         if ($test instanceof Injectable) {
             $variation = $test->getVariationName();
