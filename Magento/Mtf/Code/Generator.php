@@ -59,7 +59,9 @@ class Generator
             $classType = lcfirst($matches[1]);
 
             if (!isset($this->generatedEntities[$classType])) {
-                throw new \InvalidArgumentException('Unknown type of class: ' . $classType);
+                throw new \InvalidArgumentException(
+                    sprintf('Cannot generate class "%s". Unknown type %s', $className, $classType)
+                );
             }
 
             /** @var \Magento\Mtf\Util\Generate\AbstractGenerate $generator */
