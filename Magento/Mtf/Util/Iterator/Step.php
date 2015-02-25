@@ -61,13 +61,6 @@ class Step extends AbstractIterator
     protected $currentVariation = [];
 
     /**
-     * First step.
-     *
-     * @var string
-     */
-    protected $firstStep;
-
-    /**
      * @constructor
      * @param TestStepFactory $factory
      * @param array $steps
@@ -81,7 +74,6 @@ class Step extends AbstractIterator
         array $localArguments
     ) {
         $this->data = $steps;
-        $this->firstStep = $steps['first'];
         $this->factory = $factory;
         $this->currentVariation = $currentVariation;
         $this->localArguments = $localArguments;
@@ -96,8 +88,8 @@ class Step extends AbstractIterator
      */
     public function rewind()
     {
-        $this->current = $this->data[$this->firstStep];
-        $this->key = $this->firstStep;
+        $this->current = reset($this->data);
+        $this->key = key($this->data);
     }
 
     /**
@@ -128,13 +120,8 @@ class Step extends AbstractIterator
      */
     public function next()
     {
-        if (isset($this->current['next']) && !empty($this->current['next'])) {
-            $this->key = $this->current['next'];
-            $this->current = $this->data[$this->key];
-        } else {
-            $this->current = null;
-            $this->key = null;
-        }
+        $this->current = next($this->data);
+        $this->key = key($this->data);
     }
 
     /**
