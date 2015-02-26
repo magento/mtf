@@ -123,10 +123,16 @@ class SequencesSorter
         $linksMap = [];
         foreach ($array as $key => $value) {
             if (isset($value[$this->nextKeyName])) {
+                if ($value[$this->nextKeyName] == $key) {
+                    throw new \Exception("Key $key is referencing self as next!");
+                }
                 $this->assertKeyInArray($value[$this->nextKeyName], $array);
                 $this->addLinkToMap($key, $value[$this->nextKeyName], $linksMap);
             }
             if (isset($value[$this->prevKeyName])) {
+                if ($value[$this->nextKeyName] == $key) {
+                    throw new \Exception("Key $key is referencing self as previous!");
+                }
                 $this->assertKeyInArray($value[$this->prevKeyName], $array);
                 $this->addLinkToMap($value[$this->prevKeyName], $key, $linksMap);
             }
