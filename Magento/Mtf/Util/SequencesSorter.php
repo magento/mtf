@@ -130,7 +130,7 @@ class SequencesSorter
                 $this->addLinkToMap($key, $value[$this->nextKeyName], $linksMap);
             }
             if (isset($value[$this->prevKeyName])) {
-                if ($value[$this->nextKeyName] == $key) {
+                if ($value[$this->prevKeyName] == $key) {
                     throw new \Exception("Key $key is referencing self as previous!");
                 }
                 $this->assertKeyInArray($value[$this->prevKeyName], $array);
