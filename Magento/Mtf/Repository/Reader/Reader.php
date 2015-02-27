@@ -37,10 +37,10 @@ class Reader extends \Magento\Mtf\Config\Reader\Filesystem
      * @var array
      */
     protected $_idAttributes = [
-        '/repository/storage' => 'class',
-        '/repository/storage/dataset' => 'name',
-        '/repository/storage/dataset/field' => 'name|path',
-        '/repository/storage/dataset/field(/item)+' => 'name|label',
+        '/config/repository' => 'class',
+        '/config/repository/dataset' => 'name',
+        '/config/repository/dataset/field' => 'name|path',
+        '/config/repository/dataset/field(/item)+' => 'name|label',
     ];
 
     /**

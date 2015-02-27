@@ -46,21 +46,12 @@ class ConstraintFactory
     protected $objectManager;
 
     /**
-     * Constraints definition array.
-     *
-     * @var array
-     */
-    protected $configuration;
-
-    /**
      * @constructor
      * @param ObjectManager $objectManager
-     * @param DataInterface $configData
      */
-    public function __construct(ObjectManager $objectManager, DataInterface $configData)
+    public function __construct(ObjectManager $objectManager)
     {
         $this->objectManager = $objectManager;
-        $this->configuration = $configData->get('constraint');
     }
 
     /**
@@ -80,46 +71,5 @@ class ConstraintFactory
         }
 
         return $object;
-    }
-
-    /**
-     * Get class by code.
-     *
-     * @param string $code
-     * @return ConstraintInterface
-     * @throws \UnexpectedValueException
-     */
-    public function getByCode($code)
-    {
-        $class = $this->resolveClassName($code);
-        return $this->get($class);
-    }
-
-    /**
-     * Resolve class name by code.
-     *
-     * @param string $code
-     * @return string
-     */
-    public function resolveClassName($code)
-    {
-        if (isset($this->configuration[$code])) {
-            $class = str_replace('_', '\\', $this->configuration[$code]['module']) . '\\Test\\Constraint\\'
-                . ucfirst($code);
-        } else {
-            $class = false;
-        }
-
-        return $class;
-    }
-
-    /**
-     * Return constraint configuration.
-     *
-     * @return array
-     */
-    public function getConfiguration()
-    {
-        return $this->configuration;
     }
 }

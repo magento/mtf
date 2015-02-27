@@ -1,3 +1,9 @@
+1.0.0-rc.19
+=============
+* Introduced unified format for Fixtures configuration
+* Introduced unified format for Repositories configuration
+* Implemented dynamic entities generation
+
 1.0.0-rc.18
 =============
 * Fixed wrong tests number is displayed for functional tests on Bamboo

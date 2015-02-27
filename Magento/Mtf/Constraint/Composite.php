@@ -83,18 +83,17 @@ class Composite extends AbstractConstraint
     {
         $constraints = [];
 
-        foreach ($codes as $code) {
-            if (!$code) {
+        foreach ($codes as $constraintClass) {
+            if (!$constraintClass) {
                 continue;
             }
 
-            $constraintClass = $this->factory->resolveClassName($code);
             if (!$this->rule->apply($constraintClass)) {
                 continue;
             }
 
-            $constraint = $this->factory->getByCode($code);
-            if ($constraint) {
+            $constraint = $this->factory->get($constraintClass);
+            if ($constraint && $constraint->isActive()) {
                 $constraints[] = $constraint;
             }
         }

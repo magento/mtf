@@ -56,7 +56,7 @@ class Converter implements \Magento\Mtf\Config\ConverterInterface
     public function convert($config)
     {
         $output = [];
-        $repositories = $config->getElementsByTagName('storage');
+        $repositories = $config->getElementsByTagName('repository');
         foreach ($repositories as $repository) {
             /** @var \DOMElement $repository */
             if ($repository->nodeType != XML_ELEMENT_NODE) {
@@ -80,7 +80,7 @@ class Converter implements \Magento\Mtf\Config\ConverterInterface
     {
         $data = [];
         switch ($node->nodeName) {
-            case 'storage':
+            case 'repository':
             case 'dataset':
                 foreach ($node->childNodes as $dataSet) {
                     /** @var \DOMElement $dataSet */

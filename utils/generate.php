@@ -38,9 +38,6 @@ set_include_path($path);
 
 $objectManager = \Magento\Mtf\ObjectManagerFactory::getObjectManager();
 
-/** @var $generate \Magento\Mtf\Util\Generate\Constraint */
-$generate = $objectManager->get('Magento\Mtf\Util\Generate\Constraint');
-$generate->launch();
 
 /** @var $generate \Magento\Mtf\Util\Generate\Fixture */
 $generate = $objectManager->get('Magento\Mtf\Util\Generate\Fixture');

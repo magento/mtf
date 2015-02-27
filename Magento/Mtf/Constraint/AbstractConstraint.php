@@ -73,14 +73,32 @@ abstract class AbstractConstraint extends \PHPUnit_Framework_Constraint implemen
     protected $result;
 
     /**
+     * Severity low | high | middle
+     *
+     * @var string
+     */
+    protected $severity;
+
+    /**
+     * Active flag
+     *
+     * @var bool
+     */
+    protected $active;
+
+    /**
      * Constructor
      *
      * @constructor
      * @param ObjectManager $objectManager
+     * @param string $severity
+     * @param bool $active
      */
-    public function __construct(ObjectManager $objectManager)
+    public function __construct(ObjectManager $objectManager, $severity = 'low', $active = true)
     {
         $this->objectManager = $objectManager;
+        $this->severity = $severity;
+        $this->active = $active;
     }
 
     /**
@@ -114,6 +132,16 @@ abstract class AbstractConstraint extends \PHPUnit_Framework_Constraint implemen
     public function __toString()
     {
         return $this->toString();
+    }
+
+    /**
+     * Is Constraint enabled
+     *
+     * @return boolean
+     */
+    public function isActive()
+    {
+        return $this->active;
     }
 
     /**

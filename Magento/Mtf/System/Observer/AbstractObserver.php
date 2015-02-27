@@ -68,11 +68,14 @@ abstract class AbstractObserver implements ObserverInterface
             ? EventState::getTestSuiteName()
             : 'magento';
 
+        $testClass = isset($path[1]) ? $path[1] : 'undefined';
+        $testMethod = isset($path[2]) ? $path[2] : 'undefined';
+
         $directory = sprintf(
             '%s/%s/%s/%s/' . $suffix,
             $testSuite,
-            $path[1],
-            $path[2],
+            $testClass,
+            $testMethod,
             EventState::getTestMethodName()
         );
 

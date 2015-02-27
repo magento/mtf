@@ -15,10 +15,6 @@
     <preference for="Magento\Mtf\ObjectManager\FactoryInterface" type="Magento\Mtf\ObjectManager\Factory"/>
     <preference for="Magento\Mtf\Config\ReaderInterface" type="Magento\Mtf\Config\Reader\Filesystem"/>
     <preference for="Magento\Mtf\ObjectManager\ConfigInterface" type="Magento\Mtf\ObjectManager\Config\Config"/>
-    <preference for="Magento\Mtf\Util\Generate\Fixture\FieldsProviderInterface"
-                type="Magento\Mtf\Util\Generate\Fixture\DummyFieldsProvider"/>
-    <preference for="Magento\Mtf\Util\Generate\Repository\CollectionProviderInterface"
-                type="Magento\Mtf\Util\Generate\Repository\DummyCollectionProvider"/>
     <type name="Magento\Mtf\Client\Element\SimpleElement" shared="false"/>
     <type name="Magento\Mtf\Block\BlockInterface" shared="false"/>
     <type name="Magento\Mtf\Page\PageInterface" shared="false"/>
@@ -107,16 +103,6 @@
             <argument name="configuration" xsi:type="object">Magento\Mtf\Config\SystemEvent</argument>
         </arguments>
     </type>
-    <type name="Magento\Mtf\Fixture\FixtureFactory">
-        <arguments>
-            <argument name="configData" xsi:type="object">Magento\Mtf\Config\Fixture</argument>
-        </arguments>
-    </type>
-    <type name="Magento\Mtf\Util\Generate\Fixture">
-        <arguments>
-            <argument name="configData" xsi:type="object">Magento\Mtf\Config\Fixture</argument>
-        </arguments>
-    </type>
     <type name="Magento\Mtf\Util\Generate\Handler">
         <arguments>
             <argument name="configData" xsi:type="object">Magento\Mtf\Config\Fixture</argument>
@@ -124,22 +110,12 @@
     </type>
     <type name="Magento\Mtf\Util\Generate\Repository">
         <arguments>
-            <argument name="configData" xsi:type="object">Magento\Mtf\Config\Fixture</argument>
-        </arguments>
-    </type>
-    <type name="Magento\Mtf\Constraint\ConstraintFactory">
-        <arguments>
-            <argument name="configData" xsi:type="object">Magento\Mtf\Constraint\Config\Data</argument>
-        </arguments>
-    </type>
-    <type name="Magento\Mtf\Util\Generate\Constraint">
-        <arguments>
-            <argument name="configData" xsi:type="object">Magento\Mtf\Constraint\Config\Data</argument>
+            <argument name="configData" xsi:type="object">Magento\Mtf\Repository\Config\Data</argument>
         </arguments>
     </type>
     <type name="Magento\Mtf\Page\Page">
         <arguments>
-            <argument name="configData" xsi:type="object">Magento\Mtf\Config\Page</argument>
+            <argument name="configData" xsi:type="object">Magento\Mtf\Page\Config\Data</argument>
         </arguments>
     </type>
     <virtualType name="converterArgumentParser" type="Magento\Mtf\ObjectManager\Config\Mapper\ArgumentParser">
@@ -201,14 +177,14 @@
             <argument name="reader" xsi:type="object">Magento\Mtf\Config\Reader\Fixture</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Magento\Mtf\Constraint\Config\Data" type="Magento\Mtf\Config\Data">
+    <virtualType name="Magento\Mtf\Page\Config\Data" type="Magento\Mtf\Config\Data">
         <arguments>
-            <argument name="reader" xsi:type="object">Magento\Mtf\Constraint\Config\Reader</argument>
+            <argument name="reader" xsi:type="object">Magento\Mtf\Page\Config\Reader</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Magento\Mtf\Config\Page" type="Magento\Mtf\Config\Data">
+    <virtualType name="Magento\Mtf\Repository\Config\Data" type="Magento\Mtf\Config\Data">
         <arguments>
-            <argument name="reader" xsi:type="object">Magento\Mtf\Config\Reader\Page</argument>
+            <argument name="reader" xsi:type="object">Magento\Mtf\Repository\Reader\Reader</argument>
         </arguments>
     </virtualType>
     <virtualType name="Magento\Mtf\Config\SchemaLocator\TestRunner" type="Magento\Mtf\Config\SchemaLocator">
@@ -229,11 +205,6 @@
     <virtualType name="Magento\Mtf\Config\SchemaLocator\Fixture" type="Magento\Mtf\Config\SchemaLocator">
         <arguments>
             <argument name="schemaPath" xsi:type="string">Magento/Mtf/Fixture/etc/fixture.xsd</argument>
-        </arguments>
-    </virtualType>
-    <virtualType name="Magento\Mtf\Constraint\Config\SchemaLocator" type="Magento\Mtf\Config\SchemaLocator">
-        <arguments>
-            <argument name="schemaPath" xsi:type="string">etc/constraints.xsd</argument>
         </arguments>
     </virtualType>
     <virtualType name="Magento\Mtf\Config\SchemaLocator\Page" type="Magento\Mtf\Config\SchemaLocator">
@@ -294,20 +265,6 @@
             <argument name="converter" xsi:type="object">Magento\Mtf\Config\Converter</argument>
             <argument name="schemaLocator" xsi:type="object">Magento\Mtf\Config\SchemaLocator\Fixture</argument>
             <argument name="fileName" xsi:type="string">fixture.xml</argument>
-            <argument name="defaultScope" xsi:type="string">etc</argument>
-        </arguments>
-    </virtualType>
-    <virtualType name="Magento\Mtf\Constraint\Config\Reader" type="Magento\Mtf\Config\Reader\Filesystem">
-        <arguments>
-            <argument name="fileResolver" xsi:type="object">Magento\Mtf\Config\FileResolver\Module</argument>
-            <argument name="converter" xsi:type="object">Magento\Mtf\Config\ConverterPages</argument>
-            <argument name="schemaLocator" xsi:type="object">Magento\Mtf\Constraint\Config\SchemaLocator</argument>
-            <argument name="idAttributes" xsi:type="array">
-                <item name="/config" xsi:type="string">scope</item>
-                <item name="/config/constraint" xsi:type="string">name</item>
-                <item name="/config/constraint/argument" xsi:type="string">name</item>
-            </argument>
-            <argument name="fileName" xsi:type="string">constraint.xml</argument>
             <argument name="defaultScope" xsi:type="string">etc</argument>
         </arguments>
     </virtualType>
@@ -416,17 +373,12 @@
     </virtualType>
     <type name="Magento\Mtf\Util\Generate\Page">
         <arguments>
-            <argument name="configuration" xsi:type="object">Magento\Mtf\Page\Config\Data</argument>
+            <argument name="configData" xsi:type="object">Magento\Mtf\Page\Config\Data</argument>
         </arguments>
     </type>
     <virtualType name="Magento\Mtf\Page\Config\SchemaLocator" type="Magento\Mtf\Config\SchemaLocator">
         <arguments>
             <argument name="schemaPath" xsi:type="string">etc/pages.xsd</argument>
-        </arguments>
-    </virtualType>
-    <virtualType name="Magento\Mtf\Page\Config\Data" type="Magento\Mtf\Config\Data">
-        <arguments>
-            <argument name="reader" xsi:type="object">Magento\Mtf\Page\Config\Reader</argument>
         </arguments>
     </virtualType>
     <virtualType name="Magento\Mtf\Page\Config\Reader" type="Magento\Mtf\Config\Reader\Filesystem">
@@ -444,4 +396,47 @@
         </arguments>
     </virtualType>
     <type name="Mtf\Fixture\InjectableFixture\Replacer" shared="true" />
+    <type name="Magento\Mtf\Util\CrossModuleReference\Constraint">
+        <arguments>
+            <argument name="configVariation" xsi:type="object">Magento\Mtf\Variation\Config\Data</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Mtf\Util\CrossModuleReference\TestStep">
+        <arguments>
+            <argument name="config" xsi:type="object">Magento\Mtf\TestCase\Config\Data</argument>
+        </arguments>
+    </type>
+
+    <virtualType name="Magento\Mtf\Fixture\Config\Data" type="Magento\Mtf\Config\Data">
+        <arguments>
+            <argument name="reader" xsi:type="object">Magento\Mtf\Fixture\Config\Reader</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Magento\Mtf\Fixture\Config\SchemaLocator" type="Magento\Mtf\Config\SchemaLocator">
+        <arguments>
+            <argument name="schemaPath" xsi:type="string">Magento/Mtf/Fixture/etc/datafixture.xsd</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Magento\Mtf\Fixture\Config\Reader" type="Magento\Mtf\Config\Reader\Filesystem">
+        <arguments>
+            <argument name="fileResolver" xsi:type="object">Magento\Mtf\Config\FileResolver\Mask</argument>
+            <argument name="converter" xsi:type="object">Magento\Mtf\Config\ConverterPages</argument>
+            <argument name="schemaLocator" xsi:type="object">Magento\Mtf\Fixture\Config\SchemaLocator</argument>
+            <argument name="idAttributes" xsi:type="array">
+                <item name="/config/fixture" xsi:type="string">name</item>
+            </argument>
+            <argument name="fileName" xsi:type="string">#\.xml$#</argument>
+            <argument name="defaultScope" xsi:type="string">Fixture</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Mtf\Util\Generate\Fixture">
+        <arguments>
+            <argument name="configData" xsi:type="object">Magento\Mtf\Fixture\Config\Data</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Mtf\Fixture\FixtureFactory">
+        <arguments>
+            <argument name="configData" xsi:type="object">Magento\Mtf\Fixture\Config\Data</argument>
+        </arguments>
+    </type>
 </config>

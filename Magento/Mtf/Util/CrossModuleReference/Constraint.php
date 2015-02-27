@@ -24,7 +24,7 @@
 
 namespace Magento\Mtf\Util\CrossModuleReference;
 
-use Magento\Mtf\Constraint\ConstraintFactory;
+use Magento\Mtf\Config\DataInterface;
 
 /**
  * Class Constraint handles cross module reference of constraint
@@ -32,14 +32,9 @@ use Magento\Mtf\Constraint\ConstraintFactory;
 class Constraint extends Common implements CheckerInterface
 {
     /**
-     * @var \Magento\Mtf\Constraint\ConstraintFactory
+     * @var \Magento\Mtf\Config\DataInterface
      */
-    protected $constraintFactory;
-
-    /**
-     * @var array
-     */
-    protected $constraintConfig = null;
+    protected $configVariation;
 
     /**
      * @var array
@@ -53,12 +48,12 @@ class Constraint extends Common implements CheckerInterface
 
     /**
      * @constructor
-     * @param ConstraintFactory $constraintFactory
+     * @param DataInterface $configVariation
      */
     public function __construct(
-        ConstraintFactory $constraintFactory
+        DataInterface $configVariation
     ) {
-        $this->constraintFactory = $constraintFactory;
+        $this->configVariation = $configVariation;
     }
 
     /**
@@ -70,7 +65,8 @@ class Constraint extends Common implements CheckerInterface
     public function getCrossModuleReference($moduleName)
     {
         $affectedTestCases = [];
-        if (!isset($this->constraintConfig)) {
+
+        if (!isset($this->constraintsByModule)) {
             $this->initConstraintConfig();
         }
 
@@ -100,7 +96,7 @@ class Constraint extends Common implements CheckerInterface
      */
     public function getTestCasesByConstraintReference($constraint)
     {
-        if (!isset($this->constraintConfig)) {
+        if (!isset($this->constraintToTestCasesMap)) {
             $this->initConstraintConfig();
         }
 
@@ -118,95 +114,17 @@ class Constraint extends Common implements CheckerInterface
      */
     protected function initConstraintConfig()
     {
-        $this->constraintConfig = $this->constraintFactory->getConfiguration();
-        foreach ($this->constraintConfig as $constraintName => $constraintConfig) {
-            $module = $constraintConfig['module'];
-            $this->constraintsByModule[$module][] = $constraintName;
-        }
-
-        $this->constraintToTestCasesMap = $this->mapConstraintToTestCase();
-    }
-
-    /**
-     * Create a mapping between constraint to testcases
-     *
-     * @return array
-     */
-    protected function mapConstraintToTestCase()
-    {
-        $constraintToTestClassMap = [];
-
-        $testDataSets = $this->getTestDataSets();
-
-        foreach ($testDataSets as $testClassName => $dataSets) {
-            foreach ($dataSets as $rows) {
-                foreach ($rows as $row) {
-                    if (isset($row['constraint'])) {
-                        $constraints = explode(',', $row['constraint']);
-                        foreach ($constraints as $constraint) {
-                            $constraint = trim($constraint);
-                            $constraintToTestClassMap[$constraint][$testClassName] = $testClassName;
-                        }
+        $testCases = $this->configVariation->get('testCase');
+        foreach ($testCases as $testCaseClassName => $testCase) {
+            foreach ($testCase['variation'] as $variation) {
+                if (isset($variation['constraint'])) {
+                    foreach ($variation['constraint'] as $constraintClassName => $constraintNavigation) {
+                        $constraintModuleName = $this->mapClassNameToModule($constraintClassName);
+                        $this->constraintToTestCasesMap[$constraintClassName][$testCaseClassName] = $testCaseClassName;
+                        $this->constraintsByModule[$constraintModuleName][$constraintClassName] = $constraintClassName;
                     }
                 }
             }
         }
-        return $constraintToTestClassMap;
-    }
-
-    /**
-     * Read all the test data sets in the csv files under test directory
-     *
-     * @return array
-     */
-    protected function getTestDataSets()
-    {
-        $dataSets = [];
-
-        $directories = glob(MTF_TESTS_PATH . '/*/*/Test/TestCase');
-        foreach ($directories as $directory) {
-            $dirIterator = new \RegexIterator(
-                new \RecursiveIteratorIterator(
-                    new \RecursiveDirectoryIterator(
-                        $directory,
-                        \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::FOLLOW_SYMLINKS
-                    )
-                ),
-                '/.csv/i'
-            );
-            /** @var $fileInfo \SPLFileInfo */
-            foreach ($dirIterator as $fileInfo) {
-                $testMethodName = $fileInfo->getBasename('.csv');
-                $path = $fileInfo->getPath();
-                $testClassName = str_replace('/', '\\', str_replace(MTF_TESTS_PATH, '', $path));
-
-                $testClassName = trim($testClassName, '\\');
-                $dataSets[$testClassName][$testMethodName] = $this->readCsv($fileInfo->getRealPath());
-            }
-        }
-        return $dataSets;
-    }
-
-    /**
-     * Read the test data sets into array
-     *
-     * @param string $testDataSetFilePath
-     * @return array
-     */
-    protected function readCsv($testDataSetFilePath)
-    {
-        $handle = fopen($testDataSetFilePath, 'r');
-
-        $data = $header = [];
-
-        while (($line = fgetcsv($handle, 10000, ';', '"', '\\')) !== false) {
-            if ($header) {
-                $data[] = array_combine($header, $line);
-            } else {
-                $header = $line;
-            }
-        }
-
-        return $data;
     }
 }

@@ -6,33 +6,33 @@
  */
  -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../etc/variations.xsd">
-  <testCase name="TagTest">
-    <variation name="TagTestVariation1" firstConstraint="tagSeverityHigh" method="test">
+  <testCase name="Magento\Tag\Test\TestCase\TagTest">
+    <variation name="TagTestVariation1">
       <data name="fixture/data/locator" xsi:type="string">#hplogo</data>
       <data name="fixture/data/strategy" xsi:type="string">css selector</data>
       <data name="fixture/data/search" xsi:type="string">variation priority:high</data>
       <data name="tag" xsi:type="string">priority:high</data>
-      <constraint name="tagSeverityHigh" next="tagSeverityMiddle"/>
-      <constraint name="tagSeverityMiddle" next="tagSeverityLow" prev="tagSeverityHigh"/>
-      <constraint name="tagSeverityLow" prev="tagSeverityMiddle"/>
+      <constraint name="Magento\Tag\Test\Constraint\TagSeverityHigh"/>
+      <constraint name="Magento\Tag\Test\Constraint\TagSeverityMiddle"/>
+      <constraint name="Magento\Tag\Test\Constraint\TagSeverityLow"/>
     </variation>
-    <variation name="TagTestVariation2" firstConstraint="tagSeverityHigh" method="test">
+    <variation name="TagTestVariation2">
       <data name="fixture/data/locator" xsi:type="string">#hplogo</data>
       <data name="fixture/data/strategy" xsi:type="string">css selector</data>
       <data name="fixture/data/search" xsi:type="string">variation priority:middle</data>
       <data name="tag" xsi:type="string">priority:middle</data>
-      <constraint name="tagSeverityHigh" next="tagSeverityMiddle"/>
-      <constraint name="tagSeverityMiddle" next="tagSeverityLow" prev="tagSeverityHigh"/>
-      <constraint name="tagSeverityLow" prev="tagSeverityMiddle"/>
+      <constraint name="Magento\Tag\Test\Constraint\TagSeverityHigh"/>
+      <constraint name="Magento\Tag\Test\Constraint\TagSeverityMiddle"/>
+      <constraint name="Magento\Tag\Test\Constraint\TagSeverityLow"/>
     </variation>
-    <variation name="TagTestVariation3" firstConstraint="tagSeverityHigh" method="test">
+    <variation name="TagTestVariation3">
       <data name="fixture/data/locator" xsi:type="string">#hplogo</data>
       <data name="fixture/data/strategy" xsi:type="string">css selector</data>
       <data name="fixture/data/search" xsi:type="string">variation priority:low</data>
       <data name="tag" xsi:type="string">priority:low</data>
-      <constraint name="tagSeverityHigh" next="tagSeverityMiddle"/>
-      <constraint name="tagSeverityMiddle" next="tagSeverityLow" prev="tagSeverityHigh"/>
-      <constraint name="tagSeverityLow" prev="tagSeverityMiddle"/>
+      <constraint name="Magento\Tag\Test\Constraint\TagSeverityHigh"/>
+      <constraint name="Magento\Tag\Test\Constraint\TagSeverityMiddle"/>
+      <constraint name="Magento\Tag\Test\Constraint\TagSeverityLow"/>
     </variation>
   </testCase>
 </config>

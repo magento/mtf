@@ -65,6 +65,6 @@ class SourceCode extends AbstractObserver
     public function process(Event $event)
     {
         $directory = $this->createDestinationDirectory('page-source');
-        $this->logger->log($this->browser->getHtmlSource(), $directory . '/' . $event->getIdentifier());
+        $this->logger->log($this->browser->getHtmlSource(), $directory . '/' . $event->getIdentifier() . '.html');
     }
 }

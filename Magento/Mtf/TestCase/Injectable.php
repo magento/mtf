@@ -179,6 +179,8 @@ abstract class Injectable extends Functional
                 $testVariationIterator->next();
                 $this->localArguments = [];
             }
+        } catch (\PHPUnit_Framework_IncompleteTestError $phpUnitException) {
+            $result->addError($this, $phpUnitException, \PHP_Timer::stop());
         } catch (\PHPUnit_Framework_AssertionFailedError $phpUnitException) {
             $this->eventManager->dispatchEvent(['failure'], [$phpUnitException->getMessage()]);
             $result->addFailure($this, $phpUnitException, \PHP_Timer::stop());
@@ -287,10 +289,7 @@ abstract class Injectable extends Functional
 
         if (isset($arguments['constraint'])) {
             $parameters = $this->getObjectManager()->getParameters($this, $this->getName(false));
-            $preparedConstraint = $this->prepareConstraintObject(
-                $arguments['constraint'],
-                $arguments['firstConstraint']
-            );
+            $preparedConstraint = $this->prepareConstraintObject($arguments['constraint']);
 
             if (isset($parameters['constraint'])) {
                 $resolvedArguments['constraint'] = $preparedConstraint;
@@ -308,16 +307,13 @@ abstract class Injectable extends Functional
      * Prepare configuration object
      *
      * @param array $constraints
-     * @param string $firstConstraint
      * @return \Magento\Mtf\Constraint\Composite
      */
-    protected function prepareConstraintObject(array $constraints, $firstConstraint)
+    protected function prepareConstraintObject(array $constraints)
     {
         /** @var \Magento\Mtf\Util\SequencesSorter $sorter */
         $sorter = $this->getObjectManager()->create('Magento\Mtf\Util\SequencesSorter');
-        $constraintsArray = $sorter->sort($constraints, $firstConstraint);
-        //TODO MAGETWO-33438
-        unset($constraintsArray['first']);
+        $constraintsArray = $sorter->sort($constraints);
         return $this->getObjectManager()->create(
             'Magento\Mtf\Constraint\Composite',
             ['codeConstraints' => array_keys($constraintsArray)]

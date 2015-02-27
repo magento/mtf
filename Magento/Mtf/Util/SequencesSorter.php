@@ -30,120 +30,146 @@ namespace Magento\Mtf\Util;
  */
 class SequencesSorter
 {
+    /**
+     * Name of key identifying element that should be later in sequence
+     *
+     * @var string
+     */
+    protected $nextKeyName;
 
     /**
-     * Sorts elements using 'next' and 'prev' keys.
+     * Name of key identifying element that should be earlier in sequence
      *
-     * @param array $elements
-     * @param $firstElement
+     * @var string
+     */
+    protected $prevKeyName;
+
+    /**
+     * @param string $nextKeyName
+     * @param string $prevKeyName
+     */
+    public function __construct($nextKeyName = 'next', $prevKeyName = 'prev')
+    {
+        $this->nextKeyName = $nextKeyName;
+        $this->prevKeyName = $prevKeyName;
+    }
+
+    /**
+     * Sort array according to next and prev keys of it's elements
+     *
+     * @param array $array
+     * @param string $firstKey
+     * @return array
      * @throws \Exception
-     * @return array
      */
-    public function sort(array $elements, $firstElement)
+    public function sort(array $array, $firstKey = null)
     {
-        $result = $this->prepareSequence($elements, $firstElement);
-        $result['first'] = $firstElement;
-        $elements = array_diff_key($elements, $result);
-        $result = empty($elements) ? $result : $this->interposeElements($elements, $result);
-
-        return $result;
-    }
-
-    /**
-     * Prepare elements by existed sequence.
-     *
-     * @param array $elements
-     * @param $key
-     * @param array $result
-     * @return array
-     */
-    protected function prepareSequence(array $elements, $key, array $result = [])
-    {
-        if (isset($elements[$key])) {
-            $result[$key] = $elements[$key];
+        if (!count($array)) {
+            throw new \Exception('Empty array is passed to SequenceSorter!');
         }
-        if (!isset($elements[$key]) || empty($elements[$key]['next'])) {
-            return $result;
+        if (null === $firstKey) {
+            $firstKey = key($array);
+        } elseif (!isset($array[$firstKey])) {
+            throw new \Exception("First key $firstKey is absent in sequence!");
         }
-        return $this->prepareSequence($elements, $elements[$key]['next'], $result);
-    }
 
-    /**
-     * Put elements from other modules into base elements.
-     *
-     * @param array $additionalElements
-     * @param array $baseElements
-     * @return array
-     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
-     */
-    protected function interposeElements(array $additionalElements, array $baseElements)
-    {
-        $key = key($additionalElements);
-        $chunkOfElements = $this->prepareSequence($additionalElements, $key);
-        $firstElementKey = key($chunkOfElements);
-        end($chunkOfElements);
-        $lastElementKey = key($chunkOfElements);
+        $linksMap = $this->createLinksMap($array);
 
-        if (isset($chunkOfElements[$firstElementKey]['prev'])) {
-            $this->checkElementExistence($baseElements, $chunkOfElements[$firstElementKey]['prev']);
-            $prevElementKey = $chunkOfElements[$firstElementKey]['prev'];
-            $chunkOfElements[$lastElementKey]['next'] = !empty($baseElements[$prevElementKey]['next'])
-                ? $baseElements[$prevElementKey]['next']
-                : null;
-            $result[$prevElementKey]['next'] = $firstElementKey;
+        $sortedSequence = [];
+
+        if (!isset($linksMap[$firstKey][$this->prevKeyName])) {
+            $sortedSequence = [$firstKey => $array[$firstKey]];
+            unset($array[$firstKey]);
         }
-        if (isset($chunkOfElements[$lastElementKey]['next'])) {
-            $this->checkElementExistence($baseElements, $chunkOfElements[$lastElementKey]['next']);
-            if ($chunkOfElements[$lastElementKey]['next'] === $baseElements['first']) {
-                $baseElements['first'] = $firstElementKey;
-            } else {
-                $prevElement = $this->getElementWithSameNext($baseElements, $chunkOfElements[$lastElementKey]['next']);
-                if ($prevElement !== null) {
-                    $prevElementKey = key($prevElement);
-                    $chunkOfElements[$lastElementKey]['next'] = $baseElements[$prevElementKey]['next'];
-                    $baseElements[$prevElementKey]['next'] = $firstElementKey;
+
+        foreach ($array as $key => $value) {
+            if (!isset($linksMap[$key][$this->prevKeyName])) {
+                $sortedSequence[$key] = $value;
+                unset($array[$key]);
+            }
+        }
+
+        while (count($array)) {
+            $progressFlag = false;
+            foreach ($array as $key => $value) {
+                $elementCanBeInserted = true;
+                foreach ($linksMap[$key][$this->prevKeyName] as $prevKey) {
+                    if (!isset($sortedSequence[$prevKey])) {
+                        $elementCanBeInserted = false;
+                    }
+                }
+                if ($elementCanBeInserted) {
+                    $sortedSequence[$key] = $value;
+                    unset($array[$key]);
+                    $progressFlag = true;
                 }
             }
-        }
-        $baseElements = array_merge($baseElements, $chunkOfElements);
-
-        $additionalElements = array_diff_key($additionalElements, $chunkOfElements);
-        if (empty($additionalElements)) {
-            return $baseElements;
-        }
-        return $this->interposeElements($additionalElements, $baseElements);
-    }
-
-    /**
-     * Check element existence in elements array.
-     *
-     * @param array $elements
-     * @param string $key
-     * @return void
-     * @throws \Exception
-     */
-    protected function checkElementExistence(array $elements, $key)
-    {
-        if (!isset($elements[$key])) {
-            throw new \Exception("Element with such key '" . $key . "' doesn't exists.\n");
-        }
-    }
-
-    /**
-     * Returns element with same next.
-     *
-     * @param array $elements
-     * @param string $key
-     * @return array|null
-     */
-    protected function getElementWithSameNext(array $elements, $key)
-    {
-        foreach ($elements as $key => $value) {
-            if (isset($value['next']) && $value['next'] === $key) {
-                return [$key => $value];
+            if (!$progressFlag) {
+                throw new \Exception('Cannot sort sequence! Exiting to prevent infinite loop!');
             }
         }
+        return $sortedSequence;
+    }
 
-        return null;
+    /**
+     * Create map of links for each element of array
+     *
+     * @param array $array
+     * @return array
+     * @throws \Exception
+     */
+    protected function createLinksMap(array $array)
+    {
+        $linksMap = [];
+        foreach ($array as $key => $value) {
+            if (isset($value[$this->nextKeyName])) {
+                if ($value[$this->nextKeyName] == $key) {
+                    throw new \Exception("Key $key is referencing self as next!");
+                }
+                $this->assertKeyInArray($value[$this->nextKeyName], $array);
+                $this->addLinkToMap($key, $value[$this->nextKeyName], $linksMap);
+            }
+            if (isset($value[$this->prevKeyName])) {
+                if ($value[$this->prevKeyName] == $key) {
+                    throw new \Exception("Key $key is referencing self as previous!");
+                }
+                $this->assertKeyInArray($value[$this->prevKeyName], $array);
+                $this->addLinkToMap($value[$this->prevKeyName], $key, $linksMap);
+            }
+        }
+        return $linksMap;
+    }
+
+    /**
+     * Add record for earlier and later keys to links map
+     *
+     * @param string $earlierKey
+     * @param string $laterKey
+     * @param array $linksMap
+     * @throws \Exception
+     */
+    protected function addLinkToMap($earlierKey, $laterKey, array &$linksMap)
+    {
+        if (isset($linksMap[$earlierKey][$this->prevKeyName][$laterKey])
+            || isset($linksMap[$laterKey][$this->nextKeyName][$earlierKey])
+        ) {
+            throw new \Exception(sprintf('Circular dependency between keys "%s" and "%s"!', $earlierKey, $laterKey));
+        }
+        $linksMap[$earlierKey][$this->nextKeyName][$laterKey] = $laterKey;
+        $linksMap[$laterKey][$this->prevKeyName][$earlierKey] = $earlierKey;
+    }
+
+    /**
+     * Throw exception if passed key is not present in passed array
+     *
+     * @param string $key
+     * @param array $array
+     * @throws \Exception
+     */
+    protected function assertKeyInArray($key, array $array)
+    {
+        if (!isset($array[$key])) {
+            throw new \Exception(sprintf('Referenced key "%s" does not exist in sequence!', $key));
+        }
     }
 }
