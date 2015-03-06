@@ -582,8 +582,13 @@ final class Driver implements DriverInterface
      */
     public function switchToFrame(Locator $locator)
     {
-        $this->eventManager->dispatchEvent(['switch_to_frame'], [(string) $locator]);
-        $this->driver->switchTo()->frame($this->getElement($locator));
+        if ($locator) {
+            $this->eventManager->dispatchEvent(['switch_to_frame'], [(string) $locator]);
+            $this->driver->switchTo()->frame($this->getElement($locator));
+        } else {
+            $this->eventManager->dispatchEvent(['switch_to_frame'], ['Switch to main window']);
+            $this->driver->switchTo()->frame();
+        }
     }
 
     /**

@@ -71,6 +71,13 @@ class Driver implements DriverInterface
     protected $objectManager;
 
     /**
+     * Locator for current frame
+     *
+     * @var Locator|null
+     */
+    protected $currentFrame = null;
+
+    /**
      * Constructor
      *
      * @param Data $configuration
@@ -333,6 +340,17 @@ class Driver implements DriverInterface
     }
 
     /**
+     * Check whether element is has focus
+     *
+     * @param ElementInterface $element
+     * @return bool
+     */
+    public function isHasFocus(ElementInterface $element)
+    {
+        return $element->find('./..', Locator::SELECTOR_XPATH)->find('*:focus')->isVisible();
+    }
+
+    /**
      * Set the value
      *
      * @param ElementInterface $element
@@ -351,11 +369,16 @@ class Driver implements DriverInterface
             $sequenceKey .= str_repeat(self::BACKSPACE, strlen($currentValue));
         }
         $sequenceKey .= $value;
-        $sequenceKey .= self::TAB;
 
-        $this->selectWindow();
         $this->driver->moveto($wrappedElement);
-        $wrappedElement->click();
+        $this->driver->buttondown();
+        $this->driver->buttonup();
+        if (!$this->isHasFocus($element)) {
+            $this->selectWindow();
+        }
+        if ($this->currentFrame){
+            $this->driver->frame($this->currentFrame);
+        }
         $this->driver->keys($sequenceKey);
     }
 
@@ -669,6 +692,8 @@ class Driver implements DriverInterface
             $this->eventManager->dispatchEvent(['switch_to_frame'], ['Switch to main window']);
             $element = null;
         }
+
+        $this->currentFrame = $element;
         $this->driver->frame($element);
     }
 
