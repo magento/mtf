@@ -75,7 +75,7 @@ class Driver implements DriverInterface
      *
      * @var Locator|null
      */
-    protected $currentFrame = null;
+    protected $currentFrameLocator = null;
 
     /**
      * Constructor
@@ -340,7 +340,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Check whether element is has focus
+     * Check whether element has focus
      *
      * @param ElementInterface $element
      * @return bool
@@ -375,9 +375,9 @@ class Driver implements DriverInterface
         $this->driver->buttonup();
         if (!$this->isHasFocus($element)) {
             $this->selectWindow();
-        }
-        if ($this->currentFrame){
-            $this->driver->frame($this->currentFrame);
+            if ($this->currentFrameLocator){
+                $this->switchToFrame($this->currentFrameLocator);
+            }
         }
         $this->driver->keys($sequenceKey);
     }
@@ -693,7 +693,7 @@ class Driver implements DriverInterface
             $element = null;
         }
 
-        $this->currentFrame = $element;
+        $this->currentFrameLocator = $locator;
         $this->driver->frame($element);
     }
 
