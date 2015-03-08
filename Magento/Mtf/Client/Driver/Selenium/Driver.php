@@ -371,8 +371,7 @@ class Driver implements DriverInterface
         $sequenceKey .= $value;
 
         $this->driver->moveto($wrappedElement);
-        $this->driver->buttondown();
-        $this->driver->buttonup();
+        $this->click($element);
         if (!$this->isHasFocus($element)) {
             $this->selectWindow();
             if ($this->currentFrameLocator){
