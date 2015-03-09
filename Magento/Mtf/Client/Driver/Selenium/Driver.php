@@ -340,14 +340,13 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Check whether element has focus
+     * Check whether driver has focus
      *
-     * @param ElementInterface $element
      * @return bool
      */
-    public function isHasFocus(ElementInterface $element)
+    public function isHasFocus()
     {
-        return $element->find('./..', Locator::SELECTOR_XPATH)->find('*:focus')->isVisible();
+        return $this->find('*:focus')->isVisible();
     }
 
     /**
@@ -362,23 +361,18 @@ class Driver implements DriverInterface
         $this->eventManager->dispatchEvent(['set_value'], [__METHOD__, $element->getAbsoluteSelector()]);
 
         $wrappedElement = $this->getNativeElement($element);
-        $currentValue = $wrappedElement->value();
-        $sequenceKey = '';
-
-        if (strlen($currentValue)) {
-            $sequenceKey .= str_repeat(self::BACKSPACE, strlen($currentValue));
-        }
-        $sequenceKey .= $value;
-
         $this->driver->moveto($wrappedElement);
-        $this->click($element);
-        if (!$this->isHasFocus($element)) {
+
+        if (!$this->isHasFocus()) {
             $this->selectWindow();
             if ($this->currentFrameLocator){
                 $this->switchToFrame($this->currentFrameLocator);
+                $wrappedElement = $this->getNativeElement($element);
             }
         }
-        $this->driver->keys($sequenceKey);
+        $wrappedElement->clear();
+        $wrappedElement->click();
+        $wrappedElement->value($value);
     }
 
     /**
