@@ -424,6 +424,7 @@
             <argument name="schemaLocator" xsi:type="object">Magento\Mtf\Fixture\Config\SchemaLocator</argument>
             <argument name="idAttributes" xsi:type="array">
                 <item name="/config/fixture" xsi:type="string">name</item>
+                <item name="/config/fixture/field" xsi:type="string">name</item>
             </argument>
             <argument name="fileName" xsi:type="string">#\.xml$#</argument>
             <argument name="defaultScope" xsi:type="string">Fixture</argument>

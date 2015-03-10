@@ -344,7 +344,7 @@ class Driver implements DriverInterface
      *
      * @return bool
      */
-    public function isHasFocus()
+    protected function isHasFocus()
     {
         return $this->find('*:focus')->isVisible();
     }
@@ -362,16 +362,20 @@ class Driver implements DriverInterface
 
         $wrappedElement = $this->getNativeElement($element);
         $this->driver->moveto($wrappedElement);
-
-        if (!$this->isHasFocus()) {
-            $this->selectWindow();
-            if ($this->currentFrameLocator){
-                $this->switchToFrame($this->currentFrameLocator);
-                $wrappedElement = $this->getNativeElement($element);
-            }
-        }
         $wrappedElement->clear();
         $wrappedElement->click();
+
+        if ($this->currentFrameLocator){
+            if (!$this->isHasFocus()) {
+                $this->selectWindow();
+            }
+            $this->switchToFrame($this->currentFrameLocator);
+            $wrappedElement = $this->getNativeElement($element);
+        } else {
+            if (!$this->isHasFocus()) {
+                $this->selectWindow();
+            }
+        }
         $wrappedElement->value($value);
     }
 
