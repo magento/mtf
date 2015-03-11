@@ -365,7 +365,7 @@ class Driver implements DriverInterface
         $wrappedElement->clear();
         $wrappedElement->click();
 
-        if ($this->currentFrameLocator){
+        if ($this->currentFrameLocator) {
             if (!$this->isHasFocus()) {
                 $this->selectWindow();
             }
