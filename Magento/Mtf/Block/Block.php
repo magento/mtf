@@ -136,7 +136,7 @@ abstract class Block implements BlockInterface
     }
 
     /**
-     * Wait for element is visible in the block
+     * Wait for element is not visible in the block
      *
      * @param string $selector
      * @param string $strategy

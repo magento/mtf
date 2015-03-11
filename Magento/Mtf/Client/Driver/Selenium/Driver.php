@@ -71,6 +71,13 @@ class Driver implements DriverInterface
     protected $objectManager;
 
     /**
+     * Locator for current frame
+     *
+     * @var Locator|null
+     */
+    protected $currentFrameLocator = null;
+
+    /**
      * Constructor
      *
      * @param Data $configuration
@@ -333,6 +340,16 @@ class Driver implements DriverInterface
     }
 
     /**
+     * Check whether driver has focus
+     *
+     * @return bool
+     */
+    protected function isHasFocus()
+    {
+        return $this->find('*:focus')->isVisible();
+    }
+
+    /**
      * Set the value
      *
      * @param ElementInterface $element
@@ -344,19 +361,22 @@ class Driver implements DriverInterface
         $this->eventManager->dispatchEvent(['set_value'], [__METHOD__, $element->getAbsoluteSelector()]);
 
         $wrappedElement = $this->getNativeElement($element);
-        $currentValue = $wrappedElement->value();
-        $sequenceKey = '';
-
-        if (strlen($currentValue)) {
-            $sequenceKey .= str_repeat(self::BACKSPACE, strlen($currentValue));
-        }
-        $sequenceKey .= $value;
-        $sequenceKey .= self::TAB;
-
-        $this->selectWindow();
         $this->driver->moveto($wrappedElement);
+        $wrappedElement->clear();
         $wrappedElement->click();
-        $this->driver->keys($sequenceKey);
+
+        if ($this->currentFrameLocator) {
+            if (!$this->isHasFocus()) {
+                $this->selectWindow();
+            }
+            $this->switchToFrame($this->currentFrameLocator);
+            $wrappedElement = $this->getNativeElement($element);
+        } else {
+            if (!$this->isHasFocus()) {
+                $this->selectWindow();
+            }
+        }
+        $wrappedElement->value($value);
     }
 
     /**
@@ -669,6 +689,8 @@ class Driver implements DriverInterface
             $this->eventManager->dispatchEvent(['switch_to_frame'], ['Switch to main window']);
             $element = null;
         }
+
+        $this->currentFrameLocator = $locator;
         $this->driver->frame($element);
     }
 

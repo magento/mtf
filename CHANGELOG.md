@@ -1,3 +1,5 @@
+* Fixed losing focus from the iframe during setting value to element
+
 1.0.0-rc.19
 =============
 * Introduced unified format for Fixtures configuration

@@ -72,10 +72,10 @@ interface BrowserInterface
     /**
      * Change the focus to a frame in the page by locator
      *
-     * @param Locator $locator
+     * @param Locator|null $locator
      * @return void
      */
-    public function switchToFrame(Locator $locator);
+    public function switchToFrame(Locator $locator = null);
 
     /**
      * Close the current window
