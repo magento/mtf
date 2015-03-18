@@ -365,17 +365,14 @@ class Driver implements DriverInterface
         $wrappedElement->clear();
         $wrappedElement->click();
 
-        if ($this->currentFrameLocator) {
-            if (!$this->isHasFocus()) {
-                $this->selectWindow();
-            }
-            $this->switchToFrame($this->currentFrameLocator);
-            $wrappedElement = $this->getNativeElement($element);
-        } else {
-            if (!$this->isHasFocus()) {
-                $this->selectWindow();
+        if (!$this->isHasFocus()) {
+            $this->selectWindow();
+            if ($this->currentFrameLocator) {
+                $this->switchToFrame($this->currentFrameLocator);
+                $wrappedElement = $this->getNativeElement($element);
             }
         }
+
         $wrappedElement->value($value);
     }
 

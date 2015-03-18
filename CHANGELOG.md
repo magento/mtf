@@ -1,3 +1,5 @@
+1.0.0-rc.20
+=============
 * Fixed losing focus from the iframe during setting value to element
 
 1.0.0-rc.19
