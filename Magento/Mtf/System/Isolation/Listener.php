@@ -1,31 +1,13 @@
 <?php
 /**
- * Magento
- *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@magentocommerce.com so we can send you a copy immediately.
- *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade Magento to newer
- * versions in the future. If you wish to customize Magento for your
- * needs please refer to http://www.magentocommerce.com for more information.
- *
- * @copyright   Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
- * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Mtf\System\Isolation;
 
 use Magento\Mtf\System\Isolation\Driver;
-use Magento\Mtf\Config; // Magento\Mtf\SystemConfig
+use Magento\Mtf\Config\DataInterface;
 
 /**
  * Class Listener
@@ -94,9 +76,9 @@ class Listener implements \PHPUnit_Framework_TestListener
 
     /**
      * @param \Magento\Mtf\System\Isolation\Driver $driver
-     * @param null|Config $configuration
+     * @param DataInterface $configuration
      */
-    public function __construct(Driver $driver, $configuration = null)
+    public function __construct(Driver $driver, DataInterface $configuration = null)
     {
         if (!isset($configuration)) {
             $configuration = $configuration = \Magento\Mtf\ObjectManagerFactory::getObjectManager()
@@ -105,9 +87,9 @@ class Listener implements \PHPUnit_Framework_TestListener
         }
         $this->_driver = $driver;
         $this->_lastDefaultModes = [
-            self::SCOPE_TEST_SUITE => $configuration->get('isolation/' . self::SCOPE_TEST_SUITE),
-            self::SCOPE_TEST_CASE => $configuration->get('isolation/' . self::SCOPE_TEST_CASE),
-            self::SCOPE_TEST => $configuration->get('isolation/' . self::SCOPE_TEST),
+            self::SCOPE_TEST_SUITE => $configuration->get('isolation/0/' . self::SCOPE_TEST_SUITE . '/0/value'),
+            self::SCOPE_TEST_CASE => $configuration->get('isolation/0/' . self::SCOPE_TEST_CASE . '/0/value'),
+            self::SCOPE_TEST => $configuration->get('isolation/0/' . self::SCOPE_TEST . '/0/value'),
         ];
     }
 

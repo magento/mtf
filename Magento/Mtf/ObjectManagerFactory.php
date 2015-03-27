@@ -93,7 +93,7 @@ class ObjectManagerFactory
     ) {
         $constInterpreter = new \Magento\Mtf\Data\Argument\Interpreter\Constant();
         $result = new \Magento\Mtf\Data\Argument\Interpreter\Composite(
-            array(
+            [
                 'boolean' => new \Magento\Mtf\Data\Argument\Interpreter\Boolean($booleanUtils),
                 'string' => new \Magento\Mtf\Data\Argument\Interpreter\String($booleanUtils),
                 'number' => new \Magento\Mtf\Data\Argument\Interpreter\Number(),
@@ -101,7 +101,7 @@ class ObjectManagerFactory
                 'const' => $constInterpreter,
                 'object' => new \Magento\Mtf\Data\Argument\Interpreter\Object($booleanUtils),
                 'init_parameter' => new \Magento\Mtf\Data\Argument\Interpreter\Argument($constInterpreter),
-            ),
+            ],
             \Magento\Mtf\ObjectManager\Config\Reader\Dom::TYPE_ATTRIBUTE
         );
         // Add interpreters that reference the composite

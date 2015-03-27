@@ -1,25 +1,7 @@
 <?php
 /**
- * Magento
- *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@magentocommerce.com so we can send you a copy immediately.
- *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade Magento to newer
- * versions in the future. If you wish to customize Magento for your
- * needs please refer to http://www.magentocommerce.com for more information.
- *
- * @copyright   Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
- * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Mtf\ObjectManager\Config;
 
@@ -50,28 +32,28 @@ class Config implements \Magento\Mtf\ObjectManager\ConfigInterface
      *
      * @var array
      */
-    protected $_preferences = array();
+    protected $_preferences = [];
 
     /**
      * Virtual types
      *
      * @var array
      */
-    protected $_virtualTypes = array();
+    protected $_virtualTypes = [];
 
     /**
      * Instance arguments
      *
      * @var array
      */
-    protected $_arguments = array();
+    protected $_arguments = [];
 
     /**
      * Type shareability
      *
      * @var array
      */
-    protected $_nonShared = array();
+    protected $_nonShared = [];
 
     /**
      * List of relations
@@ -145,7 +127,7 @@ class Config implements \Magento\Mtf\ObjectManager\ConfigInterface
     public function getPreference($type)
     {
         $type = ltrim($type, '\\');
-        $preferencePath = array();
+        $preferencePath = [];
         while (isset($this->_preferences[$type])) {
             if (isset($preferencePath[$this->_preferences[$type]])) {
                 throw new \LogicException(
@@ -177,7 +159,7 @@ class Config implements \Magento\Mtf\ObjectManager\ConfigInterface
             } else {
                 if ($this->_relations->has($type)) {
                     $relations = $this->_relations->getParents($type);
-                    $arguments = array();
+                    $arguments = [];
                     foreach ($relations as $relation) {
                         if ($relation) {
                             $relationArguments = $this->_collectConfiguration($relation);
@@ -187,7 +169,7 @@ class Config implements \Magento\Mtf\ObjectManager\ConfigInterface
                         }
                     }
                 } else {
-                    $arguments = array();
+                    $arguments = [];
                 }
             }
 
@@ -228,7 +210,7 @@ class Config implements \Magento\Mtf\ObjectManager\ConfigInterface
                     }
                     if (isset($curConfig['arguments'])) {
                         if (!empty($this->_mergedArguments)) {
-                            $this->_mergedArguments = array();
+                            $this->_mergedArguments = [];
                         }
                         if (isset($this->_arguments[$key])) {
                             $this->_arguments[$key] = array_replace($this->_arguments[$key], $curConfig['arguments']);

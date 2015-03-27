@@ -9,7 +9,7 @@
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-    <xs:redefine schemaLocation="types.xsd">
+    <xs:redefine schemaLocation="../Magento/Mtf/Data/etc/types.xsd">
         <xs:complexType name="argumentType" abstract="true" mixed="false">
             <xs:complexContent>
                 <xs:extension base="argumentType" />
@@ -114,8 +114,8 @@
         <xs:choice maxOccurs="unbounded">
             <xs:element name="arguments" type="argumentsType" minOccurs="0" maxOccurs="1">
                 <xs:key name="argumentName">
-                    <xs:selector xpath="argument"></xs:selector>
-                    <xs:field xpath="@name"></xs:field>
+                    <xs:selector xpath="argument"/>
+                    <xs:field xpath="@name"/>
                 </xs:key>
             </xs:element>
             <xs:element name="plugin" type="pluginType" minOccurs="0" maxOccurs="unbounded" />

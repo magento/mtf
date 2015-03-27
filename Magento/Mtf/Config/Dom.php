@@ -1,37 +1,13 @@
 <?php
 /**
- * Magento
- *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@magentocommerce.com so we can send you a copy immediately.
- *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade Magento to newer
- * versions in the future. If you wish to customize Magento for your
- * needs please refer to http://www.magentocommerce.com for more information.
- *
- * @category    Magento
- * @package     Framework
- * @subpackage  Config
- * @copyright   Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
- * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
-/**
- * Magento configuration XML DOM utility
- */
 namespace Magento\Mtf\Config;
 
 /**
- * Class Dom
+ * Magento configuration XML DOM utility
  */
 class Dom
 {
@@ -99,7 +75,7 @@ class Dom
      */
     public function __construct(
         $xml,
-        array $idAttributes = array(),
+        array $idAttributes = [],
         $typeAttributeName = null,
         $schemaFile = null,
         $errorFormat = self::ERROR_FORMAT_DEFAULT
@@ -222,8 +198,13 @@ class Dom
         $prefix = is_null($this->_rootNamespace) ? '' : self::ROOT_NAMESPACE_PREFIX . ':';
         $path = $parentPath . '/' . $prefix . $node->tagName;
         $idAttribute = $this->_nodeMergingConfig->getIdAttribute($path);
-        if ($idAttribute && ($value = $node->getAttribute($idAttribute))) {
-            $path .= "[@{$idAttribute}='{$value}']";
+        if ($idAttribute) {
+            foreach (explode('|', $idAttribute) as $idAttributeValue) {
+                if ($value = $node->getAttribute($idAttributeValue)) {
+                    $path .= "[@{$idAttributeValue}='{$value}']";
+                    break;
+                }
+            }
         }
         return $path;
     }
@@ -269,7 +250,7 @@ class Dom
         libxml_use_internal_errors(true);
         try {
             $result = $dom->schemaValidate($schemaFileName);
-            $errors = array();
+            $errors = [];
             if (!$result) {
                 $validationErrors = libxml_get_errors();
                 if (count($validationErrors)) {
@@ -353,7 +334,7 @@ class Dom
      * @param array &$errors
      * @return bool
      */
-    public function validate($schemaFileName, &$errors = array())
+    public function validate($schemaFileName, &$errors = [])
     {
         $errors = self::validateDomDocument($this->_dom, $schemaFileName, $this->_errorFormat);
         return !count($errors);

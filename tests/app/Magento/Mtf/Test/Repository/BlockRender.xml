@@ -23,12 +23,12 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 -->
-<repository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:noNamespaceSchemaLocation="../../../../../../Magento/Mtf/Repository/etc/repository.xsd">
-    <storage class="Magento\BlockRender\Test\Repository\BlockRender">
+    <repository class="Magento\BlockRender\Test\Repository\BlockRender">
         <dataset name="block_data">
             <field name="strategy" xsi:type="const">\Magento\Tag\Test\TestCase\TagTest::SEVERITY</field>
             <field name="type" xsi:type="string">type</field>
         </dataset>
-    </storage>
-</repository>
+    </repository>
+</config>
