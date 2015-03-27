@@ -1,32 +1,15 @@
 <?php
 /**
- * Magento
- *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@magentocommerce.com so we can send you a copy immediately.
- *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade Magento to newer
- * versions in the future. If you wish to customize Magento for your
- * needs please refer to http://www.magentocommerce.com for more information.
- *
- * @copyright   Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
- * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Mtf\Config;
 
+use Magento\Mtf\ObjectManager\Config\Mapper\ArgumentParser;
+use Magento\Mtf\Data\Argument\InterpreterInterface;
+
 /**
- * Class Converter
- *
- * Converts configuration of fixtures, pages and constraints.
+ * Converter for configuration data.
  */
 class Converter implements \Magento\Mtf\Config\ConverterInterface
 {
@@ -36,28 +19,59 @@ class Converter implements \Magento\Mtf\Config\ConverterInterface
     const NAME_ATTRIBUTE = 'name';
 
     /**
-     * Module attribute for node.
+     * @var ArgumentParser
      */
-    const MODULE_ATTRIBUTE = 'module';
+    protected $argumentParser;
 
     /**
-     * Convert xml to array.
+     * @var InterpreterInterface
+     */
+    protected $argumentInterpreter;
+
+    /**
+     * @var string
+     */
+    protected $argumentNodeName;
+
+    /**
+     * @var string[]
+     */
+    protected $idAttributes;
+
+    /**
+     * @param ArgumentParser $argumentParser
+     * @param InterpreterInterface $argumentInterpreter
+     * @param string $argumentNodeName
+     * @param string[] $idAttributes
+     */
+    public function __construct(
+        ArgumentParser $argumentParser,
+        InterpreterInterface $argumentInterpreter,
+        $argumentNodeName,
+        array $idAttributes = []
+    ) {
+        $this->argumentParser = $argumentParser;
+        $this->argumentInterpreter = $argumentInterpreter;
+        $this->argumentNodeName = $argumentNodeName;
+        $this->idAttributes = $idAttributes;
+    }
+
+    /**
+     * Convert XML to array.
      *
      * @param \DOMDocument $source
      * @return array
      */
-    public function convert($source)
+    public function convert(\DOMDocument $source)
     {
-        return $this->convertXml(
-            $source->documentElement->childNodes
-        );
+        return $this->convertXml($source->documentElement->childNodes);
     }
 
     /**
-     * Convert xml node to array or string recursive.
+     * Convert XML node to array or string recursive.
      *
-     * @param mixed $elements
-     * @return array|string
+     * @param \DOMNodeList|array $elements
+     * @return array
      */
     protected function convertXml($elements)
     {
@@ -65,20 +79,122 @@ class Converter implements \Magento\Mtf\Config\ConverterInterface
 
         foreach ($elements as $element) {
             if ($element instanceof \DOMElement) {
-                $key = $element->hasAttribute(self::NAME_ATTRIBUTE)
-                    ? $element->getAttribute(self::NAME_ATTRIBUTE)
-                    : $element->nodeName;
-                if ($element->hasChildNodes()) {
-                    $result[$key] = $this->convertXml($element->childNodes);
+                if ($element->hasAttribute('xsi:type')) {
+                    if ($element->hasAttribute('path')) {
+                        $elementData = $this->getAttributes($element);
+                        $elementData['value'] = $this->argumentInterpreter->evaluate(
+                            $this->argumentParser->parse($element)
+                        );
+                        unset($elementData['xsi:type'], $elementData['item']);
+                    } else {
+                        $elementData = $this->argumentInterpreter->evaluate(
+                            $this->argumentParser->parse($element)
+                        );
+                    }
+                } else {
+                    $elementData = array_merge(
+                        $this->getAttributes($element),
+                        $this->getChildNodes($element)
+                    );
                 }
-                if ($element->hasAttribute(self::MODULE_ATTRIBUTE)) {
-                    $result[$key][self::MODULE_ATTRIBUTE] = $element->getAttribute(self::MODULE_ATTRIBUTE);
+                $key = $this->getElementKey($element);
+                if ($key) {
+                    $result[$element->nodeName][$key] = $elementData;
+                } elseif (!empty($elementData)) {
+                    $result[$element->nodeName][] = $elementData;
                 }
             } elseif ($element->nodeType == XML_TEXT_NODE && trim($element->nodeValue) != '') {
-                return $element->nodeValue;
+                return ['value' => $element->nodeValue];
             }
         }
 
         return $result;
+    }
+
+    /**
+     * Get key for DOM element
+     *
+     * @param \DOMElement $element
+     * @return bool|string
+     */
+    protected function getElementKey(\DOMElement $element)
+    {
+        if (isset($this->idAttributes[$element->nodeName])) {
+            if ($element->hasAttribute($this->idAttributes[$element->nodeName])) {
+                return $element->getAttribute($this->idAttributes[$element->nodeName]);
+            }
+        }
+        if ($element->hasAttribute(self::NAME_ATTRIBUTE)) {
+            return $element->getAttribute(self::NAME_ATTRIBUTE);
+        }
+        return false;
+    }
+
+    /**
+     * @param \DOMElement $element
+     * @param \DOMAttr $attribute
+     * @return bool
+     */
+    protected function isKeyAttribute(\DOMElement $element, \DOMAttr $attribute)
+    {
+        if (isset($this->idAttributes[$element->nodeName])) {
+            return $attribute->name == $this->idAttributes[$element->nodeName];
+        } else {
+            return $attribute->name == self::NAME_ATTRIBUTE;
+        }
+    }
+
+    /**
+     * Get node attributes.
+     *
+     * @param \DOMElement $element
+     * @return array
+     */
+    protected function getAttributes(\DOMElement $element)
+    {
+        $attributes = [];
+        if ($element->hasAttributes()) {
+            /** @var \DomAttr $attribute */
+            foreach ($element->attributes as $attribute) {
+                if (trim($attribute->nodeValue) != '' && !$this->isKeyAttribute($element, $attribute)) {
+                    $attributes[$attribute->nodeName] = $this->castNumeric($attribute->nodeValue);
+                }
+            }
+        }
+        return $attributes;
+    }
+
+    /**
+     * Get child nodes data.
+     *
+     * @param \DOMElement $element
+     * @return array
+     */
+    protected function getChildNodes(\DOMElement $element)
+    {
+        $children = [];
+        if ($element->hasChildNodes()) {
+            $children = $this->convertXml($element->childNodes);
+        }
+        return $children;
+    }
+
+    /**
+     * Cast nodeValue to int or double.
+     *
+     * @param string $nodeValue
+     * @return float|int
+     */
+    protected function castNumeric($nodeValue)
+    {
+        if (is_numeric($nodeValue)) {
+            if (preg_match('/^\d+$/', $nodeValue)) {
+                $nodeValue = (int) $nodeValue;
+            } else {
+                $nodeValue = (double) $nodeValue;
+            }
+        }
+
+        return $nodeValue;
     }
 }

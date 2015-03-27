@@ -1,25 +1,7 @@
 <?php
 /**
- * Magento
- *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@magentocommerce.com so we can send you a copy immediately.
- *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade Magento to newer
- * versions in the future. If you wish to customize Magento for your
- * needs please refer to http://www.magentocommerce.com for more information.
- *
- * @copyright   Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
- * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Mtf\ObjectManager\Factory\Dynamic;
 
@@ -54,7 +36,7 @@ class Developer implements \Magento\Mtf\ObjectManager\FactoryInterface
      *
      * @var array
      */
-    protected $creationStack = array();
+    protected $creationStack = [];
 
     /**
      * @param \Magento\Mtf\ObjectManager\ConfigInterface $config
@@ -66,7 +48,7 @@ class Developer implements \Magento\Mtf\ObjectManager\FactoryInterface
         \Magento\Mtf\ObjectManager\ConfigInterface $config,
         \Magento\Mtf\ObjectManagerInterface $objectManager = null,
         \Magento\Mtf\ObjectManager\DefinitionInterface $definitions = null,
-        $globalArguments = array()
+        $globalArguments = []
     ) {
         $this->config = $config;
         $this->objectManager = $objectManager;
@@ -98,9 +80,9 @@ class Developer implements \Magento\Mtf\ObjectManager\FactoryInterface
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    protected function _resolveArguments($requestedType, array $parameters, array $arguments = array())
+    protected function _resolveArguments($requestedType, array $parameters, array $arguments = [])
     {
-        $resolvedArguments = array();
+        $resolvedArguments = [];
         $arguments = count($arguments)
             ? array_replace($this->config->getArguments($requestedType), $arguments)
             : $this->config->getArguments($requestedType);
@@ -111,9 +93,9 @@ class Developer implements \Magento\Mtf\ObjectManager\FactoryInterface
                 $argument = $arguments[$paramName];
             } else if ($paramRequired) {
                 if ($paramType) {
-                    $argument = array('instance' => $paramType);
+                    $argument = ['instance' => $paramType];
                 } else {
-                    $this->creationStack = array();
+                    $this->creationStack = [];
                     throw new \BadMethodCallException(
                         'Missing required argument $' . $paramName . ' of ' . $requestedType . '.'
                     );
@@ -183,7 +165,7 @@ class Developer implements \Magento\Mtf\ObjectManager\FactoryInterface
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
-    public function create($requestedType, array $arguments = array())
+    public function create($requestedType, array $arguments = [])
     {
         $type = $this->config->getInstanceType($requestedType);
         $parameters = $this->definitions->getParameters($type);
@@ -192,7 +174,7 @@ class Developer implements \Magento\Mtf\ObjectManager\FactoryInterface
         }
         if (isset($this->creationStack[$requestedType])) {
             $lastFound = end($this->creationStack);
-            $this->creationStack = array();
+            $this->creationStack = [];
             throw new \LogicException("Circular dependency: {$requestedType} depends on {$lastFound} and vice versa.");
         }
         $this->creationStack[$requestedType] = $requestedType;

@@ -1,3 +1,9 @@
+1.0.0-rc.21
+=============
+* Unified configuration usage
+* Performed general code clean up
+* Updated license information
+
 1.0.0-rc.20
 =============
 * Fixed losing focus from the iframe during setting value to element

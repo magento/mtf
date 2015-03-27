@@ -7,6 +7,9 @@ namespace Magento\Mtf\Code\Generator;
 
 use Magento\Mtf\Code\Generator;
 
+/**
+ * Class Autoloader
+ */
 class Autoloader
 {
     /**

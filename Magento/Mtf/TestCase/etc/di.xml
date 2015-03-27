@@ -1,5 +1,11 @@
-<?xml version="1.0"?>
-<config>
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../ObjectManager/etc/config.xsd">
     <type name="Magento\Mtf\TestCase\Config">
         <arguments>
             <argument name="configuration" xsi:type="object">Magento\Mtf\TestCase\Config\Data</argument>

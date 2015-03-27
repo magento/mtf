@@ -39,7 +39,7 @@ class Repository extends AbstractGenerate
     {
         $this->cnt = 0;
 
-        foreach ($this->configData->get() as $name => $data) {
+        foreach ($this->configData->get('repository') as $name => $data) {
             $this->generateClass($name, $data);
         }
 
@@ -55,12 +55,12 @@ class Repository extends AbstractGenerate
      */
     public function generate($className)
     {
-        if (!$this->configData->get($className)) {
+        if (!$this->configData->get('repository/' . $className)) {
             throw new \InvalidArgumentException('Invalid class name: ' . $className);
         }
 
         return $this->generateClass(
-            $className, $this->configData->get($className)
+            $className, $this->configData->get('repository/' . $className)
         );
     }
 
@@ -99,11 +99,12 @@ class Repository extends AbstractGenerate
         $content .= "     * @param array \$defaultData\n     */\n";
         $content .= '    public function __construct(array $defaultConfig = [], array $defaultData = [])' . "\n";
         $content .= "    {\n";
-        end($data);
-        $lastItemName = key($data);
-        foreach ($data as $name => $item) {
+        $dataSets = $data['dataset'];
+        end($dataSets);
+        $lastItemName = key($dataSets);
+        foreach ($dataSets as $name => $item) {
             $content .= "        \$this->_data['{$name}'] = ";
-            $content .= $this->generateArray('', $item, '        ');
+            $content .= $this->generateArray('', $item['field'], '        ');
             $content .= "        ];\n";
             $content .= $lastItemName === $name ? "" : "\n";
         }
@@ -141,7 +142,7 @@ class Repository extends AbstractGenerate
      */
     protected function generateArray($arrayKey, array $params, $indent = '', $flag = false)
     {
-        $content = $arrayKey == '' ? "[\n" : $indent . "'{$arrayKey}' => [\n";
+        $content = $arrayKey === '' ? "[\n" : $indent . "'{$arrayKey}' => [\n";
         foreach ($params as $key => $value) {
             $content .= is_array($value)
                 ? $this->generateArray($key, $value, $indent . '    ', true)

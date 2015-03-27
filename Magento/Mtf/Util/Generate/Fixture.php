@@ -93,13 +93,13 @@ class Fixture extends AbstractGenerate
         //Resolve arguments
         $dataConfig = null;
         if (isset($item['data_config'])) {
-            $dataConfig = $this->resolveArguments($item['data_config'][0]);
+            $dataConfig = $item['data_config'][0]['item'];
         }
         $fields = isset($item['field']) ? $item['field'] : [];
         $defaultDataSet = [];
         if (isset($item['dataset'])) {
             foreach ($item['dataset']['default']['field'] as $key => $value) {
-                $defaultDataSet[$key] = $this->getDefaultValue($value);
+                $defaultDataSet[$key] = $value;
             }
         } else {
             $defaultDataSet = $this->getDefaultValues((array)$fields);
@@ -145,7 +145,7 @@ class Fixture extends AbstractGenerate
             $content .= "    protected \${$name} = [\n";
             foreach ($field as $key => $value) {
                 if ($key == 'default_value') {
-                    $value = $this->getDefaultValue($value[0]);
+                    $value = $value[0];
                 }
                 if (is_array($value)) {
                     $content .= "        '{$key}' => ";
@@ -190,28 +190,6 @@ class Fixture extends AbstractGenerate
     }
 
     /**
-     * Resolve arguments.
-     *
-     * @param array $arguments
-     * @return array
-     */
-    protected function resolveArguments($arguments)
-    {
-        $output = [];
-        if (isset($arguments['item'])) {
-            $arguments = $arguments['item'];
-        }
-        foreach ($arguments as $key => $item) {
-            if (isset($item['xsi:type']) && $item['xsi:type'] == 'array') {
-                $output[$key] = $this->resolveArguments($item);
-            } else if (is_array($item)){
-                $output[$key] = $item['value'];
-            }
-        }
-        return $output;
-    }
-
-    /**
      * Get default values of all fields.
      *
      * @param array $fields
@@ -224,20 +202,9 @@ class Fixture extends AbstractGenerate
             if (empty($field['default_value'])) {
                 continue;
             }
-            $data[$name] = $this->getDefaultValue($field['default_value'][0]);
+            $data[$name] = $field['default_value'][0];
         }
         return $data;
-    }
-
-    protected function getDefaultValue($data)
-    {
-        if ($data['xsi:type'] == 'null') {
-            return null;
-        } else if ($data['xsi:type'] == 'array') {
-            return $this->resolveArguments($data);
-        } else {
-            return $data['value'];
-        }
     }
 
     /**

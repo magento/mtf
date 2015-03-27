@@ -1,28 +1,12 @@
 <?php
 /**
- * Magento
- *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@magentocommerce.com so we can send you a copy immediately.
- *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade Magento to newer
- * versions in the future. If you wish to customize Magento for your
- * needs please refer to http://www.magentocommerce.com for more information.
- *
- * @copyright   Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
- * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Mtf\Util\Filter;
+
+use Magento\Mtf\Config\DataInterface;
 
 /**
  * Base class filters out classes that are affected by some parameters.
@@ -45,19 +29,18 @@ abstract class AbstractFilter extends \Magento\Mtf\Util\CrossModuleReference\Com
 
     /**
      * @constructor
-     * @param \Magento\Mtf\Config\DataInterface $configData
-     * @param string $pathConfig
+     * @param DataInterface $configData
+     * @param string $scope
+     * @param string $type
      */
-    public function __construct(
-        \Magento\Mtf\Config\DataInterface $configData,
-        $pathConfig
-    ) {
-        $this->allow = $configData->get($pathConfig . '/allow');
+    public function __construct(DataInterface $configData, $scope, $type)
+    {
+        $this->allow = $configData->get('rule/' . $scope . '/allow/0/' . $type);
         if (!$this->allow) {
             $this->allow = [];
         }
 
-        $this->deny = $configData->get($pathConfig . '/deny');
+        $this->deny = $configData->get('rule/' . $scope . '/deny/0/' . $type);
         if (!$this->deny) {
             $this->deny = [];
         }
