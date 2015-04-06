@@ -170,14 +170,7 @@ class InjectableFixture implements FixtureInterface
             }
         }
 
-        $dataToReplace = $this->data;
-        if (isset($data[0]['path'])) {
-            $dataToReplace['section'][$dataSet] = $this->data['section'];
-            $result = $this->replacer->apply($dataToReplace);
-            $this->data['section'] = $result['section'][$dataSet];
-        } else {
-            $this->data = $this->replacer->apply($dataToReplace);
-        }
+        $this->data = $this->replacer->apply($this->data);
 
         if ($persist === true) {
             $this->persist();
