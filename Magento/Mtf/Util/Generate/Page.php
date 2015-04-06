@@ -84,8 +84,16 @@ class Page extends AbstractGenerate
         $folderPath = $module . '/Test/Page' . (empty($data['area']) ? '' : ('/' . $data['area']));
         $realFolderPath = MTF_BP . '/generated/' . $folderPath;
         $namespace = str_replace('/', '\\', $folderPath);
-        $areaMtfPage = strpos($folderPath, 'Adminhtml') === false ? 'FrontendPage' : 'BackendPage';
         $mca = isset($data['mca']) ? $data['mca'] : '';
+        if (strpos($folderPath, 'Adminhtml') === false) {
+            if (strpos($mca, 'http') === false) {
+                $areaMtfPage = 'FrontendPage';
+            } else {
+                $areaMtfPage = 'ExternalPage';
+            }
+        } else {
+            $areaMtfPage = 'BackendPage';
+        }
         $blocks = isset($data['block']) ? $data['block'] : [];
 
         $content = "<?php\n";
