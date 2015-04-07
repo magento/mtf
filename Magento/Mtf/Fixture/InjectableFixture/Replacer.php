@@ -75,6 +75,10 @@ class Replacer
             $this->data = $data;
 
             foreach ($this->values['path'] as $path => $value) {
+                if (isset($this->data[$path]['value'])) {
+                    $this->data[$path]['value'] = $value;
+                    continue;
+                }
                 $this->applyValueByPath($path, $value);
             }
             $this->applyPlaceholders(array_merge($this->values['replace'], ['isolation' => mt_rand()]));
@@ -87,6 +91,7 @@ class Replacer
     /**
      * Single replace value in data.
      *
+     * @deprecated
      * @param string $path
      * @param string $value
      * @return void
