@@ -1,3 +1,7 @@
+1.0.0-rc.22
+=============
+* Added an ability to generate pages for external solutions
+
 1.0.0-rc.21
 =============
 * Unified configuration usage
