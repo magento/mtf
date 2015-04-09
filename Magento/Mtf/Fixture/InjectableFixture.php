@@ -140,7 +140,15 @@ class InjectableFixture implements FixtureInterface
             $data = $this->defaultDataSet;
         }
 
-        $this->data = $data;
+        // todo This code should be removed together with removing uniqueness of ConfigData fixture.
+        if (isset($this->section)) {
+            $this->data['section'] = $data;
+            $this->data = $this->replacer->apply($this->data);
+            if ($persist === true) {
+                $this->persist();
+            }
+            return;
+        }
 
         foreach ($data as $name => $value) {
             if (!isset($this->$name)) {
@@ -165,7 +173,6 @@ class InjectableFixture implements FixtureInterface
         }
 
         $this->data = $this->replacer->apply($this->data);
-
         if ($persist === true) {
             $this->persist();
         }
