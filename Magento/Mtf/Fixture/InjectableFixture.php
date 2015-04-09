@@ -172,7 +172,7 @@ class InjectableFixture implements FixtureInterface
             }
         }
 
-        $this->data = $this->replacer->apply($this->data);
+        $this->data = $this->replacer->apply($this->data)['section'];
         if ($persist === true) {
             $this->persist();
         }

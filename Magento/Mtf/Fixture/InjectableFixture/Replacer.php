@@ -75,8 +75,8 @@ class Replacer
             $this->data = $data;
 
             foreach ($this->values['path'] as $path => $value) {
-                if (isset($this->data[$path]['value'])) {
-                    $this->data[$path]['value'] = $value;
+                if (isset($this->data['section'][$path]['value'])) {
+                    $this->data['section'][$path]['value'] = $value;
                     continue;
                 }
                 $this->applyValueByPath($path, $value);
