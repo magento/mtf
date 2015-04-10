@@ -435,6 +435,7 @@
                 <item name="/config/testCase" xsi:type="string">name</item>
                 <item name="/config/testCase/variation" xsi:type="string">name</item>
                 <item name="/config/testCase/variation/data" xsi:type="string">name</item>
+                <item name="/config/testCase/variation/constraint" xsi:type="string">name</item>
             </argument>
             <argument name="fileName" xsi:type="string">#\.xml$#</argument>
             <argument name="defaultScope" xsi:type="string">TestCase</argument>
