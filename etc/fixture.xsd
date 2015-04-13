@@ -30,7 +30,7 @@
 
     <xs:element name="fixture">
         <xs:complexType>
-            <xs:sequence>
+            <xs:choice maxOccurs="unbounded">
                 <xs:element ref="dataset" maxOccurs="unbounded" minOccurs="0">
                     <xs:annotation>
                         <xs:documentation>
@@ -52,7 +52,7 @@
                         </xs:documentation>
                     </xs:annotation>
                 </xs:element>
-            </xs:sequence>
+            </xs:choice>
             <xs:attribute type="notEmptyType" name="name" use="required">
                 <xs:annotation>
                     <xs:documentation>

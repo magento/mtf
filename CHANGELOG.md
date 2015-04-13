@@ -1,3 +1,5 @@
+Added an ability to merge form mapping from different modules
+
 1.0.0-rc.21
 =============
 * Unified configuration usage

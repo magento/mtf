@@ -11,9 +11,7 @@ use Magento\Mtf\Client\BrowserInterface;
 use Magento\Mtf\Client\ElementInterface;
 
 /**
- * Class Block
- *
- * Is used for any blocks on the page
+ * Is used for any blocks on the page.
  * Classes which implement this interface are expected to provide public methods
  * to perform all possible interactions with the corresponding part of the page.
  * Blocks provide additional level of granularity of tests for business logic encapsulation
@@ -84,7 +82,7 @@ abstract class Block implements BlockInterface
      * Initialize for children classes
      * @return void
      */
-    protected function _init()
+    protected function init()
     {
         //
     }
