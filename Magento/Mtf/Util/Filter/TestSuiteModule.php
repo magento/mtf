@@ -117,9 +117,10 @@ class TestSuiteModule extends AbstractClassModule
     protected function initEnvironmentCustomization()
     {
         $modules = getenv(self::MODULE_FILTER);
-        $modules = array_map('trim', explode(',', $modules));
         
-        if (is_array($modules)) {
+        if (!empty($modules)) {
+
+            $modules = array_map('trim', explode(',', $modules));
 
             $strict = getenv(self::MODULE_FILTER_STRICT);
             $strict = (false === $strict) ? 1 : $strict;
