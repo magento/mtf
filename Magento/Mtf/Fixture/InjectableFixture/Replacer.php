@@ -77,45 +77,13 @@ class Replacer
             foreach ($this->values['path'] as $path => $value) {
                 if (isset($this->data['section'][$path]['value'])) {
                     $this->data['section'][$path]['value'] = $value;
-                    continue;
                 }
-                $this->applyValueByPath($path, $value);
             }
             $this->applyPlaceholders(array_merge($this->values['replace'], ['isolation' => mt_rand()]));
             $data = $this->data;
         }
 
         return $data;
-    }
-
-    /**
-     * Single replace value in data.
-     *
-     * @deprecated
-     * @param string $path
-     * @param string $value
-     * @return void
-     */
-    protected function applyValueByPath($path, $value)
-    {
-        $data = &$this->data;
-        $keys = explode('/', $path);
-        $isSetValue = true;
-
-        $key = array_shift($keys);
-        while ($key !== null && $isSetValue) {
-            if (!isset($data[$key])) {
-                $isSetValue = false;
-                break;
-            }
-
-            $data = &$data[$key];
-            $key = array_shift($keys);
-        }
-
-        if ($isSetValue) {
-            $data = $value;
-        }
     }
 
     /**
