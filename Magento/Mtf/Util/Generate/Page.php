@@ -176,7 +176,7 @@ class Page extends AbstractGenerate
      * @param string $mca
      * @return string
      */
-    protected function getParentPage ($folderPath, $mca)
+    protected function getParentPage($folderPath, $mca)
     {
         if (strpos($folderPath, 'Adminhtml') === false) {
             if (strpos($mca, 'http') === false) {
