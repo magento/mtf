@@ -75,7 +75,7 @@ abstract class Block implements BlockInterface
         $this->browser = $browser;
         $this->config = $config;
 
-        $this->_init();
+        $this->init();
     }
 
     /**
