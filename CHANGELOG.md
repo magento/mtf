@@ -1,3 +1,9 @@
+1.0.0-rc.22
+=============
+* Fixed config data structure
+* Updated credential template file
+* Fixed module filter for test suite rules
+
 1.0.0-rc.21
 =============
 * Unified configuration usage
