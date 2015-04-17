@@ -1,3 +1,7 @@
+1.0.0-rc.23
+=============
+* Added an ability to merge form mapping from different modules
+
 1.0.0-rc.22
 =============
 * Fixed config data structure
