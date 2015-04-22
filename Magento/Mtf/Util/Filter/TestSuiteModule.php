@@ -14,6 +14,16 @@ use Magento\Mtf\ObjectManager;
 class TestSuiteModule extends AbstractClassModule
 {
     /**
+     * Environment field name for allow module list
+     */
+    const MODULE_FILTER = 'module_filter';
+
+    /**
+     * Environment field name for type filtering modules.
+     */
+    const MODULE_FILTER_STRICT = 'module_filter_strict';
+
+    /**
      * List allow affected test cases.
      *
      * @var array|null
@@ -67,6 +77,9 @@ class TestSuiteModule extends AbstractClassModule
     protected function initAffectedTestCase()
     {
         if (null == $this->allowAffectedTestCase) {
+
+            $this->initEnvironmentCustomization();
+
             $this->allowAffectedTestCase = [];
 
             foreach ($this->allow as $module => $strict) {
@@ -93,6 +106,27 @@ class TestSuiteModule extends AbstractClassModule
                     $this->denyAffectedTestCase,
                     $this->getAffectedTestCases($module)
                 );
+            }
+        }
+    }
+
+    /**
+     * Override data using environment variables
+     * todo Need to be moved to rules configuration xml (including strict options)
+     */
+    protected function initEnvironmentCustomization()
+    {
+        $modules = getenv(self::MODULE_FILTER);
+        
+        if (!empty($modules)) {
+
+            $modules = array_map('trim', explode(',', $modules));
+
+            $strict = getenv(self::MODULE_FILTER_STRICT);
+            $strict = (false === $strict) ? 1 : $strict;
+
+            foreach ($modules as $module) {
+                $this->allow[$module] = $strict;
             }
         }
     }

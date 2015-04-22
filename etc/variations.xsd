@@ -50,7 +50,7 @@
 
     <xs:element name="variation">
         <xs:complexType>
-            <xs:sequence>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
                 <xs:element name="data" type="argumentType" maxOccurs="unbounded" minOccurs="0">
                     <xs:annotation>
                         <xs:documentation>
@@ -65,7 +65,7 @@
                         </xs:documentation>
                     </xs:annotation>
                 </xs:element>
-            </xs:sequence>
+            </xs:choice>
             <xs:attribute type="xs:string" name="name" use="required"/>
             <xs:attribute type="xs:string" name="firstConstraint" use="optional"/>
             <xs:attribute type="xs:string" name="method" use="optional"/>

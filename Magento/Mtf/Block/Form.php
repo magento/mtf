@@ -13,8 +13,7 @@ use Magento\Mtf\Fixture\InjectableFixture;
 use Magento\Mtf\Client\Element\SimpleElement;
 
 /**
- * Class Form
- * Is used to represent any form on the page
+ * Is used to represent any form on the page.
  *
  * @api
  */
@@ -86,11 +85,10 @@ class Form extends Block
      *
      * @return void
      */
-    protected function _init()
+    protected function init()
     {
-        $xmlFilePath = $this->getXmlFilePath();
-        if (file_exists($xmlFilePath)) {
-            $mapping = $this->mapper->read($xmlFilePath);
+        $mapping = $this->getFormMapping();
+        if (!empty($mapping)) {
             $this->wrapper = isset($mapping['wrapper']) ? $mapping['wrapper'] : '';
             $this->mapping = isset($mapping['fields']) ? $mapping['fields'] : [];
             $this->mappingMode = isset($mapping['strict']) ? (bool)$mapping['strict'] : false;
@@ -103,9 +101,20 @@ class Form extends Block
      *
      * @return string
      */
-    protected function getXmlFilePath()
+    protected function getFormMapping()
     {
-        return MTF_TESTS_PATH . str_replace('\\', '/', get_class($this)) . '.xml';
+        $result = [];
+        $paths = glob(
+            MTF_TESTS_PATH . preg_replace('/^\w+\/\w+/', '*/*', str_replace('\\', '/', get_class($this))) . '.xml'
+        );
+        foreach ($paths as $path) {
+            $content = $this->mapper->read($path);
+            if (is_array($content)) {
+                $result = array_replace_recursive($result, $content);
+            }
+        }
+
+        return $result;
     }
 
     /**
