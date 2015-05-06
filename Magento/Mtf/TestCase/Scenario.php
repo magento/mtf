@@ -71,17 +71,18 @@ abstract class Scenario extends Injectable
     }
 
     /**
-     * Executed steps cleanup after test.
+     * Run with Variations Iterator
      *
-     * @return mixed
+     * @param \PHPUnit_Framework_TestResult $result
+     * @return \PHPUnit_Framework_TestResult
      */
-    protected function runTest()
+    public function run(\PHPUnit_Framework_TestResult $result = null)
     {
-        $testResult = parent::runTest();
+        $result = parent::run($result);
 
         $this->runStepsCleanup();
 
-        return $testResult;
+        return $result;
     }
 
     /**
