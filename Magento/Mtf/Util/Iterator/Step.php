@@ -29,6 +29,13 @@ class Step extends AbstractIterator
     protected $result = [];
 
     /**
+     * Array with steps object.
+     *
+     * @var array
+     */
+    protected $steps = [];
+
+    /**
      * Array with local test run arguments.
      *
      * @var array
@@ -164,6 +171,7 @@ class Step extends AbstractIterator
         /** @var \Magento\Mtf\TestStep\TestStepInterface $step */
         while ($this->isValid()) {
             $step = $this->current();
+            $this->steps[] = $step;
             $stepResult = $step->run();
             $stepResult = (is_array($stepResult)) ? $stepResult : [];
             $this->result = array_merge($this->result, $stepResult);
@@ -171,5 +179,15 @@ class Step extends AbstractIterator
         }
 
         return $this->result;
+    }
+
+    /**
+     * Returns all steps.
+     *
+     * @return array
+     */
+    public function getAllSteps()
+    {
+        return $this->steps;
     }
 }

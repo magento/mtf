@@ -21,6 +21,13 @@ abstract class Scenario extends Injectable
     protected $config;
 
     /**
+     * Step iterator.
+     *
+     * @var \Magento\Mtf\Util\Iterator\Step
+     */
+    protected $stepIterator;
+
+    /**
      * @constructor
      * @param null $name [optional]
      * @param array $data [optional]
@@ -50,7 +57,7 @@ abstract class Scenario extends Injectable
             $config[$testCaseName]['firstStep']
         );
         /** @var \Magento\Mtf\Util\Iterator\Step $stepIterator */
-        $stepIterator = $this->objectManager->create(
+        $this->stepIterator = $this->objectManager->create(
             'Magento\Mtf\Util\Iterator\Step',
             [
                 'steps' => $steps,
@@ -59,7 +66,26 @@ abstract class Scenario extends Injectable
                 'localArguments' => $this->localArguments
             ]
         );
-        $result = $stepIterator->iterate();
+        $result = $this->stepIterator->iterate();
         $this->localArguments = array_merge($this->localArguments, $result);
+    }
+
+    /**
+     * Executed steps cleanup after test.
+     *
+     * @return mixed
+     */
+    protected function runTest()
+    {
+        $testResult = parent::runTest();
+
+        $steps = $this->stepIterator->getAllSteps();
+        foreach ($steps as $step) {
+            if (method_exists($step, 'cleanup')) {
+                $step->cleanup();
+            }
+        }
+
+        return $testResult;
     }
 }
