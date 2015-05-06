@@ -79,13 +79,23 @@ abstract class Scenario extends Injectable
     {
         $testResult = parent::runTest();
 
+        $this->runStepsCleanup();
+
+        return $testResult;
+    }
+
+    /**
+     * Run steps cleanup.
+     *
+     * @return void
+     */
+    protected function runStepsCleanup()
+    {
         $steps = $this->stepIterator->getAllSteps();
         foreach ($steps as $step) {
             if (method_exists($step, 'cleanup')) {
                 $step->cleanup();
             }
         }
-
-        return $testResult;
     }
 }
