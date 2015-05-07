@@ -33,7 +33,17 @@ class JUnit extends \PHPUnit_Util_Log_JUnit
      */
     public function endTest(\PHPUnit_Framework_Test $test, $time)
     {
-        if (!$test instanceof \PHPUnit_Framework_Warning) {
+        $class = new \ReflectionClass($test);
+
+        $xpath = new \DOMXPath($this->document);
+
+        $queryForRemoveEmptyTestSuite = '//testsuite/testsuite/testsuite/testsuite';
+        $entriesForRemoveEmptyTestSuite = $xpath->query($queryForRemoveEmptyTestSuite)->item(0);
+        if ($entriesForRemoveEmptyTestSuite) {
+            $entriesForRemoveEmptyTestSuite->parentNode->removeChild($entriesForRemoveEmptyTestSuite);
+        }
+
+        if (!$test instanceof \PHPUnit_Framework_Warning && !$test->getIsIncomplete()) {
             if ($test instanceof \PHPUnit_Framework_TestCase) {
                 $numAssertions = $test->getNumAssertions();
                 $this->testSuiteAssertions[$this->testSuiteLevel] += $numAssertions;
@@ -41,20 +51,7 @@ class JUnit extends \PHPUnit_Util_Log_JUnit
                 $this->currentTestCase->setAttribute('assertions', $numAssertions);
             }
 
-            $this->currentTestCase->setAttribute(
-                'time',
-                sprintf('%F', $time)
-            );
-
-            $class = new \ReflectionClass($test);
-
-            $xpath = new \DOMXPath($this->document);
-
-            $queryForRemoveEmptyTestSuite = '//testsuite/testsuite/testsuite/testsuite';
-            $entriesForRemoveEmptyTestSuite = $xpath->query($queryForRemoveEmptyTestSuite)->item(0);
-            if ($entriesForRemoveEmptyTestSuite) {
-                $entriesForRemoveEmptyTestSuite->parentNode->removeChild($entriesForRemoveEmptyTestSuite);
-            }
+            $this->currentTestCase->setAttribute('time', sprintf('%F', $time));
 
             $query = '//testsuite[@name="' . $class->name . '"]';
             $entries = $xpath->query($query);
@@ -82,5 +79,27 @@ class JUnit extends \PHPUnit_Util_Log_JUnit
 
         $this->attachCurrentTestCase = true;
         $this->currentTestCase = null;
+    }
+
+    /**
+     * Returns the XML as a string.
+     *
+     * @return string
+     */
+    public function getXML()
+    {
+        $xpath = new \DOMXPath($this->document);
+        $queryTestSuite = '//testsuite';
+        $entriesTestSuite = $xpath->query($queryTestSuite);
+        $countRow = $entriesTestSuite->length;
+        for ($i = 0; $i < $countRow; $i++) {
+            $testSuite = $entriesTestSuite->item($i);
+            $childNodes = $testSuite->childNodes;
+            if ($childNodes->length == 0) {
+                $testSuite->parentNode->removeChild($testSuite);
+            }
+        }
+
+        return parent::getXML();
     }
 }

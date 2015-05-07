@@ -28,7 +28,7 @@
     <xs:element name="page">
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="block" maxOccurs="unbounded" minOccurs="1">
+                <xs:element ref="block" maxOccurs="unbounded" minOccurs="0">
                     <xs:annotation>
                         <xs:documentation>
                             An element that contains configuration data of a page block.

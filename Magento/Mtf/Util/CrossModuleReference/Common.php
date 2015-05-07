@@ -77,7 +77,7 @@ class Common
                         \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::FOLLOW_SYMLINKS
                     )
                 ),
-                '/.php/i'
+                '/\.php$/i'
             );
             foreach ($dirIterator as $fileInfo) {
                 $baseName = $fileInfo->getBasename('.php');

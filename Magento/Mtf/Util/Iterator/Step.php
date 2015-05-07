@@ -154,7 +154,7 @@ class Step extends AbstractIterator
         foreach ($arguments as $key => $item) {
             if (isset($item['name']) && $item['name'] == $key && !isset($item['value'])) {
                 $output[$key] = $this->resolveArguments($item);
-            } else if (is_array($item)){
+            } elseif (is_array($item)) {
                 $output[$key] = $item['value'];
             }
         }

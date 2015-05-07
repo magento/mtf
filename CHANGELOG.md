@@ -1,3 +1,4 @@
+* Fixed that incomplete tests are displayed as passed in test results list
 * Added mechanism of cleaning up data in steps after scenario execution
 
 1.0.0-rc.23
