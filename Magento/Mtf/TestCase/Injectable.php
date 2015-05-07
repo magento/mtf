@@ -69,7 +69,7 @@ abstract class Injectable extends Functional
     protected $currentVariation = [];
 
     /**
-     * Is incomplete test.
+     * Is test incomplete.
      *
      * @var bool
      */

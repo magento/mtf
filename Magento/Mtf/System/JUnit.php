@@ -82,7 +82,7 @@ class JUnit extends \PHPUnit_Util_Log_JUnit
     }
 
     /**
-     * Returns the XML as a string.
+     * Remove empty test suite and returns the XML as a string.
      *
      * @return string
      */
