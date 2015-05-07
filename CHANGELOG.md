@@ -1,4 +1,4 @@
-* Added mechanism of cleaning up all data after scenario execution
+* Added mechanism of cleaning up data in steps after scenario execution
 
 1.0.0-rc.23
 =============

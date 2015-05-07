@@ -56,7 +56,6 @@ abstract class Scenario extends Injectable
             $config[$testCaseName]['step'],
             $config[$testCaseName]['firstStep']
         );
-        /** @var \Magento\Mtf\Util\Iterator\Step $stepIterator */
         $this->stepIterator = $this->objectManager->create(
             'Magento\Mtf\Util\Iterator\Step',
             [
@@ -71,18 +70,17 @@ abstract class Scenario extends Injectable
     }
 
     /**
-     * Run with Variations Iterator
+     * Execute test variation with cleaning up data in steps after scenario execution.
      *
      * @param \PHPUnit_Framework_TestResult $result
-     * @return \PHPUnit_Framework_TestResult
+     * @param array $variation
+     * @return void
      */
-    public function run(\PHPUnit_Framework_TestResult $result = null)
+    protected function executeTestVariation(\PHPUnit_Framework_TestResult $result, array $variation)
     {
-        $result = parent::run($result);
+        parent::executeTestVariation($result, $variation);
 
         $this->runStepsCleanup();
-
-        return $result;
     }
 
     /**
