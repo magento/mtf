@@ -89,7 +89,7 @@ class JUnit extends \PHPUnit_Util_Log_JUnit
     public function getXML()
     {
         $xpath = new \DOMXPath($this->document);
-        $queryTestSuite = '//testsuite';
+        $queryTestSuite = '//testsuite/testsuite/testsuite';
         $entriesTestSuite = $xpath->query($queryTestSuite);
         $countRow = $entriesTestSuite->length;
         for ($i = 0; $i < $countRow; $i++) {
