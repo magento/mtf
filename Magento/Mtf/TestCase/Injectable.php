@@ -69,13 +69,6 @@ abstract class Injectable extends Functional
     protected $currentVariation = [];
 
     /**
-     * Is test incomplete.
-     *
-     * @var bool
-     */
-    protected $isIncomplete = false;
-
-    /**
      * Constructs a test case with the given name
      *
      * @constructor
@@ -307,26 +300,5 @@ abstract class Injectable extends Functional
             'Magento\Mtf\Constraint\Composite',
             ['codeConstraints' => array_keys($constraintsArray)]
         );
-    }
-
-    /**
-     * Get incomplete status of test.
-     *
-     * @return bool
-     */
-    public function getIsIncomplete()
-    {
-        return $this->isIncomplete;
-    }
-
-    /**
-     * Set incomplete status of test.
-     *
-     * @param bool $status
-     * @return void
-     */
-    public function setIsIncomplete($status)
-    {
-        $this->isIncomplete = $status;
     }
 }
