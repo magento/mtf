@@ -1,3 +1,7 @@
+1.0.0-rc.24
+=============
+* Added an ability to generate pages for external solutions
+
 1.0.0-rc.23
 =============
 * Added an ability to merge form mapping from different modules
