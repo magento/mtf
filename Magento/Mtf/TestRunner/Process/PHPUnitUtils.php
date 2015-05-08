@@ -99,7 +99,7 @@ class PHPUnitUtils extends \PHPUnit_Util_PHP
                 $failures = $childResult->failures();
 
                 if (!empty($notImplemented)) {
-                    if (count($notImplemented) === $runVariations) {
+                    if (count($notImplemented) >= $runVariations) {
                         $test->setIsIncomplete(true);
                     }
 
