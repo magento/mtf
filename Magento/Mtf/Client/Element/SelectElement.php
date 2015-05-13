@@ -53,7 +53,10 @@ class SelectElement extends SimpleElement
     {
         $this->eventManager->dispatchEvent(['get_value'], [__METHOD__, $this->getAbsoluteSelector()]);
 
-        return $this->find($this->selectedOption)->getText();
+        $element = $this->find($this->selectedOption);
+        $value = $element->isVisible() ? $element->getText() : '';
+
+        return $value;
     }
 
     /**
