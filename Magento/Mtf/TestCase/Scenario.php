@@ -80,7 +80,9 @@ abstract class Scenario extends Injectable
     {
         parent::executeTestVariation($result, $variation);
 
-        $this->runStepsCleanup();
+        if ($this->stepIterator) {
+            $this->runStepsCleanup();
+        }
     }
 
     /**
