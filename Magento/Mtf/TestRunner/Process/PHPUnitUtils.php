@@ -68,6 +68,7 @@ class PHPUnitUtils extends \PHPUnit_Util_PHP
                 }
 
                 $childResult = unserialize(str_replace("#!/usr/bin/env php\n", '', $stdout));
+                $runVariations = $childResult['runVariations'];
                 restore_error_handler();
             } catch (\ErrorException $e) {
                 restore_error_handler();
@@ -98,9 +99,13 @@ class PHPUnitUtils extends \PHPUnit_Util_PHP
                 $failures = $childResult->failures();
 
                 if (!empty($notImplemented)) {
+                    if (count($notImplemented) >= $runVariations) {
+                        $test->setIsIncomplete(true);
+                    }
+
                     foreach ($notImplemented as $variation => $error) {
                         $name = $test->getName();
-                        $test->setName($name . " variation $variation");
+                        $test->setName(PHP_EOL . $name . " variation $variation");
                         $result->addError($test, $this->getException($error), $time);
                         $test->setName($name);
                     }
@@ -108,7 +113,7 @@ class PHPUnitUtils extends \PHPUnit_Util_PHP
                 if (!empty($risky)) {
                     foreach ($risky as $variation => $error) {
                         $name = $test->getName();
-                        $test->setName($name . " variation $variation");
+                        $test->setName(PHP_EOL . $name . " variation $variation");
                         $result->addError($test, $this->getException($error), $time);
                         $test->setName($name);
                     }
@@ -116,7 +121,7 @@ class PHPUnitUtils extends \PHPUnit_Util_PHP
                 if (!empty($skipped)) {
                     foreach ($skipped as $variation => $error) {
                         $name = $test->getName();
-                        $test->setName($name . " variation $variation");
+                        $test->setName(PHP_EOL . $name . " variation $variation");
                         $result->addError($test, $this->getException($error), $time);
                         $test->setName($name);
                     }
@@ -124,7 +129,7 @@ class PHPUnitUtils extends \PHPUnit_Util_PHP
                 if (!empty($errors)) {
                     foreach ($errors as $variation => $error) {
                         $name = $test->getName();
-                        $test->setName($name . " variation $variation");
+                        $test->setName(PHP_EOL . $name . " variation $variation");
                         $result->addError($test, $this->getException($error), $time);
                         $test->setName($name);
                     }
@@ -132,7 +137,7 @@ class PHPUnitUtils extends \PHPUnit_Util_PHP
                 if (!empty($failures)) {
                     foreach ($failures as $variation => $failure) {
                         $name = $test->getName();
-                        $test->setName($name . " variation $variation");
+                        $test->setName(PHP_EOL . $name . " variation $variation");
                         $result->addFailure($test, $this->getException($failure), $time);
                         $test->setName($name);
                     }

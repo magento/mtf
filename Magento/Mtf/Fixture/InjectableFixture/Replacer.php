@@ -58,6 +58,9 @@ class Replacer
     {
         $filePath = getenv(self::CREDENTIALS_FILE_PATH);
 
+        if (!file_exists($filePath)) {
+            $filePath = realpath(MTF_BP . $filePath);
+        }
         if ($filePath) {
             $this->values = $this->reader->read($filePath);
         }

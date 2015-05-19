@@ -122,6 +122,13 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
     protected $outputBufferingActive = false;
 
     /**
+     * Is test incomplete.
+     *
+     * @var bool
+     */
+    protected $isIncomplete = false;
+
+    /**
      * @var array
      */
     protected $mockObjects = [];
@@ -685,5 +692,26 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
 
             $mockObject->__phpunit_verify();
         }
+    }
+
+    /**
+     * Get incomplete status of test.
+     *
+     * @return bool
+     */
+    public function getIsIncomplete()
+    {
+        return $this->isIncomplete;
+    }
+
+    /**
+     * Set incomplete status of test.
+     *
+     * @param bool $status
+     * @return void
+     */
+    public function setIsIncomplete($status)
+    {
+        $this->isIncomplete = $status;
     }
 }

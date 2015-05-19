@@ -17,11 +17,11 @@ use Magento\Mtf\Client\Locator;
 class SelectElement extends SimpleElement
 {
     /**
-     * Option locator by index.
+     * Selector for selected option.
      *
      * @var string
      */
-    protected $optionByIndex = './option[%d]';
+    protected $selectedOption = 'option:checked';
 
     /**
      * Option locator by value.
@@ -53,18 +53,10 @@ class SelectElement extends SimpleElement
     {
         $this->eventManager->dispatchEvent(['get_value'], [__METHOD__, $this->getAbsoluteSelector()]);
 
-        $index = 1;
-        $option = $this->find(sprintf($this->optionByIndex, $index), Locator::SELECTOR_XPATH);
-        while ($option->isVisible()) {
-            if ($option->isSelected()) {
-                return $option->getText();
-            }
+        $element = $this->find($this->selectedOption);
+        $value = $element->isVisible() ? $element->getText() : '';
 
-            ++$index;
-            $option = $this->find(sprintf($this->optionByIndex, $index), Locator::SELECTOR_XPATH);
-        }
-
-        return '';
+        return $value;
     }
 
     /**

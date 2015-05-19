@@ -1,3 +1,9 @@
+1.0.0-rc.25
+=============
+* Fixed that incomplete tests are displayed as passed in test results list
+* Added mechanism of cleaning up data in steps after scenario execution
+* Optimized getValue method for select element
+
 1.0.0-rc.24
 =============
 * Added an ability to generate pages for external solutions

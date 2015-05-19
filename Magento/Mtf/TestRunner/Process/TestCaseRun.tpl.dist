@@ -85,6 +85,7 @@ function __phpunit_run_isolated_test()
         'testResult'    => $test->getResult(),
         'numAssertions' => $test->getNumAssertions(),
         'result'        => $result,
+        'runVariations' => $result->count(),
         'output'        => $output
       )
     );

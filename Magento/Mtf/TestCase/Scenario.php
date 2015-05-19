@@ -21,6 +21,13 @@ abstract class Scenario extends Injectable
     protected $config;
 
     /**
+     * Step iterator.
+     *
+     * @var \Magento\Mtf\Util\Iterator\Step
+     */
+    protected $stepIterator;
+
+    /**
      * @constructor
      * @param null $name [optional]
      * @param array $data [optional]
@@ -49,8 +56,7 @@ abstract class Scenario extends Injectable
             $config[$testCaseName]['step'],
             $config[$testCaseName]['firstStep']
         );
-        /** @var \Magento\Mtf\Util\Iterator\Step $stepIterator */
-        $stepIterator = $this->objectManager->create(
+        $this->stepIterator = $this->objectManager->create(
             'Magento\Mtf\Util\Iterator\Step',
             [
                 'steps' => $steps,
@@ -59,7 +65,38 @@ abstract class Scenario extends Injectable
                 'localArguments' => $this->localArguments
             ]
         );
-        $result = $stepIterator->iterate();
+        $result = $this->stepIterator->iterate();
         $this->localArguments = array_merge($this->localArguments, $result);
+    }
+
+    /**
+     * Execute test variation with cleaning up data in steps after scenario execution.
+     *
+     * @param \PHPUnit_Framework_TestResult $result
+     * @param array $variation
+     * @return void
+     */
+    protected function executeTestVariation(\PHPUnit_Framework_TestResult $result, array $variation)
+    {
+        parent::executeTestVariation($result, $variation);
+
+        if ($this->stepIterator) {
+            $this->runStepsCleanup();
+        }
+    }
+
+    /**
+     * Run steps cleanup.
+     *
+     * @return void
+     */
+    protected function runStepsCleanup()
+    {
+        $steps = $this->stepIterator->getAllSteps();
+        foreach ($steps as $step) {
+            if (method_exists($step, 'cleanup')) {
+                $step->cleanup();
+            }
+        }
     }
 }
