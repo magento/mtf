@@ -347,7 +347,7 @@ class Driver implements DriverInterface
         $wrappedElement = $this->getNativeElement($element);
         $this->driver->moveto($wrappedElement);
         $wrappedElement->clear();
-        $wrappedElement->click();
+        $this->focus($element);
 
         if (!$this->isHasFocus()) {
             $this->selectWindow();
@@ -457,7 +457,7 @@ class Driver implements DriverInterface
     {
         $wrappedElement = $this->getNativeElement($element);
         $wrappedElement->clear();
-        $wrappedElement->click();
+        $this->focus($element);
         foreach ($keys as $key) {
             $this->driver->keys($key);
         }
@@ -824,6 +824,23 @@ class Driver implements DriverInterface
             throw new \Exception(
                 sprintf('Error occurred during waiting for page to load. Message: "%s"', $e->getMessage())
             );
+        }
+    }
+
+    /**
+     * Set focus on element
+     *
+     * @param ElementInterface $element
+     * @return mixed
+     */
+    public function focus(ElementInterface $element)
+    {
+        $elementId = $element->getAttribute('id');
+        if ($elementId) {
+            $js = "jQuery($elementId).focus()";
+            $this->driver->execute(['script' => $js,'args' => []]);
+        } else {
+            $element->click();
         }
     }
 }

@@ -271,6 +271,7 @@ final class Driver implements DriverInterface
     {
         $wrappedElement = $this->getNativeElement($element);
         $wrappedElement->clear();
+        $this->focus($element);
         $wrappedElement->sendKeys($value);
     }
 
@@ -373,6 +374,7 @@ final class Driver implements DriverInterface
      */
     public function keys(ElementInterface $element, array $keys)
     {
+        $this->focus($element);
         $this->getNativeElement($element)->sendKeys($keys);
     }
 
@@ -733,6 +735,23 @@ final class Driver implements DriverInterface
             throw new \Exception(
                 sprintf('Error occurred during waiting for page to load. Message: "%s"', $e->getMessage())
             );
+        }
+    }
+
+    /**
+     * Set focus on element
+     *
+     * @param ElementInterface $element
+     * @return mixed
+     */
+    public function focus(ElementInterface $element)
+    {
+        $elementId = $element->getAttribute('id');
+        if ($elementId) {
+            $js = "jQuery($elementId).focus()";
+            $this->driver->executeScript($js, []);
+        } else {
+            $element->click();
         }
     }
 }
