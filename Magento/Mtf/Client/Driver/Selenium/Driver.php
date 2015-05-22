@@ -837,7 +837,8 @@ class Driver implements DriverInterface
     {
         $elementId = $element->getAttribute('id');
         if ($elementId) {
-            $js = "window.document.getElementById('$elementId').focus()";
+            $js = "if (jQuery != undefined) jQuery('#$elementId').focus(); ";
+            $js .= "var element = document.getElementById('$elementId'); if (element != undefined) element.focus();";
             $this->driver->execute(['script' => $js,'args' => []]);
         } else {
             $element->click();
