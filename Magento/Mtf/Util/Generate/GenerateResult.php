@@ -7,26 +7,29 @@
 namespace Magento\Mtf\Util\Generate;
 
 /**
- * Class GenerateResult
+ * Create table with output for generated classes.
  *
  * @api
- * @abstract
  */
 class GenerateResult
 {
     /**
-     * Counter
+     * Counter.
      *
      * @var int
      */
     protected static $cnt = 0;
 
     /**
+     * Result output.
+     *
      * @var array
      */
     protected static $results = [];
 
     /**
+     * Add result.
+     *
      * @param mixed $item
      * @param int $count
      * @param int $time
@@ -42,6 +45,8 @@ class GenerateResult
     }
 
     /**
+     * Get generated results.
+     *
      * @return array
      */
     public static function getResults()
@@ -50,6 +55,8 @@ class GenerateResult
     }
 
     /**
+     * Display results.
+     *
      * @return void
      */
     public static function displayResults()
@@ -87,6 +94,8 @@ class GenerateResult
     }
 
     /**
+     * Prepare results for shell output.
+     *
      * @param string $string
      * @param int $length
      * @return string

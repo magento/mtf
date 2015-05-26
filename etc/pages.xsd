@@ -43,7 +43,7 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:attribute>
-            <xs:attribute type="notEmptyType" name="mca" use="required">
+            <xs:attribute name="mca" use="required">
                 <xs:annotation>
                     <xs:documentation>
                         MCA path for the page. For example: "catalog/product/view".
@@ -144,12 +144,12 @@
 
     <xs:simpleType name="strategyType">
         <xs:restriction base="xs:string">
-            <xs:pattern value="css selector|xpath|id|name|class name|tag name|link text"/>
+            <xs:pattern value="css selector|xpath|id|name|class name|tag name|link text" />
         </xs:restriction>
     </xs:simpleType>
     <xs:simpleType name="notEmptyType">
         <xs:restriction base="xs:string">
-            <xs:minLength value="1"/>
+            <xs:minLength value="1" />
         </xs:restriction>
     </xs:simpleType>
 </xs:schema>

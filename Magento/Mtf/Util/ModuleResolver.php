@@ -144,7 +144,8 @@ class ModuleResolver
         }
 
         $enabledModules = $this->getEnabledModules();
-        $allModulePaths = glob(MTF_TESTS_PATH . '*/*');
+        $modulePath = defined('MTF_TESTS_MODULE_PATH') ? MTF_TESTS_MODULE_PATH : MTF_TESTS_PATH;
+        $allModulePaths = glob($modulePath . '*/*');
         if (empty($enabledModules)) {
             $this->enabledModulePaths = $allModulePaths;
             return $this->enabledModulePaths;

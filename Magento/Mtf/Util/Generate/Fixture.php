@@ -6,32 +6,10 @@
 namespace Magento\Mtf\Util\Generate;
 
 /**
- * Class Fixture.
- *
  * Fixture classes generator.
- *
- * @internal
  */
 class Fixture extends AbstractGenerate
 {
-    /**
-     * @var \Magento\Mtf\Config\DataInterface
-     */
-    protected $configData;
-
-    /**
-     * @constructor
-     * @param \Magento\Mtf\ObjectManagerInterface $objectManager
-     * @param \Magento\Mtf\Config\DataInterface $configData
-     */
-    public function __construct(
-        \Magento\Mtf\ObjectManagerInterface $objectManager,
-        \Magento\Mtf\Config\DataInterface $configData
-    ) {
-        parent::__construct($objectManager);
-        $this->configData = $configData;
-    }
-
     /**
      * Launch generation of all fixture classes.
      *
@@ -80,13 +58,7 @@ class Fixture extends AbstractGenerate
     protected function generateClass(array $item)
     {
         $class = $item['class'];
-        $classNameArray = explode('\\', $class);
-        $className = end($classNameArray);
-        $fileName = $className . '.php';
-        $relativeFilePath = str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
-        $relativeFolderPath = str_replace(DIRECTORY_SEPARATOR . $fileName, '', $relativeFilePath);
-
-        $ns = implode("\\", array_slice($classNameArray, 0, -1));
+        $className = $this->getShortClassName($class);
         $repository = isset($item['repository_class']) ? $item['repository_class'] : null;
         $handlerInterface = isset($item['handler_interface']) ? $item['handler_interface'] : null;
 
@@ -112,7 +84,7 @@ class Fixture extends AbstractGenerate
 
         $content = "<?php\n";
         $content .= $this->getFilePhpDoc();
-        $content .= "namespace {$ns};\n\n";
+        $content .= "namespace {$this->getNamespace($class)};\n\n";
         $content .= "/**\n";
         $content .= " * Class {$className}\n";
         $content .= " */\n";
@@ -166,27 +138,7 @@ class Fixture extends AbstractGenerate
         }
         $content .= "}\n";
 
-        $filePath = MTF_BP . '/generated/' . $relativeFilePath;
-        if (file_exists($filePath)) {
-            unlink($filePath);
-        }
-
-        $folderPath = MTF_BP . '/generated/' . $relativeFolderPath;
-        if (!is_dir($folderPath)) {
-            mkdir($folderPath, 0777, true);
-        }
-
-        $result = @file_put_contents($filePath, $content);
-
-        if ($result === false) {
-            $error = error_get_last();
-            $this->addError(sprintf('Unable to generate %s class. Error: %s', $className, $error['message']));
-            return false;
-        }
-
-        $this->cnt++;
-
-        return $filePath;
+        return $this->createClass($class, $content);
     }
 
     /**

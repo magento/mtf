@@ -1,3 +1,5 @@
+* Removed code duplication in generators
+
 1.0.0-rc.25
 =============
 * Fixed that incomplete tests are displayed as passed in test results list
