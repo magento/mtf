@@ -273,4 +273,12 @@ interface DriverInterface
      * @return string[]
      */
     public function getJsErrors();
+
+    /**
+     * Set focus on element
+     *
+     * @param ElementInterface $element
+     * @return mixed
+     */
+    public function focus(ElementInterface $element);
 }
