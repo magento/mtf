@@ -1,3 +1,5 @@
+* Stability improvement for dynamic JavaScript forms interaction
+
 1.0.0-rc.25
 =============
 * Fixed that incomplete tests are displayed as passed in test results list
