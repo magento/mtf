@@ -48,10 +48,8 @@ abstract class AbstractGenerate
      * @param ObjectManagerInterface $objectManager
      * @param DataInterface $configData
      */
-    public function __construct(
-        ObjectManagerInterface $objectManager,
-        DataInterface $configData
-    ) {
+    public function __construct(ObjectManagerInterface $objectManager, DataInterface $configData)
+    {
         $this->objectManager = $objectManager;
         $this->configData = $configData;
     }

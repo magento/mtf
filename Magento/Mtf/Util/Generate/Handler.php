@@ -25,7 +25,7 @@ class Handler extends AbstractGenerate
      * Generate single class.
      *
      * @param string $className
-     * @return string|bool
+     * @return void
      */
     public function generate($className)
     {
@@ -38,7 +38,7 @@ class Handler extends AbstractGenerate
     /**
      * Generate Handlers.
      *
-     * @return bool
+     * @return void
      */
     protected function generateHandlers()
     {
