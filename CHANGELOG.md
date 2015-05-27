@@ -1,4 +1,7 @@
+1.0.0-rc.26
+=============
 * Removed code duplication in generators
+* Stability improvement for dynamic JavaScript forms interaction
 
 1.0.0-rc.25
 =============
