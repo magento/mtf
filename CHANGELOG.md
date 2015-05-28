@@ -1,7 +1,6 @@
-* Add an ability to specify several values for one tag type
-
 1.0.0-rc.26
 =============
+* Add an ability to specify several values for one tag type
 * Removed code duplication in generators
 * Stability improvement for dynamic JavaScript forms interaction
 
