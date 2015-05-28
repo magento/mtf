@@ -25,11 +25,10 @@ class Common
     protected function mapClassNameToNamespace($className)
     {
         $pieces = explode('\\', $className);
+        end($pieces);
+        unset($pieces[key($pieces)]);
 
-        if (strpos($className, '\\') == 0) {
-            return $pieces[1];
-        }
-        return $pieces[0];
+        return implode('\\', $pieces);
     }
 
     /**
