@@ -6,30 +6,10 @@
 namespace Magento\Mtf\Util\Generate;
 
 /**
- * Class Repository.
- *
  * Repository classes generator.
  */
 class Repository extends AbstractGenerate
 {
-    /**
-     * @var \Magento\Mtf\Config\DataInterface
-     */
-    protected $configData;
-
-    /**
-     * @constructor
-     * @param \Magento\Mtf\ObjectManagerInterface $objectManager
-     * @param \Magento\Mtf\Config\DataInterface $configData
-     */
-    public function __construct(
-        \Magento\Mtf\ObjectManagerInterface $objectManager,
-        \Magento\Mtf\Config\DataInterface $configData
-    ) {
-        parent::__construct($objectManager);
-        $this->configData = $configData;
-    }
-
     /**
      * Launch generation of all repository classes.
      *
@@ -67,23 +47,16 @@ class Repository extends AbstractGenerate
     /**
      * Generate repository class from XML source.
      *
-     * @param string $name
+     * @param string $class
      * @param array $data
      * @return string|bool
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    protected function generateClass($name, array $data)
+    protected function generateClass($class, array $data)
     {
-        $class = explode("\\", $name);
+        $className = $this->getShortClassName($class);
+        $ns = $this->getNamespace($class);
 
-        $className = end($class);
-        $namespace = $class[0];
-        $module = $class[1];
-        $modulePath = MTF_BP . '/generated/' . $namespace . "/" . $module;
-        $folderPath = $modulePath . '/Test/Repository';
-
-        $relativeFilePath = str_replace($modulePath . '/', '', $folderPath);
-        $ns = $namespace . '\\' . $module . '\\' . str_replace('/', '\\', $relativeFilePath);
         $content = "<?php\n";
         $content .= $this->getFilePhpDoc();
         $content .= "namespace {$ns};\n\n";
@@ -109,26 +82,9 @@ class Repository extends AbstractGenerate
             $content .= $lastItemName === $name ? "" : "\n";
         }
         $content .= "    }\n";
-
         $content .= "}\n";
 
-        $newFilename = $className . '.php';
-
-        if (!is_dir($folderPath)) {
-            mkdir($folderPath, 0777, true);
-        }
-
-        $result = @file_put_contents($folderPath . '/' . $newFilename, $content);
-
-        if ($result === false) {
-            $error = error_get_last();
-            $this->addError(sprintf('Unable to generate %s class. Error: %s', $className, $error['message']));
-            return false;
-        }
-
-        $this->cnt++;
-
-        return $folderPath . '/' . $newFilename;
+        return $this->createClass($class, $content);
     }
 
     /**

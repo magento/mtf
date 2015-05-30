@@ -61,7 +61,7 @@ class Replacer
         if (!file_exists($filePath)) {
             $filePath = realpath(MTF_BP . $filePath);
         }
-        if ($filePath) {
+        if (is_file($filePath)) {
             $this->values = $this->reader->read($filePath);
         }
     }

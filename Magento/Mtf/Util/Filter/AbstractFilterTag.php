@@ -49,11 +49,16 @@ class AbstractFilterTag extends AbstractFilter
      */
     protected function inTags(array $needleTags, array $stackTags)
     {
-        if (empty($needleTags) && in_array(self::UNDEFINED_TAG, $stackTags)) {
+        $tags = [];
+        foreach ($stackTags as $value) {
+            $tags = array_merge($tags, explode(', ', $value));
+        }
+
+        if (empty($needleTags) && in_array(self::UNDEFINED_TAG, $tags)) {
             return true;
         }
         foreach ($needleTags as $needleTag) {
-            if (in_array($needleTag, $stackTags)) {
+            if (in_array($needleTag, $tags)) {
                 return true;
             }
         }

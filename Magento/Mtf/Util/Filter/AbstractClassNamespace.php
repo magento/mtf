@@ -20,13 +20,25 @@ abstract class AbstractClassNamespace extends AbstractFilter implements FilterIn
     public function apply($class)
     {
         $namespace = $this->mapClassNameToNamespace($class);
+        $testStatus = true;
 
-        if ($this->allow && !array_key_exists($namespace, $this->allow)) {
-            return false;
+        if ($this->allow && is_array($this->allow)) {
+            foreach (array_keys($this->allow) as $allow) {
+                if ($namespace === trim($allow, '\\')) {
+                    $testStatus = true;
+                    break;
+                }
+                $testStatus = false;
+            }
         }
-        if ($this->deny && array_key_exists($namespace, $this->deny)) {
-            return false;
+        if ($this->deny && is_array($this->deny)) {
+            foreach (array_keys($this->deny) as $deny) {
+                if ($namespace === trim($deny, '\\')) {
+                    $testStatus = false;
+                }
+            }
         }
-        return true;
+
+        return $testStatus;
     }
 }

@@ -6,37 +6,13 @@
 
 namespace Magento\Mtf\Util\Generate;
 
-use Magento\Mtf\ObjectManagerInterface;
-use Magento\Mtf\Config\DataInterface;
-
 /**
- * Class Constraint
- * Constraint files generator
- *
- * @internal
+ * Handler files generator.
  */
 class Handler extends AbstractGenerate
 {
     /**
-     * @var DataInterface
-     */
-    protected $configData;
-
-    /**
-     * @constructor
-     * @param ObjectManagerInterface $objectManager
-     * @param DataInterface $configData
-     */
-    public function __construct(
-        ObjectManagerInterface $objectManager,
-        DataInterface $configData
-    ) {
-        parent::__construct($objectManager);
-        $this->configData = $configData;
-    }
-
-    /**
-     * Launch Handler generator
+     * Launch Handler generator.
      *
      * @return bool
      */
@@ -46,10 +22,10 @@ class Handler extends AbstractGenerate
     }
 
     /**
-     * Generate single class
+     * Generate single class.
      *
      * @param string $className
-     * @return string|bool
+     * @return void
      */
     public function generate($className)
     {
@@ -60,9 +36,9 @@ class Handler extends AbstractGenerate
     }
 
     /**
-     * Generate Handlers
+     * Generate Handlers.
      *
-     * @return bool
+     * @return void
      */
     protected function generateHandlers()
     {
@@ -76,7 +52,7 @@ class Handler extends AbstractGenerate
     }
 
     /**
-     * Generate Handler Ui Class from declaration
+     * Generate Handler Ui Class from declaration.
      *
      * @param string $name
      * @param array $item
@@ -91,13 +67,11 @@ class Handler extends AbstractGenerate
         $ns = str_replace('_', '\\', $moduleName) . '\\Test\\Handler\\' . $classShortName;
         $folderName = MTF_TESTS_PATH . $path;
         if (file_exists($folderName . '/' . $fileName)) {
-            //unlink($folderName . '/' . $fileName);
             return;
         }
         if (!is_dir($folderName)) {
             mkdir($folderName, 0777, true);
         }
-        $use[] = 'use ' . $ns . '\\' . $classShortName . 'Interface;';
         $use[] = 'use Magento\Mtf\\Fixture\\FixtureInterface;';
         $use[] = 'use Magento\Mtf\\Handler\\Ui as AbstractUi;';
         $useString = implode("\n", $use);
@@ -120,7 +94,7 @@ class Handler extends AbstractGenerate
     }
 
     /**
-     * Generate Handler Curl Class from declaration
+     * Generate Handler Curl Class from declaration.
      *
      * @param string $name
      * @param array $item
@@ -132,22 +106,20 @@ class Handler extends AbstractGenerate
         $fileName = 'Curl.php';
         $moduleName = $item['module'];
         $path = str_replace('_', '/', $moduleName) . '/Test/Handler/' . $classShortName;
-        $ns = str_replace('_', '\\', $moduleName) . '\\Test\\Handler\\' . $classShortName;
+        $namespace = str_replace('_', '\\', $moduleName) . '\\Test\\Handler\\' . $classShortName;
         $folderName = MTF_TESTS_PATH . $path;
         if (file_exists($folderName . '/' . $fileName)) {
-            //unlink($folderName . '/' . $fileName);
             return;
         }
         if (!is_dir($folderName)) {
             mkdir($folderName, 0777, true);
         }
-        $use[] = 'use ' . $ns . '\\' . $classShortName . 'Interface;';
         $use[] = 'use Magento\Mtf\\Fixture\\FixtureInterface;';
         $use[] = 'use Magento\Mtf\\Handler\\Curl as AbstractCurl;';
         $useString = implode("\n", $use);
         $content = "<?php\n";
         $content .= $this->getFilePhpDoc();
-        $content .= "namespace {$ns};\n\n";
+        $content .= "namespace {$namespace};\n\n";
         $content .= $useString . "\n\n";
         $content .= "/**\n";
         $content .= " * Class Curl\n";
@@ -164,7 +136,7 @@ class Handler extends AbstractGenerate
     }
 
     /**
-     * Generate Handler Interface from declaration
+     * Generate Handler Interface from declaration.
      *
      * @param string $name
      * @param array $item
@@ -176,10 +148,9 @@ class Handler extends AbstractGenerate
         $fileName = $classShortName . 'Interface.php';
         $moduleName = $item['module'];
         $path = str_replace('_', '/', $moduleName) . '/Test/Handler/' . $classShortName;
-        $ns = str_replace('_', '\\', $moduleName) . '\\Test\\Handler\\' . $classShortName;
+        $namespace = str_replace('_', '\\', $moduleName) . '\\Test\\Handler\\' . $classShortName;
         $folderName = MTF_TESTS_PATH . $path;
         if (file_exists($folderName . '/' . $fileName)) {
-            //unlink($folderName . '/' . $fileName);
             return;
         }
         if (!is_dir($folderName)) {
@@ -189,7 +160,7 @@ class Handler extends AbstractGenerate
         $useString = implode("\n", $use);
         $content = "<?php\n";
         $content .= $this->getFilePhpDoc();
-        $content .= "namespace {$ns};\n\n";
+        $content .= "namespace {$namespace};\n\n";
         $content .= $useString . "\n\n";
         $content .= "/**\n";
         $content .= " * Interface {$classShortName}Interface\n";

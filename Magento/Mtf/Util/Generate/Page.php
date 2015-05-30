@@ -6,32 +6,10 @@
 namespace Magento\Mtf\Util\Generate;
 
 /**
- * Class Page.
- *
  * Page classes generator.
- *
- * @internal
  */
 class Page extends AbstractGenerate
 {
-    /**
-     * @var \Magento\Mtf\Config\DataInterface
-     */
-    protected $configData;
-
-    /**
-     * @constructor
-     * @param \Magento\Mtf\ObjectManagerInterface $objectManager
-     * @param \Magento\Mtf\Config\DataInterface $configData
-     */
-    public function __construct(
-        \Magento\Mtf\ObjectManagerInterface $objectManager,
-        \Magento\Mtf\Config\DataInterface $configData
-    ) {
-        parent::__construct($objectManager);
-        $this->configData = $configData;
-    }
-
     /**
      * Launch generation of all page classes.
      *
@@ -81,16 +59,16 @@ class Page extends AbstractGenerate
     {
         $className = ucfirst($name);
         $module =  str_replace('_', '/', $data['module']);
-        $folderPath = $module . '/Test/Page' . (empty($data['area']) ? '' : ('/' . $data['area']));
-        $realFolderPath = MTF_BP . '/generated/' . $folderPath;
-        $namespace = str_replace('/', '\\', $folderPath);
+        $area = isset($data['area']) ? $data['area'] : '';
+        $folderPath = $module . '/Test/Page' . (empty($area) ? '' : ('/' . $area));
+        $class = str_replace('/', '\\', $folderPath . '/' . $className);
         $mca = isset($data['mca']) ? $data['mca'] : '';
-        $areaMtfPage = $this->getParentPage($folderPath, $mca);
+        $areaMtfPage = $this->getParentPage($area, $mca);
         $blocks = isset($data['block']) ? $data['block'] : [];
 
         $content = "<?php\n";
         $content .= $this->getFilePhpDoc();
-        $content .= "namespace {$namespace};\n\n";
+        $content .= "namespace {$this->getNamespace($class)};\n\n";
         $content .= "use Magento\\Mtf\\Page\\{$areaMtfPage};\n\n";
         $content .= "/**\n";
         $content .= " * Class {$className}\n";
@@ -112,7 +90,7 @@ class Page extends AbstractGenerate
 
         foreach ($blocks as $blockName => $block) {
             $content .= "\n    /**\n";
-            $content .= "     * @return \\{$block['class']}\n";
+            $content .= "     * @return \\" . $block['class'] . "\n";
             $content .= "     */\n";
             $content .= '    public function get' . ucfirst($blockName) . '()' . "\n";
             $content .= "    {\n";
@@ -122,27 +100,7 @@ class Page extends AbstractGenerate
 
         $content .= "}\n";
 
-        $newFilename = $className . '.php';
-
-        if (file_exists($realFolderPath . '/' . $newFilename)) {
-            unlink($realFolderPath . '/' . $newFilename);
-        }
-
-        if (!is_dir($realFolderPath)) {
-            mkdir($realFolderPath, 0777, true);
-        }
-
-        $result = @file_put_contents($realFolderPath . '/' . $newFilename, $content);
-
-        if ($result === false) {
-            $error = error_get_last();
-            $this->addError(sprintf('Unable to generate %s class. Error: %s', $className, $error['message']));
-            return false;
-        }
-
-        $this->cnt++;
-
-        return $realFolderPath . '/' . $newFilename;
+        return $this->createClass($class, $content);
     }
 
     /**
@@ -172,13 +130,13 @@ class Page extends AbstractGenerate
     /**
      * Determine parent page class.
      *
-     * @param string $folderPath
+     * @param string $area
      * @param string $mca
      * @return string
      */
-    protected function getParentPage($folderPath, $mca)
+    protected function getParentPage($area, $mca)
     {
-        if (strpos($folderPath, 'Adminhtml') === false) {
+        if (strpos($area, 'Adminhtml') === false) {
             if (strpos($mca, 'http') === false) {
                 $areaMtfPage = 'FrontendPage';
             } else {

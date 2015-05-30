@@ -19,12 +19,24 @@ class AbstractClassName extends AbstractFilter implements FilterInterface
      */
     public function apply($class)
     {
-        if ($this->allow && !array_key_exists($class, $this->allow)) {
-            return false;
+        $testStatus = true;
+
+        if ($this->allow && is_array($this->allow)) {
+            foreach ($this->allow as $allow) {
+                if ($class === trim($allow['value'], '\\')) {
+                    $testStatus = true;
+                    break;
+                }
+                $testStatus = false;
+            }
         }
-        if ($this->deny && array_key_exists($class, $this->deny)) {
-            return false;
+        if ($this->deny && is_array($this->deny)) {
+            foreach ($this->deny as $deny) {
+                if ($class === trim($deny['value'], '\\')) {
+                    $testStatus = false;
+                }
+            }
         }
-        return true;
+        return $testStatus;
     }
 }

@@ -46,6 +46,9 @@ class ObjectManagerFactory
         if (!defined('MTF_TESTS_PATH')) {
             define('MTF_TESTS_PATH', MTF_BP . '/tests/app/');
         }
+        if (!defined('MTF_TESTS_MODULE_PATH')) {
+            define('MTF_TESTS_MODULE_PATH', MTF_BP . '/tests/app/');
+        }
         if (!defined('MTF_STATES_PATH')) {
             define('MTF_STATES_PATH', MTF_BP . '/Magento/Mtf/App/State/');
         }
