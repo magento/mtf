@@ -55,13 +55,6 @@ class Form extends Block
     protected $mapper;
 
     /**
-     * Array with filled fields
-     *
-     * @var array
-     */
-    public $setFields = [];
-
-    /**
      * @constructor
      * @param SimpleElement $element
      * @param BlockFactory $blockFactory
@@ -237,11 +230,7 @@ class Form extends Block
             if (!isset($field['value'])) {
                 $this->_fill($field, $context);
             } else {
-                $element = $this->getElement($context, $field);
-                if ($this->mappingMode || ($element->isVisible() && !$element->isDisabled())) {
-                    $element->setValue($field['value']);
-                    $this->setFields[$name] = $field['value'];
-                }
+                $this->getElement($context, $field)->setValue($field['value']);
             }
         }
     }
