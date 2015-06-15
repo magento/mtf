@@ -222,6 +222,7 @@ class Form extends Block
      * @param array $fields
      * @param SimpleElement $element
      * @return void
+     * @throws \Exception
      */
     protected function _fill(array $fields, SimpleElement $element = null)
     {
@@ -230,7 +231,12 @@ class Form extends Block
             if (!isset($field['value'])) {
                 $this->_fill($field, $context);
             } else {
-                $this->getElement($context, $field)->setValue($field['value']);
+                $element = $this->getElement($context, $field);
+                if (!$element->isDisabled()) {
+                    $element->setValue($field['value']);
+                } else {
+                    throw new \Exception("Unable to set value to field '$name' as it's disabled.");
+                }
             }
         }
     }
