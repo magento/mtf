@@ -1,3 +1,5 @@
+* Display variation name in PHPUnit test result log file
+
 1.0.0-rc.26
 =============
 * Add an ability to specify several values for one tag type
