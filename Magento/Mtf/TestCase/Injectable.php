@@ -187,7 +187,7 @@ abstract class Injectable extends Functional
         // remove constraint object from previous test case variation iteration
         $this->constraint = null;
 
-        $variationName = $variation['id'];
+        $variationName = isset($variation['variation_name']) ? $variation['variation_name'] : $variation['id'];
         $this->setVariationName($variationName);
 
         $arguments = isset($variation['arguments'])
@@ -265,6 +265,9 @@ abstract class Injectable extends Functional
     {
         if (isset($variation['arguments'])) {
             $arguments = array_merge($variation['arguments'], $arguments);
+        }
+        if (isset($variation['arguments']['variation_name'])) {
+            $variation['variation_name'] = $variation['arguments']['variation_name'];
         }
         $resolvedArguments = $this->getObjectManager()
             ->prepareArguments($this, $this->getName(false), $arguments);

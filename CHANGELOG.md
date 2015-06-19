@@ -1,6 +1,7 @@
 1.0.0-rc.27
 =============
-Added wait to form element before filling a value
+* Added wait to form element before filling a value
+* Display variation name in PHPUnit test result log file
 
 1.0.0-rc.26
 =============
