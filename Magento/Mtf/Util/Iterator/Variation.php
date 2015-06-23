@@ -107,6 +107,7 @@ class Variation extends AbstractIterator
         );
         foreach ($variations as $key => $variation) {
             if (isset($variation['data'])) {
+                $variation['variation_name'] = $key;
                 $variations[$key] = array_replace($variation, $variation['data']);
                 unset($variations[$key]['data']);
             }

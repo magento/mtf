@@ -55,13 +55,6 @@ class Form extends Block
     protected $mapper;
 
     /**
-     * Array with filled fields
-     *
-     * @var array
-     */
-    public $setFields = [];
-
-    /**
      * @constructor
      * @param SimpleElement $element
      * @param BlockFactory $blockFactory
@@ -229,6 +222,7 @@ class Form extends Block
      * @param array $fields
      * @param SimpleElement $element
      * @return void
+     * @throws \Exception
      */
     protected function _fill(array $fields, SimpleElement $element = null)
     {
@@ -238,9 +232,10 @@ class Form extends Block
                 $this->_fill($field, $context);
             } else {
                 $element = $this->getElement($context, $field);
-                if ($this->mappingMode || ($element->isVisible() && !$element->isDisabled())) {
+                if (!$element->isDisabled()) {
                     $element->setValue($field['value']);
-                    $this->setFields[$name] = $field['value'];
+                } else {
+                    throw new \Exception("Unable to set value to field '$name' as it's disabled.");
                 }
             }
         }
