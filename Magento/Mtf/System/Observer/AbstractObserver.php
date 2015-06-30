@@ -54,13 +54,18 @@ abstract class AbstractObserver implements ObserverInterface
         $testMethod = isset($path[2]) ? $path[2] : 'undefined';
 
         $directory = sprintf(
-            '%s/%s/%s/%s/' . $suffix,
+            '%s/%s/%s/%s/',
             $testSuite,
             $testClass,
             $testMethod,
-            EventState::getTestMethodName()
+            preg_replace("/[^a-zA-Z0-9 \\-_\\#]/", "", EventState::getTestMethodName())
         );
 
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            $directory = substr($directory, 0, 200 - strlen($this->logger->getLogDirectoryPath()));
+        }
+
+        $directory .= $suffix;
         $dir = $this->logger->getLogDirectoryPath() . '/' . $directory;
         if (!is_dir($dir)) {
             mkdir($dir, 0777, true);
