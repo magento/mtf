@@ -53,13 +53,6 @@ class Driver implements DriverInterface
     protected $objectManager;
 
     /**
-     * Locator for current frame
-     *
-     * @var Locator|null
-     */
-    protected $currentFrameLocator = null;
-
-    /**
      * Constructor
      *
      * @param DataInterface $configuration
@@ -324,16 +317,6 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Check whether driver has focus
-     *
-     * @return bool
-     */
-    protected function isHasFocus()
-    {
-        return $this->find('*:focus')->isVisible();
-    }
-
-    /**
      * Set the value
      *
      * @param ElementInterface $element
@@ -348,14 +331,6 @@ class Driver implements DriverInterface
         $this->driver->moveto($wrappedElement);
         $wrappedElement->clear();
         $this->focus($element);
-
-        if (!$this->isHasFocus()) {
-            $this->selectWindow();
-            if ($this->currentFrameLocator) {
-                $this->switchToFrame($this->currentFrameLocator);
-                $wrappedElement = $this->getNativeElement($element);
-            }
-        }
 
         $wrappedElement->value($value);
     }
@@ -671,7 +646,6 @@ class Driver implements DriverInterface
             $element = null;
         }
 
-        $this->currentFrameLocator = $locator;
         $this->driver->frame($element);
     }
 

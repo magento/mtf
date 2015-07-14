@@ -13,88 +13,85 @@ use Magento\Mtf\System\Event\EventManagerInterface;
 use Magento\Mtf\Fixture\InjectableFixture\Replacer;
 
 /**
- * Class InjectableFixture
- *
- * Ensures correct data representation between the system under test and testing framework
+ * Ensures correct data representation between the system under test and testing framework.
  *
  * @api
  */
 class InjectableFixture implements FixtureInterface
 {
     /**
-     * Fixture Default Data Set
+     * Default data set name.
      *
      * @var array
      */
-    protected $defaultDataSet = [];
+    protected $defaultDataSetName = 'default';
 
     /**
-     * Fixture data
+     * Fixture data.
      *
      * @var array
      */
     protected $data = [];
 
     /**
-     * Fixture Configuration
+     * Fixture configuration.
      *
      * @var array
      */
     protected $dataConfig = [];
 
     /**
-     * Repository Class Name
+     * Repository class name.
      *
      * @var string
      */
     protected $repositoryClass;
 
     /**
-     * Configuration instance
+     * Configuration instance.
      *
      * @var DataInterface
      */
     protected $configuration;
 
     /**
-     * RepositoryFactory instance
+     * Repository factory instance.
      *
      * @var RepositoryFactory
      */
     protected $repositoryFactory;
 
     /**
-     * FixtureFactory instance
+     * Fixture factory instance.
      *
      * @var FixtureFactory
      */
     protected $fixtureFactory;
 
     /**
-     * HandlerFactory instance
+     * Handler factory instance.
      *
      * @var HandlerFactory
      */
     protected $handlerFactory;
 
     /**
-     * Handler Interface Name
+     * Handler interface Name.
      *
      * @var string
      */
     protected $handlerInterface;
 
     /**
-     * @var array
-     */
-    protected $sourceParamsFallback = ['source', 'fixture'];
-
-    /**
+     * Event manager instance.
+     *
      * @var \Magento\Mtf\System\Event\EventManagerInterface
      */
     protected $eventManager;
 
     /**
+     * Class responsible for replace data in fields.
+     *
      * @var Replacer
      */
     protected $replacer;
@@ -110,7 +107,7 @@ class InjectableFixture implements FixtureInterface
      * @param EventManagerInterface $eventManager
      * @param Replacer $replacer
      * @param array $data
-     * @param string $dataSet
+     * @param string $dataset
      * @param bool $persist
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
@@ -123,7 +120,7 @@ class InjectableFixture implements FixtureInterface
         EventManagerInterface $eventManager,
         Replacer $replacer,
         array $data = [],
-        $dataSet = '',
+        $dataset = '',
         $persist = false
     ) {
         $this->configuration = $configuration;
@@ -133,11 +130,11 @@ class InjectableFixture implements FixtureInterface
         $this->eventManager = $eventManager;
         $this->replacer = $replacer;
 
-        if ($dataSet) {
-            $data = $this->getDataFromRepository($dataSet, $data);
+        if ($dataset) {
+            $data = $this->getDataFromRepository($dataset, $data);
         }
         if (!$data) {
-            $data = $this->defaultDataSet;
+            $data = $this->getDataFromRepository($this->defaultDataSetName);
         }
 
         // todo This code should be removed together with removing uniqueness of ConfigData fixture.
@@ -164,6 +161,9 @@ class InjectableFixture implements FixtureInterface
             if ($source) {
                 $value = $this->prepareSource($name, $value, $source);
             } else {
+                if (isset($params['repository'])) {
+                    $value = $this->getDataFromFieldRepository($value, $params['repository']);
+                }
                 $value = $this->skipEmptyValue($value);
             }
 
@@ -179,7 +179,7 @@ class InjectableFixture implements FixtureInterface
     }
 
     /**
-     * Skip empty value of fixture data
+     * Skip empty value of fixture data.
      *
      * @param mixed $value
      * @return mixed
@@ -203,7 +203,7 @@ class InjectableFixture implements FixtureInterface
     }
 
     /**
-     * Prepare source data
+     * Prepare source data.
      *
      * @param string $fieldName
      * @param mixed $value
@@ -230,7 +230,7 @@ class InjectableFixture implements FixtureInterface
     }
 
     /**
-     * Return source param
+     * Return source param.
      *
      * @param array $params
      * @return null|array
@@ -238,18 +238,15 @@ class InjectableFixture implements FixtureInterface
     protected function getSourceParam(array $params)
     {
         $param = null;
-        foreach ($this->sourceParamsFallback as $val) {
-            if (isset($params[$val])) {
-                $param['field'] = $val;
-                $param['source'] = $params[$val];
-                break;
-            }
+        if (isset($params['source'])) {
+            $param['field'] = 'source';
+            $param['source'] = $params['source'];
         }
         return $param;
     }
 
     /**
-     * Persists Fixture Data into application
+     * Persists Fixture Data into application.
      *
      * @return void
      */
@@ -292,7 +289,7 @@ class InjectableFixture implements FixtureInterface
     }
 
     /**
-     * Verify whether key is present in fixture data
+     * Verify whether key is present in fixture data.
      *
      * @param string $key [optional]
      * @return bool
@@ -313,7 +310,7 @@ class InjectableFixture implements FixtureInterface
     }
 
     /**
-     * Return data field configuration
+     * Return data field configuration.
      *
      * @param string $key
      * @return array
@@ -328,7 +325,7 @@ class InjectableFixture implements FixtureInterface
     }
 
     /**
-     * Return data set configuration settings
+     * Return data set configuration settings.
      *
      * @return array
      */
@@ -338,24 +335,42 @@ class InjectableFixture implements FixtureInterface
     }
 
     /**
-     * Find data from repository by data set name
+     * Find data from repository by data set name.
      *
-     * @param string $dataSet
+     * @param string $dataset
      * @param array $data
      * @return array
      */
-    public function getDataFromRepository($dataSet, array $data = [])
+    public function getDataFromRepository($dataset, array $data = [])
     {
         if (empty($this->repositoryClass)) {
             return $result = $data;
         } else {
             $repository = $this->repositoryFactory->get($this->repositoryClass);
-            return $result = array_replace_recursive($repository->get($dataSet), $data);
+            return $result = array_replace_recursive($repository->get($dataset), $data);
         }
     }
 
     /**
-     * Get object data by path
+     * Find data from field repository by data set name.
+     *
+     * @param mixed $value
+     * @param string $fieldRepositoryClass
+     * @return mixed
+     */
+    protected function getDataFromFieldRepository($value, $fieldRepositoryClass)
+    {
+        if (isset($value['dataset'])) {
+            $data = $this->repositoryFactory->get($fieldRepositoryClass)->get($value['dataset']);
+            unset($value['dataset']);
+            return array_replace_recursive($data, $value);
+        } else {
+            return $value;
+        }
+    }
+
+    /**
+     * Get object data by path.
      *
      * Method consider the path as chain of keys: a/b/c => ['a']['b']['c']
      *
@@ -377,7 +392,7 @@ class InjectableFixture implements FixtureInterface
     }
 
     /**
-     * Get object data by particular key
+     * Get object data by particular key.
      *
      * @param string $key
      * @return mixed

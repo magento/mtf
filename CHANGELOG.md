@@ -1,3 +1,7 @@
+1.0.0-rc.28
+=============
+* Moved all test data to repositories
+
 1.0.0-rc.27
 =============
 * Added wait to form element before filling a value

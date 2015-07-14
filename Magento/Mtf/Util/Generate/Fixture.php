@@ -68,14 +68,6 @@ class Fixture extends AbstractGenerate
             $dataConfig = $item['data_config'][0]['item'];
         }
         $fields = isset($item['field']) ? $item['field'] : [];
-        $defaultDataSet = [];
-        if (isset($item['dataset'])) {
-            foreach ($item['dataset']['default']['field'] as $key => $value) {
-                $defaultDataSet[$key] = $value;
-            }
-        } else {
-            $defaultDataSet = $this->getDefaultValues((array)$fields);
-        }
 
         $extends = isset($item['extends']) ? $item['extends'] : '\Magento\Mtf\Fixture\InjectableFixture';
         $phpDocVarString = "    /**\n     * @var string\n     */\n";
@@ -108,24 +100,11 @@ class Fixture extends AbstractGenerate
             }
         }
 
-        $content .= $phpDocVarArray;
-        $content .= "    protected \$defaultDataSet = ";
-        $content .= $this->generateArray('', $defaultDataSet, '    ');
-        $content .= "    ];\n";
         foreach ($fields as $name => $field) {
             $content .= "\n" . $phpDocVarArray;
             $content .= "    protected \${$name} = [\n";
             foreach ($field as $key => $value) {
-                if ($key == 'default_value') {
-                    $value = $value[0];
-                }
-                if (is_array($value)) {
-                    $content .= "        '{$key}' => ";
-                    $content .= $this->generateArray('', $value, '        ');
-                    $content .= "        ],\n";
-                } else {
-                    $content .= "        '{$key}' => '{$value}',\n";
-                }
+                $content .= "        '{$key}' => '{$value}',\n";
             }
             $content .= "    ];\n";
         }
@@ -139,24 +118,6 @@ class Fixture extends AbstractGenerate
         $content .= "}\n";
 
         return $this->createClass($class, $content);
-    }
-
-    /**
-     * Get default values of all fields.
-     *
-     * @param array $fields
-     * @return array
-     */
-    protected function getDefaultValues(array $fields)
-    {
-        $data = [];
-        foreach ($fields as $name => $field) {
-            if (empty($field['default_value'])) {
-                continue;
-            }
-            $data[$name] = $field['default_value'][0];
-        }
-        return $data;
     }
 
     /**
@@ -179,27 +140,5 @@ class Fixture extends AbstractGenerate
         }
         $result .= $tab . "]";
         return $result;
-    }
-
-    /**
-     * Generate dataSet array.
-     *
-     * @param string $arrayKey
-     * @param array|string $params
-     * @param string $indent
-     * @param bool $flag
-     * @return string
-     */
-    protected function generateArray($arrayKey, $params, $indent = '', $flag = false)
-    {
-        $content = $arrayKey == '' ? "[\n" : $indent . "'{$arrayKey}' => [\n";
-        foreach ($params as $key => $value) {
-            $content .= is_array($value)
-                ? $this->generateArray($key, $value, $indent . '    ', true)
-                : ($indent . "    '{$key}' => '" . $value . "',\n");
-        }
-        $content .= !$flag ? '' : $indent . "],\n";
-
-        return $content;
     }
 }
