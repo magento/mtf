@@ -54,10 +54,10 @@ class Primary
         $result = new \Magento\Mtf\Data\Argument\Interpreter\Composite(
             [
                 'boolean' => new \Magento\Mtf\Data\Argument\Interpreter\Boolean($booleanUtils),
-                'string' => new \Magento\Mtf\Data\Argument\Interpreter\String($booleanUtils),
+                'string' => new \Magento\Mtf\Data\Argument\Interpreter\StringType($booleanUtils),
                 'number' => new \Magento\Mtf\Data\Argument\Interpreter\Number(),
                 'null' => new \Magento\Mtf\Data\Argument\Interpreter\NullType(),
-                'object' => new \Magento\Mtf\Data\Argument\Interpreter\Object($booleanUtils),
+                'object' => new \Magento\Mtf\Data\Argument\Interpreter\ObjectType($booleanUtils),
                 'const' => $constInterpreter,
                 'init_parameter' => new \Magento\Mtf\Data\Argument\Interpreter\Argument($constInterpreter)
             ],

@@ -137,11 +137,11 @@
     <type name="Magento\Mtf\Data\Argument\Interpreter\Composite">
         <arguments>
             <argument name="interpreters" xsi:type="array">
-                <item name="object" xsi:type="object">Magento\Mtf\Data\Argument\Interpreter\Object</item>
+                <item name="object" xsi:type="object">Magento\Mtf\Data\Argument\Interpreter\ObjectType</item>
                 <item name="array" xsi:type="object">arrayArgumentInterpreterProxy</item>
                 <item name="boolean" xsi:type="object">Magento\Mtf\Data\Argument\Interpreter\Boolean</item>
                 <item name="number" xsi:type="object">Magento\Mtf\Data\Argument\Interpreter\Number</item>
-                <item name="string" xsi:type="object">Magento\Mtf\Data\Argument\Interpreter\String</item>
+                <item name="string" xsi:type="object">Magento\Mtf\Data\Argument\Interpreter\StringType</item>
                 <item name="null" xsi:type="object">Magento\Mtf\Data\Argument\Interpreter\NullType</item>
                 <item name="const" xsi:type="object">Magento\Mtf\Data\Argument\Interpreter\Constant</item>
             </argument>
