@@ -1,3 +1,7 @@
+1.0.0-rc.29
+=============
+* Trigger change event after setValue()
+
 1.0.0-rc.28
 =============
 * Moved all test data to repositories

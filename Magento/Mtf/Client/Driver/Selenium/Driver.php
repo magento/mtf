@@ -14,22 +14,12 @@ use Magento\Mtf\Client\ElementInterface;
 use Magento\Mtf\System\Event\EventManagerInterface;
 
 /**
- * Class Driver
+ * Selenium Driver.
  */
 class Driver implements DriverInterface
 {
     /**
-     * "Backspace" key code
-     */
-    const BACKSPACE = "\xEE\x80\x83";
-
-    /**
-     * "Tab" key code
-     */
-    const TAB = "\xEE\x80\x84";
-
-    /**
-     * Driver configuration
+     * Driver configuration.
      *
      * @var DataInterface
      */
@@ -43,18 +33,21 @@ class Driver implements DriverInterface
     protected $remoteDriverFactory;
 
     /**
+     * Remote driver instance.
+     *
      * @var RemoteDriver
      */
     protected $driver;
 
     /**
+     * Object manager instance.
+     *
      * @var ObjectManager
      */
     protected $objectManager;
 
     /**
-     * Constructor
-     *
+     * @constructor
      * @param DataInterface $configuration
      * @param RemoteDriverFactory $remoteDriverFactory
      * @param EventManagerInterface $eventManager
@@ -75,7 +68,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Destructor
+     * Destructor.
      *
      * @return void
      */
@@ -87,7 +80,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Initial web driver
+     * Initial web driver.
      *
      * @return void
      */
@@ -105,7 +98,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Get native element by locator
+     * Get native element by locator.
      *
      * @param Locator $locator
      * @param \PHPUnit_Extensions_Selenium2TestCase_Element $context
@@ -139,7 +132,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Get native element by Mtf Element
+     * Get native element by Mtf Element.
      *
      * @param ElementInterface $element
      * @param bool $wait
@@ -149,7 +142,7 @@ class Driver implements DriverInterface
     protected function getNativeElement(ElementInterface $element, $wait = true)
     {
         $chainElements = [$element];
-        while($element = $element->getContext()) {
+        while ($element = $element->getContext()) {
             $chainElements[] = $element;
         }
 
@@ -162,7 +155,8 @@ class Driver implements DriverInterface
                 $contextElement = $this->findElement($chainElement->getLocator(), $contextElement, $wait);
             } catch (\PHPUnit_Extensions_Selenium2TestCase_WebDriverException $e) {
                 throw new \PHPUnit_Extensions_Selenium2TestCase_WebDriverException(
-                    sprintf('Error occurred on attempt to get element. Message: "%s". Locator: "%s" . Wait: "%s"',
+                    sprintf(
+                        'Error occurred on attempt to get element. Message: "%s". Locator: "%s" . Wait: "%s"',
                         $e->getMessage(),
                         $chainElement->getAbsoluteSelector(),
                         $wait
@@ -175,7 +169,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Get search criteria
+     * Get search criteria.
      *
      * @param Locator $locator
      * @return \PHPUnit_Extensions_Selenium2TestCase_ElementCriteria
@@ -189,7 +183,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Inject Js Error collector
+     * Inject Js Error collector.
      *
      * @return void
      */
@@ -214,7 +208,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Get js errors
+     * Get js errors.
      *
      * @return string[]
      */
@@ -231,7 +225,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Click
+     * Click.
      *
      * @param ElementInterface $element
      * @return void
@@ -249,7 +243,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Double click
+     * Double click.
      *
      * @param ElementInterface $element
      * @return void
@@ -263,7 +257,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Right click
+     * Right click.
      *
      * @param ElementInterface $element
      * @return void
@@ -277,7 +271,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Check whether element is visible
+     * Check whether element is visible.
      *
      * @param ElementInterface $element
      * @return bool
@@ -295,7 +289,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Check whether element is enabled
+     * Check whether element is enabled.
      *
      * @param ElementInterface $element
      * @return bool
@@ -306,7 +300,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Check whether element is selected
+     * Check whether element is selected.
      *
      * @param ElementInterface $element
      * @return bool
@@ -317,7 +311,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Set the value
+     * Set the value.
      *
      * @param ElementInterface $element
      * @param string|array $value
@@ -333,10 +327,11 @@ class Driver implements DriverInterface
         $this->focus($element);
 
         $wrappedElement->value($value);
+        $this->triggerChangeEvent($element);
     }
 
     /**
-     * Get the value
+     * Get the value.
      *
      * @param ElementInterface $element
      * @return null|string
@@ -348,7 +343,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Get content
+     * Get content.
      *
      * @param ElementInterface $element
      * @return string
@@ -359,7 +354,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Find element on the page
+     * Find element on the page.
      *
      * @param string $selector
      * @param string $strategy
@@ -406,7 +401,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Drag and drop element to(between) another element(s)
+     * Drag and drop element to(between) another element(s).
      *
      * @param ElementInterface $element
      * @param ElementInterface $target
@@ -439,7 +434,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Wait until callback isn't null or timeout occurs
+     * Wait until callback isn't null or timeout occurs.
      *
      * @param callable $callback
      * @return mixed
@@ -451,7 +446,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Get all elements by locator
+     * Get all elements by locator.
      *
      * @param ElementInterface $context
      * @param string $selector
@@ -475,7 +470,7 @@ class Driver implements DriverInterface
         if ($wait) {
             try {
                 $nativeElements = $this->waitUntil(
-                    function() use ($nativeContext, $criteria) {
+                    function () use ($nativeContext, $criteria) {
                         return $nativeContext->elements($criteria);
                     }
                 );
@@ -506,7 +501,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Retrieve relative xpath from context to element
+     * Retrieve relative xpath from context to element.
      *
      * @param \PHPUnit_Extensions_Selenium2TestCase_Element $element
      * @param \PHPUnit_Extensions_Selenium2TestCase_Element $context
@@ -520,7 +515,7 @@ class Driver implements DriverInterface
         $path = '',
         $includeLastIndex = true
     ) {
-        if($element->equals($context)) {
+        if ($element->equals($context)) {
             return '.' . $path;
         }
 
@@ -546,7 +541,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Get the value of a the given attribute of the element
+     * Get the value of a the given attribute of the element.
      *
      * @param ElementInterface $element
      * @param string $name
@@ -558,7 +553,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Open page
+     * Open page.
      *
      * @param string $url
      * @return void
@@ -571,7 +566,8 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Back to previous page
+     * Back to previous page.
+     *
      * @return void
      */
     public function back()
@@ -581,7 +577,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Forward page
+     * Forward page.
      *
      * @return void
      */
@@ -592,7 +588,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Refresh page
+     * Refresh page.
      *
      * @return void
      */
@@ -602,7 +598,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Reopen browser
+     * Reopen browser.
      *
      * @return void
      */
@@ -621,7 +617,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Change the focus to a frame in the page by locator
+     * Change the focus to a frame in the page by locator.
      *
      * @param Locator|null $locator
      * @return void
@@ -630,12 +626,13 @@ class Driver implements DriverInterface
     public function switchToFrame(Locator $locator = null)
     {
         if ($locator) {
-            $this->eventManager->dispatchEvent(['switch_to_frame'], [(string) $locator]);
+            $this->eventManager->dispatchEvent(['switch_to_frame'], [(string)$locator]);
             try {
                 $element = $this->findElement($locator);
             } catch (\Exception $e) {
                 throw new \Exception(
-                    sprintf('Error occurred during switch to frame! Message: "%s". Locator: "%s".',
+                    sprintf(
+                        'Error occurred during switch to frame! Message: "%s". Locator: "%s".',
                         $e->getMessage(),
                         $locator
                     )
@@ -650,7 +647,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Close the current window
+     * Close the current window.
      *
      * @return void
      */
@@ -667,7 +664,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Select window by its name
+     * Select window by its name.
      *
      * @return void
      */
@@ -678,7 +675,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Press OK on an alert or confirm a dialog
+     * Press OK on an alert or confirm a dialog.
      *
      * @return void
      */
@@ -690,7 +687,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Press Cancel on alert or does not confirm a dialog
+     * Press Cancel on alert or does not confirm a dialog.
      *
      * @return void
      */
@@ -723,7 +720,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Get the alert dialog text
+     * Get the alert dialog text.
      *
      * @return string
      */
@@ -733,7 +730,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Set the text to a prompt popup
+     * Set the text to a prompt popup.
      *
      * @param string $text
      * @return void
@@ -744,7 +741,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Get current page url
+     * Get current page url.
      *
      * @return string
      */
@@ -762,7 +759,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Get Html page source
+     * Get Html page source.
      *
      * @return string
      */
@@ -772,7 +769,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Get binary string of image
+     * Get binary string of image.
      *
      * @return string
      */
@@ -782,6 +779,9 @@ class Driver implements DriverInterface
     }
 
     /**
+     * Wait page to load.
+     *
+     * @return void
      * @throws \Exception
      */
     public function waitForPageToLoad()
@@ -802,10 +802,10 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Set focus on element
+     * Set focus on element.
      *
      * @param ElementInterface $element
-     * @return mixed
+     * @return void
      */
     public function focus(ElementInterface $element)
     {
@@ -813,9 +813,26 @@ class Driver implements DriverInterface
         if ($elementId) {
             $js = "if (window.jQuery != undefined) jQuery('[id=\"$elementId\"]').focus(); ";
             $js .= "var element = document.getElementById('$elementId'); if (element != undefined) element.focus();";
-            $this->driver->execute(['script' => $js,'args' => []]);
+            $this->driver->execute(['script' => $js, 'args' => []]);
         } else {
             $element->click();
+        }
+    }
+
+    /**
+     * Trigger change on event.
+     *
+     * @param ElementInterface $element
+     * @return void
+     */
+    protected function triggerChangeEvent(ElementInterface $element)
+    {
+        $elementId = $element->getAttribute('id');
+        if ($elementId) {
+            $js = "if (window.jQuery != undefined)";
+            $js .= "{jQuery('[id=\"$elementId\"]').change(); jQuery('[id=\"$elementId\"]').keyup();}";
+            $js .= "var element = document.getElementById('$elementId'); if (element != undefined) element.focus();";
+            $this->driver->execute(['script' => $js, 'args' => []]);
         }
     }
 }
