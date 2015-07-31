@@ -1,3 +1,7 @@
+1.0.0-rc.29
+=============
+* Code adaptation to PHP7
+
 1.0.0-rc.28
 =============
 * Moved all test data to repositories
