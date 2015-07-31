@@ -1,3 +1,7 @@
+1.0.0-rc.30
+=============
+* Code adaptation to PHP7
+
 1.0.0-rc.29
 =============
 * Trigger change event after setValue()

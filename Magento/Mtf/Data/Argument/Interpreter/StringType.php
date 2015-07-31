@@ -3,22 +3,20 @@
  * Copyright © 2015 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
-
 namespace Magento\Mtf\Data\Argument\Interpreter;
 
 use Magento\Mtf\Data\Argument\InterpreterInterface;
 use Magento\Mtf\Stdlib\BooleanUtils;
 
 /**
- * Class Object
- * @package Magento\Mtf\Data\Argument\Interpreter
+ * Interpreter of string data type that may optionally perform text translation
  */
-class Object implements InterpreterInterface
+class StringType implements InterpreterInterface
 {
     /**
-     * @var \Magento\Mtf\Stdlib\BooleanUtils
+     * @var BooleanUtils
      */
-    protected $booleanUtils;
+    private $booleanUtils;
 
     /**
      * @param BooleanUtils $booleanUtils
@@ -29,18 +27,19 @@ class Object implements InterpreterInterface
     }
 
     /**
-     * Compute and return effective value of an argument
-     *
-     * @param array $data
-     * @return mixed
+     * {@inheritdoc}
+     * @return string
      * @throws \InvalidArgumentException
-     * @throws \UnexpectedValueException
      */
     public function evaluate(array $data)
     {
-        $result = ['instance' => $data['value']];
-        if (isset($data['shared'])) {
-            $result['shared'] = $this->booleanUtils->toBoolean($data['shared']);
+        if (isset($data['value'])) {
+            $result = $data['value'];
+            if (!is_string($result)) {
+                throw new \InvalidArgumentException('String value is expected.');
+            }
+        } else {
+            $result = '';
         }
         return $result;
     }
