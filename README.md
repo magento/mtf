@@ -8,14 +8,8 @@ All Submissions you make to Magento is an eBay Inc. company ("Magento") through 
 2. Your Submission is an original work of authorship and you are the owner or are legally entitled to grant the license stated above.
 3. You agree to the Magento Agreement found here: https://www.x.com/developers/x.commerce/x.commerce-user-agreement
 
-##Roadmap
-
-1. Functional Tests augmentation (together with M2 updates)
-2. Reporting Tool
-3. Modularity support
-4. Input Data (Data Sets) management improvements
-
 ## User Documentation
 
 * [Installing and Configuring the Magento Test Framework (MTF)](docs/install-config.md)
 * [Running the Magento Test Framework (MTF)](docs/running.md)
+* [Magento Testing Framework Guide](http://devdocs.magento.com/guides/v1.0/mtf/mtf_introduction.html)
