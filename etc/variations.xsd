@@ -45,6 +45,8 @@
                 </xs:element>
             </xs:sequence>
             <xs:attribute type="xs:string" name="name" use="required"/>
+            <xs:attribute type="xs:string" name="summary" use="required"/>
+            <xs:attribute type="xs:string" name="zephyrId" use="required"/>
         </xs:complexType>
     </xs:element>
 
@@ -69,6 +71,8 @@
             <xs:attribute type="xs:string" name="name" use="required"/>
             <xs:attribute type="xs:string" name="firstConstraint" use="optional"/>
             <xs:attribute type="xs:string" name="method" use="optional"/>
+            <xs:attribute type="xs:string" name="summary" use="optional"/>
+            <xs:attribute type="xs:string" name="zephyrId" use="optional"/>
         </xs:complexType>
     </xs:element>
 
