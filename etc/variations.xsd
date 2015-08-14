@@ -45,8 +45,8 @@
                 </xs:element>
             </xs:sequence>
             <xs:attribute type="xs:string" name="name" use="required" />
-            <xs:attribute type="xs:string" name="summary" use="required" />
-            <xs:attribute type="xs:string" name="ticketId" use="required" />
+            <xs:attribute type="xs:string" name="summary" use="optional" />
+            <xs:attribute type="xs:string" name="ticketId" use="optional" />
         </xs:complexType>
     </xs:element>
 
