@@ -281,4 +281,12 @@ interface DriverInterface
      * @return mixed
      */
     public function focus(ElementInterface $element);
+
+    /**
+     * Hover mouse over an element.
+     *
+     * @param ElementInterface $element
+     * @return void
+     */
+    public function hover(ElementInterface $element);
 }

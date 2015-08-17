@@ -259,4 +259,14 @@ class SimpleElement implements ElementInterface
     {
         return $this->context;
     }
+
+    /**
+     * Hover mouse over an element.
+     *
+     * @return void
+     */
+    public function hover()
+    {
+        $this->driver->hover($this);
+    }
 }

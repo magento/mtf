@@ -1,3 +1,5 @@
+* Added an ability to hover over element
+
 1.0.0-rc.31
 =============
 * Updated variation.xsd for new attributes in test case xml files

@@ -366,6 +366,19 @@ final class Driver implements DriverInterface
     }
 
     /**
+     * Hover mouse over an element.
+     *
+     * @param ElementInterface $element
+     * @return void
+     */
+    public function hover(ElementInterface $element)
+    {
+        $this->driver->action()
+            ->moveToElement($this->getNativeElement($element))
+            ->perform();
+    }
+
+    /**
      * Send a sequence of key strokes to the active element.
      *
      * @param ElementInterface $element
