@@ -25,4 +25,8 @@
             </desiredCapabilities>
         </item>
     </server>
+    <handler>
+        <curl priority="0" />
+        <ui priority="1" />
+    </handler>
 </config>

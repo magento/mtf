@@ -1,3 +1,5 @@
+* Created handler fallback in config.xml. Moved constants defining from ObjectManagerFactory to bootstrap.php
+
 1.0.0-rc.31
 =============
 * Updated variation.xsd for new attributes in test case xml files
