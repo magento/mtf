@@ -1,4 +1,6 @@
 * Provided framework with CurlTransport class
+* Created handler fallback in config.xml. Moved constants defining from ObjectManagerFactory to bootstrap.php
+* Moved selenium server dependency from require section to suggest section.
 
 1.0.0-rc.31
 =============

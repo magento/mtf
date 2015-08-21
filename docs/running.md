@@ -14,12 +14,14 @@ Install and configure the MTF as discussed in [Installing and Configuring the Ma
 
 	`composer update` updates any dependencies that otherwise prevent tests from running successfully. 
 
-3.	Start Selenium (which should have been downloaded for you by Composer). Selenium can be found under the `dev/tests/functional/vendor/netwing/selenium-server-standalone` directory.
+3.	Run the Selenium Server. The Selenium Server will drive a browser to execute your tests. You can download the latest Selenium Server from [Selenium project website](http://www.seleniumhq.org/download/).
 
-	Example of starting Selenium:
+    Specific versions of the Selenium Server are compatible with specific versions of browsers. [Read more about compatibility of browser version and Selenium server version.](http://docs.seleniumhq.org/about/platforms.jsp)
+
+    Enter in terminal:
 
 	```
-	java -jar vendor/netwing/selenium-server-standalone/selenium-server-standalone-2.39.0.jar
+	java -jar <path_to_selenium_directory>/selenium-server.jar
 	```
 
 3.	Start your tests using PHPUnit. This can be done using your IDE or the command line.
