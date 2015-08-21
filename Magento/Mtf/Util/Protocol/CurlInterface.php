@@ -36,7 +36,7 @@ interface CurlInterface
      * @param mixed $headers
      * @return void
      */
-    public function write($url, $params = [], $method = CurlInterface::PUT, $headers = []);
+    public function write($url, $params = [], $method = CurlInterface::POST, $headers = []);
 
     /**
      * Read response from server.
