@@ -10,8 +10,7 @@ use Magento\Mtf\Config\DataInterface;
 use Magento\Mtf\System\Event\EventManagerInterface;
 
 /**
- * Class Curl handler
- * Abstract class for curl handlers
+ * Abstract class for curl handlers.
  *
  * @api
  * @abstract
@@ -19,7 +18,7 @@ use Magento\Mtf\System\Event\EventManagerInterface;
 abstract class Curl implements HandlerInterface
 {
     /**
-     * Configuration parameters array
+     * Configuration parameters array.
      *
      * @var DataInterface
      */
@@ -28,7 +27,7 @@ abstract class Curl implements HandlerInterface
     /**
      * Event Manager
      *
-     * @var EventManagerInterface
+     * @var EventManagerInterface.
      */
     protected $_eventManager;
 
@@ -40,10 +39,9 @@ abstract class Curl implements HandlerInterface
     protected $mappingData;
 
     /**
-     * Constructor
-     *
      * @constructor
      * @param DataInterface $configuration
+     * @param EventManagerInterface $eventManager
      */
     public function __construct(DataInterface $configuration, EventManagerInterface $eventManager)
     {
@@ -52,7 +50,7 @@ abstract class Curl implements HandlerInterface
     }
 
     /**
-     * Replace mapping data in fixture data
+     * Replace mapping data in fixture data.
      *
      * @param array $data
      * @return array

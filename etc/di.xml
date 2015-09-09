@@ -20,6 +20,7 @@
     <type name="Magento\Mtf\Page\PageInterface" shared="false"/>
     <type name="Magento\Mtf\Fixture\InjectableFixture" shared="false"/>
     <type name="Magento\Mtf\Fixture\FixtureInterface" shared="false"/>
+    <type name="Magento\Mtf\Util\Protocol\CurlInterface" shared="false" />
     <type name="Magento\Mtf\TestCase\Functional" shared="false"/>
     <type name="Magento\Mtf\Util\Iterator\TestCase">
         <arguments>
