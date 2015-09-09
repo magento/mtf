@@ -25,9 +25,9 @@ abstract class Curl implements HandlerInterface
     protected $_configuration;
 
     /**
-     * Event Manager
+     * Event Manager.
      *
-     * @var EventManagerInterface.
+     * @var EventManagerInterface
      */
     protected $_eventManager;
 

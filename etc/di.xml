@@ -353,7 +353,7 @@
     </virtualType>
     <virtualType name="Magento\Mtf\Config\Reader\Config" type="Magento\Mtf\Config\Reader\Filesystem">
         <arguments>
-            <argument name="fileResolver" xsi:type="object">Magento\Mtf\Config\FileResolver\Primary</argument>
+            <argument name="fileResolver" xsi:type="object">Magento\Mtf\Config\FileResolver\Config</argument>
             <argument name="converter" xsi:type="object">Magento\Mtf\Config\Converter</argument>
             <argument name="schemaLocator" xsi:type="object">Magento\Mtf\Config\SchemaLocator\Config</argument>
             <argument name="idAttributes" xsi:type="array">

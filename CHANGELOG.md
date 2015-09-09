@@ -1,3 +1,4 @@
+* Added *.dist file for global configuration
 * Set CurlInterface as non shared object
 * Provided framework with CurlTransport class
 * Created handler fallback in config.xml. Moved constants defining from ObjectManagerFactory to bootstrap.php
