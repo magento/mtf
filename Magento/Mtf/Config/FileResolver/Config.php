@@ -28,13 +28,11 @@ class Config extends Primary implements FileResolverInterface
         $distPathIterator = parent::get($distFilename, $scope);
         $paths = [];
 
+        foreach ($distPathIterator as $dirFile => $content) {
+            $paths[$dirFile] = $dirFile . '/' . $scope .  '/' . $distFilename;
+        }
         foreach ($pathIterator as $dirFile => $content) {
             $paths[$dirFile] = $dirFile . '/' . $scope .  '/' . $filename;
-        }
-        foreach ($distPathIterator as $dirFile => $content) {
-            if (!isset($paths[$dirFile])) {
-                $paths[$dirFile] = $dirFile . '/' . $scope .  '/' . $distFilename;
-            }
         }
 
         return new File($paths);
