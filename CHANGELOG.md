@@ -1,3 +1,6 @@
+1.0.0-rc.31
+=============
+* Wait for an element while getting its value on the form
 * Added *.dist file for global configuration
 * Set CurlInterface as non shared object
 * Provided framework with CurlTransport class

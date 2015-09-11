@@ -274,9 +274,7 @@ class Form extends Block
                 $data[$key] = $this->_getData($field);
             } else {
                 $element = $this->getElement($context, $field);
-                if ($this->mappingMode || $element->isVisible()) {
-                    $data[$key] = $element->getValue();
-                }
+                $data[$key] = $element->getValue();
             }
         }
 
