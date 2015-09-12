@@ -1,4 +1,4 @@
-1.0.0-rc.31
+1.0.0-rc.32
 =============
 * Wait for an element while getting its value on the form
 * Added *.dist file for global configuration
