@@ -3,15 +3,14 @@
     "type": "library",
     "description": "Magento Testing Framework",
     "keywords": ["automation", "magento", "testing"],
-    "homepage": "http://www.magentocommerce.com/",
     "license": "OSL-3.0",
     "require": {
         "php": ">=5.4.0",
         "phpunit/phpunit": "4.1.0",
-        "phpunit/phpunit-selenium": ">=1.2",
-        "netwing/selenium-server-standalone": ">=2.35"
+        "phpunit/phpunit-selenium": ">=1.2"
     },
     "suggest": {
+        "netwing/selenium-server-standalone": "dev-master",
         "facebook/webdriver": "dev-master"
     },
     "autoload": {

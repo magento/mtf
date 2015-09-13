@@ -41,8 +41,10 @@ class Primary implements FileResolverInterface
             $paths[$mtfDefaultPath] = $mtfDefaultPath . '/' . $scope . '/' . $filename;
             $paths[MTF_BP] = MTF_BP . '/' . $scope . '/' . $filename;
 
-            if (!file_exists($paths[MTF_BP])) {
-                unset($paths[MTF_BP]);
+            foreach ($paths as $dir => $filename) {
+                if (!file_exists($filename)) {
+                    unset($paths[$dir]);
+                }
             }
         }
 
