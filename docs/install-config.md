@@ -83,7 +83,6 @@ For more information about web browser support, see <a href="http://docs.seleniu
     <ul><li>An MTF framework directory (<tt>magento/mtf</tt>)</li>
    <li><tt>bin </tt></li>
    <li><tt>composer</tt></li>
-   <li><tt>netwing</tt> </li>
    <li><tt>phpunit</tt></li>
    <li><tt>symfony</tt> </li>
    <li><tt>autoload.php</tt> (file)</li></ul>

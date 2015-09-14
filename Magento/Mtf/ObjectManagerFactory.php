@@ -10,7 +10,7 @@ use Magento\Mtf\Stdlib\BooleanUtils;
 use Magento\Mtf\ObjectManager as MagentoObjectManager;
 
 /**
- * Class ObjectManagerFactory
+ * Object Manager Factory.
  *
  * @api
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
@@ -18,41 +18,27 @@ use Magento\Mtf\ObjectManager as MagentoObjectManager;
 class ObjectManagerFactory
 {
     /**
-     * Object Manager class name
+     * Object Manager class name.
      *
      * @var string
      */
     protected $locatorClassName = '\Magento\Mtf\ObjectManager';
 
     /**
-     * DI Config class name
+     * DI Config class name.
      *
      * @var string
      */
     protected $configClassName = '\Magento\Mtf\ObjectManager\Config';
 
     /**
-     * Create Object Manager
+     * Create Object Manager.
      *
      * @param array $sharedInstances
      * @return ObjectManager
      */
     public function create(array $sharedInstances = [])
     {
-        if (!defined('MTF_BP')) {
-            $basePath = str_replace('\\', '/', dirname(__DIR__));
-            define('MTF_BP', $basePath);
-        }
-        if (!defined('MTF_TESTS_PATH')) {
-            define('MTF_TESTS_PATH', MTF_BP . '/tests/app/');
-        }
-        if (!defined('MTF_TESTS_MODULE_PATH')) {
-            define('MTF_TESTS_MODULE_PATH', MTF_BP . '/tests/app/');
-        }
-        if (!defined('MTF_STATES_PATH')) {
-            define('MTF_STATES_PATH', MTF_BP . '/Magento/Mtf/App/State/');
-        }
-
         /** @var \Magento\Mtf\ObjectManager\Config $diConfig */
         $diConfig = new $this->configClassName();
 
@@ -86,7 +72,7 @@ class ObjectManagerFactory
     }
 
     /**
-     * Return newly created instance on an argument interpreter, suitable for processing DI arguments
+     * Return newly created instance on an argument interpreter, suitable for processing DI arguments.
      *
      * @param \Magento\Mtf\Stdlib\BooleanUtils $booleanUtils
      * @return \Magento\Mtf\Data\Argument\InterpreterInterface
@@ -113,7 +99,7 @@ class ObjectManagerFactory
     }
 
     /**
-     * Get MTF Object Manager instance
+     * Get MTF Object Manager instance.
      *
      * @return ObjectManager
      */
@@ -128,8 +114,8 @@ class ObjectManagerFactory
     }
 
     /**
-     * Configure Object Manager
-     * This method is static to have the ability to configure multiple instances of Object manager when needed
+     * Configure Object Manager.
+     * This method is static to have the ability to configure multiple instances of Object manager when needed.
      *
      * @param \Magento\Mtf\ObjectManagerInterface $objectManager
      * @return void
@@ -144,12 +130,28 @@ class ObjectManagerFactory
             $objectManager->get('Magento\Mtf\ObjectManager\ConfigLoader\Module')->load()
         );
 
-        $objectManager->configure(
-            $objectManager->get('Magento\Mtf\ObjectManager\ConfigLoader\Module')->load('etc/ui')
-        );
+        self::configureHandlerFallback($objectManager);
+    }
 
-        $objectManager->configure(
-            $objectManager->get('Magento\Mtf\ObjectManager\ConfigLoader\Module')->load('etc/curl')
-        );
+    /**
+     * Configure handler fallback.
+     *
+     * @param \Magento\Mtf\ObjectManagerInterface $objectManager
+     * @return void
+     */
+    protected static function configureHandlerFallback(\Magento\Mtf\ObjectManagerInterface $objectManager)
+    {
+        $config = $objectManager->create('\Magento\Mtf\Config\DataInterface');
+        $handlerFallback = $config->get('handler/0');
+        $handlers = [];
+        foreach ($handlerFallback as $type => $data) {
+            $handlers[$data[0]['priority']] = $type;
+        }
+        krsort($handlers);
+        foreach ($handlers as $handler) {
+            $objectManager->configure(
+                $objectManager->get('Magento\Mtf\ObjectManager\ConfigLoader\Module')->load('etc/' . $handler)
+            );
+        }
     }
 }
