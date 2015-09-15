@@ -1,3 +1,7 @@
+1.0.0-rc.33
+=============
+* Added mage_mode environment variable support in functional test
+
 1.0.0-rc.32
 =============
 * Wait for an element while getting its value on the form
