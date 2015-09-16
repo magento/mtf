@@ -59,7 +59,8 @@ class Environment
             'app_instances',
             'events_preset',
             'log_directory',
-            'module_whitelist'
+            'module_whitelist',
+            'mage_mode'
         ];
 
         $globalEnvironmentVariables = [];
