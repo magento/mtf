@@ -1,3 +1,17 @@
+1.0.0-rc.33
+=============
+* Added mage_mode environment variable support in functional test
+
+1.0.0-rc.32
+=============
+* Wait for an element while getting its value on the form
+* Added *.dist file for global configuration
+* Set CurlInterface as non shared object
+* Provided framework with CurlTransport class
+* Created handler fallback in config.xml. Moved constants defining from ObjectManagerFactory to bootstrap.php
+* Moved selenium server dependency from require section to suggest section.
+* Added an ability to hover over element
+
 1.0.0-rc.31
 =============
 * Updated variation.xsd for new attributes in test case xml files

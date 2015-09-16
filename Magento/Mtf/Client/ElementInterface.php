@@ -151,4 +151,11 @@ interface ElementInterface
      * @return string
      */
     public function getAttribute($name);
+
+    /**
+     * Hover mouse over an element.
+     *
+     * @return void
+     */
+    public function hover();
 }
