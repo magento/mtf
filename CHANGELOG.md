@@ -1,3 +1,7 @@
+1.0.0-rc.34
+===========
+* Set ticketId attribute for testCase as optional
+
 1.0.0-rc.33
 =============
 * Added mage_mode environment variable support in functional test
