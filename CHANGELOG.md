@@ -1,3 +1,5 @@
+* Fixed sending parameters using PUT method
+
 1.0.0-rc.34
 ===========
 * Set ticketId attribute for testCase as optional
