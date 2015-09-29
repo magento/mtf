@@ -13,13 +13,13 @@ When you're ready, use [Composer to install the MTF](http://devdocs.magento.com/
 
 <h2>Step 3: Verify your installation</h2>
 
-[Verify that MTF is installed](http://devdocs.magento.com/guides/v2.0/mtf/mtf_installation.html#mtf_install_check)  by checking your <a href="https://github.com/magento/magento2/tree/master/dev/tests/functional"><code>dev/tests/functional/</code></a> directory to look for `vendor/magento/mtf`.
+[Verify that MTF is installed](http://devdocs.magento.com/guides/v2.0/mtf/mtf_installation.html#mtf_install_check)  by checking your <code>dev/tests/functional/</code> directory to look for `vendor/magento/mtf`.
 
 <h2>Step 4: Get Started with testing</h2>
 
 For a fast-path option, see the [Quick start steps](http://devdocs.magento.com/guides/v2.0/mtf/mtf_quickstart.html). There you will learn how to [configure PHPUnit](http://devdocs.magento.com/guides/v2.0/mtf/mtf_quickstart/mtf_quickstart_config.html), [set up Selenium](http://devdocs.magento.com/guides/v2.0/mtf/mtf_quickstart/mtf_quickstart_environmemt.html) and [run functional tests](http://devdocs.magento.com/guides/v2.0/mtf/mtf_quickstart/mtf_quickstart_runtest.html).
 
-<h2>Contributing to the Magento 2 code base</h2>
+<h2>Contributing to the Magento Testing Framework code base</h2>
 
 Contributions can take the form of new components or features, changes to existing features, tests, documentation (such as developer guides, user guides, examples, or specifications), bug fixes, optimizations, or just good suggestions.
 
