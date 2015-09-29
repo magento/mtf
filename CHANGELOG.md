@@ -1,3 +1,5 @@
+* Updated README.md
+
 1.0.0-rc.34
 ===========
 * Set ticketId attribute for testCase as optional
