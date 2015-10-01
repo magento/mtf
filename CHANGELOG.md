@@ -1,4 +1,8 @@
+1.0.0-rc.35
+===========
 * Updated README.md
+* Added radio button typified element  
+* Fixed sending parameters using PUT method
 
 1.0.0-rc.34
 ===========

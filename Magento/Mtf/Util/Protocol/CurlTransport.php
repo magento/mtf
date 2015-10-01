@@ -132,6 +132,7 @@ class CurlTransport implements CurlInterface
                 break;
             case CurlInterface::PUT:
                 $options[CURLOPT_CUSTOMREQUEST] = self::PUT;
+                $options[CURLOPT_POSTFIELDS] = $params;
                 break;
             case CurlInterface::GET:
                 $options[CURLOPT_HTTPGET] = true;
