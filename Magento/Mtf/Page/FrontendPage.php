@@ -7,19 +7,19 @@
 namespace Magento\Mtf\Page;
 
 /**
- * Class FrontendPage
+ * Application frontend page.
  *
  * @api
  */
 class FrontendPage extends Page
 {
     /**
-     * Init page. Set page url
+     * Init page. Set page url.
      *
      * @return void
      */
-    protected function _init()
+    protected function initUrl()
     {
-        $this->_url = $_ENV['app_frontend_url'] . static::MCA;
+        $this->url = $_ENV['app_frontend_url'] . static::MCA;
     }
 }

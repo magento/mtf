@@ -7,9 +7,9 @@
 namespace Magento\Mtf\Constraint;
 
 use Magento\Mtf\ObjectManager;
+use Magento\Mtf\System\Event\EventManagerInterface;
 
 /**
- * Abstract Constraint Class
  * Constraint objects are stateful,
  * so when need to call for assertions more then one time,
  * the object should be configured again (see method "configure")
@@ -20,71 +20,82 @@ use Magento\Mtf\ObjectManager;
 abstract class AbstractConstraint extends \PHPUnit_Framework_Constraint implements ConstraintInterface
 {
     /**
-     * Object Manager
+     * Object Manager.
      *
      * @var \Magento\Mtf\ObjectManager
      */
     protected $objectManager;
 
     /**
-     * Test Case
+     * Event manager instance.
+     *
+     * @var EventManagerInterface
+     */
+    protected $eventManager;
+
+    /**
+     * Test Case.
      *
      * @var \PHPUnit_Framework_TestCase
      */
     protected $testCase;
 
     /**
-     * Test Case Name
+     * Test Case Name.
      *
      * @var string
      */
     protected $testCaseName = '';
 
     /**
-     * Test Case DI Arguments
+     * Test Case DI Arguments.
      *
      * @var array
      */
     protected $arguments = [];
 
     /**
-     * Assertion Result
+     * Assertion Result.
      *
      * @var boolean
      */
     protected $result;
 
     /**
-     * Severity low | high | middle
+     * Severity low | high | middle.
      *
      * @var string
      */
     protected $severity;
 
     /**
-     * Active flag
+     * Active flag.
      *
      * @var bool
      */
     protected $active;
 
     /**
-     * Constructor
-     *
      * @constructor
      * @param ObjectManager $objectManager
+     * @param EventManagerInterface $eventManager
      * @param string $severity
      * @param bool $active
      */
-    public function __construct(ObjectManager $objectManager, $severity = 'low', $active = true)
-    {
+    public function __construct(
+        ObjectManager $objectManager,
+        EventManagerInterface $eventManager,
+        $severity = 'low',
+        $active = true
+    ) {
         $this->objectManager = $objectManager;
+        $this->eventManager = $eventManager;
         $this->severity = $severity;
         $this->active = $active;
     }
 
     /**
-     * Set DI Arguments to Constraint
+     * Set DI Arguments to Constraint.
      *
      * @param array $arguments
      * @return void
@@ -96,7 +107,7 @@ abstract class AbstractConstraint extends \PHPUnit_Framework_Constraint implemen
     }
 
     /**
-     * Get constraint result
+     * Get constraint result.
      *
      * @return bool
      * @SuppressWarnings(PHPMD.BooleanGetMethodName)
@@ -107,7 +118,7 @@ abstract class AbstractConstraint extends \PHPUnit_Framework_Constraint implemen
     }
 
     /**
-     * Get class representation is string format
+     * Get class representation is string format.
      *
      * @return string
      */
@@ -117,7 +128,7 @@ abstract class AbstractConstraint extends \PHPUnit_Framework_Constraint implemen
     }
 
     /**
-     * Is Constraint enabled
+     * Is Constraint enabled.
      *
      * @return boolean
      */
@@ -127,7 +138,7 @@ abstract class AbstractConstraint extends \PHPUnit_Framework_Constraint implemen
     }
 
     /**
-     * Evaluates the constraint for test case
+     * Evaluates the constraint for test case.
      *
      * @param string $testCaseName
      * @return bool
@@ -135,6 +146,10 @@ abstract class AbstractConstraint extends \PHPUnit_Framework_Constraint implemen
     protected function matches($testCaseName)
     {
         if ($this->result === null) {
+            $this->eventManager->dispatchEvent(
+                ['execution'],
+                ['[start constraint execution ' . get_class($this) . ']']
+            );
             $this->testCaseName = $testCaseName;
             $this->result = true;
             $this->objectManager->invoke($this, 'processAssert', $this->arguments);

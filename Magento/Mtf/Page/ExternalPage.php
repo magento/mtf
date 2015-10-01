@@ -16,8 +16,8 @@ class ExternalPage extends Page
      *
      * @return void
      */
-    protected function _init()
+    protected function initUrl()
     {
-        $this->_url = static::MCA;
+        $this->url = static::MCA;
     }
 }
