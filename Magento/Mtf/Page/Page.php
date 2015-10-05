@@ -168,7 +168,7 @@ class Page implements PageInterface
 
             $this->blockInstances[$blockName] = $block;
         }
-        // @todo fix to get link to new page if page reloaded
+
         return $this->blockInstances[$blockName];
     }
 }

@@ -69,7 +69,7 @@ abstract class Injectable extends Functional
      * Constructs a test case with the given name.
      *
      * @constructor
-     * @param null $name
+     * @param string|null $name
      * @param array $data
      * @param string $dataName
      * @param string $path
