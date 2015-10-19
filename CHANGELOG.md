@@ -1,3 +1,5 @@
+1.0.0-rc.36
+===========
 * Added constraint execution logging to system events observer
 
 1.0.0-rc.35
