@@ -10,16 +10,19 @@ use Magento\Mtf\System\Event\State as EventState;
 use Magento\Mtf\System\Event\ObserverInterface;
 
 /**
- * Class Fixture
+ * Fixture observer.
  */
 class Fixture implements ObserverInterface
 {
     /**
+     * EventState instance.
+     *
      * @var EventState
      */
     protected $stateObject;
 
     /**
+     * @constructor
      * @param EventState $state
      */
     public function __construct(EventState $state)
@@ -28,6 +31,8 @@ class Fixture implements ObserverInterface
     }
 
     /**
+     * Process current event.
+     *
      * @param Event $event
      * @return void
      */
@@ -35,7 +40,7 @@ class Fixture implements ObserverInterface
     {
         if (in_array('persist_before', $event->getTags())) {
             $this->stateObject->setStageName($event->getSubjects()[0]);
-        } elseif (in_array('persist_before', $event->getTags())) {
+        } elseif (in_array('persist_after', $event->getTags())) {
             $this->stateObject->setStageName();
         }
     }

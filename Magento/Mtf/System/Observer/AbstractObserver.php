@@ -11,21 +11,26 @@ use Magento\Mtf\System\Logger;
 use Magento\Mtf\System\Event\State as EventState;
 
 /**
- * Class AbstractObserver
+ * Abstract observer.
  */
 abstract class AbstractObserver implements ObserverInterface
 {
     /**
-     * @var \Magento\Mtf\System\Logger
+     * Logger instance.
+     *
+     * @var Logger
      */
     protected $logger;
 
     /**
+     * EventState instance.
+     *
      * @var EventState
      */
     protected $state;
 
     /**
+     * @constructor
      * @param Logger $logger
      * @param EventState $state
      */
@@ -36,7 +41,7 @@ abstract class AbstractObserver implements ObserverInterface
     }
 
     /**
-     * Create directories if not exists
+     * Create directories if not exists.
      *
      * @param string $suffix
      * @return string
@@ -74,7 +79,7 @@ abstract class AbstractObserver implements ObserverInterface
     }
 
     /**
-     * Retrieve message context prefix
+     * Retrieve message context prefix.
      *
      * @param Event $event
      * @return string
@@ -82,7 +87,7 @@ abstract class AbstractObserver implements ObserverInterface
     public function getMessagePrefix(Event $event)
     {
         return sprintf(
-            '%s %s %s %s %s %s %s',
+            '[date: %s] [id: %s] [state: %s] [test suite: %s] [test case: %s] [test method: %s] [stage: %s] [url: %s]',
             date("Y-m-d H:i:sP"),
             $event->getIdentifier(),
             $this->state->getAppStateName(),

@@ -8,112 +8,101 @@ namespace Magento\Mtf\Page;
 
 use Magento\Mtf\Block\BlockFactory;
 use Magento\Mtf\Block\BlockInterface;
-use Magento\Mtf\Fixture\FixtureInterface;
 use Magento\Mtf\Client\BrowserInterface;
 use Magento\Mtf\Config\DataInterface;
+use Magento\Mtf\System\Event\EventManagerInterface;
 
 /**
- * Class Page
  * Classes which implement this interface are expected to store all blocks of application page
- * and provide public getter methods to provide access to blocks
+ * and provide public getter methods to provide access to blocks.
  *
  * @api
  */
 class Page implements PageInterface
 {
     /**
-     * Page url
+     * Page url.
      */
     const MCA = '';
 
     /**
-     * Client Browser
+     * Client Browser.
      *
      * @var BrowserInterface
      */
-    protected $_browser;
+    protected $browser;
 
     /**
-     * Current page url
+     * Current page url.
      *
      * @var string
      */
-    protected $_url;
+    protected $url;
 
     /**
-     * Configuration instance
+     * Configuration instance.
      *
      * @var DataInterface
      */
-    protected $_configData;
+    protected $configData;
 
     /**
-     * Page blocks definitions array
+     * Page blocks definitions array.
      *
      * @var array
      */
     protected $blocks = [];
 
     /**
-     * Page blocks instances
+     * Page blocks instances.
      *
      * @var BlockInterface[]
      */
     protected $blockInstances = [];
 
     /**
-     * Block Factory instance
+     * Block Factory instance.
      *
      * @var BlockFactory
      */
-    protected $_blockFactory;
+    protected $blockFactory;
 
     /**
-     * Constructor
-     * Set configuration instance, client browser and call _init method
+     * Event Manager instance.
+     *
+     * @var EventManagerInterface
+     */
+    protected $eventManager;
+
+    /**
+     * Set configuration instance, client browser and call initUrl method.
      *
      * @constructor
      * @param DataInterface $configData
      * @param BrowserInterface $browser
      * @param BlockFactory $blockFactory
+     * @param EventManagerInterface $eventManager
      */
     public function __construct(
         DataInterface $configData,
         BrowserInterface $browser,
-        BlockFactory $blockFactory
-    )
-    {
-        $this->_configuData = $configData;
-        $this->_browser = $browser;
-        $this->_blockFactory = $blockFactory;
+        BlockFactory $blockFactory,
+        EventManagerInterface $eventManager
+    ) {
+        $this->configuData = $configData;
+        $this->browser = $browser;
+        $this->blockFactory = $blockFactory;
+        $this->eventManager = $eventManager;
 
-        $this->_init();
-        $this->_initBlocks();
+        $this->initUrl();
     }
 
     /**
-     * @param string $property
-     * @param mixed $value
+     * Init page. Set page url.
+     *
      * @return void
      */
-    public function __set($property, $value)
-    {
-        $this->$property = $value;
-    }
-
-    /**
-     * Init page. Set page url
-     * @return void
-     */
-    protected function _init()
-    {
-        //
-    }
-
-    /**
-     * @return void
-     */
-    protected function _initBlocks()
+    protected function initUrl()
     {
         //
     }
@@ -122,25 +111,15 @@ class Page implements PageInterface
     // General API
 
     /**
-     * Page initialization
-     *
-     * @param FixtureInterface $fixture
-     * @return void
-     */
-    public function init(FixtureInterface $fixture)
-    {
-        //
-    }
-
-    /**
-     * Open page using browser
+     * Open page using browser.
      *
      * @param array $params
      * @return $this
      */
     public function open(array $params = [])
     {
-        $url = $this->_url;
+        $this->eventManager->dispatchEvent(['execution'], ['[page MCA: ' . static::MCA . ']']);
+        $url = $this->url;
 
         foreach ($params as $paramName => $paramValue) {
             if (strpos($url, '?') !== false) {
@@ -151,13 +130,13 @@ class Page implements PageInterface
             $url .= $paramName . '=' . $paramValue;
         }
 
-        $this->_browser->open($url);
+        $this->browser->open($url);
 
         return $this;
     }
 
     /**
-     * Retrieve an instance of block
+     * Retrieve an instance of block.
      *
      * @param string $blockName
      * @return BlockInterface
@@ -165,15 +144,16 @@ class Page implements PageInterface
      */
     public function getBlockInstance($blockName)
     {
+        $this->eventManager->dispatchEvent(['execution'], ['[page MCA: ' . static::MCA . ']']);
         if (!isset($this->blockInstances[$blockName])) {
             $blockMeta = isset($this->blocks[$blockName]) ? $this->blocks[$blockName] : [];
             $class = isset($blockMeta['class']) ? $blockMeta['class'] : false;
             if ($class) {
-                $element = $this->_browser->find($blockMeta['locator'], $blockMeta['strategy']);
+                $element = $this->browser->find($blockMeta['locator'], $blockMeta['strategy']);
                 $config = [
                     'renders' => isset($blockMeta['render']) ? $blockMeta['render'] : []
                 ];
-                $block = $this->_blockFactory->create(
+                $block = $this->blockFactory->create(
                     $class,
                     [
                         'element' => $element,
@@ -188,7 +168,7 @@ class Page implements PageInterface
 
             $this->blockInstances[$blockName] = $block;
         }
-        // @todo fix to get link to new page if page reloaded
+
         return $this->blockInstances[$blockName];
     }
 }

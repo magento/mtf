@@ -9,10 +9,7 @@ namespace Magento\Mtf\TestCase;
 use Magento\Mtf\Constraint\AbstractConstraint;
 
 /**
- * Class Injectable
- *
- * Class is extended from Functional
- * and is base test case class for functional testing
+ * Class is extended from Functional and is a base test case class for functional testing.
  *
  * @api
  * @abstract
@@ -20,59 +17,59 @@ use Magento\Mtf\Constraint\AbstractConstraint;
 abstract class Injectable extends Functional
 {
     /**
-     * Test case full name
+     * Test case full name.
      *
      * @var string
      */
     protected $dataId;
 
     /**
-     * Variation identifier
+     * Variation identifier.
      *
      * @var string
      */
     protected $variationName;
 
     /**
-     * Test case file path
+     * Test case file path.
      *
      * @var string
      */
     protected $filePath;
 
     /**
-     * Abstract Constraint instance
+     * Abstract Constraint instance.
      *
      * @var AbstractConstraint
      */
     protected $constraint;
 
     /**
-     * Array with shared arguments between variations for non-sharable objects
+     * Array with shared arguments between variations for non-sharable objects.
      *
      * @var array
      */
     protected static $sharedArguments = [];
 
     /**
-     * Array with local test run arguments
+     * Array with local test run arguments.
      *
      * @var array
      */
     protected $localArguments = [];
 
     /**
-     * Current variation data
+     * Current variation data.
      *
      * @var array
      */
     protected $currentVariation = [];
 
     /**
-     * Constructs a test case with the given name
+     * Constructs a test case with the given name.
      *
      * @constructor
-     * @param null $name
+     * @param string|null $name
      * @param array $data
      * @param string $dataName
      * @param string $path
@@ -85,7 +82,7 @@ abstract class Injectable extends Functional
     }
 
     /**
-     * Get file path
+     * Get file path.
      *
      * @return string
      */
@@ -95,7 +92,7 @@ abstract class Injectable extends Functional
     }
 
     /**
-     * Set variation name
+     * Set variation name.
      *
      * @param string $variationName
      * @return void
@@ -106,7 +103,7 @@ abstract class Injectable extends Functional
     }
 
     /**
-     * Get variation name
+     * Get variation name.
      *
      * @return string
      */
@@ -116,7 +113,7 @@ abstract class Injectable extends Functional
     }
 
     /**
-     * Run with Variations Iterator
+     * Run with Variations Iterator.
      *
      * @param \PHPUnit_Framework_TestResult $result
      * @return \PHPUnit_Framework_TestResult
@@ -125,6 +122,7 @@ abstract class Injectable extends Functional
      */
     public function run(\PHPUnit_Framework_TestResult $result = null)
     {
+        $this->eventManager->dispatchEvent(['execution'], ['[start test case execution]']);
         if ($this->isParallelRun) {
             return parent::run($result);
         }
@@ -176,7 +174,7 @@ abstract class Injectable extends Functional
     }
 
     /**
-     * Execute test variation
+     * Execute test variation.
      *
      * @param \PHPUnit_Framework_TestResult $result
      * @param array $variation
@@ -184,6 +182,7 @@ abstract class Injectable extends Functional
      */
     protected function executeTestVariation(\PHPUnit_Framework_TestResult $result, array $variation)
     {
+        $this->eventManager->dispatchEvent(['execution'], ['[start variation execution]']);
         // remove constraint object from previous test case variation iteration
         $this->constraint = null;
 
@@ -203,7 +202,7 @@ abstract class Injectable extends Functional
     }
 
     /**
-     * Override to run attached constraint if available
+     * Override to run attached constraint if available.
      *
      * @return mixed
      * @throws \PHPUnit_Framework_Exception
@@ -255,7 +254,7 @@ abstract class Injectable extends Functional
     }
 
     /**
-     * Prepare variation for Test Case Method
+     * Prepare variation for Test Case Method.
      *
      * @param array $variation
      * @param array $arguments
@@ -289,7 +288,7 @@ abstract class Injectable extends Functional
     }
 
     /**
-     * Prepare configuration object
+     * Prepare configuration object.
      *
      * @param array $constraints
      * @return \Magento\Mtf\Constraint\Composite
