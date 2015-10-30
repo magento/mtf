@@ -1,3 +1,7 @@
+1.0.0-rc.37
+===========
+* Updated radio button element to get and set value based on label
+
 1.0.0-rc.36
 ===========
 * Added constraint execution logging to system events observer

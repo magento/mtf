@@ -6,6 +6,8 @@
 
 namespace Magento\Mtf\Client\Element;
 
+use Magento\Mtf\Client\Locator;
+
 /**
  * Class provides ability to work with page element radio button.
  *
@@ -14,6 +16,20 @@ namespace Magento\Mtf\Client\Element;
 class RadiobuttonElement extends SimpleElement
 {
     /**
+     * Label for radio button selector.
+     *
+     * @var string
+     */
+    protected $labelSelector = './/label[contains(., "%s")]';
+
+    /**
+     * Selector for selected label.
+     *
+     * @var string
+     */
+    protected $selectedLabelSelector = 'input[type=radio]:checked + label';
+
+    /**
      * Get value of the required element.
      *
      * @return string
@@ -21,11 +37,12 @@ class RadiobuttonElement extends SimpleElement
     public function getValue()
     {
         $this->eventManager->dispatchEvent(['get_value'], [$this->getAbsoluteSelector()]);
-        return $this->isSelected() ? 'Yes' : 'No';
+
+        return $this->find($this->selectedLabelSelector)->getText();
     }
 
     /**
-     * Click on radio button if value = 'Yes'.
+     * Select radio button based on label value.
      *
      * @param string $value
      * @return void
@@ -33,8 +50,10 @@ class RadiobuttonElement extends SimpleElement
     public function setValue($value)
     {
         $this->eventManager->dispatchEvent(['set_value'], [__METHOD__, $this->getAbsoluteSelector()]);
-        if (!$this->isSelected() && $value == 'Yes') {
-            $this->click();
+
+        $radioButtonLabel = $this->find(sprintf($this->labelSelector, $value), Locator::SELECTOR_XPATH);
+        if (!$radioButtonLabel->isSelected()) {
+            $radioButtonLabel->click();
         }
     }
 }
