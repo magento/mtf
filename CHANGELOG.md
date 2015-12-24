@@ -1,3 +1,7 @@
+1.0.0-rc.38
+===========
+* Added an ability to use the same steps in scenarios several times using 'alias' attribute
+
 1.0.0-rc.37
 ===========
 * Updated radio button element to get and set value based on label

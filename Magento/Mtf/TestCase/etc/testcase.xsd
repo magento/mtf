@@ -33,10 +33,11 @@
                 </xs:annotation>
             </xs:element>
         </xs:sequence>
-        <xs:attribute type="xs:string" name="name" use="required"/>
-        <xs:attribute type="xs:string" name="module" use="required"/>
-        <xs:attribute type="xs:string" name="next" use="optional"/>
-        <xs:attribute type="xs:string" name="prev" use="optional"/>
+        <xs:attribute type="xs:string" name="name" use="required" />
+        <xs:attribute type="xs:string" name="alias" use="optional" />
+        <xs:attribute type="xs:string" name="module" use="required" />
+        <xs:attribute type="xs:string" name="next" use="optional" />
+        <xs:attribute type="xs:string" name="prev" use="optional" />
     </xs:complexType>
 
     <xs:complexType name="scenarioType">
@@ -49,8 +50,8 @@
                 </xs:annotation>
             </xs:element>
         </xs:sequence>
-        <xs:attribute type="xs:string" name="name" use="optional"/>
-        <xs:attribute type="xs:string" name="firstStep" use="optional"/>
+        <xs:attribute type="xs:string" name="name" use="optional" />
+        <xs:attribute type="xs:string" name="firstStep" use="optional" />
     </xs:complexType>
 
     <xs:complexType name="itemType">
@@ -63,8 +64,8 @@
                 </xs:annotation>
             </xs:element>
         </xs:sequence>
-        <xs:attribute type="xs:string" name="name" use="required"/>
-        <xs:attribute type="xs:string" name="value" use="optional"/>
+        <xs:attribute type="xs:string" name="name" use="required" />
+        <xs:attribute type="xs:string" name="value" use="optional" />
     </xs:complexType>
 
     <xs:complexType name="configType">
