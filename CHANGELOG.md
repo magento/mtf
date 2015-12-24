@@ -1,4 +1,4 @@
-* Add an ability to wait the element before finding the element
+* Added an ability to wait the element before finding it
 * Added an ability to use the same steps in scenarios several times using 'alias' attribute
 
 1.0.0-rc.37

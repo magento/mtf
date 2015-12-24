@@ -48,7 +48,7 @@ class Driver implements DriverInterface
     protected $objectManager;
 
     /**
-     * Page load interface.
+     * Page loader instance.
      *
      * @var PageLoaderInterface
      */
