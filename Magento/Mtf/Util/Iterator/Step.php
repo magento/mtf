@@ -9,8 +9,7 @@ namespace Magento\Mtf\Util\Iterator;
 use Magento\Mtf\TestStep\TestStepFactory;
 
 /**
- * Class Step
- * Step iterator
+ * Step iterator.
  */
 class Step extends AbstractIterator
 {
@@ -121,12 +120,12 @@ class Step extends AbstractIterator
      */
     public function getStepObject(array $step)
     {
-        $class = isset($step['class'])
-            ? $step['class']
-            : str_replace('_', '\\', $step['module'])
-            . '\Test\TestStep'
-            . '\\' . ucfirst($this->key) . 'Step';
-
+        if (isset($step['class'])) {
+            $class = $step['class'];
+        } else {
+            $stepName = isset($step['alias']) ? $step['alias'] : $this->key;
+            $class = str_replace('_', '\\', $step['module']) . '\Test\TestStep' . '\\' . ucfirst($stepName) . 'Step';
+        }
         $arguments = $this->result;
         if (isset($step['item'])) {
             $stepArguments = $this->resolveArguments($step['item']);
@@ -140,7 +139,7 @@ class Step extends AbstractIterator
     }
 
     /**
-     * Resolve arguments
+     * Resolve arguments.
      *
      * @param array $arguments
      * @return array
