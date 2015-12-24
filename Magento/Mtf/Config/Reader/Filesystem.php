@@ -12,64 +12,70 @@ namespace Magento\Mtf\Config\Reader;
 class Filesystem implements \Magento\Mtf\Config\ReaderInterface
 {
     /**
-     * File locator
+     * File locator.
      *
      * @var \Magento\Mtf\Config\FileResolverInterface
      */
     protected $_fileResolver;
 
     /**
-     * Config converter
+     * Config converter.
      *
      * @var \Magento\Mtf\Config\ConverterInterface
      */
     protected $_converter;
 
     /**
-     * The name of file that stores configuration
+     * The name of file that stores configuration.
      *
      * @var string
      */
     protected $_fileName;
 
     /**
-     * Path to corresponding XSD file with validation rules for merged config
+     * Path to corresponding XSD file with validation rules for merged config.
      *
      * @var string
      */
     protected $_schema;
 
     /**
-     * Path to corresponding XSD file with validation rules for separate config files
+     * Path to corresponding XSD file with validation rules for separate config files.
      *
      * @var string
      */
     protected $_perFileSchema;
 
     /**
-     * List of id attributes for merge
+     * List of id attributes for merge.
      *
      * @var array
      */
     protected $_idAttributes;
 
     /**
-     * Class of dom configuration document used for merge
+     * Class of dom configuration document used for merge.
      *
      * @var string
      */
     protected $_domDocumentClass;
 
     /**
-     * Should configuration be validated
+     * Should configuration be validated.
      *
      * @var bool
      */
     protected $_isValidated;
 
     /**
-     * Constructor
+     * Config replacer.
      *
+     * @var \Magento\Mtf\Config\ReplacerInterface
+     */
+    protected $replacer;
+
+    /**
+     * @constructor
      * @param \Magento\Mtf\Config\FileResolverInterface $fileResolver
      * @param \Magento\Mtf\Config\ConverterInterface $converter
      * @param \Magento\Mtf\Config\SchemaLocatorInterface $schemaLocator
@@ -78,6 +84,7 @@ class Filesystem implements \Magento\Mtf\Config\ReaderInterface
      * @param array $idAttributes
      * @param string $domDocumentClass
      * @param string $defaultScope
+     * @param \Magento\Mtf\Config\ReplacerInterface $replacer
      */
     public function __construct(
         \Magento\Mtf\Config\FileResolverInterface $fileResolver,
@@ -87,7 +94,8 @@ class Filesystem implements \Magento\Mtf\Config\ReaderInterface
         $fileName,
         $idAttributes = [],
         $domDocumentClass = 'Magento\Mtf\Config\Dom',
-        $defaultScope = 'global'
+        $defaultScope = 'global',
+        \Magento\Mtf\Config\ReplacerInterface $replacer = null
     ) {
         $this->_fileResolver = $fileResolver;
         $this->_converter = $converter;
@@ -99,10 +107,11 @@ class Filesystem implements \Magento\Mtf\Config\ReaderInterface
         $this->_isValidated ? $schemaLocator->getPerFileSchema() : null;
         $this->_domDocumentClass = $domDocumentClass;
         $this->_defaultScope = $defaultScope;
+        $this->replacer = $replacer;
     }
 
     /**
-     * Load configuration scope
+     * Load configuration scope.
      *
      * @param string|null $scope
      * @return array
@@ -123,7 +132,7 @@ class Filesystem implements \Magento\Mtf\Config\ReaderInterface
     }
 
     /**
-     * Set name of the config file
+     * Set name of the config file.
      *
      * @param string $fileName
      */
@@ -133,7 +142,7 @@ class Filesystem implements \Magento\Mtf\Config\ReaderInterface
     }
 
     /**
-     * Read configuration files
+     * Read configuration files.
      *
      * @param array $fileList
      * @return array
@@ -165,12 +174,15 @@ class Filesystem implements \Magento\Mtf\Config\ReaderInterface
         $output = [];
         if ($configMerger) {
             $output = $this->_converter->convert($configMerger->getDom());
+            if ($this->replacer !== null) {
+                $output = $this->replacer->apply($output);
+            }
         }
         return $output;
     }
 
     /**
-     * Return newly created instance of a config merger
+     * Return newly created instance of a config merger.
      *
      * @param string $mergerClass
      * @param string $initialContents

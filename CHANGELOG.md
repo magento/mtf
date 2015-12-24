@@ -1,3 +1,6 @@
+* Added an ability to replace variations and fixtures using 'replace' attribute
+* Added fallback mechanism to generators
+
 1.0.0-rc.38
 ===========
 * Added an ability to use the same steps in scenarios several times using 'alias' attribute

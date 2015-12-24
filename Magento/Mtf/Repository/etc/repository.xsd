@@ -39,32 +39,32 @@
     <xs:complexType name="string">
         <xs:complexContent>
             <xs:extension base="argumentType">
-                <xs:attribute name="translate" use="optional" type="xs:boolean"/>
+                <xs:attribute name="translate" use="optional" type="xs:boolean" />
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
 
     <xs:complexType name="boolean">
         <xs:complexContent>
-            <xs:extension base="argumentType"/>
+            <xs:extension base="argumentType" />
         </xs:complexContent>
     </xs:complexType>
 
     <xs:complexType name="object">
         <xs:complexContent>
-            <xs:extension base="argumentType"/>
+            <xs:extension base="argumentType" />
         </xs:complexContent>
     </xs:complexType>
 
     <xs:complexType name="number">
         <xs:complexContent>
-            <xs:extension base="argumentType"/>
+            <xs:extension base="argumentType" />
         </xs:complexContent>
     </xs:complexType>
 
     <xs:complexType name="null">
         <xs:complexContent>
-            <xs:restriction base="argumentType"/>
+            <xs:restriction base="argumentType" />
         </xs:complexContent>
     </xs:complexType>
 
@@ -73,7 +73,7 @@
             <xs:element name="argument" type="argumentType" minOccurs="1" maxOccurs="unbounded">
                 <xs:key name="argumentItemName">
                     <xs:selector xpath="item" />
-                    <xs:field xpath="@name"/>
+                    <xs:field xpath="@name" />
                 </xs:key>
             </xs:element>
         </xs:sequence>
@@ -89,8 +89,8 @@
                                 Class name should be unique in scope of repository
                             </xs:documentation>
                         </xs:annotation>
-                        <xs:selector xpath="param"/>
-                        <xs:field xpath="@class"/>
+                        <xs:selector xpath="param" />
+                        <xs:field xpath="@class" />
                     </xs:unique>
                 </xs:element>
             </xs:choice>
@@ -102,8 +102,8 @@
                     Class for each repository should be unique
                 </xs:documentation>
             </xs:annotation>
-            <xs:selector xpath="repository"/>
-            <xs:field xpath="@class"/>
+            <xs:selector xpath="repository" />
+            <xs:field xpath="@class" />
         </xs:unique>
         <xs:unique name="uniqueDataset">
             <xs:annotation>
@@ -111,8 +111,8 @@
                     Dataset name should be unique in scope of file
                 </xs:documentation>
             </xs:annotation>
-            <xs:selector xpath="dataset"/>
-            <xs:field xpath="@name"/>
+            <xs:selector xpath="dataset" />
+            <xs:field xpath="@name" />
         </xs:unique>
         <xs:unique name="uniqueField">
             <xs:annotation>
@@ -120,8 +120,8 @@
                     Field name should be unique in scope of file
                 </xs:documentation>
             </xs:annotation>
-            <xs:selector xpath="field"/>
-            <xs:field xpath="@name|@path"/>
+            <xs:selector xpath="field" />
+            <xs:field xpath="@name|@path" />
         </xs:unique>
         <xs:unique name="uniqueItem">
             <xs:annotation>
@@ -129,14 +129,14 @@
                     Item name should be unique in scope of file
                 </xs:documentation>
             </xs:annotation>
-            <xs:selector xpath="item"/>
-            <xs:field xpath="@name"/>
+            <xs:selector xpath="item" />
+            <xs:field xpath="@name" />
         </xs:unique>
     </xs:element>
 
     <xs:complexType name="const">
         <xs:complexContent>
-            <xs:extension base="argumentType"/>
+            <xs:extension base="argumentType" />
         </xs:complexContent>
     </xs:complexType>
 
@@ -154,7 +154,7 @@
                 </xs:key>
             </xs:element>
         </xs:choice>
-        <xs:attribute name="class" type="xs:string" use="required"/>
+        <xs:attribute name="class" type="xs:string" use="required" />
     </xs:complexType>
 
     <xs:complexType name="datasetType">
@@ -171,6 +171,7 @@
                 </xs:key>
             </xs:element>
         </xs:sequence>
-        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="name" type="xs:string" use="required" />
+        <xs:attribute name="replace" type="xs:string" use="optional" />
     </xs:complexType>
 </xs:schema>
