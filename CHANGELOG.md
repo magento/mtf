@@ -1,3 +1,5 @@
+* Added an ability to wait the element before finding it
+
 1.0.0-rc.38
 ===========
 * Added an ability to use the same steps in scenarios several times using 'alias' attribute

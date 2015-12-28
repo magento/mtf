@@ -12,6 +12,7 @@ use Magento\Mtf\Client\Locator;
 use Magento\Mtf\Client\DriverInterface;
 use Magento\Mtf\Client\ElementInterface;
 use Magento\Mtf\System\Event\EventManagerInterface;
+use Magento\Mtf\Client\Driver\Selenium\Driver\PageLoaderInterface;
 
 /**
  * Selenium Driver.
@@ -47,6 +48,13 @@ class Driver implements DriverInterface
     protected $objectManager;
 
     /**
+     * Page loader instance.
+     *
+     * @var PageLoaderInterface
+     */
+    protected $pageLoader;
+
+    /**
      * @constructor
      * @param DataInterface $configuration
      * @param RemoteDriverFactory $remoteDriverFactory
@@ -65,6 +73,9 @@ class Driver implements DriverInterface
         $this->objectManager = $objectManager;
 
         $this->init();
+
+        $pageLoaderClass = 'Magento\Mtf\Client\Driver\Selenium\Driver\PageLoaderInterface';
+        $this->pageLoader = $objectManager->create($pageLoaderClass, ['driver' => $this->driver]);
     }
 
     /**
@@ -126,7 +137,7 @@ class Driver implements DriverInterface
             );
         }
 
-        $this->waitForPageToLoad();
+        $this->pageLoader->wait();
 
         return $context->element($criteria);
     }
@@ -478,6 +489,7 @@ class Driver implements DriverInterface
         $criteria = $this->getSearchCriteria($locator);
         $nativeContext = $this->getNativeElement($context);
         $resultElements = [];
+        $this->pageLoader->wait();
         if ($wait) {
             try {
                 $nativeElements = $this->waitUntil(
@@ -495,7 +507,6 @@ class Driver implements DriverInterface
                 );
             }
         } else {
-            $this->waitForPageToLoad();
             $nativeElements = $nativeContext->elements($criteria);
         }
 
@@ -787,29 +798,6 @@ class Driver implements DriverInterface
     public function getScreenshotData()
     {
         return $this->driver->currentScreenshot();
-    }
-
-    /**
-     * Wait page to load.
-     *
-     * @return void
-     * @throws \Exception
-     */
-    public function waitForPageToLoad()
-    {
-        $driver = $this->driver;
-        try {
-            $this->waitUntil(
-                function () use ($driver) {
-                    $result = $driver->execute(['script' => "return document['readyState']", 'args' => []]);
-                    return $result === 'complete' || $result === 'uninitialized';
-                }
-            );
-        } catch (\Exception $e) {
-            throw new \Exception(
-                sprintf('Error occurred during waiting for page to load. Message: "%s"', $e->getMessage())
-            );
-        }
     }
 
     /**
