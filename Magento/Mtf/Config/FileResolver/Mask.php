@@ -65,6 +65,7 @@ class Mask implements FileResolverInterface
                 }
             }
         }
+        $paths = $this->moduleResolver->sortFilesByModuleSequence($paths);
 
         $iterator = new File($paths);
         return $iterator;

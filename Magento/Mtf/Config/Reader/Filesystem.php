@@ -175,7 +175,7 @@ class Filesystem implements \Magento\Mtf\Config\ReaderInterface
         if ($configMerger) {
             $output = $this->_converter->convert($configMerger->getDom());
             if ($this->replacer !== null) {
-                $output = $this->replacer->apply($output);
+                $this->replacer->apply($output);
             }
         }
         return $output;

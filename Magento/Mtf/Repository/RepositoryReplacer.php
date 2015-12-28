@@ -19,7 +19,7 @@ class RepositoryReplacer implements ReplacerInterface
      * Apply specified node in 'replace' attribute instead of original.
      *
      * @param array $output
-     * @return array
+     * @return void
      */
     public function apply(&$output)
     {
@@ -35,6 +35,5 @@ class RepositoryReplacer implements ReplacerInterface
                 $this->apply($value);
             }
         }
-        return $output;
     }
 }
