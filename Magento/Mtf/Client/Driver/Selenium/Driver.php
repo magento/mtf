@@ -250,7 +250,7 @@ class Driver implements DriverInterface
         $this->driver->moveto($wrapperElement);
         $wrapperElement->click();
 
-        $this->eventManager->dispatchEvent(['click_before'], [__METHOD__, $absoluteSelector]);
+        $this->eventManager->dispatchEvent(['click_after'], [__METHOD__, $absoluteSelector]);
     }
 
     /**
