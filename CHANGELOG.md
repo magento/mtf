@@ -1,3 +1,5 @@
+* Added an ability to replace variations and fixtures using 'replace' attribute
+* Added fallback mechanism to generators
 * Added an ability to wait the element before finding it
 
 1.0.0-rc.38
