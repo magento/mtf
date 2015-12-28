@@ -1,3 +1,5 @@
+1.0.0-rc.39
+===========
 * Throw an exception with text error message for the cURL operation
 * Added an ability to replace variations and fixtures using 'replace' attribute
 * Added fallback mechanism to generators
