@@ -6,34 +6,36 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../Magento/Mtf/ObjectManager/etc/config.xsd">
-    <preference for="Magento\Mtf\Client\DriverInterface" type="Magento\Mtf\Client\Driver\Selenium\Driver"/>
-    <preference for="Magento\Mtf\Client\BrowserInterface" type="Magento\Mtf\Client\Browser"/>
-    <preference for="Magento\Mtf\Client\ElementInterface" type="Magento\Mtf\Client\Element\SimpleElement"/>
-    <preference for="Magento\Mtf\System\Event\EventManagerInterface" type="Magento\Mtf\System\Event\EventManager"/>
-    <preference for="Magento\Mtf\Constraint\AbstractConstraint" type="Magento\Mtf\Constraint\Dummy"/>
-    <preference for="Magento\Mtf\ObjectManagerInterface" type="Magento\Mtf\ObjectManager"/>
-    <preference for="Magento\Mtf\ObjectManager\FactoryInterface" type="Magento\Mtf\ObjectManager\Factory"/>
-    <preference for="Magento\Mtf\Config\ReaderInterface" type="Magento\Mtf\Config\Reader\Filesystem"/>
-    <preference for="Magento\Mtf\ObjectManager\ConfigInterface" type="Magento\Mtf\ObjectManager\Config\Config"/>
-    <type name="Magento\Mtf\Client\Element\SimpleElement" shared="false"/>
-    <type name="Magento\Mtf\Block\BlockInterface" shared="false"/>
-    <type name="Magento\Mtf\Page\PageInterface" shared="false"/>
-    <type name="Magento\Mtf\Fixture\InjectableFixture" shared="false"/>
-    <type name="Magento\Mtf\Fixture\FixtureInterface" shared="false"/>
+    <preference for="Magento\Mtf\Client\DriverInterface" type="Magento\Mtf\Client\Driver\Selenium\Driver" />
+    <preference for="Magento\Mtf\Client\BrowserInterface" type="Magento\Mtf\Client\Browser" />
+    <preference for="Magento\Mtf\Client\ElementInterface" type="Magento\Mtf\Client\Element\SimpleElement" />
+    <preference for="Magento\Mtf\System\Event\EventManagerInterface" type="Magento\Mtf\System\Event\EventManager" />
+    <preference for="Magento\Mtf\Constraint\AbstractConstraint" type="Magento\Mtf\Constraint\Dummy" />
+    <preference for="Magento\Mtf\ObjectManagerInterface" type="Magento\Mtf\ObjectManager" />
+    <preference for="Magento\Mtf\ObjectManager\FactoryInterface" type="Magento\Mtf\ObjectManager\Factory" />
+    <preference for="Magento\Mtf\Config\ReaderInterface" type="Magento\Mtf\Config\Reader\Filesystem" />
+    <preference for="Magento\Mtf\ObjectManager\ConfigInterface" type="Magento\Mtf\ObjectManager\Config\Config" />
+    <preference for="Magento\Mtf\Util\ModuleResolver\SequenceSorterInterface" type="Magento\Mtf\Util\ModuleResolver\SequenceSorter" />
+    <preference for="Magento\Mtf\Client\Driver\Selenium\Driver\PageLoaderInterface" type="Magento\Mtf\Client\Driver\Selenium\Driver\PageLoader" />
+    <type name="Magento\Mtf\Client\Element\SimpleElement" shared="false" />
+    <type name="Magento\Mtf\Block\BlockInterface" shared="false" />
+    <type name="Magento\Mtf\Page\PageInterface" shared="false" />
+    <type name="Magento\Mtf\Fixture\InjectableFixture" shared="false" />
+    <type name="Magento\Mtf\Fixture\FixtureInterface" shared="false" />
     <type name="Magento\Mtf\Util\Protocol\CurlInterface" shared="false" />
-    <type name="Magento\Mtf\TestCase\Functional" shared="false"/>
+    <type name="Magento\Mtf\TestCase\Functional" shared="false" />
     <type name="Magento\Mtf\Util\Iterator\TestCase">
         <arguments>
             <argument name="ruleFactory" xsi:type="object">Magento\Mtf\TestRunner\Rule\RuleFactory</argument>
         </arguments>
     </type>
-    <type name="Magento\Mtf\Util\SequencesSorter"/>
-    <preference for="Magento\Mtf\Config\FileResolverInterface" type="Magento\Mtf\Config\FileResolver\Module"/>
-    <preference for="Magento\Mtf\Config\ConverterInterface" type="Magento\Mtf\Config\Converter"/>
-    <preference for="Magento\Mtf\Config\SchemaLocatorInterface" type="Magento\Mtf\Config\SchemaLocator"/>
-    <preference for="Magento\Mtf\Config\ValidationStateInterface" type="Magento\Mtf\Config\ValidationState"/>
-    <preference for="Magento\Mtf\Data\Argument\InterpreterInterface" type="Magento\Mtf\Data\Argument\Interpreter\Composite"/>
-    <preference for="Magento\Mtf\Config\DataInterface" type="Magento\Mtf\Config\GlobalConfig"/>
+    <type name="Magento\Mtf\Util\SequencesSorter" />
+    <preference for="Magento\Mtf\Config\FileResolverInterface" type="Magento\Mtf\Config\FileResolver\Module" />
+    <preference for="Magento\Mtf\Config\ConverterInterface" type="Magento\Mtf\Config\Converter" />
+    <preference for="Magento\Mtf\Config\SchemaLocatorInterface" type="Magento\Mtf\Config\SchemaLocator" />
+    <preference for="Magento\Mtf\Config\ValidationStateInterface" type="Magento\Mtf\Config\ValidationState" />
+    <preference for="Magento\Mtf\Data\Argument\InterpreterInterface" type="Magento\Mtf\Data\Argument\Interpreter\Composite" />
+    <preference for="Magento\Mtf\Config\DataInterface" type="Magento\Mtf\Config\GlobalConfig" />
     <type name="Magento\Mtf\Config\ValidationState">
         <arguments>
             <argument name="appMode" xsi:type="string">developer</argument>
@@ -206,6 +208,7 @@
             </argument>
             <argument name="fileName" xsi:type="string">#\.xml$#</argument>
             <argument name="defaultScope" xsi:type="string">Repository</argument>
+            <argument name="replacer" xsi:type="object">Magento\Mtf\Repository\RepositoryReplacer</argument>
         </arguments>
     </virtualType>
     <virtualType name="Magento\Mtf\Repository\Converter" type="Magento\Mtf\Config\Converter">
@@ -286,7 +289,7 @@
                 <item name="/config/rule/allow/tag" xsi:type="string">group</item>
                 <item name="/config/rule/deny/tag" xsi:type="string">group</item>
             </argument>
-            <argument name="fileName" xsi:type="string"/>
+            <argument name="fileName" xsi:type="string" />
             <argument name="defaultScope" xsi:type="string">testsuites/Magento/Mtf/TestSuite/MtfTests</argument>
         </arguments>
     </virtualType>

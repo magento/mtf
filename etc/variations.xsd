@@ -69,6 +69,7 @@
                 </xs:element>
             </xs:choice>
             <xs:attribute type="xs:string" name="name" use="required" />
+            <xs:attribute type="xs:string" name="replace" use="optional" />
             <xs:attribute type="xs:string" name="firstConstraint" use="optional" />
             <xs:attribute type="xs:string" name="method" use="optional" />
             <xs:attribute type="xs:string" name="summary" use="optional" />

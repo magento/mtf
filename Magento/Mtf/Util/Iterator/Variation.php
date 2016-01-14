@@ -105,7 +105,10 @@ class Variation extends AbstractIterator
             'testCase/' . get_class($this->testCase) . '/variation',
             ['Default' => []]
         );
-        foreach ($variations as $key => $variation) {
+        foreach ($variations as $key => &$variation) {
+            if (isset($variation['replace'])) {
+                unset($variations[$variation['replace']]);
+            }
             if (isset($variation['data'])) {
                 $variation['variation_name'] = $key;
                 $variations[$key] = array_replace($variation, $variation['data']);

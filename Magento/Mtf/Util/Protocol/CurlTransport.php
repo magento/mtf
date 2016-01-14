@@ -148,10 +148,14 @@ class CurlTransport implements CurlInterface
      * Read response from server.
      *
      * @return string
+     * @throws \Exception
      */
     public function read()
     {
         $response = curl_exec($this->getResource());
+        if ($response === false) {
+            throw new \Exception(curl_error($this->getResource()));
+        }
         return $response;
     }
 
