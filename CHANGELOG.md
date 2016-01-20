@@ -1,3 +1,8 @@
+1.0.0-rc.40
+===========
+* Added context to getData() method for composite form elements
+* Updated 'base' event preset. Change event 'click_after' to 'click_before'
+
 1.0.0-rc.39
 ===========
 * Throw an exception with text error message for the cURL operation
