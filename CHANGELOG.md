@@ -1,3 +1,5 @@
+* Set driver instance from Selenium Driver to PageLoader
+
 1.0.0-rc.40
 ===========
 * Added context to getData() method for composite form elements

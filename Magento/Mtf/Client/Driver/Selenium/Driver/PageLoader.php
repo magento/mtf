@@ -21,12 +21,15 @@ class PageLoader implements PageLoaderInterface
     protected $driver;
 
     /**
-     * @constructor
+     * Set driver.
+     *
      * @param RemoteDriver $driver
+     * @return $this
      */
-    public function __construct(RemoteDriver $driver)
+    public function setDriver(RemoteDriver $driver)
     {
         $this->driver = $driver;
+        return $this;
     }
 
     /**
