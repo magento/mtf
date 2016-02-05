@@ -18,7 +18,7 @@ class PageLoader implements PageLoaderInterface
      *
      * @var RemoteDriver
      */
-    protected $driver;
+    private $driver;
 
     /**
      * Set driver.
