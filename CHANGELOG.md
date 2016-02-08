@@ -1,3 +1,4 @@
+* Added an ability to gather form mapping based on application module sequence
 * Set driver instance from Selenium Driver to PageLoader
 
 1.0.0-rc.40
