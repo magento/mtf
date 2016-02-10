@@ -1,3 +1,4 @@
+* Added getTitle() method for Driver to get page title
 * Set driver instance from Selenium Driver to PageLoader
 
 1.0.0-rc.40

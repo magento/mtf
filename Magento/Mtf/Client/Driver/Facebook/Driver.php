@@ -610,6 +610,16 @@ final class Driver implements DriverInterface
     }
 
     /**
+     * Get page title text.
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->driver->getTitle();
+    }
+
+    /**
      * Press OK on an alert, or confirms a dialog
      *
      * @return void

@@ -696,6 +696,16 @@ class Driver implements DriverInterface
     }
 
     /**
+     * Get page title text.
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->driver->title();
+    }
+
+    /**
      * Press OK on an alert or confirm a dialog.
      *
      * @return void
