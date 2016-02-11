@@ -1,3 +1,4 @@
+* Updated COPYING.txt file to follow Open Software License 3.0
 * Added getTitle() method for Driver to get page title
 * Set driver instance from Selenium Driver to PageLoader
 
