@@ -11,6 +11,7 @@ use Magento\Mtf\Client\BrowserInterface;
 use Magento\Mtf\Fixture\FixtureInterface;
 use Magento\Mtf\Fixture\InjectableFixture;
 use Magento\Mtf\Client\Element\SimpleElement;
+use Magento\Mtf\Util\ModuleResolver\SequenceSorterInterface;
 
 /**
  * Is used to represent any form on the page.
@@ -55,11 +56,19 @@ class Form extends Block
     protected $mapper;
 
     /**
+     * Module sequence sorter instance.
+     *
+     * @var SequenceSorterInterface
+     */
+    private $sequenceSorter;
+
+    /**
      * @constructor
      * @param SimpleElement $element
      * @param BlockFactory $blockFactory
      * @param Mapper $mapper
      * @param BrowserInterface $browser
+     * @param SequenceSorterInterface $sequenceSorter
      * @param array $config [optional]
      */
     public function __construct(
@@ -67,9 +76,11 @@ class Form extends Block
         BlockFactory $blockFactory,
         Mapper $mapper,
         BrowserInterface $browser,
+        SequenceSorterInterface $sequenceSorter,
         array $config = []
     ) {
         $this->mapper = $mapper;
+        $this->sequenceSorter = $sequenceSorter;
         parent::__construct($element, $blockFactory, $browser, $config);
     }
 
@@ -100,6 +111,7 @@ class Form extends Block
         $paths = glob(
             MTF_TESTS_PATH . preg_replace('/^\w+\/\w+/', '*/*', str_replace('\\', '/', get_class($this))) . '.xml'
         );
+        $paths = $this->sequenceSorter->sort($paths);
         foreach ($paths as $path) {
             $content = $this->mapper->read($path);
             if (is_array($content)) {

@@ -1,5 +1,8 @@
+1.0.0-rc.41
+===========
 * Updated COPYING.txt file to follow Open Software License 3.0
 * Added getTitle() method for Driver to get page title
+* Added an ability to gather form mapping based on application module sequence
 * Set driver instance from Selenium Driver to PageLoader
 
 1.0.0-rc.40
