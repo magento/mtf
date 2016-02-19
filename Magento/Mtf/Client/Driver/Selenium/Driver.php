@@ -60,22 +60,22 @@ class Driver implements DriverInterface
      * @param RemoteDriverFactory $remoteDriverFactory
      * @param EventManagerInterface $eventManager
      * @param ObjectManager $objectManager
+     * @param PageLoaderInterface $pageLoader
      */
     public function __construct(
         DataInterface $configuration,
         RemoteDriverFactory $remoteDriverFactory,
         EventManagerInterface $eventManager,
-        ObjectManager $objectManager
+        ObjectManager $objectManager,
+        PageLoaderInterface $pageLoader
     ) {
         $this->configuration = $configuration;
         $this->remoteDriverFactory = $remoteDriverFactory;
         $this->eventManager = $eventManager;
         $this->objectManager = $objectManager;
+        $this->pageLoader = $pageLoader;
 
         $this->init();
-
-        $pageLoaderClass = 'Magento\Mtf\Client\Driver\Selenium\Driver\PageLoaderInterface';
-        $this->pageLoader = $objectManager->create($pageLoaderClass, ['driver' => $this->driver]);
     }
 
     /**
@@ -127,7 +127,7 @@ class Driver implements DriverInterface
             : $context;
 
         $criteria = $this->getSearchCriteria($locator);
-
+        $this->pageLoader->setDriver($this->driver)->wait();
         if ($wait) {
             return $this->waitUntil(
                 function () use ($context, $criteria) {
@@ -489,7 +489,6 @@ class Driver implements DriverInterface
         $criteria = $this->getSearchCriteria($locator);
         $nativeContext = $this->getNativeElement($context);
         $resultElements = [];
-        $this->pageLoader->wait();
         if ($wait) {
             try {
                 $nativeElements = $this->waitUntil(
@@ -694,6 +693,16 @@ class Driver implements DriverInterface
     {
         $windowHandles = $this->driver->windowHandles();
         $this->driver->window(end($windowHandles));
+    }
+
+    /**
+     * Get page title text.
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->driver->title();
     }
 
     /**

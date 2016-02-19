@@ -160,4 +160,11 @@ interface BrowserInterface
      * @return string[]
      */
     public function getJsErrors();
+
+    /**
+     * Get page title text.
+     *
+     * @return string
+     */
+    public function getTitle();
 }

@@ -211,6 +211,13 @@ interface DriverInterface
     public function selectWindow();
 
     /**
+     * Get page title text.
+     *
+     * @return string
+     */
+    public function getTitle();
+
+    /**
      * Press OK on an alert, or confirms a dialog
      *
      * @return void

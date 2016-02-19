@@ -263,4 +263,14 @@ final class Browser implements BrowserInterface
     {
         return $this->driver->getJsErrors();
     }
+
+    /**
+     * Get page title text.
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->driver->getTitle();
+    }
 }
