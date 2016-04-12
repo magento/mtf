@@ -5,23 +5,20 @@
  */
 namespace Magento\Mtf\System\Observer;
 
-use Magento\Mtf\System\Logger;
 use Magento\Mtf\System\Event\Event;
-use Magento\Mtf\Client\BrowserInterface;
-use Magento\Mtf\System\Event\State as EventState;
 
 /**
- * Observer for obtaining html source of the current page
+ * Observer for processing curl response.
  */
 class CurlResponse extends AbstractObserver
 {
     /**
-     * File name of source code
+     * File name of source code.
      */
     const FILE_NAME = 'curl_response.log';
 
     /**
-     * Collect page source artifact to storage
+     * Collect curl response artifact to storage.
      *
      * @param Event $event
      * @return void
@@ -29,6 +26,6 @@ class CurlResponse extends AbstractObserver
     public function process(Event $event)
     {
         $directory = $this->createDestinationDirectory('curl-response');
-        $this->logger->log($event->getSubjects()[0], $directory . '/' . $event->getIdentifier() . '.html');
+        $this->logger->log($event->getSubjects()[0], $directory . '/' . $event->getFileIdentifier() . '.html');
     }
 }
