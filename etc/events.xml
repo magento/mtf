@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!--
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 -->
@@ -9,14 +9,6 @@
     <preset name="default">
     </preset>
     <preset name="base">
-        <observer class="Magento\Mtf\System\Observer\PageUrl">
-            <tag name="click_before" />
-            <tag name="accept_alert_after" />
-            <tag name="dismiss_alert_after" />
-            <tag name="open_after" />
-            <tag name="forward" />
-            <tag name="back" />
-        </observer>
         <observer class="Magento\Mtf\System\Observer\AppState">
             <tag name="app_state_applied" />
         </observer>

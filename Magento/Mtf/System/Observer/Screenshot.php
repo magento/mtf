@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Mtf\System\Observer;
@@ -11,21 +11,24 @@ use Magento\Mtf\Client\BrowserInterface;
 use Magento\Mtf\System\Event\State as EventState;
 
 /**
- * Create screnshot Observer
+ * Create screenshot Observer.
  */
 class Screenshot extends AbstractObserver
 {
     /**
-     * Image extension
+     * Image extension.
      */
     const FILE_EXTENSION = '.png';
 
     /**
-     * @var \Magento\Mtf\Client\BrowserInterface
+     * Browser instance.
+     *
+     * @var BrowserInterface
      */
     protected $browser;
 
     /**
+     * @constructor
      * @param Logger $logger
      * @param EventState $state
      * @param BrowserInterface $browser
@@ -37,6 +40,8 @@ class Screenshot extends AbstractObserver
     }
 
     /**
+     * Collect screenshot artifact to storage.
+     *
      * @param Event $event
      * @return void
      */
@@ -44,7 +49,7 @@ class Screenshot extends AbstractObserver
     {
         $this->logger->log(
             $this->browser->getScreenshotData(),
-            $this->createDestinationDirectory('screenshots') . '/' . $event->getIdentifier() . self::FILE_EXTENSION
+            $this->createDestinationDirectory('screenshots') . '/' . $event->getFileIdentifier() . self::FILE_EXTENSION
         );
     }
 }

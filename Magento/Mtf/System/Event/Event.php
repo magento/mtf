@@ -1,51 +1,59 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Mtf\System\Event;
 
 /**
- * Class containing Event info
+ * Class containing Event info.
  */
 class Event
 {
     /**
-     * Data of the event to be logged - such as objects, locator etc
+     * Data of the event to be logged - such as objects, locator etc.
      *
      * @var string[]
      */
     public $subjects;
 
     /**
-     * Tags for event
+     * Tags for event.
      *
      * @var string[]
      */
     public $tags;
 
     /**
-     * State of the application, containg testcase, testmethod etc of the application run
+     * State of the application, containing testcase, test method etc of the application run.
      *
      * @var State
      */
     public $state;
 
     /**
-     * Unique event identifier
+     * Unique event identifier.
      *
      * @var string
      */
     private $identifier;
 
     /**
+     * Unique file event identifier.
+     *
+     * @var string
+     */
+    private $fileIdentifier;
+
+    /**
+     * @constructor
      * @param State $state
      * @param array $tags
      * @param array $subjects
      */
     public function __construct(
         State $state,
-        $tags,
+        array $tags,
         array $subjects
     ) {
         $this->tags = $tags;
@@ -54,6 +62,8 @@ class Event
     }
 
     /**
+     * Get event subjects.
+     *
      * @return string[]
      */
     public function getSubjects()
@@ -62,6 +72,8 @@ class Event
     }
 
     /**
+     * Get event tags.
+     *
      * @return string[]
      */
     public function getTags()
@@ -70,7 +82,7 @@ class Event
     }
 
     /**
-     * Returns event identifier
+     * Returns event identifier.
      *
      * @return string
      */
@@ -87,5 +99,19 @@ class Event
             );
         }
         return $this->identifier;
+    }
+
+    /**
+     * Returns event identifier for file names.
+     *
+     * @return string
+     */
+    public function getFileIdentifier()
+    {
+        if (!$this->fileIdentifier) {
+            $this->fileIdentifier = date("Y-m-d H-i-s") . substr((string)microtime(), 1, 6)
+                . ' (' . substr($this->getIdentifier(), 0, 10) . ')';
+        }
+        return $this->fileIdentifier;
     }
 }
