@@ -110,7 +110,7 @@ class Event
     {
         if (!$this->fileIdentifier) {
             $this->fileIdentifier = date("Y-m-d H-i-s") . substr((string)microtime(), 1, 6)
-                . ' (' . substr($this->getIdentifier(), 10) . ')';
+                . ' (' . substr($this->getIdentifier(), 0, 10) . ')';
         }
         return $this->fileIdentifier;
     }
