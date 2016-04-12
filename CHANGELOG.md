@@ -2,6 +2,7 @@
 ===========
 * Added date and time prefix to file artifacts name
 * Deleted PageUrl observer events from 'base' event preset
+* Updated copyright year
 
 1.0.0-rc.41
 ===========

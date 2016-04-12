@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Mtf\Util\Generate;
@@ -91,7 +91,7 @@ abstract class AbstractGenerate
      */
     protected function getCopyright()
     {
-        return 'Copyright © 2015 Magento. All rights reserved.';
+        return 'Copyright © 2016 Magento. All rights reserved.';
     }
 
     /**
