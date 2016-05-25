@@ -248,9 +248,76 @@ class Driver implements DriverInterface
 
         $wrapperElement = $this->getNativeElement($element);
         $this->driver->moveto($wrapperElement);
-        $wrapperElement->click();
+        $this->tryClick($wrapperElement);
 
         $this->eventManager->dispatchEvent(['click_after'], [__METHOD__, $absoluteSelector]);
+    }
+
+    /**
+     * Try to click on element.
+     *
+     * @param \PHPUnit_Extensions_Selenium2TestCase_Element $element
+     * @param int $attempt [optional]
+     * @param string $blockedElementSelector [optional]
+     * @throws \PHPUnit_Extensions_Selenium2TestCase_WebDriverException
+     */
+    private function tryClick(
+        \PHPUnit_Extensions_Selenium2TestCase_Element $element,
+        $attempt = 0,
+        $blockedElementSelector = ''
+    ) {
+        try {
+            $element->click();
+        } catch (\PHPUnit_Extensions_Selenium2TestCase_WebDriverException $e) {
+            $maxSelectorLength = 50;
+            // Define height for scroll to up
+            $defineHeight = 100;
+            // Prepare error message
+            $errorMessage = substr($e->getMessage(), 0, strpos($e->getMessage(), 'Command duration'));
+            // Find element name
+            preg_match('/<(\w+)/', $errorMessage, $matches);
+            $elementSelector = isset($matches[1]) ? $matches[1] : '*';
+            // Find element selector
+            if (preg_match_all('/(([^ ]+)="([^"]+)")/', $errorMessage, $matches)) {
+                foreach ($matches[0] as $match) {
+                    if (strlen($match) < $maxSelectorLength) {
+                        $elementSelector .= "[{$match}]";
+                    }
+                }
+            }
+
+            $js = "var element = document.querySelector('$elementSelector'),
+                       height = $defineHeight;
+
+                   // If element is founded
+                   if (element !== null) {
+                       /* If attempt isn't first and previous element selector is equal current
+                          need to scroll by parent element */
+                       if ($attempt && '$blockedElementSelector' == '$elementSelector') {
+                            for (var i = 0; i <= $attempt; i++) {
+                                element = element.parentElement;
+                            }
+                       }
+                       // If element is 'body', then need scroll and throw exception
+                       if (element === document.querySelector('body')) {
+                            return false;
+                       }
+
+                       var elementHeight = element.offsetHeight;
+                       height = (elementHeight !== null) ? elementHeight : height;
+                   }
+
+                   scrollBy(0, -height);
+
+                   return true;
+                ";
+
+            if(!$this->driver->execute(['script' => $js, 'args' => []])) {
+                throw $e;
+            }
+
+            $this->tryClick($element, ++$attempt, $elementSelector);
+        }
     }
 
     /**
