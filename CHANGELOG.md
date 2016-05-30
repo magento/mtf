@@ -1,3 +1,5 @@
+* Added an ability scroll to up if element is overlapped by another element
+
 1.0.0-rc.41
 ===========
 * Updated COPYING.txt file to follow Open Software License 3.0
