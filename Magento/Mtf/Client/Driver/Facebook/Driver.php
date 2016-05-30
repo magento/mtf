@@ -589,24 +589,55 @@ final class Driver implements DriverInterface
     }
 
     /**
-     * Close the current window
+     * Close the current window or specified one.
      *
+     * @param string|null $handle [optional]
      * @return void
      */
-    public function closeWindow()
+    public function closeWindow($handle = null)
     {
-        $this->driver->quit();
+        $windowHandles = $this->driver->windowHandles();
+        if (count($windowHandles) > 1) {
+            $windowHandle = $handle !== null ? $handle : end($windowHandles);
+            $this->driver->switchTo()->window($windowHandle);
+            $this->driver->quit();
+            $this->driver->switchTo()->window(reset($windowHandles));
+        } else {
+            $this->driver->quit();
+        }
     }
 
     /**
-     * Select window by its name
+     * Changes the focus to the specified window or to the latest one.
      *
+     * @param string|null $handle [optional]
      * @return void
      */
-    public function selectWindow()
+    public function selectWindow($handle = null)
     {
-        $windowHandles = $this->driver->getWindowHandles();
-        $this->driver->switchTo()->window(end($windowHandles));
+        $windowHandles = $this->driver->windowHandles();
+        $windowHandle = $handle !== null ? $handle : end($windowHandles);
+        $this->driver->switchTo()->window($windowHandle);
+    }
+
+    /**
+     * Retrieves the current window handle.
+     *
+     * @return string
+     */
+    public function getCurrentWindow()
+    {
+        return $this->driver->windowHandle();
+    }
+
+    /**
+     * Retrieves a list of all available window handles.
+     *
+     * @return array
+     */
+    public function getWindowHandles()
+    {
+        return $this->driver->windowHandles();
     }
 
     /**

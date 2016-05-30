@@ -1,3 +1,5 @@
+* Added an ability to pass window handle to SelectWindow() method
+
 1.0.0-rc.42
 ===========
 * Added date and time prefix to file artifacts name
