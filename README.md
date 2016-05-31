@@ -1,8 +1,8 @@
 # Functional Testing Framework
 
-Functional Testing Framework (FTF) is an open source R&D project facilitating the improvement of Magento Core products. Functional Testing Framework helps in avoiding duplication of test cases automated across the application utilizing data driven approach. With the new and improved Functional Testing Framework, developers will be able to automate functional testing of the developed functionality enabling frequent releases and higher product quality.
+The Functional Testing Framework (FTF) is an open source R&D project facilitating the improvement of Magento Core products. The Functional Testing Framework helps in avoiding duplication of test cases automated across the application utilizing data driven approach. With the new and improved Functional Testing Framework, developers will be able to automate functional testing of the developed functionality enabling frequent releases and higher product quality.
 
-For more overview information refer to [Introduction to Functional Testing Framework](http://devdocs.magento.com/guides/v2.0/mtf/mtf_introduction.html).
+For more overview information refer to [Introduction to the Functional Testing Framework](http://devdocs.magento.com/guides/v2.0/mtf/mtf_introduction.html).
 
 <h2>Step 1: Check your pre-installation conditions</h2>
 
@@ -13,7 +13,7 @@ When you're ready, use [Composer to install the FTF](http://devdocs.magento.com/
 
 <h2>Step 3: Verify your installation</h2>
 
-[Verify that FTF is installed](http://devdocs.magento.com/guides/v2.0/mtf/mtf_installation.html#mtf_install_check)  by checking your <code>dev/tests/functional/</code> directory to look for `vendor/magento/mtf`.
+[Verify that the FTF is installed](http://devdocs.magento.com/guides/v2.0/mtf/mtf_installation.html#mtf_install_check)  by checking your <code>dev/tests/functional/</code> directory to look for `vendor/magento/mtf`.
 
 <h2>Step 4: Get Started with testing</h2>
 
