@@ -297,8 +297,8 @@ class Driver implements DriverInterface
         // Find element selector
         if (preg_match_all('/(([^ ]+)="([^"]+)")/', $htmlCode, $matches)) {
             foreach ($matches[0] as $match) {
-                $match = str_replace('\n', '', $match); //skipped '\n'
-                $match = str_replace("'", '"', $match); //escaped quotes
+                $match = str_replace('\n', '', $match); // skipped '\n'
+                $match = str_replace("'", '"', $match); // escaped quotes
                 $elementSelector .= "[{$match}]";
             }
         }
