@@ -596,7 +596,7 @@ final class Driver implements DriverInterface
      */
     public function closeWindow($handle = null)
     {
-        $windowHandles = $this->driver->windowHandles();
+        $windowHandles = $this->driver->getWindowHandles();
         if (count($windowHandles) > 1) {
             $windowHandle = $handle !== null ? $handle : end($windowHandles);
             $this->driver->switchTo()->window($windowHandle);
@@ -615,7 +615,7 @@ final class Driver implements DriverInterface
      */
     public function selectWindow($handle = null)
     {
-        $windowHandles = $this->driver->windowHandles();
+        $windowHandles = $this->driver->getWindowHandles();
         $windowHandle = $handle !== null ? $handle : end($windowHandles);
         $this->driver->switchTo()->window($windowHandle);
     }
@@ -627,7 +627,7 @@ final class Driver implements DriverInterface
      */
     public function getCurrentWindow()
     {
-        return $this->driver->windowHandle();
+        return $this->driver->getWindowHandle();
     }
 
     /**
@@ -637,7 +637,7 @@ final class Driver implements DriverInterface
      */
     public function getWindowHandles()
     {
-        return $this->driver->windowHandles();
+        return $this->driver->getWindowHandles();
     }
 
     /**
