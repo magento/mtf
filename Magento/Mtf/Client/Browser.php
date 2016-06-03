@@ -125,23 +125,45 @@ final class Browser implements BrowserInterface
     }
 
     /**
-     * Close the current window
+     * Close the current window or specified one.
      *
+     * @param string|null $handle [optional]
      * @return void
      */
-    public function closeWindow()
+    public function closeWindow($handle = null)
     {
-        $this->driver->closeWindow();
+        $this->driver->closeWindow($handle);
     }
 
     /**
-     * Select window by its name
+     * Changes the focus to the specified window or to the latest one.
      *
+     * @param string|null $handle [optional]
      * @return void
      */
-    public function selectWindow()
+    public function selectWindow($handle = null)
     {
-        $this->driver->selectWindow();
+        $this->driver->selectWindow($handle);
+    }
+
+    /**
+     * Retrieves the current window handle.
+     *
+     * @return string
+     */
+    public function getCurrentWindow()
+    {
+        return $this->driver->getCurrentWindow();
+    }
+
+    /**
+     * Retrieves a list of all available window handles.
+     *
+     * @return array
+     */
+    public function getWindowHandles()
+    {
+        return $this->driver->getWindowHandles();
     }
 
     /**

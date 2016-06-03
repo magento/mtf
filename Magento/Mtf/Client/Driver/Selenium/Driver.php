@@ -248,9 +248,98 @@ class Driver implements DriverInterface
 
         $wrapperElement = $this->getNativeElement($element);
         $this->driver->moveto($wrapperElement);
-        $wrapperElement->click();
+        $this->tryClick($wrapperElement);
 
         $this->eventManager->dispatchEvent(['click_after'], [__METHOD__, $absoluteSelector]);
+    }
+
+    /**
+     * Try to click on element.
+     *
+     * @param \PHPUnit_Extensions_Selenium2TestCase_Element $element
+     * @param int $parentDepth [optional]
+     * @param string $blockedElementSelector [optional]
+     * @throws \PHPUnit_Extensions_Selenium2TestCase_WebDriverException
+     */
+    private function tryClick(
+        \PHPUnit_Extensions_Selenium2TestCase_Element $element,
+        $parentDepth = 0,
+        $blockedElementSelector = ''
+    ) {
+        try {
+            $element->click();
+        } catch (\PHPUnit_Extensions_Selenium2TestCase_WebDriverException $e) {
+            $elementSelector = $this->prepareBlockedElementSelector($e->getMessage());
+            $js = $this->prepareJSForScrollToUpByElement($elementSelector, $parentDepth, $blockedElementSelector);
+            // Scroll action
+            if (!$this->driver->execute(['script' => $js, 'args' => []])) {
+                throw $e;
+            }
+
+            $this->tryClick($element, ++$parentDepth, $elementSelector);
+        }
+    }
+
+    /**
+     * Prepare blocked element selector base on exception message.
+     * Example return: "element[attribute1="value"][attribute2="value"]..."
+     *
+     * @param string $exceptionMessage
+     * @return string
+     */
+    private function prepareBlockedElementSelector($exceptionMessage)
+    {
+        // Get html code
+        $htmlCode = substr($exceptionMessage, 0, strpos($exceptionMessage, 'Command duration'));
+        // Find element name
+        preg_match('/<(\w+)/', $htmlCode, $matches);
+        $elementSelector = isset($matches[1]) ? $matches[1] : '*';
+        // Find element selector
+        if (preg_match_all('/(([^ ]+)="([^"]+)")/', $htmlCode, $matches)) {
+            foreach ($matches[0] as $match) {
+                $match = str_replace('\n', '', $match); // skipped '\n'
+                $match = str_replace("'", '"', $match); // escaped quotes
+                $elementSelector .= "[{$match}]";
+            }
+        }
+
+        return $elementSelector;
+    }
+
+    /**
+     * Prepare JS script code for scroll to up relative element.
+     *
+     * @param string $elementSelector
+     * @param int $parentDepth
+     * @param string $blockedElementSelector
+     * @return string
+     */
+    private function prepareJSForScrollToUpByElement($elementSelector, $parentDepth, $blockedElementSelector)
+    {
+        return "var element = document.querySelector('$elementSelector'),
+                    height = 100;
+
+                // If element is founded
+                if (element !== null) {
+                    /* If attempt isn't first and previous element selector is equal current
+                       need to scroll by parent element */
+                    if ($parentDepth && '$blockedElementSelector' == '$elementSelector') {
+                         for (var i = 0; i <= $parentDepth; i++) {
+                             element = element.parentElement;
+                         }
+                    }
+                    // If element is 'body', then need scroll and throw exception
+                    if (element === document.querySelector('body')) {
+                         return false;
+                    }
+
+                    var elementHeight = element.offsetHeight;
+                    height = (elementHeight !== null) ? elementHeight : height
+                }
+
+                scrollBy(0, -height);
+
+                return true;";
     }
 
     /**
@@ -668,15 +757,17 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Close the current window.
+     * Close the current window or specified one.
      *
+     * @param string|null $handle [optional]
      * @return void
      */
-    public function closeWindow()
+    public function closeWindow($handle = null)
     {
         $windowHandles = $this->driver->windowHandles();
         if (count($windowHandles) > 1) {
-            $this->driver->window(end($windowHandles));
+            $windowHandle = $handle !== null ? $handle : end($windowHandles);
+            $this->driver->window($windowHandle);
             $this->driver->closeWindow();
             $this->driver->window(reset($windowHandles));
         } else {
@@ -685,14 +776,36 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Select window by its name.
+     * Changes the focus to the specified window or to the latest one.
      *
+     * @param string|null $handle [optional]
      * @return void
      */
-    public function selectWindow()
+    public function selectWindow($handle = null)
     {
         $windowHandles = $this->driver->windowHandles();
-        $this->driver->window(end($windowHandles));
+        $windowHandle = $handle !== null ? $handle : end($windowHandles);
+        $this->driver->window($windowHandle);
+    }
+
+    /**
+     * Retrieves the current window handle.
+     *
+     * @return string
+     */
+    public function getCurrentWindow()
+    {
+        return $this->driver->windowHandle();
+    }
+
+    /**
+     * Retrieves a list of all available window handles.
+     *
+     * @return array
+     */
+    public function getWindowHandles()
+    {
+        return $this->driver->windowHandles();
     }
 
     /**

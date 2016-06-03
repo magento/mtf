@@ -197,18 +197,34 @@ interface DriverInterface
     public function switchToFrame(Locator $locator);
 
     /**
-     * Close the current window
+     * Close the current window or specified one.
      *
+     * @param string|null $handle [optional]
      * @return void
      */
-    public function closeWindow();
+    public function closeWindow($handle = null);
 
     /**
-     * Select window by its name
+     * Changes the focus to the specified window or to the latest one.
      *
+     * @param string|null $handle [optional]
      * @return void
      */
-    public function selectWindow();
+    public function selectWindow($handle = null);
+
+    /**
+     * Retrieves the current window handle.
+     *
+     * @return string
+     */
+    public function getCurrentWindow();
+
+    /**
+     * Retrieves a list of all available window handles.
+     *
+     * @return array
+     */
+    public function getWindowHandles();
 
     /**
      * Get page title text.
