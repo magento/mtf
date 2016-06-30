@@ -17,6 +17,7 @@ interface CurlInterface
     const GET = 'GET';
     const PUT = 'PUT';
     const POST = 'POST';
+    const DELETE = 'DELETE';
 
     /**
      * Add additional option to cURL.
