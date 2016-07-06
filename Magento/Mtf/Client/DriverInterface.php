@@ -312,4 +312,13 @@ interface DriverInterface
      * @return void
      */
     public function hover(ElementInterface $element);
+
+    /**
+     * Upload file.
+     *
+     * @param ElementInterface $element
+     * @param string $path
+     * @return void
+     */
+    public function uploadFile(ElementInterface $element, $path);
 }

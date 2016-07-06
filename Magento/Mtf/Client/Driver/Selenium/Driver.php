@@ -956,4 +956,17 @@ class Driver implements DriverInterface
             $this->driver->execute(['script' => $js, 'args' => []]);
         }
     }
+
+    /**
+     * Upload file.
+     *
+     * @param ElementInterface $element
+     * @param string $path
+     * @return void
+     */
+    public function uploadFile(ElementInterface $element, $path)
+    {
+        $element = $this->getNativeElement($element, false);
+        $element->value($path);
+    }
 }
