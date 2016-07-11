@@ -1,3 +1,7 @@
+1.0.0-rc.44
+===========
+* Added DELETE HTTP Request method
+
 1.0.0-rc.43
 ===========
 * Added an ability scroll to up if element is overlapped by another element
