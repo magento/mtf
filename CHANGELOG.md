@@ -1,6 +1,7 @@
 1.0.0-rc.44
 ===========
 * Added DELETE HTTP Request method
+* Added an ability upload/download files
 
 1.0.0-rc.43
 ===========

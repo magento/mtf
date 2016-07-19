@@ -809,4 +809,17 @@ final class Driver implements DriverInterface
             $element->click();
         }
     }
+
+    /**
+     * Upload file.
+     *
+     * @param ElementInterface $element
+     * @param string $path
+     * @return void
+     */
+    public function uploadFile(ElementInterface $element, $path)
+    {
+        $element = $this->getNativeElement($element, false);
+        $element->sendKeys($path);
+    }
 }

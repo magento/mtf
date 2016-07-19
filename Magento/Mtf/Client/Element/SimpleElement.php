@@ -233,7 +233,7 @@ class SimpleElement implements ElementInterface
         $selectors = [];
         $selectors[] = $this->getLocator();
         $element = $this;
-        while($element = $element->getContext()) {
+        while ($element = $element->getContext()) {
             $selectors[] = $element->getLocator();
         }
 
