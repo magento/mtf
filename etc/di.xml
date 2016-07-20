@@ -9,6 +9,7 @@
     <preference for="Magento\Mtf\Client\DriverInterface" type="Magento\Mtf\Client\Driver\Selenium\Driver" />
     <preference for="Magento\Mtf\Client\BrowserInterface" type="Magento\Mtf\Client\Browser" />
     <preference for="Magento\Mtf\Client\ElementInterface" type="Magento\Mtf\Client\Element\SimpleElement" />
+    <preference for="Magento\Mtf\Client\FileInterface" type="Magento\Mtf\Client\File" />
     <preference for="Magento\Mtf\System\Event\EventManagerInterface" type="Magento\Mtf\System\Event\EventManager" />
     <preference for="Magento\Mtf\Constraint\AbstractConstraint" type="Magento\Mtf\Constraint\Dummy" />
     <preference for="Magento\Mtf\ObjectManagerInterface" type="Magento\Mtf\ObjectManager" />
