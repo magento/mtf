@@ -1,3 +1,5 @@
+* Added an ability replace fields value in repositories
+
 1.0.0-rc.44
 ===========
 * Added DELETE HTTP Request method
