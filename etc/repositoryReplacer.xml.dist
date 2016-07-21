@@ -6,7 +6,7 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="../vendor/magento/mtf/Magento/Mtf/Repository/etc/replace.xsd">
+         xsi:noNamespaceSchemaLocation="../vendor/magento/mtf/Magento/Mtf/Repository/etc/repository.xsd">
 
     <repository class="{{class_namespace}}">
         <dataset name="{{dataSet_name}}">

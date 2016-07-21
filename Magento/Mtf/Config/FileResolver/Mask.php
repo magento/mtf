@@ -26,7 +26,7 @@ class Mask implements FileResolverInterface
      *
      * @param ModuleResolver $moduleResolver
      */
-    public function __construct(ModuleResolver $moduleResolver = null)
+    public function __construct($moduleResolver = null)
     {
         if ($moduleResolver) {
             $this->moduleResolver = $moduleResolver;
@@ -44,8 +44,22 @@ class Mask implements FileResolverInterface
      */
     public function get($filename, $scope)
     {
-        $modulesPath = $this->moduleResolver->getModulesPath();
+        $paths = $this->getPaths($filename, $scope);
+
+        return new File($paths);
+    }
+
+    /**
+     * Get scope of paths.
+     *
+     * @param string $filename
+     * @param string $scope
+     * @return array
+     */
+    protected function getPaths($filename, $scope)
+    {
         $paths = [];
+        $modulesPath = $this->moduleResolver->getModulesPath();
 
         foreach ($modulesPath as $modulePath) {
             $path = $modulePath . '/Test/' . $scope . '/';
@@ -65,9 +79,7 @@ class Mask implements FileResolverInterface
                 }
             }
         }
-        $paths = $this->moduleResolver->sortFilesByModuleSequence($paths);
 
-        $iterator = new File($paths);
-        return $iterator;
+        return $this->moduleResolver->sortFilesByModuleSequence($paths);
     }
 }
