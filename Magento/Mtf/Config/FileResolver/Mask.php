@@ -44,7 +44,7 @@ class Mask implements FileResolverInterface
      */
     public function get($filename, $scope)
     {
-        $paths = $this->getPaths($filename, $scope);
+        $paths = $this->getFileCollection($filename, $scope);
 
         return new File($paths);
     }
@@ -56,7 +56,7 @@ class Mask implements FileResolverInterface
      * @param string $scope
      * @return array
      */
-    protected function getPaths($filename, $scope)
+    protected function getFileCollection($filename, $scope)
     {
         $paths = [];
         $modulesPath = $this->moduleResolver->getModulesPath();

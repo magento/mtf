@@ -40,17 +40,12 @@ class Mask extends MaskFileResolver implements FileResolverInterface
      * @param string $scope
      * @return array
      */
-    public function getPaths($filename, $scope)
+    public function getFileCollection($filename, $scope)
     {
-        $paths = parent::getPaths($filename, $scope);
+        $paths = parent::getFileCollection($filename, $scope);
 
         foreach ($this->additionalFiles as $file) {
-            $mtfDefaultPath = dirname(dirname(dirname(dirname(dirname(__DIR__)))));
-            $mtfDefaultPath = str_replace('\\', '/', $mtfDefaultPath);
-            $mtfDefaultPath = str_replace(MTF_BP, '', $mtfDefaultPath);
-
-            $pattern = MTF_BP . '{' . $mtfDefaultPath . ',}' . '/' . $file;
-            $paths = array_merge($paths, glob($pattern, GLOB_BRACE));
+            $paths = array_merge($paths, glob(MTF_BP  . '/' . $file));
         }
 
         return $paths;

@@ -227,7 +227,6 @@
     </virtualType>
     <type name="Magento\Mtf\Repository\Config\FileResolver\Mask">
         <arguments>
-            <argument name="moduleResolver" xsi:type="null" />
             <argument name="additionalFiles" xsi:type="array">
                 <item name="0" xsi:type="string">etc/repositoryReplacer*.xml</item>
             </argument>
