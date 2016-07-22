@@ -100,9 +100,12 @@ class Repository extends AbstractGenerate
     {
         $content = $arrayKey === '' ? "[\n" : $indent . "'{$arrayKey}' => [\n";
         foreach ($params as $key => $value) {
-            $content .= is_array($value)
-                ? $this->generateArray($key, $value, $indent . '    ', true)
-                : ($indent . "    '{$key}' => '" . $value . "',\n");
+            if (is_array($value)) {
+                $content .= $this->generateArray($key, $value, $indent . '    ', true);
+            } else {
+                $value = is_null($value) ? "null" : "'$value'";
+                $content .= $indent . "    '{$key}' => " . $value . ",\n";
+            }
         }
         $content .= !$flag ? '' : $indent . "],\n";
 

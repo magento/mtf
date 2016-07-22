@@ -1,3 +1,5 @@
+* Fixed issue with xsi:type null
+
 1.0.0-rc.44
 ===========
 * Added DELETE HTTP Request method

@@ -136,6 +136,11 @@ class Dom
             }
 
             $this->_mergeAttributes($matchedNode, $node);
+            if ($node->hasAttribute('xsi:type') && $node->getAttribute('xsi:type') === 'null') {
+                $parentMatchedNode = $this->_getMatchedNode($parentPath);
+                $newNode = $this->_dom->importNode($node, true);
+                $parentMatchedNode->replaceChild($newNode, $matchedNode);
+            }
             if (!$node->hasChildNodes()) {
                 return;
             }
