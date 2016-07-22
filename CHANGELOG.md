@@ -1,3 +1,5 @@
+* Added an ability to persist sources for ConfigData fixture
+
 1.0.0-rc.44
 ===========
 * Added DELETE HTTP Request method
