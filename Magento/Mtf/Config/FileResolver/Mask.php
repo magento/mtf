@@ -24,7 +24,7 @@ class Mask implements FileResolverInterface
     /**
      * Constructor
      *
-     * @param ModuleResolver $moduleResolver
+     * @param ModuleResolver|null $moduleResolver
      */
     public function __construct($moduleResolver = null)
     {
