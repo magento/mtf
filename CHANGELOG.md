@@ -1,4 +1,4 @@
-* Fixed an issue with xsi:type null
+* Fixed an issue with xsi:type null in merging of variation and building of repository
 
 1.0.0-rc.44
 ===========

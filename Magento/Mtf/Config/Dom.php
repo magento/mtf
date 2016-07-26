@@ -163,7 +163,7 @@ class Dom
     }
 
     /**
-     * Remove value from node.
+     * Replace node value.
      *
      * @param string $parentPath
      * @param \DOMElement $node
