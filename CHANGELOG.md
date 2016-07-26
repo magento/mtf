@@ -1,4 +1,4 @@
-* Fixed issue with xsi:type null
+* Fixed an issue with xsi:type null
 
 1.0.0-rc.44
 ===========

@@ -129,13 +129,13 @@ class Dom
                 && $node->getAttribute($this->_typeAttributeName)
                 !== $matchedNode->getAttribute($this->_typeAttributeName)
             ) {
-                $this->removeNodeValue($parentPath, $node, $matchedNode);
+                $this->replaceNodeValue($parentPath, $node, $matchedNode);
                 return;
             }
 
             $this->_mergeAttributes($matchedNode, $node);
-            if ($node->hasAttribute('xsi:type') && $node->getAttribute('xsi:type') === 'null') {
-                $this->removeNodeValue($parentPath, $node, $matchedNode);
+            if ($node->nodeValue === '' && $matchedNode->nodeValue !== '') {
+                $this->replaceNodeValue($parentPath, $node, $matchedNode);
             }
             if (!$node->hasChildNodes()) {
                 return;
@@ -171,7 +171,7 @@ class Dom
      *
      * @return void
      */
-    private function removeNodeValue($parentPath, \DOMElement $node, \DOMElement $matchedNode)
+    private function replaceNodeValue($parentPath, \DOMElement $node, \DOMElement $matchedNode)
     {
         $parentMatchedNode = $this->_getMatchedNode($parentPath);
         $newNode = $this->_dom->importNode($node, true);
