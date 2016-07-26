@@ -27,7 +27,7 @@ class Mask extends MaskFileResolver implements FileResolverInterface
      * @param ModuleResolver|null $moduleResolver
      * @param array $additionalFiles [optional]
      */
-    public function __construct($moduleResolver = null, array $additionalFiles = [])
+    public function __construct(ModuleResolver $moduleResolver = null, array $additionalFiles = [])
     {
         parent::__construct($moduleResolver);
         $this->additionalFiles = $additionalFiles;

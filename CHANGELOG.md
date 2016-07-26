@@ -1,4 +1,4 @@
-* Added an ability replace fields value in repositories
+* Added an ability to replace fields value in repositories using config file
 
 1.0.0-rc.44
 ===========
