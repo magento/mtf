@@ -515,4 +515,13 @@
             <argument name="configData" xsi:type="object">Magento\Mtf\Fixture\Config\Data</argument>
         </arguments>
     </type>
+    <type name="Magento\Mtf\Util\Generate\Pool">
+        <arguments>
+            <argument name="pool" xsi:type="array">
+                <item name="page" xsi:type="object">Magento\Mtf\Util\Generate\Page</item>
+                <item name="fixture" xsi:type="object">Magento\Mtf\Util\Generate\Fixture</item>
+                <item name="repository" xsi:type="object">Magento\Mtf\Util\Generate\Repository</item>
+            </argument>
+        </arguments>
+    </type>
 </config>

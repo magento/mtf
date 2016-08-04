@@ -13,7 +13,7 @@ use Magento\Mtf\ObjectManagerInterface;
  *
  * @api
  */
-abstract class AbstractGenerate
+abstract class AbstractGenerate implements LauncherInterface
 {
     /**
      * Counter.
@@ -53,14 +53,7 @@ abstract class AbstractGenerate
         $this->objectManager = $objectManager;
         $this->configData = $configData;
     }
-
-    /**
-     * Launch generation of all classes.
-     *
-     * @return mixed
-     */
-    abstract public function launch();
-
+    
     /**
      * Generate single class.
      *
