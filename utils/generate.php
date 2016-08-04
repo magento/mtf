@@ -20,18 +20,15 @@ set_include_path($path);
 
 $objectManager = \Magento\Mtf\ObjectManagerFactory::getObjectManager();
 
-
-/** @var $generate \Magento\Mtf\Util\Generate\Fixture */
-$generate = $objectManager->get('Magento\Mtf\Util\Generate\Fixture');
-$generate->launch();
-
-/** @var $generate \Magento\Mtf\Util\Generate\Page */
-$generate = $objectManager->get('Magento\Mtf\Util\Generate\Page');
-$generate->launch();
-
-/** @var $generate \Magento\Mtf\Util\Generate\Repository */
-$generate = $objectManager->get('Magento\Mtf\Util\Generate\Repository');
-$generate->launch();
+$generatorPool = $objectManager->get('Magento\Mtf\Util\Generate\Pool');
+foreach ($generatorPool->getGenerators() as $generator) {
+    if (!$generator instanceof \Magento\Mtf\Util\Generate\LauncherInterface) {
+        throw new \InvalidArgumentException(
+            'Generator ' . get_class($generator) . ' should implement LauncherInterface'
+        );
+    }
+    $generator->launch();
+}
 
 /** @var $generate \Magento\Mtf\Util\Generate\Handler */
 $generate = $objectManager->get('Magento\Mtf\Util\Generate\Handler');
