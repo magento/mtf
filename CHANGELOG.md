@@ -1,3 +1,7 @@
+1.0.0-rc.45
+===========
+* Added an ability to load configurations in nested folders
+
 1.0.0-rc.44
 ===========
 * Added DELETE HTTP Request method

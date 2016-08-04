@@ -29,25 +29,50 @@ class Primary implements FileResolverInterface
         if (!$filename) {
             return [];
         }
-
         $scope = str_replace('\\', '/', $scope);
+        return new File($this->getFilePaths($filename, $scope));
+    }
 
+    /**
+     * Get list of configuration files
+     *
+     * @param string $filename
+     * @param string $scope
+     * @return array
+     */
+    private function getFilePaths($filename, $scope)
+    {
+        $paths = [];
+        foreach ($this->getPathPatterns($filename, $scope) as $pattern) {
+            $paths = array_merge($paths, glob($pattern));
+        }
+        return array_combine($paths, $paths);
+    }
+
+    /**
+     * Retrieve patterns for glob function
+     *
+     * @param string $filename
+     * @param string $scope
+     * @return array
+     */
+    private function getPathPatterns($filename, $scope)
+    {
         if (substr($scope, 0, strlen(MTF_BP)) === MTF_BP) {
-            $paths[$scope] = $scope . '/' . $filename;
+            $patterns = [
+                $scope . '/' . $filename,
+                $scope . '/*/' . $filename
+            ];
         } else {
             $mtfDefaultPath = dirname(dirname(dirname(dirname(__DIR__))));
             $mtfDefaultPath = str_replace('\\', '/', $mtfDefaultPath);
-
-            $paths[$mtfDefaultPath] = $mtfDefaultPath . '/' . $scope . '/' . $filename;
-            $paths[MTF_BP] = MTF_BP . '/' . $scope . '/' . $filename;
-
-            foreach ($paths as $dir => $filename) {
-                if (!file_exists($filename)) {
-                    unset($paths[$dir]);
-                }
-            }
+            $patterns = [
+                $mtfDefaultPath . '/' . $scope . '/' . $filename,
+                $mtfDefaultPath . '/' . $scope . '/*/' . $filename,
+                MTF_BP . '/' . $scope . '/' . $filename,
+                MTF_BP . '/' . $scope . '/*/' . $filename
+            ];
         }
-
-        return new File($paths);
+        return str_replace('/', DIRECTORY_SEPARATOR, $patterns);
     }
 }
