@@ -1,3 +1,5 @@
+* Added an ability to run specified variation by name
+
 1.0.0-rc.44
 ===========
 * Added DELETE HTTP Request method

@@ -14,7 +14,7 @@
         </xs:annotation>
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="rule" maxOccurs="unbounded" minOccurs="0"/>
+                <xs:element ref="rule" maxOccurs="unbounded" minOccurs="0" />
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -32,10 +32,10 @@
             <xs:attribute name="scope" use="required">
                 <xs:simpleType>
                     <xs:restriction base="xs:string">
-                        <xs:enumeration value="testsuite"/>
-                        <xs:enumeration value="testcase"/>
-                        <xs:enumeration value="variation"/>
-                        <xs:enumeration value="constraint"/>
+                        <xs:enumeration value="testsuite" />
+                        <xs:enumeration value="testcase" />
+                        <xs:enumeration value="variation" />
+                        <xs:enumeration value="constraint" />
                     </xs:restriction>
                 </xs:simpleType>
             </xs:attribute>
@@ -52,12 +52,13 @@
             <xs:attribute name="name" use="required">
                 <xs:simpleType>
                     <xs:restriction base="xs:string">
-                        <xs:enumeration value="namespace"/>
-                        <xs:enumeration value="module"/>
-                        <xs:enumeration value="type"/>
-                        <xs:enumeration value="module"/>
-                        <xs:enumeration value="class"/>
-                        <xs:enumeration value="tag"/>
+                        <xs:enumeration value="namespace" />
+                        <xs:enumeration value="module" />
+                        <xs:enumeration value="type" />
+                        <xs:enumeration value="module" />
+                        <xs:enumeration value="class" />
+                        <xs:enumeration value="tag" />
+                        <xs:enumeration value="name" />
                     </xs:restriction>
                 </xs:simpleType>
             </xs:attribute>

@@ -76,11 +76,13 @@ class Variation extends AbstractIterator
      */
     protected function isValid()
     {
-        $cellTag = isset($this->current['tag']) ? $this->current['tag'] : '';
-
-        if (!$this->rule->apply($cellTag)) {
-            return false;
+        foreach ($this->rule->getFilters() as $filter) {
+            $subject = isset($this->current[$filter->getSubject()]) ? $this->current[$filter->getSubject()] : '';
+            if (!$filter->apply($subject)) {
+                return false;
+            }
         }
+
         return true;
     }
 

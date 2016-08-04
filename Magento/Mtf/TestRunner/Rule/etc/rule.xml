@@ -8,17 +8,18 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="rule.xsd">
     <rule scope="testsuite">
         <filter name="namespace" class="Magento\Mtf\Util\Filter\TestSuiteNamespace" />
-        <filter name="type" class="Magento\Mtf\Util\Filter\TestSuiteType"/>
-        <filter name="module" class="Magento\Mtf\Util\Filter\TestSuiteModule"/>
-        <filter name="class" class="Magento\Mtf\Util\Filter\TestSuiteClass"/>
+        <filter name="type" class="Magento\Mtf\Util\Filter\TestSuiteType" />
+        <filter name="module" class="Magento\Mtf\Util\Filter\TestSuiteModule" />
+        <filter name="class" class="Magento\Mtf\Util\Filter\TestSuiteClass" />
     </rule>
     <rule scope="testcase">
-        <filter name="tag" class="Magento\Mtf\Util\Filter\TestCaseTag"/>
+        <filter name="tag" class="Magento\Mtf\Util\Filter\TestCaseTag" />
     </rule>
     <rule scope="variation">
-        <filter name="tag" class="Magento\Mtf\Util\Filter\VariationTag"/>
+        <filter name="tag" class="Magento\Mtf\Util\Filter\VariationTag" />
+        <filter name="name" class="Magento\Mtf\Util\Filter\VariationName" />
     </rule>
     <rule scope="constraint">
-        <filter name="tag" class="Magento\Mtf\Util\Filter\ConstraintTag"/>
+        <filter name="tag" class="Magento\Mtf\Util\Filter\ConstraintTag" />
     </rule>
 </config>

@@ -78,6 +78,12 @@
             <argument name="type" xsi:type="string">tag</argument>
         </arguments>
     </type>
+    <type name="Magento\Mtf\Util\Filter\VariationName">
+        <arguments>
+            <argument name="scope" xsi:type="string">variation</argument>
+            <argument name="type" xsi:type="string">name</argument>
+        </arguments>
+    </type>
     <type name="Magento\Mtf\Util\Filter\ConstraintTag">
         <arguments>
             <argument name="scope" xsi:type="string">constraint</argument>
