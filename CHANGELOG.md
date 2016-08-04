@@ -1,6 +1,7 @@
 1.0.0-rc.45
 ===========
 * Added an ability to load configurations in nested folders
+* Added and configured generator pool
 
 1.0.0-rc.44
 ===========
