@@ -1,6 +1,7 @@
 1.0.0-rc.46
 ===========
 * Added an ability to replace fields value in repositories using config file
+* Added an ability to persist sources for ConfigData fixture
 
 1.0.0-rc.45
 ===========
