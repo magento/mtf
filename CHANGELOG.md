@@ -1,3 +1,7 @@
+1.0.0-rc.46
+===========
+* Added an ability to replace fields value in repositories using config file
+
 1.0.0-rc.45
 ===========
 * Added an ability to load configurations in nested folders
