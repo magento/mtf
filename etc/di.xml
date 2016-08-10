@@ -198,7 +198,7 @@
     </virtualType>
     <virtualType name="Magento\Mtf\Repository\Reader" type="Magento\Mtf\Config\Reader\Filesystem">
         <arguments>
-            <argument name="fileResolver" xsi:type="object">Magento\Mtf\Config\FileResolver\Mask</argument>
+            <argument name="fileResolver" xsi:type="object">Magento\Mtf\Repository\Config\FileResolver\Mask</argument>
             <argument name="converter" xsi:type="object">Magento\Mtf\Repository\Converter</argument>
             <argument name="schemaLocator" xsi:type="object">Magento\Mtf\Repository\Config\SchemaLocator</argument>
             <argument name="idAttributes" xsi:type="array">
@@ -225,6 +225,13 @@
             <argument name="schemaPath" xsi:type="string">Magento/Mtf/Repository/etc/repository.xsd</argument>
         </arguments>
     </virtualType>
+    <type name="Magento\Mtf\Repository\Config\FileResolver\Mask">
+        <arguments>
+            <argument name="additionalFiles" xsi:type="array">
+                <item name="0" xsi:type="string">etc/repository_replacer*.xml</item>
+            </argument>
+        </arguments>
+    </type>
     <virtualType name="Magento\Mtf\Config\SchemaLocator\TestRunner" type="Magento\Mtf\Config\SchemaLocator">
         <arguments>
             <argument name="schemaPath" xsi:type="string">Magento/Mtf/TestRunner/etc/testRunner.xsd</argument>
