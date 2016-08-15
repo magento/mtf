@@ -1,3 +1,5 @@
+* Fixed a bug with wrong variation name in reports when variation has been failed before test execution
+
 1.0.0-rc.46
 ===========
 * Added an ability to replace fields value in repositories using config file
