@@ -1,3 +1,6 @@
+1.0.0-rc.47
+===========
+* Added an ability to run specified variation by name
 * Fixed a bug with wrong variation name in reports when variation has been failed before test execution
 
 1.0.0-rc.46
