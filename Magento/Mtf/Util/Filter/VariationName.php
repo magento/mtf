@@ -26,7 +26,7 @@ class VariationName extends AbstractFilter implements FilterInterface
      */
     public function apply($subject)
     {
-        if (isset($this->allow)) {
+        if ($this->allow) {
             foreach ($this->allow as $allow) {
                 if ($allow['value'] == $subject) {
                     return true;
@@ -35,7 +35,7 @@ class VariationName extends AbstractFilter implements FilterInterface
 
             return false;
         }
-        if (isset($this->deny)) {
+        if ($this->deny) {
             foreach ($this->deny as $deny) {
                 if ($deny['value'] == $subject) {
                     return false;
