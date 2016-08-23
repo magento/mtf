@@ -137,6 +137,8 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
     protected $mockObjects = [];
 
     /**
+     * Snapshot of current state.
+     *
      * @var Snapshot
      */
     private $snapshot;
@@ -405,22 +407,19 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
      */
     private function snapshotGlobalState()
     {
-        $backupGlobals = $this->backupGlobals === null || $this->backupGlobals === true;
+        $backups = $this->backupGlobals === null || $this->backupGlobals === true;
 
-        if ($this->runTestInSeparateProcess || $this->inIsolation ||
-            (!$backupGlobals && !$this->backupStaticAttributes)
-        ) {
+        if ($this->runTestInSeparateProcess || $this->inIsolation || (!$backups && !$this->backupStaticAttributes)) {
             return;
         }
 
-        $this->snapshot = $this->createGlobalStateSnapshot($backupGlobals);
+        $this->snapshot = $this->createGlobalStateSnapshot($backups);
     }
 
     /**
      * Create global state snapshot.
      *
      * @param bool $backupGlobals
-     *
      * @return Snapshot
      */
     private function createGlobalStateSnapshot($backupGlobals)
