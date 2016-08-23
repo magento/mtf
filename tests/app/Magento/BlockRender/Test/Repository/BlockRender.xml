@@ -6,21 +6,12 @@
  */
 
 -->
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:noNamespaceSchemaLocation="../../../../../../Magento/Mtf/Repository/etc/repository.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../Magento/Mtf/Repository/etc/repository.xsd">
     <repository class="Magento\BlockRender\Test\Repository\BlockRender">
-        <dataset name="dummy_dataset">
-            <field name="dummy_simple_field" xsi:type="string">test_value</field>
-            <field name="dummy_array_field" xsi:type="array">
-                <item name="dummy_array_0" xsi:type="array">
-                    <item name="dummy_array_0" xsi:type="array">
-                        <item name="dummy_array_0" xsi:type="string">test_value_0</item>
-                        <item name="dummy_array_1" xsi:type="string">test_value_1</item>
-                    </item>
-                    <item name="dummy_array_1" xsi:type="string">test_value_1</item>
-                </item>
-                <item name="dummy_array_1" xsi:type="string">test_value_1</item>
-            </field>
+        <dataset name="default">
+            <field name="locator" xsi:type="string">body</field>
+            <field name="type" xsi:type="string">test</field>
+            <field name="search" xsi:type="string">Hello World!!!</field>
         </dataset>
     </repository>
 </config>

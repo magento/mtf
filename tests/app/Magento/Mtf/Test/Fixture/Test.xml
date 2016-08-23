@@ -13,13 +13,9 @@
              entity_type="test_fixture"
              repository_class="Magento\Mtf\Test\Repository\Test"
              handler_interface="Magento\Mtf\Test\Handler\Test\TestInterface">
-        <field name="locator" is_required="1">
-            <default_value xsi:type="string">About</default_value>
-        </field>
-        <field name="strategy" is_required="1" source="Magento\Mtf\Test\Fixture\BlockRenderMtf\Strategy">
-            <default_value xsi:type="string">link text</default_value>
-        </field>
-        <field name="search"/>
-        <field name="type"/>
+        <field name="locator" is_required="1" />
+        <field name="strategy" is_required="1" source="Magento\Mtf\Test\Fixture\Test\Strategy" />
+        <field name="search" />
+        <field name="type" />
     </fixture>
 </config>

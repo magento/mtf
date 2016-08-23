@@ -8,22 +8,21 @@ namespace Magento\BlockRender\Test\Block;
 
 use Magento\Mtf\Block\Form;
 use Magento\Mtf\Fixture\FixtureInterface;
-use Magento\Mtf\Test\Fixture\Test;
 
 /**
- * Class BlockRender
- * Block for manage render form
+ * Block for manage render form.
  */
 class BlockRender extends Form
 {
     /**
-     * Perform render
+     * Perform render.
      *
      * @param FixtureInterface $fixture
      * @return void
      */
     public function render(FixtureInterface $fixture)
     {
+        /** @var \Magento\Mtf\Test\Fixture\Test $fixture */
         $this->callRender($fixture->getType(), 'fill', ['fixture' => $fixture]);
     }
 }

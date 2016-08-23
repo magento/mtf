@@ -1,3 +1,5 @@
+* Updated dependencies to use the latest PHPUnit version 
+
 1.0.0-rc.47
 ===========
 * Added an ability to run specified variation by name

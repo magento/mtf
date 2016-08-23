@@ -6,16 +6,21 @@
 
 namespace Magento\Tag\Test\Handler\Tag;
 
-use Magento\Tag\Test\Handler\Tag\TagInterface;
 use Magento\Mtf\Fixture\FixtureInterface;
 use Magento\Mtf\Handler\Curl as AbstractCurl;
 
 /**
- * Class Curl
+ * Curl handler for Tag fixture.
  */
 class Curl extends AbstractCurl implements TagInterface
 {
-   public function persist(FixtureInterface $fixture = null)
+    /**
+     * Persist Tag fixture.
+     *
+     * @param FixtureInterface $fixture [optional]
+     * @return mixed
+     */
+    public function persist(FixtureInterface $fixture = null)
     {
         //
     }

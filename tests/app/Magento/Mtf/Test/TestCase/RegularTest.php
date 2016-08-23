@@ -9,9 +9,9 @@ namespace Magento\Mtf\Test\TestCase;
 use Magento\Mtf\TestCase\Functional;
 
 /**
- * Class RegularTestCase
+ * Default PHPUnit test case.
  */
-class RegularTestCase extends Functional
+class RegularTest extends Functional
 {
     /**
      * @depends Magento\Mtf\Test\TestCase\InjectableTestCase::test1

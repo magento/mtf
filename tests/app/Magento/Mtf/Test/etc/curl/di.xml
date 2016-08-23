@@ -6,5 +6,5 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../../etc/di.xsd">
-    <preference for="Magento\Mtf\Test\Handler\TestInterface" type="Magento\Mtf\Test\Handler\Test\Curl"/>
+    <preference for="Magento\Mtf\Test\Handler\TestInterface" type="Magento\Mtf\Test\Handler\Test\Curl" />
 </config>

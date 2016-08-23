@@ -11,7 +11,7 @@ use Magento\BlockRender\Test\Page\Area\TestPage;
 use Magento\Mtf\Test\Fixture\Test;
 
 /**
- * Class PageOpenSuccess
+ * Fake assertion, just to test constraint functionality.
  */
 class PageOpenSuccess extends AbstractConstraint
 {
