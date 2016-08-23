@@ -6,15 +6,17 @@
 namespace Magento\Mtf\TestRunner\Process\Exception;
 
 /**
- * Serializable exception for parallel run
+ * Serializable exception for parallel run.
  */
 class Risky extends \PHPUnit_Framework_RiskyTestError
 {
     /**
+     * Returns available object values.
+     *
      * @return array
      */
     public function __sleep()
     {
-        return ['message'];
+        return ['message', 'serializableTrace'];
     }
 }
