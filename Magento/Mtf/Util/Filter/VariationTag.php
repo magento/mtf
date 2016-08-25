@@ -12,6 +12,13 @@ namespace Magento\Mtf\Util\Filter;
 class VariationTag extends AbstractFilterTag implements FilterInterface
 {
     /**
+     * Subject for filter.
+     *
+     * @var string
+     */
+    private $subject = 'tag';
+
+    /**
      * Filters out variation.
      *
      * @param string $subject
@@ -21,6 +28,16 @@ class VariationTag extends AbstractFilterTag implements FilterInterface
     {
         $tags = $this->convertTags($subject);
         return $this->processApply($tags);
+    }
+
+    /**
+     * Get subject.
+     *
+     * @return string
+     */
+    public function getSubject()
+    {
+        return $this->subject;
     }
 
     /**

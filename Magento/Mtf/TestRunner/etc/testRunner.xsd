@@ -14,7 +14,7 @@
         </xs:annotation>
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="rule" maxOccurs="unbounded" minOccurs="0"/>
+                <xs:element ref="rule" maxOccurs="unbounded" minOccurs="0" />
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -27,16 +27,16 @@
         </xs:annotation>
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="allow" maxOccurs="1" minOccurs="0"/>
-                <xs:element ref="deny" maxOccurs="1" minOccurs="0"/>
+                <xs:element ref="allow" maxOccurs="1" minOccurs="0" />
+                <xs:element ref="deny" maxOccurs="1" minOccurs="0" />
             </xs:sequence>
             <xs:attribute name="scope" use="required">
                 <xs:simpleType>
                     <xs:restriction base="xs:string">
-                        <xs:enumeration value="testsuite"/>
-                        <xs:enumeration value="testcase"/>
-                        <xs:enumeration value="variation"/>
-                        <xs:enumeration value="constraint"/>
+                        <xs:enumeration value="testsuite" />
+                        <xs:enumeration value="testcase" />
+                        <xs:enumeration value="variation" />
+                        <xs:enumeration value="constraint" />
                     </xs:restriction>
                 </xs:simpleType>
             </xs:attribute>
@@ -57,6 +57,7 @@
                     <xs:element ref="module" />
                     <xs:element ref="class" />
                     <xs:element ref="tag" />
+                    <xs:element ref="name" />
                 </xs:choice>
             </xs:sequence>
         </xs:complexType>
@@ -90,7 +91,7 @@
         <xs:complexType>
             <xs:simpleContent>
                 <xs:extension base="xs:string">
-                    <xs:attribute type="xs:string" name="value"/>
+                    <xs:attribute type="xs:string" name="value" />
                 </xs:extension>
             </xs:simpleContent>
         </xs:complexType>
@@ -106,8 +107,8 @@
             <xs:attribute name="value" use="required">
                 <xs:simpleType>
                     <xs:restriction base="xs:string">
-                        <xs:enumeration value="injectable"/>
-                        <xs:enumeration value="functional"/>
+                        <xs:enumeration value="injectable" />
+                        <xs:enumeration value="functional" />
                     </xs:restriction>
                 </xs:simpleType>
             </xs:attribute>
@@ -123,12 +124,12 @@
         <xs:complexType>
             <xs:simpleContent>
                 <xs:extension base="xs:string">
-                    <xs:attribute type="xs:string" name="value" use="required"/>
+                    <xs:attribute type="xs:string" name="value" use="required" />
                     <xs:attribute name="strict">
                         <xs:simpleType>
                             <xs:restriction base="xs:string">
-                                <xs:enumeration value="1"/>
-                                <xs:enumeration value="0"/>
+                                <xs:enumeration value="1" />
+                                <xs:enumeration value="0" />
                             </xs:restriction>
                         </xs:simpleType>
                     </xs:attribute>
@@ -146,7 +147,7 @@
         <xs:complexType>
             <xs:simpleContent>
                 <xs:extension base="xs:string">
-                    <xs:attribute type="xs:string" name="value" use="required"/>
+                    <xs:attribute type="xs:string" name="value" use="required" />
                 </xs:extension>
             </xs:simpleContent>
         </xs:complexType>
@@ -161,8 +162,23 @@
         <xs:complexType>
             <xs:simpleContent>
                 <xs:extension base="xs:string">
-                    <xs:attribute type="xs:string" name="group" use="required"/>
-                    <xs:attribute type="xs:string" name="value" use="required"/>
+                    <xs:attribute type="xs:string" name="group" use="required" />
+                    <xs:attribute type="xs:string" name="value" use="required" />
+                </xs:extension>
+            </xs:simpleContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="name">
+        <xs:annotation>
+            <xs:documentation>
+                Filter subject by variation name.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:extension base="xs:string">
+                    <xs:attribute type="xs:string" name="value" use="required" />
                 </xs:extension>
             </xs:simpleContent>
         </xs:complexType>
