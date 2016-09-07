@@ -1,3 +1,5 @@
+1.0.0-rc.48
+===========
 * Updated dependencies to use the latest PHPUnit version 
 
 1.0.0-rc.47
