@@ -11,10 +11,12 @@ namespace Magento\Mtf\TestRunner\Process\Exception;
 class Skipped extends \PHPUnit_Framework_SkippedTestError
 {
     /**
+     * Returns available object values.
+     *
      * @return array
      */
     public function __sleep()
     {
-        return ['message'];
+        return ['message', 'serializableTrace'];
     }
 }

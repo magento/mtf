@@ -12,9 +12,9 @@ use Magento\BlockRender\Test\Page\Area\TestPage;
 use Magento\Mtf\ObjectManager;
 
 /**
- * Class InjectableTestCase
+ * Test injectable variations.
  */
-class InjectableTestCase extends Injectable
+class InjectableTest extends Injectable
 {
     /**
      * @param TestPage $page

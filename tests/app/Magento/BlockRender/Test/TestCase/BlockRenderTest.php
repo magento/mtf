@@ -7,31 +7,16 @@
 namespace Magento\BlockRender\Test\TestCase;
 
 use Magento\Mtf\TestCase\Injectable;
-use Magento\Mtf\Test\Fixture\Test;
 use Magento\BlockRender\Test\Page\Area\TestPage;
 use Magento\BlockRender\Test\Fixture\BlockRender;
 
 /**
- * Class BlockRenderTestCase
+ * Test Block render functionality.
  */
-class BlockRenderTestCase extends Injectable
+class BlockRenderTest extends Injectable
 {
     /**
-     * Test proxy render #1
-     *
-     * @param TestPage $testPage
-     * @param Test $test
-     * @return void
-     */
-    public function test1(TestPage $testPage, Test $test)
-    {
-        $testPage->open();
-        $testPage->getBlockRender()->render($test);
-        sleep(3);
-    }
-
-    /**
-     * Test proxy render #2
+     * Test proxy render
      *
      * @param TestPage $testPage
      * @param BlockRender $blockRender
@@ -41,6 +26,6 @@ class BlockRenderTestCase extends Injectable
     {
         $testPage->open();
         $testPage->getBlockRender()->render($blockRender);
-        sleep(3);
+        sleep(2);
     }
 }

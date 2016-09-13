@@ -6,7 +6,6 @@
 
 namespace Magento\BlockRender\Test\Handler\BlockRender;
 
-use Magento\BlockRender\Test\Handler\BlockRender\BlockRenderInterface;
 use Magento\Mtf\Fixture\FixtureInterface;
 use Magento\Mtf\Handler\Ui as AbstractUi;
 

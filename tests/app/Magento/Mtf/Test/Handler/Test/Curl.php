@@ -10,11 +10,13 @@ use Magento\Mtf\Fixture\FixtureInterface;
 use Magento\Mtf\Handler\Curl as AbstractCurl;
 
 /**
- * Class Curl
+ * Curl handler for Test fixture.
  */
 class Curl extends AbstractCurl implements TestInterface
 {
     /**
+     * Persist Test fixture.
+     *
      * @param FixtureInterface $fixture
      * @return void
      */

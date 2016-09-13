@@ -5,15 +5,12 @@
  * See COPYING.txt for license details.
  */
 -->
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:noNamespaceSchemaLocation="../../../../../../Magento/Mtf/Repository/etc/repository.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../Magento/Mtf/Repository/etc/repository.xsd">
     <repository class="Magento\Mtf\Test\Repository\Test">
-        <dataset name="dummy_currency_config">
-            <field path="path\to\currency" scope="dummy_currency" scope_id="1" xsi:type="array">
-                <item name="US Dollar" xsi:type="string">USD</item>
-                <item name="Ukrainian Hryvnia" xsi:type="string">UAH</item>
-            </field>
-            <field path="path\to\some\field" scope="dummy_scope_name" scope_id="1" label="US Dollar" xsi:type="string">USD</field>
+        <dataset name="default">
+            <field name="locator" xsi:type="string">[href*=about]</field>
+            <field name="strategy" xsi:type="string">css selector</field>
+            <field name="search" xsi:type="string">Some text</field>
         </dataset>
     </repository>
 </config>

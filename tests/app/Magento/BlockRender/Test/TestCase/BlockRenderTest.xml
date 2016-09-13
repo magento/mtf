@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+ -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../etc/variations.xsd">
+    <testCase name="Magento\BlockRender\Test\TestCase\BlockRenderTest" summary="Test Block render functionality">
+        <variation name="InjectableTestCaseVariation1">
+            <data name="blockRender/data/type" xsi:type="string">test</data>
+            <data name="blockRender/data/search" xsi:type="string">Hello World!!!</data>
+        </variation>
+        <variation name="InjectableTestCaseVariation2">
+            <data name="blockRender/data/type" xsi:type="string">render</data>
+            <data name="blockRender/data/search" xsi:type="string">magento/mtf</data>
+        </variation>
+    </testCase>
+</config>

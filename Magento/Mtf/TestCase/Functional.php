@@ -6,6 +6,9 @@
 
 namespace Magento\Mtf\TestCase;
 
+use SebastianBergmann\GlobalState\Snapshot;
+use SebastianBergmann\GlobalState\Restorer;
+use SebastianBergmann\GlobalState\Blacklist;
 use Magento\Mtf\TestRunner\Process\ProcessManager;
 
 /**
@@ -134,6 +137,13 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
     protected $mockObjects = [];
 
     /**
+     * Snapshot of current state.
+     *
+     * @var Snapshot
+     */
+    private $snapshot;
+
+    /**
      * Constructs a test case with the given name.
      *
      * @param null $name
@@ -241,19 +251,16 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
     public function runBare()
     {
         $this->numAssertions = 0;
+        $this->snapshotGlobalState();
 
         // Backup the $GLOBALS array and static attributes.
         if ($this->runTestInSeparateProcess !== true && $this->inIsolation !== true) {
             if ($this->backupGlobals === null || $this->backupGlobals === true) {
-                \PHPUnit_Util_GlobalState::backupGlobals(
-                    $this->backupGlobalsBlacklist
-                );
+                $this->setBackupGlobals(true);
             }
 
             if ($this->backupStaticAttributes === true) {
-                \PHPUnit_Util_GlobalState::backupStaticAttributes(
-                    $this->backupStaticAttributesBlacklist
-                );
+                $this->setBackupStaticAttributes(true);
             }
         }
 
@@ -348,14 +355,13 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
 
         // Restore the $GLOBALS array and static attributes.
         if ($this->runTestInSeparateProcess !== true && $this->inIsolation !== true) {
+            $restorer = new Restorer;
             if ($this->backupGlobals === null || $this->backupGlobals === true) {
-                \PHPUnit_Util_GlobalState::restoreGlobals(
-                    $this->backupGlobalsBlacklist
-                );
+                $restorer->restoreGlobalVariables($this->snapshot);
             }
 
             if ($this->backupStaticAttributes === true) {
-                \PHPUnit_Util_GlobalState::restoreStaticAttributes();
+                $restorer->restoreStaticAttributes($this->snapshot);
             }
         }
 
@@ -392,6 +398,68 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
         if (isset($e)) {
             $this->onNotSuccessfulTest($e);
         }
+    }
+
+    /**
+     * Preparing snapshot with global state.
+     *
+     * @return void
+     */
+    private function snapshotGlobalState()
+    {
+        $backups = $this->backupGlobals === null || $this->backupGlobals === true;
+
+        if ($this->runTestInSeparateProcess || $this->inIsolation || (!$backups && !$this->backupStaticAttributes)) {
+            return;
+        }
+
+        $this->snapshot = $this->createGlobalStateSnapshot($backups);
+    }
+
+    /**
+     * Create global state snapshot.
+     *
+     * @param bool $backupGlobals
+     * @return Snapshot
+     */
+    private function createGlobalStateSnapshot($backupGlobals)
+    {
+        $blacklist = new Blacklist;
+
+        foreach ($this->backupGlobalsBlacklist as $globalVariable) {
+            $blacklist->addGlobalVariable($globalVariable);
+        }
+
+        if (!defined('PHPUNIT_TESTSUITE')) {
+            $blacklist->addClassNamePrefix('PHPUnit');
+            $blacklist->addClassNamePrefix('File_Iterator');
+            $blacklist->addClassNamePrefix('SebastianBergmann\CodeCoverage');
+            $blacklist->addClassNamePrefix('PHP_Invoker');
+            $blacklist->addClassNamePrefix('PHP_Timer');
+            $blacklist->addClassNamePrefix('PHP_Token');
+            $blacklist->addClassNamePrefix('Symfony');
+            $blacklist->addClassNamePrefix('Text_Template');
+            $blacklist->addClassNamePrefix('Doctrine\Instantiator');
+
+            foreach ($this->backupStaticAttributesBlacklist as $class => $attributes) {
+                foreach ($attributes as $attribute) {
+                    $blacklist->addStaticAttribute($class, $attribute);
+                }
+            }
+        }
+
+        return new Snapshot(
+            $blacklist,
+            $backupGlobals,
+            $this->backupStaticAttributes,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+        );
     }
 
     /**
@@ -630,52 +698,6 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
         }
 
         $this->outputCallback = $callback;
-    }
-
-    /**
-     * Returns a mock object for the specified class.
-     *
-     * @param  string $originalClassName Name of the class to mock.
-     * @param  array|null $methods When provided, only methods whose names are in the array
-     *         are replaced with a configurable test double. The behavior
-     *         of the other methods is not changed.
-     *         Providing null means that no methods will be replaced.
-     * @param  array $arguments Parameters to pass to the original class' constructor.
-     * @param  string $mockClassName Class name for the generated test double class.
-     * @param  boolean $callOriginalConstructor Can be used to disable the call to the original class' constructor.
-     * @param  boolean $callOriginalClone Can be used to disable the call to the original class' clone constructor.
-     * @param  boolean $callAutoload Can be used to disable __autoload() during the generation of the test double class.
-     * @param  boolean $cloneArguments
-     * @param  boolean $callOriginalMethods
-     * @return \PHPUnit_Framework_MockObject_MockObject
-     * @throws \PHPUnit_Framework_Exception
-     */
-    public function getMock(
-        $originalClassName,
-        $methods = [],
-        array $arguments = [],
-        $mockClassName = '',
-        $callOriginalConstructor = true,
-        $callOriginalClone = true,
-        $callAutoload = true,
-        $cloneArguments = false,
-        $callOriginalMethods = false
-    ) {
-        $mockObject = $this->getMockObjectGenerator()->getMock(
-            $originalClassName,
-            $methods,
-            $arguments,
-            $mockClassName,
-            $callOriginalConstructor,
-            $callOriginalClone,
-            $callAutoload,
-            $cloneArguments,
-            $callOriginalMethods
-        );
-
-        $this->mockObjects[] = $mockObject;
-
-        return $mockObject;
     }
 
     /**

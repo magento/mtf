@@ -29,7 +29,7 @@ class TestResult extends \PHPUnit_Framework_TestResult
      * @param float $time
      * @return void
      */
-    public function addError(\PHPUnit_Framework_Test $test, \Exception $e, $time)
+    public function addError(\PHPUnit_Framework_Test $test, $e, $time)
     {
         $e = $this->wrapException($e);
         $variation = 0;
@@ -69,6 +69,10 @@ class TestResult extends \PHPUnit_Framework_TestResult
             }
         }
 
+        if ($e instanceof \Error) {
+            $e = new \PHPUnit_Framework_ExceptionWrapper($e);
+        }
+
         foreach ($this->listeners as $listener) {
             $listener->$notifyMethod($test, $e, $time);
         }
@@ -94,7 +98,7 @@ class TestResult extends \PHPUnit_Framework_TestResult
             $variation = $test->getVariationName();
         }
 
-        if ($e instanceof \PHPUnit_Framework_RiskyTest) {
+        if ($e instanceof \PHPUnit_Framework_RiskyTest || $e instanceof \PHPUnit_Framework_OutputError) {
             $this->risky[$variation] = new \PHPUnit_Framework_TestFailure($test, $e);
 
             $notifyMethod = 'addRiskyTest';
@@ -135,10 +139,12 @@ class TestResult extends \PHPUnit_Framework_TestResult
     }
 
     /**
-     * @param \Exception $exception
+     * Wrap an exception.
+     * 
+     * @param \Throwable $exception
      * @return Failure|Incomplete|Risky|Skipped
      */
-    protected function wrapException(\Exception $exception)
+    protected function wrapException(\Throwable $exception)
     {
         switch (true) {
             case ($exception instanceof \PHPUnit_Framework_RiskyTest):

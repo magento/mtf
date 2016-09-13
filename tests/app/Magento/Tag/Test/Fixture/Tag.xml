@@ -10,8 +10,7 @@
              class="Magento\Mtf\Test\Fixture\Tag"
              module="Magento_Tag"
              type="blank"
-             entity_type="test_fixture"
-             >
-        <field name="empty"/>
+             entity_type="test_fixture">
+        <field name="empty" />
     </fixture>
 </config>
