@@ -80,6 +80,6 @@ class Mask implements FileResolverInterface
             }
         }
 
-        return $paths;
+        return $this->moduleResolver->sortFilesByModuleSequence($paths);
     }
 }

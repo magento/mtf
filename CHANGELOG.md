@@ -1,3 +1,5 @@
+* Added an ability to replace fields value in repositories using config file
+
 1.0.0-rc.37
 ===========
 * Updated radio button element to get and set value based on label
