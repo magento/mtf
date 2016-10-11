@@ -15,6 +15,7 @@
     <preference for="Magento\Mtf\ObjectManager\FactoryInterface" type="Magento\Mtf\ObjectManager\Factory"/>
     <preference for="Magento\Mtf\Config\ReaderInterface" type="Magento\Mtf\Config\Reader\Filesystem"/>
     <preference for="Magento\Mtf\ObjectManager\ConfigInterface" type="Magento\Mtf\ObjectManager\Config\Config"/>
+    <preference for="Magento\Mtf\Util\ModuleResolver\SequenceSorterInterface" type="Magento\Mtf\Util\ModuleResolver\SequenceSorter" />
     <type name="Magento\Mtf\Client\Element\SimpleElement" shared="false"/>
     <type name="Magento\Mtf\Block\BlockInterface" shared="false"/>
     <type name="Magento\Mtf\Page\PageInterface" shared="false"/>
@@ -195,7 +196,7 @@
     </virtualType>
     <virtualType name="Magento\Mtf\Repository\Reader" type="Magento\Mtf\Config\Reader\Filesystem">
         <arguments>
-            <argument name="fileResolver" xsi:type="object">Magento\Mtf\Config\FileResolver\Mask</argument>
+            <argument name="fileResolver" xsi:type="object">Magento\Mtf\Repository\Config\FileResolver\Mask</argument>
             <argument name="converter" xsi:type="object">Magento\Mtf\Repository\Converter</argument>
             <argument name="schemaLocator" xsi:type="object">Magento\Mtf\Repository\Config\SchemaLocator</argument>
             <argument name="idAttributes" xsi:type="array">
@@ -509,6 +510,13 @@
     <type name="Magento\Mtf\Fixture\FixtureFactory">
         <arguments>
             <argument name="configData" xsi:type="object">Magento\Mtf\Fixture\Config\Data</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Mtf\Repository\Config\FileResolver\Mask">
+        <arguments>
+            <argument name="additionalFiles" xsi:type="array">
+                <item name="0" xsi:type="string">etc/repository_replacer*.xml</item>
+            </argument>
         </arguments>
     </type>
 </config>

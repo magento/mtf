@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -24,7 +24,7 @@ class Mask implements FileResolverInterface
     /**
      * Constructor
      *
-     * @param ModuleResolver $moduleResolver
+     * @param ModuleResolver|null $moduleResolver
      */
     public function __construct(ModuleResolver $moduleResolver = null)
     {
@@ -44,8 +44,22 @@ class Mask implements FileResolverInterface
      */
     public function get($filename, $scope)
     {
-        $modulesPath = $this->moduleResolver->getModulesPath();
+        $paths = $this->getFileCollection($filename, $scope);
+
+        return new File($paths);
+    }
+
+    /**
+     * Get scope of paths.
+     *
+     * @param string $filename
+     * @param string $scope
+     * @return array
+     */
+    protected function getFileCollection($filename, $scope)
+    {
         $paths = [];
+        $modulesPath = $this->moduleResolver->getModulesPath();
 
         foreach ($modulesPath as $modulePath) {
             $path = $modulePath . '/Test/' . $scope . '/';
@@ -66,7 +80,6 @@ class Mask implements FileResolverInterface
             }
         }
 
-        $iterator = new File($paths);
-        return $iterator;
+        return $this->moduleResolver->sortFilesByModuleSequence($paths);
     }
 }

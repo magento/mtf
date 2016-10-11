@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Magento. All rights reserved.
+ * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -56,6 +56,15 @@ class ModuleResolver
     private static $instance = null;
 
     /**
+     * SequenceSorter instance.
+     *
+     * @var ModuleResolver\SequenceSorterInterface
+     */
+    protected $sequenceSorter;
+
+    /**
+     * Get ModuleResolver instance.
+     *
      * @return ModuleResolver
      */
     public static function getInstance()
@@ -73,12 +82,13 @@ class ModuleResolver
      */
     private function __construct(\Magento\Mtf\Config\DataInterface $configuration = null)
     {
+        $objectManager = \Magento\Mtf\ObjectManagerFactory::getObjectManager();
         if ($configuration) {
             $this->configuration = $configuration;
         } else {
-            $this->configuration = \Magento\Mtf\ObjectManagerFactory::getObjectManager()
-                ->get('Magento\Mtf\Config\GlobalConfig');
+            $this->configuration = $objectManager->get('Magento\Mtf\Config\GlobalConfig');
         }
+        $this->sequenceSorter = $objectManager->get('Magento\Mtf\Util\ModuleResolver\SequenceSorterInterface');
     }
 
     /**
@@ -202,5 +212,16 @@ class ModuleResolver
             return $response;
         }
         return json_decode($response);
+    }
+
+    /**
+     * Sort files according module sequence.
+     *
+     * @param array $files
+     * @return array
+     */
+    public function sortFilesByModuleSequence(array $files)
+    {
+        return $this->sequenceSorter->sort($files);
     }
 }
