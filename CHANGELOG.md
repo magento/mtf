@@ -1,3 +1,5 @@
+* Fixed issue with using not existing in PHP 5.6 interface for wrapping exception
+
 1.0.0-rc.48
 ===========
 * Updated dependencies to use the latest PHPUnit version 
