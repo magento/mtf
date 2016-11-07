@@ -36,4 +36,14 @@ class UploadElement extends SimpleElement
     {
         throw new \Exception('Not applicable for this class of elements.');
     }
+
+    /**
+     * Check whether element is present on the page.
+     *
+     * @return bool
+     */
+    public function isDisabled()
+    {
+        return $this->isPresent();
+    }
 }

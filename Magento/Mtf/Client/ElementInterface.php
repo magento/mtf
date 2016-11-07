@@ -44,6 +44,13 @@ interface ElementInterface
     public function isVisible();
 
     /**
+     * Check whether element is present in the DOM.
+     *
+     * @return bool
+     */
+    public function isPresent();
+
+    /**
      * Check whether element is enabled
      *
      * @return bool
