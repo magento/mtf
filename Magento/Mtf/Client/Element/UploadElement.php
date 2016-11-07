@@ -44,6 +44,6 @@ class UploadElement extends SimpleElement
      */
     public function isDisabled()
     {
-        return $this->isPresent();
+        return !$this->isPresent();
     }
 }
