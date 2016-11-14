@@ -542,6 +542,7 @@ class Driver implements DriverInterface
         foreach ($keys as $key) {
             $this->driver->keys($key);
         }
+        $this->triggerChangeEvent($element);
     }
 
     /**

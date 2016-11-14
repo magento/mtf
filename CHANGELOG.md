@@ -1,3 +1,5 @@
+* Add trigger change event is keys method for selenium driver
+
 1.0.0-rc.48
 ===========
 * Updated dependencies to use the latest PHPUnit version 
