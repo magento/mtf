@@ -1,4 +1,4 @@
-* Add trigger change event is keys method for selenium driver
+* Add change trigger event to keys method for selenium driver
 
 1.0.0-rc.48
 ===========
