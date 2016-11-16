@@ -36,6 +36,14 @@ interface DriverInterface
     public function rightClick(ElementInterface $element);
 
     /**
+     * Check whether element is present in the DOM.
+     *
+     * @param ElementInterface $element
+     * @return bool
+     */
+    public function isPresent(ElementInterface $element);
+
+    /**
      * Check whether element is visible
      *
      * @param ElementInterface $element

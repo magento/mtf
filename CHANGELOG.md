@@ -1,3 +1,9 @@
+1.0.0-rc.49
+===========
+* Added isPresent method to the ElementInterface
+* Fixed issue with using not existing in PHP 5.6 interface for wrapping exception
+* Add change trigger event to keys method for selenium driver
+
 1.0.0-rc.48
 ===========
 * Updated dependencies to use the latest PHPUnit version 

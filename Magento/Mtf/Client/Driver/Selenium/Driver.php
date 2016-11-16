@@ -55,6 +55,13 @@ class Driver implements DriverInterface
     protected $pageLoader;
 
     /**
+     * Event manager instance.
+     *
+     * @var EventManagerInterface
+     */
+    protected $eventManager;
+
+    /**
      * @constructor
      * @param DataInterface $configuration
      * @param RemoteDriverFactory $remoteDriverFactory
@@ -371,6 +378,26 @@ class Driver implements DriverInterface
     }
 
     /**
+     * Check whether element is present in the DOM.
+     *
+     * @param ElementInterface $element
+     * @return bool
+     */
+    public function isPresent(ElementInterface $element)
+    {
+        $isPresent = true;
+        $nativeElement = null;
+        try {
+            $this->eventManager->dispatchEvent(['is_present'], [__METHOD__, $element->getAbsoluteSelector()]);
+            $nativeElement = $this->getNativeElement($element, false);
+        } catch (\PHPUnit_Extensions_Selenium2TestCase_WebDriverException $e) {
+            $isPresent = false;
+        }
+
+        return $nativeElement !== null && $isPresent;
+    }
+
+    /**
      * Check whether element is visible.
      *
      * @param ElementInterface $element
@@ -542,6 +569,7 @@ class Driver implements DriverInterface
         foreach ($keys as $key) {
             $this->driver->keys($key);
         }
+        $this->triggerChangeEvent($element);
     }
 
     /**

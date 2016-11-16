@@ -141,10 +141,10 @@ class TestResult extends \PHPUnit_Framework_TestResult
     /**
      * Wrap an exception.
      * 
-     * @param \Throwable $exception
+     * @param \Exception $exception
      * @return Failure|Incomplete|Risky|Skipped
      */
-    protected function wrapException(\Throwable $exception)
+    protected function wrapException(\Exception $exception)
     {
         switch (true) {
             case ($exception instanceof \PHPUnit_Framework_RiskyTest):
