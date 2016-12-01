@@ -757,6 +757,16 @@ class Driver implements DriverInterface
     }
 
     /**
+     * Open new tab in Browser.
+     *
+     * @return void
+     */
+    public function openWindow()
+    {
+        $this->driver->execute(['script' => 'window.open()', 'args' => []]);
+    }
+
+    /**
      * Close the current window or specified one.
      *
      * @param string|null $handle [optional]

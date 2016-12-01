@@ -1,3 +1,5 @@
+* Added possibility to open new tab
+
 1.0.0-rc.48
 ===========
 * Updated dependencies to use the latest PHPUnit version 
