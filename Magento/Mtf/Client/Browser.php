@@ -132,6 +132,7 @@ final class Browser implements BrowserInterface
     public function openWindow()
     {
         $this->driver->openWindow();
+        $this->selectWindow();
     }
 
     /**
