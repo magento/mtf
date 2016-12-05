@@ -60,6 +60,13 @@ interface BrowserInterface
     public function switchToFrame(Locator $locator = null);
 
     /**
+     * Open new tab in Browser.
+     *
+     * @return void
+     */
+    public function openWindow();
+
+    /**
      * Close the current window or specified one.
      *
      * @param string|null $handle [optional]
