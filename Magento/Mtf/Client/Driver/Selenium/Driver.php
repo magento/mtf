@@ -757,7 +757,7 @@ class Driver implements DriverInterface
     }
 
     /**
-     * Open new tab in Browser.
+     * Open new tab/window in Browser.
      *
      * @return void
      */

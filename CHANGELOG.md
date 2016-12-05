@@ -1,4 +1,4 @@
-* Added possibility to open new tab
+* Added an ability to open new tab/window
 
 1.0.0-rc.48
 ===========

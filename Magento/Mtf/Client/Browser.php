@@ -125,11 +125,11 @@ final class Browser implements BrowserInterface
     }
 
     /**
-     * Open new tab in Browser.
+     * Open new tab/window in Browser and switch to it.
      *
      * @return void
      */
-    public function openWindow()
+    public function openNewWindow()
     {
         $this->driver->openWindow();
         $this->selectWindow();
