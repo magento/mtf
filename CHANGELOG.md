@@ -1,3 +1,5 @@
+* Ignore PEER verification for curl transfer
+
 1.0.0-rc.48
 ===========
 * Updated dependencies to use the latest PHPUnit version 
