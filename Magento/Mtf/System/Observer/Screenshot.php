@@ -11,12 +11,12 @@ use Magento\Mtf\Client\BrowserInterface;
 use Magento\Mtf\System\Event\State as EventState;
 
 /**
- * Create screnshot Observer
+ * Create screenshot Observer.
  */
 class Screenshot extends AbstractObserver
 {
     /**
-     * Image extension
+     * Image extension.
      */
     const FILE_EXTENSION = '.png';
 
@@ -26,6 +26,7 @@ class Screenshot extends AbstractObserver
     protected $browser;
 
     /**
+     * @constructor
      * @param Logger $logger
      * @param EventState $state
      * @param BrowserInterface $browser
@@ -37,6 +38,8 @@ class Screenshot extends AbstractObserver
     }
 
     /**
+     * Collect screenshot artifact to storage.
+     *
      * @param Event $event
      * @return void
      */
@@ -44,7 +47,7 @@ class Screenshot extends AbstractObserver
     {
         $this->logger->log(
             $this->browser->getScreenshotData(),
-            $this->createDestinationDirectory('screenshots') . '/' . $event->getIdentifier() . self::FILE_EXTENSION
+            $this->createDestinationDirectory('screenshots') . '/' . $event->getFileIdentifier() . self::FILE_EXTENSION
         );
     }
 }

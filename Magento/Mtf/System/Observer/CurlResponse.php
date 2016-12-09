@@ -29,6 +29,6 @@ class CurlResponse extends AbstractObserver
     public function process(Event $event)
     {
         $directory = $this->createDestinationDirectory('curl-response');
-        $this->logger->log($event->getSubjects()[0], $directory . '/' . $event->getIdentifier() . '.html');
+        $this->logger->log($event->getSubjects()[0], $directory . '/' . $event->getFileIdentifier() . '.html');
     }
 }
