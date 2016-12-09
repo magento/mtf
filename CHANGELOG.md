@@ -1,3 +1,5 @@
+* Fixed an issue with missing click_after event
+* Added date and time prefix to file artifacts name 
 * Added an ability to replace fields value in repositories using config file
 
 1.0.0-rc.37

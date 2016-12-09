@@ -11,23 +11,24 @@ use Magento\Mtf\Client\BrowserInterface;
 use Magento\Mtf\System\Event\State as EventState;
 
 /**
- * Observer for obtaining html source of the current page
+ * Observer for obtaining html source of the current page.
  */
 class SourceCode extends AbstractObserver
 {
     /**
-     * File name of source code
+     * File name of source code.
      */
     const FILE_NAME = 'source_code.log';
 
     /**
-     * Browser object
+     * Browser object.
      *
      * @var BrowserInterface
      */
     protected $browser;
 
     /**
+     * @constructor
      * @param Logger $logger
      * @param EventState $state
      * @param BrowserInterface $browser
@@ -39,7 +40,7 @@ class SourceCode extends AbstractObserver
     }
 
     /**
-     * Collect page source artifact to storage
+     * Collect page source artifact to storage.
      *
      * @param Event $event
      * @return void
@@ -47,6 +48,6 @@ class SourceCode extends AbstractObserver
     public function process(Event $event)
     {
         $directory = $this->createDestinationDirectory('page-source');
-        $this->logger->log($this->browser->getHtmlSource(), $directory . '/' . $event->getIdentifier() . '.html');
+        $this->logger->log($this->browser->getHtmlSource(), $directory . '/' . $event->getFileIdentifier() . '.html');
     }
 }
