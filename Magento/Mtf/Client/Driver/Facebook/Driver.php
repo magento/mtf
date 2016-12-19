@@ -609,6 +609,16 @@ final class Driver implements DriverInterface
     }
 
     /**
+     * Open new tab/window in Browser.
+     *
+     * @return void
+     */
+    public function openWindow()
+    {
+        $this->driver->createNewSession();
+    }
+
+    /**
      * Close the current window or specified one.
      *
      * @param string|null $handle [optional]
