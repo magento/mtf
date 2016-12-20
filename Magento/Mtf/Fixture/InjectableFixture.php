@@ -167,7 +167,7 @@ class InjectableFixture implements FixtureInterface
                 $value = $this->skipEmptyValue($value);
             }
 
-            if (!is_string($data[$name]) || null !== $value) {
+            if (null === $data[$name] || null !== $value) {
                 $this->data[$name] = $value;
             }
         }
