@@ -1,3 +1,8 @@
+1.0.0-rc.50
+===========
+* Added an ability to open new tab/window
+* Ignore PEER verification for curl transfer
+
 1.0.0-rc.49
 ===========
 * Added isPresent method to the ElementInterface
