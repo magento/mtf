@@ -134,7 +134,7 @@ class Dom
             }
 
             $this->_mergeAttributes($matchedNode, $node);
-            if ($node->nodeValue === '' && $matchedNode->nodeValue !== '') {
+            if ($node->nodeValue === '' && $matchedNode->nodeValue !== '' && $matchedNode->childNodes->length === 1) {
                 $this->replaceNodeValue($parentPath, $node, $matchedNode);
             }
             if (!$node->hasChildNodes()) {
