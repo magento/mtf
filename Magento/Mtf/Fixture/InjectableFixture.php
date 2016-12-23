@@ -141,10 +141,7 @@ class InjectableFixture implements FixtureInterface
         if (isset($this->section) && is_array(current($data))) {
             $this->data['section'] = $data;
             $this->data = $this->replacer->apply($this->data);
-            if ($persist === true) {
-                $this->persist();
-            }
-            return;
+            $data = $this->data;
         }
 
         foreach ($data as $name => $value) {

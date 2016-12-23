@@ -222,6 +222,26 @@ final class Driver implements DriverInterface
     }
 
     /**
+     * Check whether element is present in the DOM.
+     *
+     * @param ElementInterface $element
+     * @return bool
+     */
+    public function isPresent(ElementInterface $element)
+    {
+        $isPresent = true;
+        $nativeElement = null;
+        try {
+            $this->eventManager->dispatchEvent(['is_present'], [__METHOD__, $element->getAbsoluteSelector()]);
+            $nativeElement = $this->getNativeElement($element, false);
+        } catch (\PHPUnit_Extensions_Selenium2TestCase_WebDriverException $e) {
+            $isPresent = false;
+        }
+
+        return $nativeElement !== null && $isPresent;
+    }
+
+    /**
      * Check whether element is visible
      *
      * @param ElementInterface $element
@@ -586,6 +606,16 @@ final class Driver implements DriverInterface
             $this->eventManager->dispatchEvent(['switch_to_frame'], ['Switch to main window']);
             $this->driver->switchTo()->frame();
         }
+    }
+
+    /**
+     * Open new tab/window in Browser.
+     *
+     * @return void
+     */
+    public function openWindow()
+    {
+        $this->driver->createNewSession();
     }
 
     /**

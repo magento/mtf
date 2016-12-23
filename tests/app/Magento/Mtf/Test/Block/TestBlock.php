@@ -11,12 +11,12 @@ use Magento\Mtf\Test\Fixture\Test;
 use Magento\Mtf\Fixture\FixtureInterface;
 
 /**
- * Class TestBlock
+ * TestBlock form.
  */
 class TestBlock extends Form
 {
     /**
-     * Array of placeholders applied on selector
+     * Array of placeholders applied on selector.
      *
      * @var array
      */
@@ -25,7 +25,7 @@ class TestBlock extends Form
     ];
 
     /**
-     * Click on element
+     * Click on element.
      *
      * @param Test $fixture
      * @return void
@@ -38,7 +38,7 @@ class TestBlock extends Form
     }
 
     /**
-     * Perform search
+     * Perform search.
      *
      * @param FixtureInterface $fixture
      * @return void

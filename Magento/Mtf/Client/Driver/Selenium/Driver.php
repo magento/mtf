@@ -55,6 +55,13 @@ class Driver implements DriverInterface
     protected $pageLoader;
 
     /**
+     * Event manager instance.
+     *
+     * @var EventManagerInterface
+     */
+    protected $eventManager;
+
+    /**
      * @constructor
      * @param DataInterface $configuration
      * @param RemoteDriverFactory $remoteDriverFactory
@@ -298,7 +305,7 @@ class Driver implements DriverInterface
         if (preg_match_all('/(([^ ]+)="([^"]+)")/', $htmlCode, $matches)) {
             foreach ($matches[0] as $match) {
                 $match = str_replace('\n', '', $match); // skipped '\n'
-                $match = str_replace("'", '"', $match); // escaped quotes
+                $match = str_replace("'", "\'", $match); // escaped quotes
                 $elementSelector .= "[{$match}]";
             }
         }
@@ -368,6 +375,26 @@ class Driver implements DriverInterface
 
         $this->driver->moveto($this->getNativeElement($element));
         $this->driver->click(\PHPUnit_Extensions_Selenium2TestCase_SessionCommand_Click::RIGHT);
+    }
+
+    /**
+     * Check whether element is present in the DOM.
+     *
+     * @param ElementInterface $element
+     * @return bool
+     */
+    public function isPresent(ElementInterface $element)
+    {
+        $isPresent = true;
+        $nativeElement = null;
+        try {
+            $this->eventManager->dispatchEvent(['is_present'], [__METHOD__, $element->getAbsoluteSelector()]);
+            $nativeElement = $this->getNativeElement($element, false);
+        } catch (\PHPUnit_Extensions_Selenium2TestCase_WebDriverException $e) {
+            $isPresent = false;
+        }
+
+        return $nativeElement !== null && $isPresent;
     }
 
     /**
@@ -542,6 +569,7 @@ class Driver implements DriverInterface
         foreach ($keys as $key) {
             $this->driver->keys($key);
         }
+        $this->triggerChangeEvent($element);
     }
 
     /**
@@ -754,6 +782,16 @@ class Driver implements DriverInterface
         }
 
         $this->driver->frame($element);
+    }
+
+    /**
+     * Open new tab/window in Browser.
+     *
+     * @return void
+     */
+    public function openWindow()
+    {
+        $this->driver->execute(['script' => 'window.open()', 'args' => []]);
     }
 
     /**

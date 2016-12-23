@@ -162,6 +162,16 @@ class SimpleElement implements ElementInterface
     }
 
     /**
+     * Check whether element is present in the DOM.
+     *
+     * @return bool
+     */
+    public function isPresent()
+    {
+        return $this->driver->isPresent($this);
+    }
+
+    /**
      * Check whether element is selected
      *
      * @return bool

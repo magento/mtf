@@ -11,11 +11,8 @@
              type="blank"
              entity_type="test_fixture"
              repository_class="Magento\BlockRender\Test\Repository\BlockRender"
-             handler_interface="Magento\BlockRender\Test\Handler\BlockRender\BlockRenderInterface"
              class="Magento\BlockRender\Test\Fixture\BlockRender"
-             >
-        <field name="locator" is_required="1">
-            <default_value xsi:type="string">body</default_value>
-        </field>
+             extends="\Magento\Mtf\Test\Fixture\Test">
+        <field name="type" />
     </fixture>
 </config>

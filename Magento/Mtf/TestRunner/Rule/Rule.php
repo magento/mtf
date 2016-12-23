@@ -32,6 +32,16 @@ class Rule
     }
 
     /**
+     * Get filters.
+     *
+     * @return FilterInterface[]
+     */
+    public function getFilters()
+    {
+        return $this->filters;
+    }
+
+    /**
      * Apply rule.
      *
      * @param string $class

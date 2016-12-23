@@ -185,10 +185,6 @@ abstract class Injectable extends Functional
         $this->eventManager->dispatchEvent(['execution'], ['[start variation execution]']);
         // remove constraint object from previous test case variation iteration
         $this->constraint = null;
-
-        $variationName = isset($variation['variation_name']) ? $variation['variation_name'] : $variation['id'];
-        $this->setVariationName($variationName);
-
         $arguments = isset($variation['arguments'])
             ? $variation['arguments']
             : [];
@@ -205,7 +201,6 @@ abstract class Injectable extends Functional
      * Override to run attached constraint if available.
      *
      * @return mixed
-     * @throws \PHPUnit_Framework_Exception
      */
     protected function runTest()
     {
@@ -266,7 +261,9 @@ abstract class Injectable extends Functional
             $arguments = array_merge($variation['arguments'], $arguments);
         }
         if (isset($variation['arguments']['variation_name'])) {
-            $variation['variation_name'] = $variation['arguments']['variation_name'];
+            $this->setVariationName($variation['arguments']['variation_name']);
+        } else {
+            $this->setVariationName($variation['id']);
         }
         $resolvedArguments = $this->getObjectManager()
             ->prepareArguments($this, $this->getName(false), $arguments);

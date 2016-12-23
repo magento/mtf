@@ -1,4 +1,36 @@
+1.0.0-rc.51
+===========
 * Fixed an issue with xsi:type null in merging of variation and building of repository
+
+1.0.0-rc.50
+===========
+* Added an ability to open new tab/window
+* Ignore PEER verification for curl transfer
+
+1.0.0-rc.49
+===========
+* Added isPresent method to the ElementInterface
+* Fixed issue with using not existing in PHP 5.6 interface for wrapping exception
+* Add change trigger event to keys method for selenium driver
+
+1.0.0-rc.48
+===========
+* Updated dependencies to use the latest PHPUnit version
+
+1.0.0-rc.47
+===========
+* Added an ability to run specified variation by name
+* Fixed a bug with wrong variation name in reports when variation has been failed before test execution
+
+1.0.0-rc.46
+===========
+* Added an ability to replace fields value in repositories using config file
+* Added an ability to persist sources for ConfigData fixture
+
+1.0.0-rc.45
+===========
+* Added an ability to load configurations in nested folders
+* Added and configured generator pool
 
 1.0.0-rc.44
 ===========
