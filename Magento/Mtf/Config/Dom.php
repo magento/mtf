@@ -129,13 +129,14 @@ class Dom
                 && $node->getAttribute($this->_typeAttributeName)
                 !== $matchedNode->getAttribute($this->_typeAttributeName)
             ) {
-                $parentMatchedNode = $this->_getMatchedNode($parentPath);
-                $newNode = $this->_dom->importNode($node, true);
-                $parentMatchedNode->replaceChild($newNode, $matchedNode);
+                $this->replaceNodeValue($parentPath, $node, $matchedNode);
                 return;
             }
 
             $this->_mergeAttributes($matchedNode, $node);
+            if ($node->nodeValue === '' && $matchedNode->nodeValue !== '' && $matchedNode->childNodes->length === 1) {
+                $this->replaceNodeValue($parentPath, $node, $matchedNode);
+            }
             if (!$node->hasChildNodes()) {
                 return;
             }
@@ -159,6 +160,22 @@ class Dom
             $newNode = $this->_dom->importNode($node, true);
             $parentMatchedNode->appendChild($newNode);
         }
+    }
+
+    /**
+     * Replace node value.
+     *
+     * @param string $parentPath
+     * @param \DOMElement $node
+     * @param \DOMElement $matchedNode
+     *
+     * @return void
+     */
+    private function replaceNodeValue($parentPath, \DOMElement $node, \DOMElement $matchedNode)
+    {
+        $parentMatchedNode = $this->_getMatchedNode($parentPath);
+        $newNode = $this->_dom->importNode($node, true);
+        $parentMatchedNode->replaceChild($newNode, $matchedNode);
     }
 
     /**

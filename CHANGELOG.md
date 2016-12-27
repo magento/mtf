@@ -1,3 +1,7 @@
+1.0.0-rc.51
+===========
+* Fixed an issue with xsi:type null in merging of variation and building of repository
+
 1.0.0-rc.50
 ===========
 * Added an ability to open new tab/window
@@ -11,7 +15,7 @@
 
 1.0.0-rc.48
 ===========
-* Updated dependencies to use the latest PHPUnit version 
+* Updated dependencies to use the latest PHPUnit version
 
 1.0.0-rc.47
 ===========
