@@ -1,3 +1,4 @@
+* Added an ability scroll to up if element is overlapped by another element
 * Fixed an issue with missing click_after event
 * Added date and time prefix to file artifacts name 
 * Added an ability to replace fields value in repositories using config file
