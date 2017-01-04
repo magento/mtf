@@ -1,4 +1,7 @@
-* Added posibility to send any variables from phpunit to the tests in parallel run
+1.0.0-rc.52
+===========
+* Copyright year update
+* Added possibility to send any variables from phpunit to the tests in parallel run
 
 1.0.0-rc.51
 ===========
