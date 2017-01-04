@@ -1,3 +1,5 @@
+* Added posibility to send any variables from phpunit to the tests in parallel run
+
 1.0.0-rc.51
 ===========
 * Fixed an issue with xsi:type null in merging of variation and building of repository
