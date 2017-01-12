@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2016 Magento. All rights reserved.
+ * Copyright © 2017 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Mtf\TestRunner\Process;
@@ -48,24 +48,9 @@ class Environment
             'app_backend_url'
         ];
 
-        $globalKeys = [
-            'app_config_path',
-            'server_config_path',
-            'isolation_config_path',
-            'handlers_config_path',
-            'install_config_path',
-            'testsuite_rule',
-            'testsuite_rule_path',
-            'app_instances',
-            'events_preset',
-            'log_directory',
-            'module_whitelist',
-            'mage_mode'
-        ];
-
         $globalEnvironmentVariables = [];
-        foreach ($globalKeys as $key) {
-            if (isset($_ENV[$key])) {
+        foreach ($_ENV as $key => $value) {
+            if (strpos($key, '_url') === false && strpos($key, 'app_instances') === false) {
                 $globalEnvironmentVariables[$key] = $_ENV[$key];
             }
         }
