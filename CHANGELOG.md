@@ -1,3 +1,8 @@
+1.0.0-rc.53
+===========
+* Default value is applied for events preset configuration
+* Added an ability to run CLI commands
+
 1.0.0-rc.52
 ===========
 * Copyright year update
