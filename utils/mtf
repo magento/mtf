@@ -1,0 +1,31 @@
+<?php
+/**
+ * Copyright © 2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+if (PHP_SAPI !== 'cli') {
+    echo 'utils/mtf must be run as a CLI application';
+    exit(1);
+}
+
+try {
+    require 'bootstrap.php';
+} catch (\Exception $e) {
+    echo 'Autoload error: ' . $e->getMessage();
+    exit(1);
+}
+try {
+    $handler = new \Magento\Framework\App\ErrorHandler();
+    set_error_handler([$handler, 'handler']);
+    $application = $objectManager->create('Magento\Mtf\Console\Cli');
+    $application->run();
+} catch (\Exception $e) {
+    while ($e) {
+        echo $e->getMessage();
+        echo $e->getTraceAsString();
+        echo "\n\n";
+        $e = $e->getPrevious();
+    }
+    exit(1);
+}

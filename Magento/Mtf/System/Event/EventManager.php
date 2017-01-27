@@ -64,7 +64,7 @@ class EventManager implements EventManagerInterface
             ? $_ENV['events_preset']
             : 'default';
 
-        $this->map = $configuration->get('preset/' . $presetName . '/observer');
+        $this->map = $configuration->get('preset/' . $presetName . '/observer', []);
     }
 
     /**

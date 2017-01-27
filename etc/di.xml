@@ -6,6 +6,7 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../Magento/Mtf/ObjectManager/etc/config.xsd">
+    <preference for="Magento\Mtf\Console\CommandListInterface" type="Magento\Mtf\Console\CommandList" />
     <preference for="Magento\Mtf\Client\DriverInterface" type="Magento\Mtf\Client\Driver\Selenium\Driver" />
     <preference for="Magento\Mtf\Client\BrowserInterface" type="Magento\Mtf\Client\Browser" />
     <preference for="Magento\Mtf\Client\ElementInterface" type="Magento\Mtf\Client\Element\SimpleElement" />
@@ -37,6 +38,14 @@
     <preference for="Magento\Mtf\Config\ValidationStateInterface" type="Magento\Mtf\Config\ValidationState" />
     <preference for="Magento\Mtf\Data\Argument\InterpreterInterface" type="Magento\Mtf\Data\Argument\Interpreter\Composite" />
     <preference for="Magento\Mtf\Config\DataInterface" type="Magento\Mtf\Config\GlobalConfig" />
+
+    <type name="Magento\Mtf\Console\Cli">
+        <arguments>
+            <argument name="name" xsi:type="string">Magento Functional Testing Framework</argument>
+            <argument name="version" xsi:type="string">0.0.1</argument>
+        </arguments>
+    </type>
+
     <type name="Magento\Mtf\Config\ValidationState">
         <arguments>
             <argument name="appMode" xsi:type="string">developer</argument>
