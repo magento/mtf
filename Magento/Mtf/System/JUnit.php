@@ -66,7 +66,10 @@ class JUnit extends \PHPUnit_Util_Log_JUnit
             $errors = $xpath->query('//testsuite[@name="' . $class->name . '"]//failure')->length;
             $entries->item(0)->setAttribute("failures", $errors);
 
-            $entries->item(0)->setAttribute("time", $entries->item(0)->getAttribute("time") + $time);
+            $entries->item(0)->setAttribute(
+                "time",
+                (float)$entries->item(0)->getAttribute("time") + (float)$time
+            );
 
             if (method_exists($test, 'hasOutput') && $test->hasOutput()) {
                 $systemOut = $this->document->createElement('system-out');
