@@ -10,7 +10,7 @@
     </preset>
     <preset name="base">
         <observer class="Magento\Mtf\System\Observer\PageUrl">
-            <tag name="click_after" />
+            <tag name="click_before" />
             <tag name="accept_alert_after" />
             <tag name="dismiss_alert_after" />
             <tag name="open_after" />

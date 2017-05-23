@@ -271,7 +271,7 @@ class Form extends Block
         $context = ($element === null) ? $this->_rootElement : $element;
         foreach ($fields as $key => $field) {
             if (!isset($field['value'])) {
-                $data[$key] = $this->_getData($field);
+                $data[$key] = $this->_getData($field, $context);
             } else {
                 $element = $this->getElement($context, $field);
                 $data[$key] = $element->getValue();
