@@ -33,6 +33,7 @@
         <env name="testsuite_rule_path" value="Magento/Mtf/TestSuite/MtfTests" />
         <env name="log_directory" value="var/log" />
         <env name="events_preset" value="base" />
+        <env name="rerun_count" value="0" />
     </php>
 
 </phpunit>

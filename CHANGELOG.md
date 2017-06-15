@@ -1,3 +1,5 @@
+* Added an ability to rerun failed Variation
+
 1.0.0-rc.53
 ===========
 * Default value is applied for events preset configuration
