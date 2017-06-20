@@ -1,3 +1,15 @@
+1.0.0-rc.56
+===========
+* Added an ability to rerun failed Variation
+
+1.0.0-rc.55
+===========
+* Fixed issue with triggerChangeEvent() in Selenium Driver
+
+1.0.0-rc.54
+===========
+* Added support for PHP 7.1.x
+
 1.0.0-rc.53
 ===========
 * Default value is applied for events preset configuration

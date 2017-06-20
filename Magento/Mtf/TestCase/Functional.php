@@ -24,6 +24,11 @@ use Magento\Mtf\TestRunner\Process\ProcessManager;
 abstract class Functional extends \PHPUnit_Framework_TestCase
 {
     /**
+     * Message of variation rerun.
+     */
+    const RERUN_MESSAGE = 'Variation has failed with an exception and will be restarted.';
+
+    /**
      * @var \Magento\Mtf\ObjectManager
      */
     protected $objectManager;
@@ -396,6 +401,12 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
 
         // Workaround for missing "finally".
         if (isset($e)) {
+            if (!empty($this->rerunCount)
+                && $this->rerunCount > 0
+                && $this->getStatus() !== \PHPUnit_Runner_BaseTestRunner::STATUS_INCOMPLETE) {
+                self::markTestIncomplete(self::RERUN_MESSAGE);
+                return;
+            }
             $this->onNotSuccessfulTest($e);
         }
     }
