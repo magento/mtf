@@ -416,7 +416,7 @@ class Driver implements DriverInterface
         $this->focus($element);
 
         $wrappedElement->value($value);
-        $this->triggerChangeEvent($wrappedElement->attribute('id'));
+        $this->triggerChangeEvent($element);
     }
 
     /**
@@ -531,7 +531,6 @@ class Driver implements DriverInterface
         foreach ($keys as $key) {
             $this->driver->keys($key);
         }
-        $this->triggerChangeEvent($wrappedElement->attribute('id'));
     }
 
     /**
@@ -923,11 +922,12 @@ class Driver implements DriverInterface
     /**
      * Trigger change on event.
      *
-     * @param string $elementId
+     * @param ElementInterface $element
      * @return void
      */
-    protected function triggerChangeEvent($elementId)
+    protected function triggerChangeEvent(ElementInterface $element)
     {
+        $elementId = $element->getAttribute('id');
         if ($elementId) {
             $js = "if (window.jQuery != undefined)";
             $js .= "{jQuery('[id=\"$elementId\"]').change(); jQuery('[id=\"$elementId\"]').keyup();}";
