@@ -1,5 +1,3 @@
-1.0.0-rc.48
-===========
 * Added an ability scroll to left if element is overlapped by another element
 
 1.0.0-rc.47
