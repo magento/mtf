@@ -317,7 +317,8 @@ class Driver implements DriverInterface
     private function prepareJSForScrollToUpByElement($elementSelector, $parentDepth, $blockedElementSelector)
     {
         return "var element = document.querySelector('$elementSelector'),
-                    height = 100;
+                    height = 100,
+                    width = 0;
 
                 // If element is founded
                 if (element !== null) {
@@ -329,15 +330,26 @@ class Driver implements DriverInterface
                          }
                     }
                     // If element is 'body', then need scroll and throw exception
-                    if (element === document.querySelector('body')) {
+                    var bodyElement = document.querySelector('body');
+                    if (element === bodyElement) {
                          return false;
                     }
 
-                    var elementHeight = element.offsetHeight;
-                    height = (elementHeight !== null) ? elementHeight : height
+                    var elementHeight = element.offsetHeight,
+                        elementWidth = element.offsetWidth;
+                        
+                    height = (elementHeight !== null) ? elementHeight : height;
+                    if (window.innerHeight / 2 < height) {
+                        height = 0;
+                    }
+                    
+                    width = (elementWidth !== null) ? elementWidth : width;
+                    if (window.innerWidth / 2 < width) {
+                        width = 0;
+                    }
                 }
 
-                scrollBy(0, -height);
+                scrollBy(-width, -height);
 
                 return true;";
     }

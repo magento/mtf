@@ -1,3 +1,5 @@
+* Added an ability scroll to left if element is overlapped by another element
+
 1.0.0-rc.47
 ===========
 * Added an ability to run specified variation by name
