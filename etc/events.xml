@@ -20,6 +20,10 @@
             <tag name="page_changed" />
             <tag name="exception" />
         </observer>
+        <observer class="Magento\Mtf\System\Observer\AllureClientError">
+            <tag name="page_changed" />
+            <tag name="exception" />
+        </observer>
         <observer class="Magento\Mtf\System\Observer\Log">
             <tag name="exception" />
             <tag name="failure" />
@@ -28,16 +32,31 @@
             <tag name="exception" />
             <tag name="failure" />
         </observer>
+        <observer class="Magento\Mtf\System\Observer\AllureSourceCode">
+            <tag name="exception" />
+            <tag name="failure" />
+        </observer>
         <observer class="Magento\Mtf\System\Observer\Screenshot">
+            <tag name="exception" />
+            <tag name="failure" />
+        </observer>
+        <observer class="Magento\Mtf\System\Observer\AllureScreenshot">
             <tag name="exception" />
             <tag name="failure" />
         </observer>
         <observer class="Magento\Mtf\System\Observer\CurlResponse">
             <tag name="curl_failed" />
         </observer>
+        <observer class="Magento\Mtf\System\Observer\AllureCurlResponse">
+            <tag name="curl_failed" />
+        </observer>
     </preset>
     <preset name="detailed" extends="base">
         <observer class="Magento\Mtf\System\Observer\ClientError">
+            <tag name="page_changed" />
+            <tag name="exception" />
+        </observer>
+        <observer class="Magento\Mtf\System\Observer\AllureClientError">
             <tag name="page_changed" />
             <tag name="exception" />
         </observer>
@@ -58,7 +77,16 @@
             <tag name="exception" />
             <tag name="page_changed" />
         </observer>
+        <observer class="Magento\Mtf\System\Observer\AllureSourceCode">
+            <tag name="exception" />
+            <tag name="page_changed" />
+        </observer>
         <observer class="Magento\Mtf\System\Observer\Screenshot">
+            <tag name="click_before" />
+            <tag name="page_changed" />
+            <tag name="exception" />
+        </observer>
+        <observer class="Magento\Mtf\System\Observer\AllureScreenshot">
             <tag name="click_before" />
             <tag name="page_changed" />
             <tag name="exception" />

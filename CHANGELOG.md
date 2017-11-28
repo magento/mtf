@@ -1,3 +1,7 @@
+1.0.0-rc.57
+===========
+* Added Allure attachment support to capture screenshots/logs
+
 1.0.0-rc.56
 ===========
 * Added an ability to rerun failed Variation
