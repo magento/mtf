@@ -1,6 +1,14 @@
-1.0.0-rc.57
+1.0.0-rc.59
+===========
+* Added possibility to press key without an element object
+
+1.0.0-rc.58
 ===========
 * Added Allure attachment support to capture screenshots/logs
+
+1.0.0-rc.57
+===========
+* Fixed an issue with blocked element selector
 
 1.0.0-rc.56
 ===========

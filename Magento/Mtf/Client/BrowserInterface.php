@@ -190,4 +190,13 @@ interface BrowserInterface
      * @return string
      */
     public function getTitle();
+
+    /**
+     * Press a modifier key.
+     *
+     * @param $key
+     * @param bool $isSpecialKey
+     * @return void
+     */
+    public function pressKey($key, $isSpecialKey = false);
 }

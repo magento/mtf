@@ -573,6 +573,23 @@ class Driver implements DriverInterface
     }
 
     /**
+     * Press a modifier key.
+     *
+     * @param string $key
+     * @param bool $isSpecialKey
+     * @return void
+     */
+    public function pressKey($key, $isSpecialKey = false)
+    {
+        if ($isSpecialKey) {
+            /** @var \PHPUnit_Extensions_Selenium2TestCase_KeysHolder $keysHolder */
+            $keysHolder = $this->objectManager->create(\PHPUnit_Extensions_Selenium2TestCase_KeysHolder::class);
+            $keysHolder->specialKey(trim($key));
+        }
+        $this->driver->keys($key);
+    }
+
+    /**
      * Wait until callback isn't null or timeout occurs.
      *
      * @param callable $callback

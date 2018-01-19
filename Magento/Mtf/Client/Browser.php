@@ -306,4 +306,16 @@ final class Browser implements BrowserInterface
     {
         return $this->driver->getTitle();
     }
+
+    /**
+     * Press a modifier key.
+     *
+     * @param $key
+     * @param bool $isSpecialKey
+     * @return void
+     */
+    public function pressKey($key, $isSpecialKey = false)
+    {
+        $this->driver->pressKey($key, $isSpecialKey);
+    }
 }

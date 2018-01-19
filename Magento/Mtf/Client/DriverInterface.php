@@ -336,4 +336,13 @@ interface DriverInterface
      * @return void
      */
     public function uploadFile(ElementInterface $element, $path);
+
+    /**
+     * Press a modifier key.
+     *
+     * @param string $key
+     * @param bool $isSpecialKey
+     * @return mixed
+     */
+    public function pressKey($key, $isSpecialKey = false);
 }

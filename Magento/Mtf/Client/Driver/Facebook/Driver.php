@@ -852,4 +852,16 @@ final class Driver implements DriverInterface
         $element = $this->getNativeElement($element, false);
         $element->sendKeys($path);
     }
+
+    /**
+     * Press a modifier key.
+     *
+     * @param string $key
+     * @param bool $isSpecialKey
+     * @return void
+     */
+    public function pressKey($key, $isSpecialKey = false)
+    {
+        $this->driver->getKeyboard()->pressKey($key);
+    }
 }
