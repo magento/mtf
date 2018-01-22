@@ -108,9 +108,14 @@ class Driver implements DriverInterface
 
         $this->driver->setBrowserUrl('about:blank');
         $params = $this->configuration->get('server/0/item/selenium');
+        $resolution = empty($params['item']['resolution']) ? null : $params['item']['resolution'];
         $this->driver->setupSpecificBrowser($params);
         $this->driver->prepareSession();
-        $this->driver->currentWindow()->maximize();
+        if ($resolution !== null) {
+            $this->driver->currentWindow()->size($resolution);
+        } else {
+            $this->driver->currentWindow()->maximize();
+        }
         $this->driver->cookie()->clear();
         $this->driver->refresh();
     }

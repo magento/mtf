@@ -1,6 +1,7 @@
 1.0.0-rc.59
 ===========
-* Added possibility to press key without an element object
+* Added possibility to press key without an element object]
+* Added possibility to setup custom resolution for browser window
 
 1.0.0-rc.58
 ===========
