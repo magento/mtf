@@ -51,13 +51,13 @@ abstract class Scenario extends Injectable
         $testCaseName = end($pathToClass);
         $config = $this->config->get('scenario');
         /** @var \Magento\Mtf\Util\SequencesSorter $sorter */
-        $sorter = $this->objectManager->create('Magento\Mtf\Util\SequencesSorter');
+        $sorter = $this->objectManager->create(\Magento\Mtf\Util\SequencesSorter::class);
         $steps = $sorter->sort(
             $config[$testCaseName]['step'],
             $config[$testCaseName]['firstStep']
         );
         $this->stepIterator = $this->objectManager->create(
-            'Magento\Mtf\Util\Iterator\Step',
+            \Magento\Mtf\Util\Iterator\Step::class,
             [
                 'steps' => $steps,
                 'testCaseName' => $testCaseName,
@@ -72,11 +72,11 @@ abstract class Scenario extends Injectable
     /**
      * Execute test variation with cleaning up data in steps after scenario execution.
      *
-     * @param \PHPUnit_Framework_TestResult $result
+     * @param \PHPUnit\Framework\TestResult $result
      * @param array $variation
      * @return void
      */
-    protected function executeTestVariation(\PHPUnit_Framework_TestResult $result, array $variation)
+    protected function executeTestVariation(\PHPUnit\Framework\TestResult $result, array $variation)
     {
         parent::executeTestVariation($result, $variation);
 

@@ -8,19 +8,29 @@ namespace Magento\Mtf\System\Event;
 /**
  * Class StateListener
  */
-class StateListener implements \PHPUnit_Framework_TestListener
+class StateListener implements \PHPUnit\Framework\TestListener
 {
 
     /**
      * An error occurred.
      *
-     * @param \PHPUnit_Framework_Test $test
+     * @param \PHPUnit\Framework\Test $test
      * @param \Exception $e
      * @param float $time
      * @return void
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function addError(\PHPUnit_Framework_Test $test, \Exception $e, $time)
+    public function addError(\PHPUnit\Framework\Test $test, \Exception $e, $time)
+    {
+        //
+    }
+
+    /**
+     * @param \PHPUnit\Framework\Test $test
+     * @param \PHPUnit\Framework\Warning $e
+     * @param float $time
+     */
+    public function addWarning(\PHPUnit\Framework\Test $test, \PHPUnit\Framework\Warning $e, $time)
     {
         //
     }
@@ -28,13 +38,13 @@ class StateListener implements \PHPUnit_Framework_TestListener
     /**
      * A failure occurred
      *
-     * @param \PHPUnit_Framework_Test $test
-     * @param \PHPUnit_Framework_AssertionFailedError $e
+     * @param \PHPUnit\Framework\Test $test
+     * @param \PHPUnit\Framework\AssertionFailedError $e
      * @param float $time
      * @return void
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function addFailure(\PHPUnit_Framework_Test $test, \PHPUnit_Framework_AssertionFailedError $e, $time)
+    public function addFailure(\PHPUnit\Framework\Test $test, \PHPUnit\Framework\AssertionFailedError $e, $time)
     {
         //
     }
@@ -42,13 +52,13 @@ class StateListener implements \PHPUnit_Framework_TestListener
     /**
      * Incomplete test
      *
-     * @param \PHPUnit_Framework_Test $test
+     * @param \PHPUnit\Framework\Test $test
      * @param \Exception $e
      * @param float $time
      * @return void
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function addIncompleteTest(\PHPUnit_Framework_Test $test, \Exception $e, $time)
+    public function addIncompleteTest(\PHPUnit\Framework\Test $test, \Exception $e, $time)
     {
         //
     }
@@ -56,13 +66,13 @@ class StateListener implements \PHPUnit_Framework_TestListener
     /**
      * Risky test
      *
-     * @param \PHPUnit_Framework_Test $test
+     * @param \PHPUnit\Framework\Test $test
      * @param \Exception $e
      * @param float $time
      * @return void
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function addRiskyTest(\PHPUnit_Framework_Test $test, \Exception $e, $time)
+    public function addRiskyTest(\PHPUnit\Framework\Test $test, \Exception $e, $time)
     {
         //
     }
@@ -70,13 +80,13 @@ class StateListener implements \PHPUnit_Framework_TestListener
     /**
      * Skipped test
      *
-     * @param \PHPUnit_Framework_Test $test
+     * @param \PHPUnit\Framework\Test $test
      * @param \Exception $e
      * @param float $time
      * @return void
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function addSkippedTest(\PHPUnit_Framework_Test $test, \Exception $e, $time)
+    public function addSkippedTest(\PHPUnit\Framework\Test $test, \Exception $e, $time)
     {
         //
     }
@@ -84,10 +94,10 @@ class StateListener implements \PHPUnit_Framework_TestListener
     /**
      * A test suite started
      *
-     * @param \PHPUnit_Framework_TestSuite $suite
+     * @param \PHPUnit\Framework\TestSuite $suite
      * @return void
      */
-    public function startTestSuite(\PHPUnit_Framework_TestSuite $suite)
+    public function startTestSuite(\PHPUnit\Framework\TestSuite $suite)
     {
         if ('default' === State::getTestSuiteName()) {
             State::setTestSuiteName($suite->getName());
@@ -97,11 +107,11 @@ class StateListener implements \PHPUnit_Framework_TestListener
     /**
      * A test suite ended
      *
-     * @param \PHPUnit_Framework_TestSuite $suite
+     * @param \PHPUnit\Framework\TestSuite $suite
      * @return void
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function endTestSuite(\PHPUnit_Framework_TestSuite $suite)
+    public function endTestSuite(\PHPUnit\Framework\TestSuite $suite)
     {
         State::setTestSuiteName('default');
     }
@@ -109,10 +119,10 @@ class StateListener implements \PHPUnit_Framework_TestListener
     /**
      * Listener for test starting
      *
-     * @param \PHPUnit_Framework_Test $test
+     * @param \PHPUnit\Framework\Test $test
      * @return void
      */
-    public function startTest(\PHPUnit_Framework_Test $test)
+    public function startTest(\PHPUnit\Framework\Test $test)
     {
         State::setTestClassName(get_class($test));
         State::setTestMethodName($test->getName());
@@ -121,12 +131,12 @@ class StateListener implements \PHPUnit_Framework_TestListener
     /**
      * A test ended
      *
-     * @param \PHPUnit_Framework_Test $test
+     * @param \PHPUnit\Framework\Test $test
      * @param float $time
      * @return void
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function endTest(\PHPUnit_Framework_Test $test, $time)
+    public function endTest(\PHPUnit\Framework\Test $test, $time)
     {
         //
     }

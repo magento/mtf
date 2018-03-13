@@ -8,7 +8,7 @@ namespace Magento\Mtf\TestRunner\Process\Exception;
 /**
  * Serializable exception for parallel run.
  */
-class Risky extends \PHPUnit_Framework_RiskyTestError
+class Risky extends \PHPUnit\Framework\RiskyTestError
 {
     /**
      * Returns available object values.

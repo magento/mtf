@@ -13,24 +13,24 @@ use Magento\Mtf\TestRunner\Process\ProcessManager;
  *
  * @api
  */
-class TestSuite extends \PHPUnit_Framework_TestSuite
+class TestSuite extends \PHPUnit\Framework\TestSuite
 {
     /**
      * Overload the run to allow the process manager to run the testsuites.
      *
-     * @param  \PHPUnit_Framework_TestResult $result
+     * @param  \PHPUnit\Framework\TestResult $result
      * @param  false|bool $filter
      * @param  array $groups
      * @param  array $excludeGroups
      * @param  false|bool $processIsolation
      *
-     * @return \PHPUnit_Framework_TestResult
+     * @return \PHPUnit\Framework\TestResult
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function run(
-        \PHPUnit_Framework_TestResult $result = null,
+        \PHPUnit\Framework\TestResult $result = null,
         $filter = false,
         array $groups = [],
         array $excludeGroups = [],
@@ -70,7 +70,7 @@ class TestSuite extends \PHPUnit_Framework_TestSuite
                 ) {
                     call_user_func([$this->name, 'setUpBeforeClass']);
                 }
-            } catch (\PHPUnit_Framework_SkippedTestSuiteError $e) {
+            } catch (\PHPUnit\Framework\SkippedTestSuiteError $e) {
                 $numTests = count($this);
                 for ($i = 0; $i < $numTests; $i++) {
                     $result->addFailure($this, $e, 0);
@@ -106,7 +106,7 @@ class TestSuite extends \PHPUnit_Framework_TestSuite
                 break;
             }
 
-            if ($test instanceof \PHPUnit_Framework_TestSuite) {
+            if ($test instanceof \PHPUnit\Framework\TestSuite) {
                 $test->setBackupGlobals($this->backupGlobals);
                 $test->setBackupStaticAttributes($this->backupStaticAttributes);
 
@@ -115,7 +115,7 @@ class TestSuite extends \PHPUnit_Framework_TestSuite
                 $runTest = true;
 
                 if ($filter !== false) {
-                    $tmp = \PHPUnit_Util_Test::describe($test, false);
+                    $tmp = \PHPUnit\Util\Test::describe($test, false);
 
                     if ($tmp[0] != '') {
                         $name = join('::', $tmp);
@@ -142,7 +142,7 @@ class TestSuite extends \PHPUnit_Framework_TestSuite
                 }
 
                 if ($runTest) {
-                    if ($test instanceof \PHPUnit_Framework_TestCase) {
+                    if ($test instanceof \PHPUnit\Framework\TestCase) {
                         $test->setBackupGlobals($this->backupGlobals);
                         $test->setBackupStaticAttributes($this->backupStaticAttributes);
                         $test->setRunTestInSeparateProcess($processIsolation);

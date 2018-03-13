@@ -50,7 +50,7 @@ class InjectableTestCase extends Injectable
                 $methodName = $method->getName();
                 $_arguments['name'] = $methodName;
                 $test = $this->objectManager->create('Magento\Mtf\TestSuite\InjectableMethod', $_arguments);
-                $this->addTest($test, \PHPUnit_Util_Test::getGroups($class, $methodName));
+                $this->addTest($test, \PHPUnit\Util\Test::getGroups($class, $methodName));
             }
         }
 

@@ -17,7 +17,7 @@ use Magento\Mtf\System\Event\EventManagerInterface;
  * @api
  * @abstract
  */
-abstract class AbstractConstraint extends \PHPUnit_Framework_Constraint implements ConstraintInterface
+abstract class AbstractConstraint extends \PHPUnit\Framework\Constraint\Constraint implements ConstraintInterface
 {
     /**
      * Object Manager.
@@ -36,7 +36,7 @@ abstract class AbstractConstraint extends \PHPUnit_Framework_Constraint implemen
     /**
      * Test Case.
      *
-     * @var \PHPUnit_Framework_TestCase
+     * @var \PHPUnit\Framework\TestCase
      */
     protected $testCase;
 

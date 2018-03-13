@@ -8,18 +8,18 @@ namespace Magento\Mtf\TestRunner\Process;
 /**
  * Class Process
  */
-class PHPUnitUtils extends \PHPUnit_Util_PHP
+class PHPUnitUtils extends \PHPUnit\Util\PHP\AbstractPhpProcess
 {
     /**
      * @param string $job
      * @param array $settings
      * @return array|null|void
-     * @throws \PHPUnit_Framework_Exception
+     * @throws \PHPUnit\Framework\Exception
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function runJob($job, array $settings = [])
     {
-        throw new \PHPUnit_Framework_Exception('Should not call this method.');
+        throw new \PHPUnit\Framework\Exception('Should not call this method.');
     }
 
     /**
@@ -38,8 +38,8 @@ class PHPUnitUtils extends \PHPUnit_Util_PHP
     /**
      * Makes the processChildResult inherited method public.
      *
-     * @param \PHPUnit_Framework_Test $test
-     * @param \PHPUnit_Framework_TestResult $result
+     * @param \PHPUnit\Framework\Test $test
+     * @param \PHPUnit\Framework\TestResult $result
      * @param string $stdout
      * @param string $stderr
      * @return void
@@ -47,15 +47,15 @@ class PHPUnitUtils extends \PHPUnit_Util_PHP
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function processChildResult(
-        \PHPUnit_Framework_Test $test,
-        \PHPUnit_Framework_TestResult $result,
+        \PHPUnit\Framework\Test $test,
+        \PHPUnit\Framework\TestResult $result,
         $stdout,
         $stderr
     ) {
         $time = 0;
 
         if (!empty($stderr)) {
-            $result->addError($test, new \PHPUnit_Framework_Exception(trim($stderr)), $time);
+            $result->addError($test, new \PHPUnit\Framework\Exception(trim($stderr)), $time);
         } else {
             set_error_handler(
                 function ($errno, $errstr, $errfile, $errline) {
@@ -74,7 +74,7 @@ class PHPUnitUtils extends \PHPUnit_Util_PHP
                 restore_error_handler();
                 $childResult = false;
 
-                $result->addError($test, new \PHPUnit_Framework_Exception(trim($stdout), 0, $e), $time);
+                $result->addError($test, new \PHPUnit\Framework\Exception(trim($stdout), 0, $e), $time);
             }
 
             if ($childResult !== false) {
@@ -151,12 +151,12 @@ class PHPUnitUtils extends \PHPUnit_Util_PHP
     /**
      * Gets the thrown exception from a PHPUnit_Framework_TestFailure.
      *
-     * @param  \PHPUnit_Framework_TestFailure $error
+     * @param  \PHPUnit\Framework\TestFailure $error
      * @return \Exception
      * @since  Method available since Release 3.6.0
      * @see    https://github.com/sebastianbergmann/phpunit/issues/74
      */
-    public function getException(\PHPUnit_Framework_TestFailure $error)
+    public function getException(\PHPUnit\Framework\TestFailure $error)
     {
         $exception = $error->thrownException();
 
@@ -167,7 +167,7 @@ class PHPUnitUtils extends \PHPUnit_Util_PHP
                 $exceptionArray[$key] = $value;
             }
 
-            $exception = new \PHPUnit_Framework_SyntheticError(
+            $exception = new \PHPUnit\Framework\SyntheticError(
                 sprintf('%s: %s', $exceptionArray['_PHP_Incomplete_Class_Name'], $exceptionArray['message']),
                 $exceptionArray['code'],
                 $exceptionArray['file'],

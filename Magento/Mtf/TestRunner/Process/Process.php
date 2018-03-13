@@ -22,12 +22,12 @@ class Process
     protected $_process;
 
     /**
-     * @var \PHPUnit_Framework_Test
+     * @var \PHPUnit\Framework\Test
      */
     protected $_test;
 
     /**
-     * @var \PHPUnit_Framework_TestResult
+     * @var \PHPUnit\Framework\TestResult
      */
     protected $_result;
 
@@ -55,14 +55,14 @@ class Process
      * Constructor
      *
      * @param string $job
-     * @param \PHPUnit_Framework_Test $test
-     * @param \PHPUnit_Framework_TestResult $result
+     * @param \PHPUnit\Framework\Test $test
+     * @param \PHPUnit\Framework\TestResult $result
      * @param Environment $environment
      */
     public function __construct(
         $job,
-        \PHPUnit_Framework_Test $test,
-        \PHPUnit_Framework_TestResult $result,
+        \PHPUnit\Framework\Test $test,
+        \PHPUnit\Framework\TestResult $result,
         Environment $environment
     ) {
         $this->_job = $job;
@@ -94,7 +94,7 @@ class Process
      * Opens the process and starts the job.
      *
      * @return void
-     * @throws \PHPUnit_Framework_Exception
+     * @throws \PHPUnit\Framework\Exception
      */
     public function open()
     {
@@ -116,14 +116,14 @@ class Process
         stream_set_blocking($this->_pipes[2], 0);
 
         if (!is_resource($this->_process)) {
-            throw new \PHPUnit_Framework_Exception(
+            throw new \PHPUnit\Framework\Exception(
                 'Unable to create process for process isolation.'
             );
         }
 
         $bytesWritten = $this->writeToPipe($this->_pipes[0], $this->_job);
         if ($bytesWritten < strlen($this->_job)) {
-            throw new \PHPUnit_Framework_Exception(
+            throw new \PHPUnit\Framework\Exception(
                 'Unable to spawn process with complete test case input'
             );
         }

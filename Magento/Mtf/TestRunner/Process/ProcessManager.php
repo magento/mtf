@@ -63,14 +63,14 @@ class ProcessManager
     }
 
     /**
-     * @param \PHPUnit_Framework_Test $testcase
-     * @param \PHPUnit_Framework_TestResult $result
+     * @param \PHPUnit\Framework\Test $testcase
+     * @param \PHPUnit\Framework\TestResult $result
      * @param array $params
      * @return void
      */
     public function run(
-        \PHPUnit_Framework_Test $testcase,
-        \PHPUnit_Framework_TestResult $result,
+        \PHPUnit\Framework\Test $testcase,
+        \PHPUnit\Framework\TestResult $result,
         array $params = array()
     ) {
         $environment = $this->popEnvironment();
@@ -83,20 +83,20 @@ class ProcessManager
      * completes.
      *
      * @return void
-     * @throws \PHPUnit_Framework_Exception
+     * @throws \PHPUnit\Framework\Exception
      */
     public function waitForSingleProcessToComplete()
     {
         $originalProcessCount = count($this->_processes);
         if ($originalProcessCount === 0) {
-            throw new \PHPUnit_Framework_Exception('Cannot wait for process to complete. No processes!');
+            throw new \PHPUnit\Framework\Exception('Cannot wait for process to complete. No processes!');
         }
 
         $endTime = time() + $this->processRunTimeout;
         while ((count($this->_processes) >= $originalProcessCount)) {
             $this->runLoop();
             if ((time() > $endTime)) {
-                throw new \PHPUnit_Framework_Exception('Timeout while waiting for single process to complete!');
+                throw new \PHPUnit\Framework\Exception('Timeout while waiting for single process to complete!');
             }
         }
     }
@@ -149,13 +149,13 @@ class ProcessManager
      *
      * @param Process $process
      * @return void
-     * @throws \PHPUnit_Framework_Exception
+     * @throws \PHPUnit\Framework\Exception
      */
     private function removeDoneProcess($process)
     {
         $key = array_search($process, $this->_processes);
         if ($key === false) {
-            throw new \PHPUnit_Framework_Exception('Undefined process is completed!');
+            throw new \PHPUnit\Framework\Exception('Undefined process is completed!');
         }
         /* Returns the environment to the list of available environments */
         $environment = $process->getEnvironment();
@@ -167,8 +167,8 @@ class ProcessManager
     /**
      * Render job template for test case
      *
-     * @param \PHPUnit_Framework_Test $testcase
-     * @param \PHPUnit_Framework_TestResult $result
+     * @param \PHPUnit\Framework\Test $testcase
+     * @param \PHPUnit\Framework\TestResult $result
      * @param array $params
      * @param Environment $environment
      * @return string
@@ -177,13 +177,13 @@ class ProcessManager
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     private function generateTestCaseJob(
-        \PHPUnit_Framework_Test $testcase,
-        \PHPUnit_Framework_TestResult $result,
+        \PHPUnit\Framework\Test $testcase,
+        \PHPUnit\Framework\TestResult $result,
         array $params,
         Environment $environment
     ) {
         if ($result === null) {
-            $result = new \PHPUnit_Framework_TestResult();
+            $result = new \PHPUnit\Framework\TestResult();
         }
 
         $configFile = false;
@@ -209,7 +209,7 @@ class ProcessManager
             throw new \Exception('Cannot define phpunit configuration path');
         }
 
-        $configuration = \PHPUnit_Util_Configuration::getInstance($configFile);
+        $configuration = \PHPUnit\Util\Configuration::getInstance($configFile);
 
         $listenerConfiguration = var_export(serialize($configuration->getListenerConfiguration()), true);
 
@@ -282,15 +282,15 @@ class ProcessManager
      * Process job
      *
      * @param string $job
-     * @param \PHPUnit_Framework_Test $testcase
-     * @param \PHPUnit_Framework_TestResult $result
+     * @param \PHPUnit\Framework\Test $testcase
+     * @param \PHPUnit\Framework\TestResult $result
      * @param Environment $environment
      * @return void
      */
     private function processJob(
         $job,
-        \PHPUnit_Framework_Test $testcase,
-        \PHPUnit_Framework_TestResult $result,
+        \PHPUnit\Framework\Test $testcase,
+        \PHPUnit\Framework\TestResult $result,
         Environment $environment
     ) {
 
@@ -302,7 +302,7 @@ class ProcessManager
 
     /**
      * @return Environment
-     * @throws \PHPUnit_Framework_Exception
+     * @throws \PHPUnit\Framework\Exception
      */
     private function popEnvironment()
     {
@@ -310,7 +310,7 @@ class ProcessManager
             $this->waitForSingleProcessToComplete();
         }
         if (count($this->_environments) == 0) {
-            throw new \PHPUnit_Framework_Exception('No environment even after wait!');
+            throw new \PHPUnit\Framework\Exception('No environment even after wait!');
         }
 
         return array_shift($this->_environments);

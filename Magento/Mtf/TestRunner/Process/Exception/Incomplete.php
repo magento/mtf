@@ -8,7 +8,7 @@ namespace Magento\Mtf\TestRunner\Process\Exception;
 /**
  * Serializable exception for parallel run.
  */
-class Incomplete extends \PHPUnit_Framework_IncompleteTestError
+class Incomplete extends \PHPUnit\Framework\IncompleteTestError
 {
     /**
      * Returns available object values.

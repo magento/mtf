@@ -106,7 +106,7 @@ class Composite extends AbstractConstraint
     {
         $result = true;
         foreach ($this->constraints as $constraint) {
-            \PHPUnit_Framework_Assert::assertThat("", $constraint);
+            \PHPUnit\Framework\Assert::assertThat("", $constraint);
             $result = $result && $constraint->getResult();
         }
         return $result;

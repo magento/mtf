@@ -123,12 +123,12 @@ abstract class Injectable extends Functional
     /**
      * Run with Variations Iterator.
      *
-     * @param \PHPUnit_Framework_TestResult $result
-     * @return \PHPUnit_Framework_TestResult
+     * @param \PHPUnit\Framework\TestResult $result
+     * @return \PHPUnit\Framework\TestResult
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    public function run(\PHPUnit_Framework_TestResult $result = null)
+    public function run(\PHPUnit\Framework\TestResult $result = null)
     {
         $this->eventManager->dispatchEvent(['execution'], ['[start test case execution]']);
         if ($this->isParallelRun) {
@@ -141,7 +141,7 @@ abstract class Injectable extends Functional
             }
             /** @var $testVariationIterator \Magento\Mtf\Util\Iterator\TestCaseVariation */
             $testVariationIterator = $this->getObjectManager()->create(
-                'Magento\Mtf\Util\Iterator\TestCaseVariation',
+                \Magento\Mtf\Util\Iterator\TestCaseVariation::class,
                 ['testCase' => $this]
             );
             while ($testVariationIterator->valid()) {
@@ -164,7 +164,7 @@ abstract class Injectable extends Functional
                     $this->localArguments
                 );
                 $this->executeTestVariation($result, $variation);
-                if ($this->rerunCount > 0 && $this->getStatus() != \PHPUnit_Runner_BaseTestRunner::STATUS_PASSED) {
+                if ($this->rerunCount > 0 && $this->getStatus() != \PHPUnit\Runner\BaseTestRunner::STATUS_PASSED) {
                     $this->rerunCount -= 1;
                 } else {
                     $this->rerunCount = empty($_ENV['rerun_count']) ? 0 : $_ENV['rerun_count'];
@@ -172,9 +172,9 @@ abstract class Injectable extends Functional
                 }
                 $this->localArguments = [];
             }
-        } catch (\PHPUnit_Framework_IncompleteTestError $phpUnitException) {
+        } catch (\PHPUnit\Framework\IncompleteTestError $phpUnitException) {
             $result->addError($this, $phpUnitException, \PHP_Timer::stop());
-        } catch (\PHPUnit_Framework_AssertionFailedError $phpUnitException) {
+        } catch (\PHPUnit\Framework\AssertionFailedError $phpUnitException) {
             $this->eventManager->dispatchEvent(['failure'], [$phpUnitException->getMessage()]);
             $result->addFailure($this, $phpUnitException, \PHP_Timer::stop());
         } catch (\Exception $exception) {
@@ -189,11 +189,11 @@ abstract class Injectable extends Functional
     /**
      * Execute test variation.
      *
-     * @param \PHPUnit_Framework_TestResult $result
+     * @param \PHPUnit\Framework\TestResult $result
      * @param array $variation
      * @return void
      */
-    protected function executeTestVariation(\PHPUnit_Framework_TestResult $result, array $variation)
+    protected function executeTestVariation(\PHPUnit\Framework\TestResult $result, array $variation)
     {
         $this->eventManager->dispatchEvent(['execution'], ['[start variation execution]']);
         // remove constraint object from previous test case variation iteration
@@ -307,10 +307,10 @@ abstract class Injectable extends Functional
     protected function prepareConstraintObject(array $constraints)
     {
         /** @var \Magento\Mtf\Util\SequencesSorter $sorter */
-        $sorter = $this->getObjectManager()->create('Magento\Mtf\Util\SequencesSorter');
+        $sorter = $this->getObjectManager()->create(\Magento\Mtf\Util\SequencesSorter::class);
         $constraintsArray = $sorter->sort($constraints);
         return $this->getObjectManager()->create(
-            'Magento\Mtf\Constraint\Composite',
+            \Magento\Mtf\Constraint\Composite::class,
             ['codeConstraints' => array_keys($constraintsArray)]
         );
     }

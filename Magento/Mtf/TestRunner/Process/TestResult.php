@@ -19,17 +19,17 @@ use Magento\Mtf\TestCase\Injectable;
  * cannot be serialized entirely (due to the use of closures or other
  * non-serializable data).
  */
-class TestResult extends \PHPUnit_Framework_TestResult
+class TestResult extends \PHPUnit\Framework\TestResult
 {
     /**
      * Adds an error to the list of errors.
      *
-     * @param \PHPUnit_Framework_Test $test
+     * @param \PHPUnit\Framework\Test $test
      * @param \Exception $e
      * @param float $time
      * @return void
      */
-    public function addError(\PHPUnit_Framework_Test $test, $e, $time)
+    public function addError(\PHPUnit\Framework\Test $test, $e, $time)
     {
         $e = $this->wrapException($e);
         $variation = 0;
@@ -37,31 +37,31 @@ class TestResult extends \PHPUnit_Framework_TestResult
             $variation = $test->getVariationName();
         }
 
-        if ($e instanceof \PHPUnit_Framework_RiskyTest) {
-            $this->risky[$variation] = new \PHPUnit_Framework_TestFailure($test, $e);
+        if ($e instanceof \PHPUnit\Framework\RiskyTest) {
+            $this->risky[$variation] = new \PHPUnit\Framework\TestFailure($test, $e);
 
             $notifyMethod = 'addRiskyTest';
 
             if ($this->stopOnRisky) {
                 $this->stop();
             }
-        } elseif ($e instanceof \PHPUnit_Framework_IncompleteTest) {
-            $this->notImplemented[$variation] = new \PHPUnit_Framework_TestFailure($test, $e);
+        } elseif ($e instanceof \PHPUnit\Framework\IncompleteTest) {
+            $this->notImplemented[$variation] = new \PHPUnit\Framework\TestFailure($test, $e);
 
             $notifyMethod = 'addIncompleteTest';
 
             if ($this->stopOnIncomplete) {
                 $this->stop();
             }
-        } elseif ($e instanceof \PHPUnit_Framework_SkippedTest) {
-            $this->skipped[$variation] = new \PHPUnit_Framework_TestFailure($test, $e);
+        } elseif ($e instanceof \PHPUnit\Framework\SkippedTest) {
+            $this->skipped[$variation] = new \PHPUnit\Framework\TestFailure($test, $e);
             $notifyMethod = 'addSkippedTest';
 
             if ($this->stopOnSkipped) {
                 $this->stop();
             }
         } else {
-            $this->errors[$variation] = new \PHPUnit_Framework_TestFailure($test, $e);
+            $this->errors[$variation] = new \PHPUnit\Framework\TestFailure($test, $e);
             $notifyMethod = 'addError';
 
             if ($this->stopOnError || $this->stopOnFailure) {
@@ -70,7 +70,7 @@ class TestResult extends \PHPUnit_Framework_TestResult
         }
 
         if ($e instanceof \Error) {
-            $e = new \PHPUnit_Framework_ExceptionWrapper($e);
+            $e = new \PHPUnit\Framework\ExceptionWrapper($e);
         }
 
         foreach ($this->listeners as $listener) {
@@ -85,12 +85,12 @@ class TestResult extends \PHPUnit_Framework_TestResult
      * Adds a failure to the list of failures.
      * The passed in exception caused the failure.
      *
-     * @param \PHPUnit_Framework_Test $test
-     * @param \PHPUnit_Framework_AssertionFailedError $e
+     * @param \PHPUnit\Framework\Test $test
+     * @param \PHPUnit\Framework\AssertionFailedError $e
      * @param float $time
      * @return void
      */
-    public function addFailure(\PHPUnit_Framework_Test $test, \PHPUnit_Framework_AssertionFailedError $e, $time)
+    public function addFailure(\PHPUnit\Framework\Test $test, \PHPUnit\Framework\AssertionFailedError $e, $time)
     {
         $e = $this->wrapException($e);
         $variation = null;
@@ -98,31 +98,31 @@ class TestResult extends \PHPUnit_Framework_TestResult
             $variation = $test->getVariationName();
         }
 
-        if ($e instanceof \PHPUnit_Framework_RiskyTest || $e instanceof \PHPUnit_Framework_OutputError) {
-            $this->risky[$variation] = new \PHPUnit_Framework_TestFailure($test, $e);
+        if ($e instanceof \PHPUnit\Framework\RiskyTest || $e instanceof \PHPUnit\Framework\OutputError) {
+            $this->risky[$variation] = new \PHPUnit\Framework\TestFailure($test, $e);
 
             $notifyMethod = 'addRiskyTest';
 
             if ($this->stopOnRisky) {
                 $this->stop();
             }
-        } elseif ($e instanceof \PHPUnit_Framework_IncompleteTest) {
-            $this->notImplemented[$variation] = new \PHPUnit_Framework_TestFailure($test, $e);
+        } elseif ($e instanceof \PHPUnit\Framework\IncompleteTest) {
+            $this->notImplemented[$variation] = new \PHPUnit\Framework\TestFailure($test, $e);
 
             $notifyMethod = 'addIncompleteTest';
 
             if ($this->stopOnIncomplete) {
                 $this->stop();
             }
-        } elseif ($e instanceof \PHPUnit_Framework_SkippedTest) {
-            $this->skipped[$variation] = new \PHPUnit_Framework_TestFailure($test, $e);
+        } elseif ($e instanceof \PHPUnit\Framework\SkippedTest) {
+            $this->skipped[$variation] = new \PHPUnit\Framework\TestFailure($test, $e);
             $notifyMethod = 'addSkippedTest';
 
             if ($this->stopOnSkipped) {
                 $this->stop();
             }
         } else {
-            $this->failures[$variation] = new \PHPUnit_Framework_TestFailure($test, $e);
+            $this->failures[$variation] = new \PHPUnit\Framework\TestFailure($test, $e);
             $notifyMethod = 'addFailure';
 
             if ($this->stopOnFailure) {
@@ -147,13 +147,13 @@ class TestResult extends \PHPUnit_Framework_TestResult
     protected function wrapException(\Exception $exception)
     {
         switch (true) {
-            case ($exception instanceof \PHPUnit_Framework_RiskyTest):
+            case ($exception instanceof \PHPUnit\Framework\RiskyTest):
                 $wrappedException = new Risky($exception);
                 break;
-            case ($exception instanceof \PHPUnit_Framework_IncompleteTest):
+            case ($exception instanceof \PHPUnit\Framework\IncompleteTest):
                 $wrappedException = new Incomplete($exception);
                 break;
-            case ($exception instanceof \PHPUnit_Framework_SkippedTest):
+            case ($exception instanceof \PHPUnit\Framework\SkippedTest):
                 $wrappedException = new Skipped($exception);
                 break;
             default:

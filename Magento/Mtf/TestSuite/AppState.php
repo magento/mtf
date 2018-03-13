@@ -52,7 +52,7 @@ class AppState extends Injectable
 
             $this->addTest(
                 $suite,
-                \PHPUnit_Util_Test::getGroups(
+                \PHPUnit\Util\Test::getGroups(
                     get_class($suite),
                     $suite->getName()
                 )
