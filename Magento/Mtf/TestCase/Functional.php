@@ -461,8 +461,8 @@ abstract class Functional extends \PHPUnit\Framework\TestCase
 
         return new Snapshot(
             $blacklist,
-            $backupGlobals,
-            $this->backupStaticAttributes,
+            (bool) $backupGlobals,
+            (bool) $this->backupStaticAttributes,
             false,
             false,
             false,
