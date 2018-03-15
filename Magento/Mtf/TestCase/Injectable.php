@@ -240,7 +240,7 @@ abstract class Injectable extends Functional
      * @param  boolean $includeData
      * @return string
      */
-    protected function getDataSetAsString($includeData = true)
+    public function getDataSetAsString($includeData = true)
     {
         $buffer = '';
 

@@ -19,23 +19,14 @@ class TestSuite extends \PHPUnit\Framework\TestSuite
      * Overload the run to allow the process manager to run the testsuites.
      *
      * @param  \PHPUnit\Framework\TestResult $result
-     * @param  false|bool $filter
-     * @param  array $groups
-     * @param  array $excludeGroups
-     * @param  false|bool $processIsolation
      *
      * @return \PHPUnit\Framework\TestResult
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
-    public function run(
-        \PHPUnit\Framework\TestResult $result = null,
-        $filter = false,
-        array $groups = [],
-        array $excludeGroups = [],
-        $processIsolation = false
-    ) {
+    public function run(\PHPUnit\Framework\TestResult $result = null)
+    {
         if ($result === null) {
             $result = $this->createResult();
         }
@@ -110,23 +101,9 @@ class TestSuite extends \PHPUnit\Framework\TestSuite
                 $test->setBackupGlobals($this->backupGlobals);
                 $test->setBackupStaticAttributes($this->backupStaticAttributes);
 
-                $test->run($result, $filter, $groups, $excludeGroups, $processIsolation);
+                $test->run($result);
             } else {
                 $runTest = true;
-
-                if ($filter !== false) {
-                    $tmp = \PHPUnit\Util\Test::describe($test, false);
-
-                    if ($tmp[0] != '') {
-                        $name = join('::', $tmp);
-                    } else {
-                        $name = $tmp[1];
-                    }
-
-                    if (preg_match($filter, $name) == 0) {
-                        $runTest = false;
-                    }
-                }
 
                 if ($runTest && !empty($excludeGroups)) {
                     foreach ($this->groups as $_group => $_tests) {
@@ -145,7 +122,7 @@ class TestSuite extends \PHPUnit\Framework\TestSuite
                     if ($test instanceof \PHPUnit\Framework\TestCase) {
                         $test->setBackupGlobals($this->backupGlobals);
                         $test->setBackupStaticAttributes($this->backupStaticAttributes);
-                        $test->setRunTestInSeparateProcess($processIsolation);
+                        $test->setRunTestInSeparateProcess(false);
                     }
 
                     $this->runTest($test, $result);
