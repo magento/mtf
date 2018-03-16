@@ -8,7 +8,7 @@ namespace Magento\Mtf\TestRunner\Process\Exception;
 /**
  * Serializable exception for parallel run
  */
-class Skipped extends \PHPUnit_Framework_SkippedTestError
+class Skipped extends \PHPUnit\Framework\SkippedTestError
 {
     /**
      * Returns available object values.

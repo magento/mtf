@@ -9,7 +9,7 @@ namespace Magento\Mtf\System;
 /**
  * A TestListener that generates a logfile of the test execution in XML markup.
  */
-class JUnit extends \PHPUnit_Util_Log_JUnit
+class JUnit extends \PHPUnit\Util\Log\JUnit
 {
     /**
      * @constructor
@@ -27,11 +27,11 @@ class JUnit extends \PHPUnit_Util_Log_JUnit
     /**
      * A test ended.
      *
-     * @param \PHPUnit_Framework_Test $test
+     * @param \PHPUnit\Framework\Test $test
      * @param float $time
      * @return void
      */
-    public function endTest(\PHPUnit_Framework_Test $test, $time)
+    public function endTest(\PHPUnit\Framework\Test $test, $time)
     {
         $class = new \ReflectionClass($test);
 
@@ -43,8 +43,8 @@ class JUnit extends \PHPUnit_Util_Log_JUnit
             $entriesForRemoveEmptyTestSuite->parentNode->removeChild($entriesForRemoveEmptyTestSuite);
         }
 
-        if (!$test instanceof \PHPUnit_Framework_Warning && !$test->getIsIncomplete()) {
-            if ($test instanceof \PHPUnit_Framework_TestCase) {
+        if (!$test instanceof \PHPUnit\Framework\Warning && !$test->getIsIncomplete()) {
+            if ($test instanceof \PHPUnit\Framework\TestCase) {
                 $numAssertions = $test->getNumAssertions();
                 $this->testSuiteAssertions[$this->testSuiteLevel] += $numAssertions;
 

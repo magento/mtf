@@ -9,7 +9,7 @@ namespace Magento\Mtf\TestCase;
 /**
  * A TestCase defines the fixture to run multiple tests.
  */
-abstract class TestCase extends \PHPUnit_Framework_TestCase
+abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
     /**
      * Enable or disable the backup and restoration of the $GLOBALS array.
@@ -130,13 +130,13 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
         // Backup the $GLOBALS array and static attributes.
         if ($this->runTestInSeparateProcess !== true && $this->inIsolation !== true) {
             if ($this->backupGlobals === null || $this->backupGlobals === true) {
-                \PHPUnit_Util_GlobalState::backupGlobals(
+                \PHPUnit\Util\GlobalState::backupGlobals(
                     $this->backupGlobalsBlacklist
                 );
             }
 
             if ($this->backupStaticAttributes === true) {
-                \PHPUnit_Util_GlobalState::backupStaticAttributes(
+                \PHPUnit\Util\GlobalState::backupStaticAttributes(
                     $this->backupStaticAttributesBlacklist
                 );
             }
@@ -152,7 +152,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
         // Backup the cwd
         $currentWorkingDirectory = getcwd();
 
-        $hookMethods = \PHPUnit_Util_Test::getHookMethods(get_class($this));
+        $hookMethods = \PHPUnit\Util\Test::getHookMethods(get_class($this));
 
         try {
             $this->checkRequirements();
@@ -173,19 +173,19 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
             $this->testResult = $this->runTest();
             $this->verifyMockObjects();
             $this->assertPostConditions();
-            $this->status = \PHPUnit_Runner_BaseTestRunner::STATUS_PASSED;
-        } catch (\PHPUnit_Framework_IncompleteTest $e) {
-            $this->status = \PHPUnit_Runner_BaseTestRunner::STATUS_INCOMPLETE;
+            $this->status = \PHPUnit\Runner\BaseTestRunner::STATUS_PASSED;
+        } catch (\PHPUnit\Framework\IncompleteTest $e) {
+            $this->status = \PHPUnit\Runner\BaseTestRunner::STATUS_INCOMPLETE;
             $this->statusMessage = $e->getMessage();
-        } catch (\PHPUnit_Framework_SkippedTest $e) {
-            $this->status = \PHPUnit_Runner_BaseTestRunner::STATUS_SKIPPED;
+        } catch (\PHPUnit\Framework\SkippedTest $e) {
+            $this->status = \PHPUnit\Runner\BaseTestRunner::STATUS_SKIPPED;
             $this->statusMessage = $e->getMessage();
-        } catch (\PHPUnit_Framework_AssertionFailedError $e) {
-            $this->status = \PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE;
+        } catch (\PHPUnit\Framework\AssertionFailedError $e) {
+            $this->status = \PHPUnit\Runner\BaseTestRunner::STATUS_FAILURE;
             $this->statusMessage = $e->getMessage();
             $this->eventManager->dispatchEvent(['failure'], [$this->statusMessage]);
         } catch (\Exception $e) {
-            $this->status = \PHPUnit_Runner_BaseTestRunner::STATUS_ERROR;
+            $this->status = \PHPUnit\Runner\BaseTestRunner::STATUS_ERROR;
             $this->statusMessage = $e->getMessage();
         }
 
@@ -233,13 +233,13 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
         // Restore the $GLOBALS array and static attributes.
         if ($this->runTestInSeparateProcess !== true && $this->inIsolation !== true) {
             if ($this->backupGlobals === null || $this->backupGlobals === true) {
-                \PHPUnit_Util_GlobalState::restoreGlobals(
+                \PHPUnit\Util\GlobalState::restoreGlobals(
                     $this->backupGlobalsBlacklist
                 );
             }
 
             if ($this->backupStaticAttributes === true) {
-                \PHPUnit_Util_GlobalState::restoreStaticAttributes();
+                \PHPUnit\Util\GlobalState::restoreStaticAttributes();
             }
         }
 

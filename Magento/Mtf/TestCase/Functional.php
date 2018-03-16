@@ -21,7 +21,7 @@ use Magento\Mtf\TestRunner\Process\ProcessManager;
  * @api
  * @abstract
  */
-abstract class Functional extends \PHPUnit_Framework_TestCase
+abstract class Functional extends \PHPUnit\Framework\TestCase
 {
     /**
      * Message of variation rerun.
@@ -198,11 +198,11 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
     /**
      * Run with Process Manager
      *
-     * @param \PHPUnit_Framework_TestResult $result
-     * @return \PHPUnit_Framework_TestResult
+     * @param \PHPUnit\Framework\TestResult $result
+     * @return \PHPUnit\Framework\TestResult
      * @throws \Exception
      */
-    public function run(\PHPUnit_Framework_TestResult $result = null)
+    public function run(\PHPUnit\Framework\TestResult $result = null)
     {
         if ($this->isParallelRun) {
             $params = [
@@ -215,7 +215,7 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
             try {
                 \PHP_Timer::start();
                 parent::run($result);
-            } catch (\PHPUnit_Framework_AssertionFailedError $phpUnitException) {
+            } catch (\PHPUnit\Framework\AssertionFailedError $phpUnitException) {
                 $this->eventManager->dispatchEvent(['failure'], [$phpUnitException->getMessage()]);
                 $result->addFailure($this, $phpUnitException, \PHP_Timer::stop());
             } catch (\Exception $exception) {
@@ -279,7 +279,7 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
         // Backup the cwd
         $currentWorkingDirectory = getcwd();
 
-        $hookMethods = \PHPUnit_Util_Test::getHookMethods(get_class($this));
+        $hookMethods = \PHPUnit\Util\Test::getHookMethods(get_class($this));
 
         try {
             $this->checkRequirements();
@@ -300,19 +300,19 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
             $this->setResult($this->runTest());
             $this->verifyMockObjects();
             $this->assertPostConditions();
-            $this->status = \PHPUnit_Runner_BaseTestRunner::STATUS_PASSED;
-        } catch (\PHPUnit_Framework_IncompleteTest $e) {
-            $this->status = \PHPUnit_Runner_BaseTestRunner::STATUS_INCOMPLETE;
+            $this->status = \PHPUnit\Runner\BaseTestRunner::STATUS_PASSED;
+        } catch (\PHPUnit\Framework\IncompleteTest $e) {
+            $this->status = \PHPUnit\Runner\BaseTestRunner::STATUS_INCOMPLETE;
             $this->statusMessage = $e->getMessage();
-        } catch (\PHPUnit_Framework_SkippedTest $e) {
-            $this->status = \PHPUnit_Runner_BaseTestRunner::STATUS_SKIPPED;
+        } catch (\PHPUnit\Framework\SkippedTest $e) {
+            $this->status = \PHPUnit\Runner\BaseTestRunner::STATUS_SKIPPED;
             $this->statusMessage = $e->getMessage();
-        } catch (\PHPUnit_Framework_AssertionFailedError $e) {
-            $this->status = \PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE;
+        } catch (\PHPUnit\Framework\AssertionFailedError $e) {
+            $this->status = \PHPUnit\Runner\BaseTestRunner::STATUS_FAILURE;
             $this->statusMessage = $e->getMessage();
             $this->eventManager->dispatchEvent(['failure'], [$e->getMessage()]);
         } catch (\Exception $e) {
-            $this->status = \PHPUnit_Runner_BaseTestRunner::STATUS_ERROR;
+            $this->status = \PHPUnit\Runner\BaseTestRunner::STATUS_ERROR;
             $this->statusMessage = $e->getMessage();
             $this->eventManager->dispatchEvent(['exception'], [$e->getMessage()]);
         }
@@ -403,7 +403,7 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
         if (isset($e)) {
             if (!empty($this->rerunCount)
                 && $this->rerunCount > 0
-                && $this->getStatus() !== \PHPUnit_Runner_BaseTestRunner::STATUS_INCOMPLETE) {
+                && $this->getStatus() !== \PHPUnit\Runner\BaseTestRunner::STATUS_INCOMPLETE) {
                 self::markTestIncomplete(self::RERUN_MESSAGE);
                 return;
             }
@@ -461,8 +461,8 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
 
         return new Snapshot(
             $blacklist,
-            $backupGlobals,
-            $this->backupStaticAttributes,
+            (bool) $backupGlobals,
+            (bool) $this->backupStaticAttributes,
             false,
             false,
             false,
@@ -477,7 +477,7 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
      * Set inIsolation parameter.
      *
      * @param  boolean $inIsolation
-     * @throws \PHPUnit_Framework_Exception
+     * @throws \PHPUnit\Framework\Exception
      * @return void
      */
     public function setInIsolation($inIsolation)
@@ -486,7 +486,7 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
         if (is_bool($inIsolation)) {
             $this->inIsolation = $inIsolation;
         } else {
-            throw \PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+            throw \PHPUnit\Util\InvalidArgumentHelper::factory(1, 'boolean');
         }
     }
 
@@ -497,13 +497,13 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
      *
      * @param  string $varName
      * @param  string $newValue
-     * @throws \PHPUnit_Framework_Exception
+     * @throws \PHPUnit\Framework\Exception
      * @return void
      */
     protected function iniSet($varName, $newValue)
     {
         if (!is_string($varName)) {
-            throw \PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+            throw \PHPUnit\Util\InvalidArgumentHelper::factory(1, 'string');
         }
 
         $currentValue = ini_set($varName, $newValue);
@@ -511,7 +511,7 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
         if ($currentValue !== false) {
             $this->iniSettings[$varName] = $currentValue;
         } else {
-            throw new \PHPUnit_Framework_Exception(
+            throw new \PHPUnit\Framework\Exception(
                 sprintf(
                     'INI setting "%s" could not be set to "%s".',
                     $varName,
@@ -525,7 +525,7 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
      * This method is a wrapper for the setlocale() function that automatically
      * resets the locale to its original value after the test is run.
      *
-     * @throws \PHPUnit_Framework_Exception
+     * @throws \PHPUnit\Framework\Exception
      * @return void
      */
     protected function setLocale()
@@ -533,7 +533,7 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
         $args = func_get_args();
 
         if (count($args) < 2) {
-            throw new \PHPUnit_Framework_Exception;
+            throw new \PHPUnit\Framework\Exception;
         }
 
         $category = $args[0];
@@ -553,11 +553,11 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
         }
 
         if (!in_array($category, $categories)) {
-            throw new \PHPUnit_Framework_Exception;
+            throw new \PHPUnit\Framework\Exception;
         }
 
         if (!is_array($locale) && !is_string($locale)) {
-            throw new \PHPUnit_Framework_Exception;
+            throw new \PHPUnit\Framework\Exception;
         }
 
         $this->locale[$category] = setlocale($category, null);
@@ -565,7 +565,7 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
         $result = call_user_func_array('setlocale', $args);
 
         if ($result === false) {
-            throw new \PHPUnit_Framework_Exception(
+            throw new \PHPUnit\Framework\Exception(
                 'The locale functionality is not implemented on your platform, ' .
                 'the specified locale does not exist or the category name is ' .
                 'invalid.'
@@ -653,13 +653,13 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
      * Expect output Regex.
      *
      * @param  string $expectedRegex
-     * @throws \PHPUnit_Framework_Exception
+     * @throws \PHPUnit\Framework\Exception
      * @return void
      */
     public function expectOutputRegex($expectedRegex)
     {
         if ($this->outputExpectedString !== null) {
-            throw new \PHPUnit_Framework_Exception;
+            throw new \PHPUnit\Framework\Exception;
         }
 
         if (is_string($expectedRegex) || is_null($expectedRegex)) {
@@ -671,13 +671,13 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
      * Expect output string.
      *
      * @param string $expectedString
-     * @throws \PHPUnit_Framework_Exception
+     * @throws \PHPUnit\Framework\Exception
      * @return void
      */
     public function expectOutputString($expectedString)
     {
         if ($this->outputExpectedRegex !== null) {
-            throw new \PHPUnit_Framework_Exception;
+            throw new \PHPUnit\Framework\Exception;
         }
 
         if (is_string($expectedString) || is_null($expectedString)) {
@@ -699,13 +699,13 @@ abstract class Functional extends \PHPUnit_Framework_TestCase
      * Set Output Callback
      *
      * @param  callable $callback
-     * @throws \PHPUnit_Framework_Exception
+     * @throws \PHPUnit\Framework\Exception
      * @return void
      */
     public function setOutputCallback($callback)
     {
         if (!is_callable($callback)) {
-            throw \PHPUnit_Util_InvalidArgumentHelper::factory(1, 'callback');
+            throw \PHPUnit\Util\InvalidArgumentHelper::factory(1, 'callback');
         }
 
         $this->outputCallback = $callback;

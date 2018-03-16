@@ -57,14 +57,14 @@ class InjectableMethod extends InjectableTestCase
 
         $methodName = $method->getName();
         $test = self::createTest($theClass, $methodName, $arguments);
-        if ($test instanceof \PHPUnit_Framework_TestCase
+        if ($test instanceof \PHPUnit\Framework\TestCase
             || $test instanceof InjectableMethod
         ) {
             $test->setDependencies(
-                \PHPUnit_Util_Test::getDependencies($class, $methodName)
+                \PHPUnit\Util\Test::getDependencies($class, $methodName)
             );
         }
-        $this->addTest($test, \PHPUnit_Util_Test::getGroups($class, $methodName));
+        $this->addTest($test, \PHPUnit\Util\Test::getGroups($class, $methodName));
 
         $this->testCase = true;
     }
@@ -77,8 +77,8 @@ class InjectableMethod extends InjectableTestCase
      * @param \ReflectionClass $theClass
      * @param string $name
      * @param array $arguments
-     * @return \PHPUnit_Framework_Test
-     * @throws \PHPUnit_Framework_Exception
+     * @return \PHPUnit\Framework\Test
+     * @throws \PHPUnit\Framework\Exception
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
@@ -91,12 +91,12 @@ class InjectableMethod extends InjectableTestCase
 
         $arguments['name'] = $name;
 
-        $backupSettings = \PHPUnit_Util_Test::getBackupSettings($class, $name);
-        $preserveGlobalState = \PHPUnit_Util_Test::getPreserveGlobalStateSettings($class, $name);
-        $runTestInSeparateProcess = \PHPUnit_Util_Test::getProcessIsolationSettings($class, $name);
+        $backupSettings = \PHPUnit\Util\Test::getBackupSettings($class, $name);
+        $preserveGlobalState = \PHPUnit\Util\Test::getPreserveGlobalStateSettings($class, $name);
+        $runTestInSeparateProcess = \PHPUnit\Util\Test::getProcessIsolationSettings($class, $name);
 
         try {
-            $data = \PHPUnit_Util_Test::getProvidedData($class, $name);
+            $data = \PHPUnit\Util\Test::getProvidedData($class, $name);
         } catch (\Exception $e) {
             /** @var EventManager $eventManager */
             $eventManager = $objectManager->get('Magento\Mtf\System\Event\Event');
@@ -112,7 +112,7 @@ class InjectableMethod extends InjectableTestCase
                 $message .= "\n" . $_message;
             }
 
-            $data = new \PHPUnit_Framework_Warning($message);
+            $data = new \PHPUnit\Framework\Warning($message);
         }
 
         // Test method with @dataProvider.
@@ -124,7 +124,7 @@ class InjectableMethod extends InjectableTestCase
                 ]
             );
             if (empty($data)) {
-                $data = new \PHPUnit_Framework_Warning(
+                $data = new \PHPUnit\Framework\Warning(
                     sprintf(
                         'No tests found in suite "%s".',
                         $test->getName()
@@ -132,9 +132,9 @@ class InjectableMethod extends InjectableTestCase
                 );
             }
 
-            $groups = \PHPUnit_Util_Test::getGroups($class, $name);
+            $groups = \PHPUnit\Util\Test::getGroups($class, $name);
 
-            if ($data instanceof \PHPUnit_Framework_Warning) {
+            if ($data instanceof \PHPUnit\Framework\Warning) {
                 $test->addTest($data, $groups);
             } else {
                 foreach ($data as $_dataName => $_data) {
@@ -171,10 +171,10 @@ class InjectableMethod extends InjectableTestCase
         }
 
         if (!isset($test)) {
-            throw new \PHPUnit_Framework_Exception('No valid test provided.');
+            throw new \PHPUnit\Framework\Exception('No valid test provided.');
         }
 
-        if ($test instanceof \PHPUnit_Framework_TestCase) {
+        if ($test instanceof \PHPUnit\Framework\TestCase) {
             $test->setName($name);
 
             if ($runTestInSeparateProcess) {

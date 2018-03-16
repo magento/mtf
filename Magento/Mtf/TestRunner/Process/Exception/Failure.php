@@ -8,7 +8,7 @@ namespace Magento\Mtf\TestRunner\Process\Exception;
 /**
  * Serializable exception for parallel run.
  */
-class Failure extends \PHPUnit_Framework_AssertionFailedError
+class Failure extends \PHPUnit\Framework\AssertionFailedError
 {
     /**
      * Returns available object values.

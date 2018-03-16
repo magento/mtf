@@ -12,7 +12,7 @@ namespace Magento\Mtf\TestSuite;
  *
  * @api
  */
-class Callback extends \PHPUnit_Framework_TestSuite
+class Callback extends \PHPUnit\Framework\TestSuite
 {
     /**
      * @var Callable
@@ -49,10 +49,10 @@ class Callback extends \PHPUnit_Framework_TestSuite
     /**
      * Run callback
      *
-     * @param \PHPUnit_Framework_TestResult $result
-     * @return \PHPUnit_Framework_TestResult | void
+     * @param \PHPUnit\Framework\TestResult $result
+     * @return \PHPUnit\Framework\TestResult | void
      */
-    public function run(\PHPUnit_Framework_TestResult $result = null)
+    public function run(\PHPUnit\Framework\TestResult $result = null)
     {
         $testClass = $this->factory->create($this->getName(), $this->arguments);
         return $testClass->run($result);

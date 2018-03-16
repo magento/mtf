@@ -61,7 +61,7 @@ class TestCase extends Injectable
                 'Magento\Mtf\TestSuite\Callback',
                 ['factory' => $factory, 'arguments' => $arguments, 'theClass' => $class]
             );
-            $this->addTest($testCallback, \PHPUnit_Util_Test::getGroups($class));
+            $this->addTest($testCallback, \PHPUnit\Util\Test::getGroups($class));
 
             $testIterator->next();
         }
@@ -72,10 +72,10 @@ class TestCase extends Injectable
     /**
      * To execute callback if specified.
      *
-     * @param \PHPUnit_Framework_TestResult $result
-     * @return \PHPUnit_Framework_TestResult
+     * @param \PHPUnit\Framework\TestResult $result
+     * @return \PHPUnit\Framework\TestResult
      */
-    public function run(\PHPUnit_Framework_TestResult $result = null)
+    public function run(\PHPUnit\Framework\TestResult $result = null)
     {
         if ($this->callback) {
             $processManager = ProcessManager::factory();

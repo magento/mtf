@@ -15,7 +15,7 @@ use Magento\Mtf\Config\DataInterface;
  *
  * @internal
  */
-class Listener implements \PHPUnit_Framework_TestListener
+class Listener implements \PHPUnit\Framework\TestListener
 {
     /**
      * Isolation mode
@@ -96,27 +96,27 @@ class Listener implements \PHPUnit_Framework_TestListener
     /**
      * A test suite started
      *
-     * @param \PHPUnit_Framework_TestSuite $suite
+     * @param \PHPUnit\Framework\TestSuite $suite
      * @return void
      */
-    public function startTestSuite(\PHPUnit_Framework_TestSuite $suite)
+    public function startTestSuite(\PHPUnit\Framework\TestSuite $suite)
     {
         $scope = $this->_getSuiteScope($suite);
         if (!$scope) {
             return;
         }
         $className = $scope == self::SCOPE_TEST_CASE ? $suite->getName() : get_class($suite);
-        $annotations = \PHPUnit_Util_Test::parseTestMethodAnnotations($className);
+        $annotations = \PHPUnit\Util\Test::parseTestMethodAnnotations($className);
         $this->_processBeforeScope($annotations['class'], $scope);
     }
 
     /**
      * A test suite ended
      *
-     * @param \PHPUnit_Framework_TestSuite $suite
+     * @param \PHPUnit\Framework\TestSuite $suite
      * @return void
      */
-    public function endTestSuite(\PHPUnit_Framework_TestSuite $suite)
+    public function endTestSuite(\PHPUnit\Framework\TestSuite $suite)
     {
         $this->_isolated = false;
         $scope = $this->_getSuiteScope($suite);
@@ -129,24 +129,24 @@ class Listener implements \PHPUnit_Framework_TestListener
     /**
      * A test started
      *
-     * @param \PHPUnit_Framework_Test $test
+     * @param \PHPUnit\Framework\Test $test
      * @return void
      */
-    public function startTest(\PHPUnit_Framework_Test $test)
+    public function startTest(\PHPUnit\Framework\Test $test)
     {
-        $annotations = \PHPUnit_Util_Test::parseTestMethodAnnotations(get_class($test), $test->getName());
+        $annotations = \PHPUnit\Util\Test::parseTestMethodAnnotations(get_class($test), $test->getName());
         $this->_processBeforeScope($annotations['method'], self::SCOPE_TEST);
     }
 
     /**
      * A test ended
      *
-     * @param \PHPUnit_Framework_Test $test
+     * @param \PHPUnit\Framework\Test $test
      * @param float $time
      * @return void
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function endTest(\PHPUnit_Framework_Test $test, $time)
+    public function endTest(\PHPUnit\Framework\Test $test, $time)
     {
         $this->_isolated = false;
         $this->_processAfterScope();
@@ -192,14 +192,14 @@ class Listener implements \PHPUnit_Framework_TestListener
     /**
      * Get suite scope
      *
-     * @param \PHPUnit_Framework_TestSuite $suite
+     * @param \PHPUnit\Framework\TestSuite $suite
      * @return bool|string
      */
-    private function _getSuiteScope(\PHPUnit_Framework_TestSuite $suite)
+    private function _getSuiteScope(\PHPUnit\Framework\TestSuite $suite)
     {
-        if (class_exists($suite->getName()) && is_subclass_of($suite->getName(), '\\PHPUnit_Framework_TestCase')) {
+        if (class_exists($suite->getName()) && is_subclass_of($suite->getName(), \PHPUnit\Framework\TestCase::class)) {
             return self::SCOPE_TEST_CASE;
-        } elseif (is_subclass_of($suite, '\\PHPUnit_Framework_TestSuite')) {
+        } elseif (is_subclass_of($suite, \PHPUnit\Framework\TestSuite::class)) {
             return self::SCOPE_TEST_SUITE;
         }
         return false;
@@ -243,14 +243,24 @@ class Listener implements \PHPUnit_Framework_TestListener
     /**
      * An error occurred
      *
-     * @param \PHPUnit_Framework_Test $test
+     * @param \PHPUnit\Framework\Test $test
      * @param \Exception $e
      * @param float $time
      * @return void
      * @SuppressWarnings(PHPMD.ShortVariable)
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function addError(\PHPUnit_Framework_Test $test, \Exception $e, $time)
+    public function addError(\PHPUnit\Framework\Test $test, \Exception $e, $time)
+    {
+        //
+    }
+
+    /**
+     * @param \PHPUnit\Framework\Test $test
+     * @param \PHPUnit\Framework\Warning $e
+     * @param float $time
+     */
+    public function addWarning(\PHPUnit\Framework\Test $test, \PHPUnit\Framework\Warning $e, $time)
     {
         //
     }
@@ -258,14 +268,14 @@ class Listener implements \PHPUnit_Framework_TestListener
     /**
      * A failure occurred
      *
-     * @param \PHPUnit_Framework_Test $test
-     * @param \PHPUnit_Framework_AssertionFailedError $e
+     * @param \PHPUnit\Framework\Test $test
+     * @param \PHPUnit\Framework\AssertionFailedError $e
      * @param float $time
      * @return void
      * @SuppressWarnings(PHPMD.ShortVariable)
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function addFailure(\PHPUnit_Framework_Test $test, \PHPUnit_Framework_AssertionFailedError $e, $time)
+    public function addFailure(\PHPUnit\Framework\Test $test, \PHPUnit\Framework\AssertionFailedError $e, $time)
     {
         //
     }
@@ -273,14 +283,14 @@ class Listener implements \PHPUnit_Framework_TestListener
     /**
      * Incomplete test
      *
-     * @param \PHPUnit_Framework_Test $test
+     * @param \PHPUnit\Framework\Test $test
      * @param \Exception $e
      * @param float $time
      * @return void
      * @SuppressWarnings(PHPMD.ShortVariable)
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function addIncompleteTest(\PHPUnit_Framework_Test $test, \Exception $e, $time)
+    public function addIncompleteTest(\PHPUnit\Framework\Test $test, \Exception $e, $time)
     {
         //
     }
@@ -288,14 +298,14 @@ class Listener implements \PHPUnit_Framework_TestListener
     /**
      * Risky test
      *
-     * @param \PHPUnit_Framework_Test $test
+     * @param \PHPUnit\Framework\Test $test
      * @param \Exception $e
      * @param float $time
      * @return void
      * @SuppressWarnings(PHPMD.ShortVariable)
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function addRiskyTest(\PHPUnit_Framework_Test $test, \Exception $e, $time)
+    public function addRiskyTest(\PHPUnit\Framework\Test $test, \Exception $e, $time)
     {
         //
     }
@@ -303,14 +313,14 @@ class Listener implements \PHPUnit_Framework_TestListener
     /**
      * Skipped test
      *
-     * @param \PHPUnit_Framework_Test $test
+     * @param \PHPUnit\Framework\Test $test
      * @param \Exception $e
      * @param float $time
      * @return void
      * @SuppressWarnings(PHPMD.ShortVariable)
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function addSkippedTest(\PHPUnit_Framework_Test $test, \Exception $e, $time)
+    public function addSkippedTest(\PHPUnit\Framework\Test $test, \Exception $e, $time)
     {
         //
     }
