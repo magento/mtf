@@ -461,6 +461,7 @@
             <argument name="idAttributes" xsi:type="array">
                 <item name="/config/testCase" xsi:type="string">name</item>
                 <item name="/config/testCase/variation" xsi:type="string">name</item>
+                <item name="/config/testCase/variation/data" xsi:type="string">name</item>
                 <item name="/config/testCase/variation/data(/item)+" xsi:type="string">name</item>
                 <item name="/config/testCase/variation/constraint" xsi:type="string">name</item>
             </argument>
