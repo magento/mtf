@@ -47,6 +47,44 @@ final class Driver implements DriverInterface
     protected $objectManager;
 
     /**
+     * Tracker variable for the current browser page
+     *
+     * @var string
+     */
+    protected static $previousUrl = '';
+
+    /**
+     * Tracker variable for the active jQuery ajax count
+     *
+     * @var int
+     */
+    protected static $previousJqAjax = 0;
+
+    /**
+     * Test metadata variable to track sequential readiness check failures for the same jquery ajax request count
+     * Value is reset to 0 when the current page url changes
+     *
+     * @var int
+     */
+    protected static $jqAjaxFailures = 0;
+
+    /**
+     * Tracker variable for the active prototype.js ajax count
+     *
+     * @var int
+     */
+    protected static $previousPrototypeAjax = 0;
+
+
+    /**
+     * Test metadata variable to track sequential readiness check failures for the same prototype.js ajax request count
+     * Value is reset to 0 when the current page url changes
+     *
+     * @var int
+     */
+    protected static $prototypeAjaxFailures = 0;
+
+    /**
      * Constructor
      *
      * @param RemoteDriver $driver
@@ -808,18 +846,153 @@ final class Driver implements DriverInterface
     public function waitForPageToLoad()
     {
         $driver = $this->driver;
+
         try {
-            $this->waitUntil(
-                function () use ($driver) {
-                    $result = $driver->executeScript("return document['readyState']", []);
-                    return $result === 'complete' || $result === 'uninitialized';
-                }
-            );
-        } catch (\Exception $e) {
+            $this->waitUntil(function() use ($driver) {
+                // document.readyState
+                $readyState = $driver->executeScript("return document['readyState']", []);
+                return $readyState === 'complete' || $readyState === 'uninitialized';
+            });
+        }
+        catch (\Exception $e) {
             throw new \Exception(
-                sprintf('Error occurred during waiting for page to load. Message: "%s"', $e->getMessage())
+                sprintf('Error occurred during waiting for document readyState. Message: "%s"', $e->getMessage())
             );
         }
+
+        $url = $driver->getCurrentURL();
+        if ($url != Driver::$previousUrl) {
+            Driver::$previousJqAjax = 0;
+            Driver::$jqAjaxFailures = 0;
+            Driver::$previousPrototypeAjax = 0;
+            Driver::$prototypeAjaxFailures = 0;
+            Driver::$previousUrl = $url;
+        }
+
+        try {
+            $this->waitUntil([$this, 'isPageReady']);
+            Driver::$previousJqAjax = 0;
+            Driver::$jqAjaxFailures = 0;
+            Driver::$previousPrototypeAjax = 0;
+            Driver::$prototypeAjaxFailures = 0;
+        } catch (\Exception $e) {
+            $failsBeforeReset = isset($_ENV['readiness_failure_threshold']) ? $_ENV['readiness_failure_threshold'] : 3;
+
+            // Check if jQuery ajax count failed on the same value, which can happen if an exception is
+            // thrown during an ajax callback causing the active request count to not decrement
+            $jqAjax = intval($driver->executeScript(
+                'if (!!window.jQuery) {
+                    return window.jQuery.active;
+                }
+                return 0;',
+                []
+            ));
+
+            if ($jqAjax == Driver::$previousJqAjax) {
+                Driver::$jqAjaxFailures++;
+            }
+            else {
+                Driver::$jqAjaxFailures = 1;
+                Driver::$previousJqAjax = $jqAjax;
+            }
+
+            if (Driver::$jqAjaxFailures >= $failsBeforeReset) {
+                $driver->executeScript("if (!!window.jQuery) { window.jQuery.active = 0; }", []);
+                Driver::$jqAjaxFailures = 0;
+            }
+
+            // Check if prototype.js ajax count failed on the same value, which can happen if an exception is
+            // thrown during an ajax callback causing the active request count to not decrement
+            $prototypeAjax = intval($driver->executeScript(
+                'if (!!window.Prototype) {
+                    return window.Ajax.activeRequestCount;
+                }
+                return 0;',
+                []
+            ));
+
+            if ($prototypeAjax == Driver::$previousPrototypeAjax) {
+                Driver::$prototypeAjaxFailures++;
+            }
+            else {
+                Driver::$prototypeAjaxFailures = 1;
+                Driver::$previousPrototypeAjax = $prototypeAjax;
+            }
+
+            if (Driver::$prototypeAjaxFailures >= $failsBeforeReset) {
+                $driver->executeScript("if (!!window.Prototype) { window.Ajax.activeRequestCount = 0; }", []);
+                Driver::$prototypeAjaxFailures = 0;
+            }
+        }
+    }
+
+    /**
+     * Checks active ajax requests and require.js module registry queue to see if the page is ready
+     *
+     * @return bool
+     */
+    private function isPageReady() {
+        $ready = true;
+        $driver = $this->driver;
+
+        // jQuery ajax requests
+        $jqAjax = intval($driver->executeScript([
+            'if (!!window.jQuery) {
+                    return window.jQuery.active;
+                }
+                return 0;',
+            []
+        ]));
+        if ($jqAjax > 0) {
+            $ready = false;
+        }
+        else {
+            Driver::$previousJqAjax = 0;
+            Driver::$jqAjaxFailures = 0;
+        }
+
+        // prototype.js ajax requests
+        $prototypeAjax = intval($driver->executeScript(
+            'if (!!window.Prototype) {
+                    return window.Ajax.activeRequestCount;
+                }
+                return 0;',
+            []
+        ));
+        if ($prototypeAjax > 0) {
+            $ready = false;
+        }
+        else {
+            Driver::$previousPrototypeAjax = 0;
+            Driver::$prototypeAjaxFailures = 0;
+        }
+
+        // require.js module definitions
+        $activeDefinitionScript =
+            'if (!window.requirejs) {
+                return null;
+            }
+            var contexts = window.requirejs.s.contexts;
+            for (var label in contexts) {
+                if (contexts.hasOwnProperty(label)) {
+                    var registry = contexts[label].registry;
+                    for (var module in registry) {
+                        if (registry.hasOwnProperty(module) && registry[module].enabled) {
+                            return module;
+                        }
+                    }
+                }
+            }
+            return null;';
+        $moduleInProgress = $driver->executeScript($activeDefinitionScript, []);
+        if ($moduleInProgress === 'null') {
+            $moduleInProgress = null;
+        }
+        if (!is_null($moduleInProgress)) {
+            $ready = false;
+        }
+
+        return $ready;
     }
 
     /**
