@@ -1,4 +1,6 @@
 * Added an ability scroll to left if element is overlapped by another element
+* Added support of PHP 7.1
+* Ignore PEER verification for curl transfer
 
 1.0.0-rc.47
 ===========
