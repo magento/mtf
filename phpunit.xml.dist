@@ -34,7 +34,6 @@
         <env name="log_directory" value="var/log" />
         <env name="events_preset" value="base" />
         <env name="rerun_count" value="0" />
-        <env name="readiness_failure_threshold" value="3" />
     </php>
 
 </phpunit>
