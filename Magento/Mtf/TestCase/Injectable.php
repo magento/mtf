@@ -128,14 +128,14 @@ abstract class Injectable extends Functional
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    public function run(\PHPUnit\Framework\TestResult $result = null)
+    public function run(\PHPUnit\Framework\TestResult $result = null): \PHPUnit\Framework\TestResult
     {
         $this->eventManager->dispatchEvent(['execution'], ['[start test case execution]']);
         if ($this->isParallelRun) {
             return parent::run($result);
         }
         try {
-            \PHP_Timer::start();
+            \SebastianBergmann\Timer\Timer::start();
             if (!isset(static::$sharedArguments[$this->dataId]) && method_exists($this, '__prepare')) {
                 static::$sharedArguments[$this->dataId] = (array) $this->getObjectManager()->invoke($this, '__prepare');
             }
@@ -173,13 +173,13 @@ abstract class Injectable extends Functional
                 $this->localArguments = [];
             }
         } catch (\PHPUnit\Framework\IncompleteTestError $phpUnitException) {
-            $result->addError($this, $phpUnitException, \PHP_Timer::stop());
+            $result->addError($this, $phpUnitException, \SebastianBergmann\Timer\Timer::stop());
         } catch (\PHPUnit\Framework\AssertionFailedError $phpUnitException) {
             $this->eventManager->dispatchEvent(['failure'], [$phpUnitException->getMessage()]);
-            $result->addFailure($this, $phpUnitException, \PHP_Timer::stop());
+            $result->addFailure($this, $phpUnitException, \SebastianBergmann\Timer\Timer::stop());
         } catch (\Exception $exception) {
             $this->eventManager->dispatchEvent(['exception'], [$exception->getMessage()]);
-            $result->addError($this, $exception, \PHP_Timer::stop());
+            $result->addError($this, $exception, \SebastianBergmann\Timer\Timer::stop());
         }
         self::$sharedArguments = [];
 
@@ -240,7 +240,7 @@ abstract class Injectable extends Functional
      * @param  boolean $includeData
      * @return string
      */
-    public function getDataSetAsString($includeData = true)
+    public function getDataSetAsString($includeData = true): string
     {
         $buffer = '';
 

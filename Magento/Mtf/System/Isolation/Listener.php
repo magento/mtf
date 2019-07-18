@@ -99,7 +99,7 @@ class Listener implements \PHPUnit\Framework\TestListener
      * @param \PHPUnit\Framework\TestSuite $suite
      * @return void
      */
-    public function startTestSuite(\PHPUnit\Framework\TestSuite $suite)
+    public function startTestSuite(\PHPUnit\Framework\TestSuite $suite): void
     {
         $scope = $this->_getSuiteScope($suite);
         if (!$scope) {
@@ -116,7 +116,7 @@ class Listener implements \PHPUnit\Framework\TestListener
      * @param \PHPUnit\Framework\TestSuite $suite
      * @return void
      */
-    public function endTestSuite(\PHPUnit\Framework\TestSuite $suite)
+    public function endTestSuite(\PHPUnit\Framework\TestSuite $suite): void
     {
         $this->_isolated = false;
         $scope = $this->_getSuiteScope($suite);
@@ -132,7 +132,7 @@ class Listener implements \PHPUnit\Framework\TestListener
      * @param \PHPUnit\Framework\Test $test
      * @return void
      */
-    public function startTest(\PHPUnit\Framework\Test $test)
+    public function startTest(\PHPUnit\Framework\Test $test): void
     {
         $annotations = \PHPUnit\Util\Test::parseTestMethodAnnotations(get_class($test), $test->getName());
         $this->_processBeforeScope($annotations['method'], self::SCOPE_TEST);
@@ -146,7 +146,7 @@ class Listener implements \PHPUnit\Framework\TestListener
      * @return void
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function endTest(\PHPUnit\Framework\Test $test, $time)
+    public function endTest(\PHPUnit\Framework\Test $test, float $time): void
     {
         $this->_isolated = false;
         $this->_processAfterScope();
@@ -250,7 +250,7 @@ class Listener implements \PHPUnit\Framework\TestListener
      * @SuppressWarnings(PHPMD.ShortVariable)
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function addError(\PHPUnit\Framework\Test $test, \Exception $e, $time)
+    public function addError(\PHPUnit\Framework\Test $test, \Throwable $e, float $time): void
     {
         //
     }
@@ -260,7 +260,7 @@ class Listener implements \PHPUnit\Framework\TestListener
      * @param \PHPUnit\Framework\Warning $e
      * @param float $time
      */
-    public function addWarning(\PHPUnit\Framework\Test $test, \PHPUnit\Framework\Warning $e, $time)
+    public function addWarning(\PHPUnit\Framework\Test $test, \PHPUnit\Framework\Warning $e, float $time): void
     {
         //
     }
@@ -275,7 +275,7 @@ class Listener implements \PHPUnit\Framework\TestListener
      * @SuppressWarnings(PHPMD.ShortVariable)
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function addFailure(\PHPUnit\Framework\Test $test, \PHPUnit\Framework\AssertionFailedError $e, $time)
+    public function addFailure(\PHPUnit\Framework\Test $test, \PHPUnit\Framework\AssertionFailedError $e, float $time): void
     {
         //
     }
@@ -290,7 +290,7 @@ class Listener implements \PHPUnit\Framework\TestListener
      * @SuppressWarnings(PHPMD.ShortVariable)
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function addIncompleteTest(\PHPUnit\Framework\Test $test, \Exception $e, $time)
+    public function addIncompleteTest(\PHPUnit\Framework\Test $test, \Throwable $e, float $time): void
     {
         //
     }
@@ -305,7 +305,7 @@ class Listener implements \PHPUnit\Framework\TestListener
      * @SuppressWarnings(PHPMD.ShortVariable)
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function addRiskyTest(\PHPUnit\Framework\Test $test, \Exception $e, $time)
+    public function addRiskyTest(\PHPUnit\Framework\Test $test, \Throwable $e, float $time): void
     {
         //
     }
@@ -320,7 +320,7 @@ class Listener implements \PHPUnit\Framework\TestListener
      * @SuppressWarnings(PHPMD.ShortVariable)
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function addSkippedTest(\PHPUnit\Framework\Test $test, \Exception $e, $time)
+    public function addSkippedTest(\PHPUnit\Framework\Test $test, \Throwable $e, float $time): void
     {
         //
     }

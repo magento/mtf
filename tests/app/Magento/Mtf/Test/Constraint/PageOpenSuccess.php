@@ -37,7 +37,7 @@ class PageOpenSuccess extends AbstractConstraint
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         //
     }

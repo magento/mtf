@@ -143,7 +143,7 @@ abstract class AbstractConstraint extends \PHPUnit\Framework\Constraint\Constrai
      * @param string $testCaseName
      * @return bool
      */
-    protected function matches($testCaseName)
+    protected function matches($testCaseName): bool
     {
         if ($this->result === null) {
             $this->eventManager->dispatchEvent(

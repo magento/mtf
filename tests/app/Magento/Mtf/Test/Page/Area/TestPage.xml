@@ -7,6 +7,6 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../../etc/pages.xsd">
     <page mca="/" name="TestPage" area="Area">
-        <block name="testBlock" class="Magento\Mtf\Test\Block\TestBlock" locator="body" strategy="tag name" />
+        <block name="testBlock" class="Magento\Mtf\Test\Block\TestBlock" locator="div#viewport" strategy="css selector" />
     </page>
 </config>

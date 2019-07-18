@@ -20,7 +20,7 @@ class StateListener implements \PHPUnit\Framework\TestListener
      * @return void
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function addError(\PHPUnit\Framework\Test $test, \Exception $e, $time)
+    public function addError(\PHPUnit\Framework\Test $test, \Throwable $e, float $time): void
     {
         //
     }
@@ -30,7 +30,7 @@ class StateListener implements \PHPUnit\Framework\TestListener
      * @param \PHPUnit\Framework\Warning $e
      * @param float $time
      */
-    public function addWarning(\PHPUnit\Framework\Test $test, \PHPUnit\Framework\Warning $e, $time)
+    public function addWarning(\PHPUnit\Framework\Test $test, \PHPUnit\Framework\Warning $e, float $time): void
     {
         //
     }
@@ -44,7 +44,7 @@ class StateListener implements \PHPUnit\Framework\TestListener
      * @return void
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function addFailure(\PHPUnit\Framework\Test $test, \PHPUnit\Framework\AssertionFailedError $e, $time)
+    public function addFailure(\PHPUnit\Framework\Test $test, \PHPUnit\Framework\AssertionFailedError $e, float $time): void
     {
         //
     }
@@ -58,7 +58,7 @@ class StateListener implements \PHPUnit\Framework\TestListener
      * @return void
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function addIncompleteTest(\PHPUnit\Framework\Test $test, \Exception $e, $time)
+    public function addIncompleteTest(\PHPUnit\Framework\Test $test, \Throwable $e, float $time): void
     {
         //
     }
@@ -72,7 +72,7 @@ class StateListener implements \PHPUnit\Framework\TestListener
      * @return void
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function addRiskyTest(\PHPUnit\Framework\Test $test, \Exception $e, $time)
+    public function addRiskyTest(\PHPUnit\Framework\Test $test, \Throwable $e, float $time): void
     {
         //
     }
@@ -86,7 +86,7 @@ class StateListener implements \PHPUnit\Framework\TestListener
      * @return void
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function addSkippedTest(\PHPUnit\Framework\Test $test, \Exception $e, $time)
+    public function addSkippedTest(\PHPUnit\Framework\Test $test, \Throwable $e, float $time): void
     {
         //
     }
@@ -97,7 +97,7 @@ class StateListener implements \PHPUnit\Framework\TestListener
      * @param \PHPUnit\Framework\TestSuite $suite
      * @return void
      */
-    public function startTestSuite(\PHPUnit\Framework\TestSuite $suite)
+    public function startTestSuite(\PHPUnit\Framework\TestSuite $suite): void
     {
         if ('default' === State::getTestSuiteName()) {
             State::setTestSuiteName($suite->getName());
@@ -111,7 +111,7 @@ class StateListener implements \PHPUnit\Framework\TestListener
      * @return void
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function endTestSuite(\PHPUnit\Framework\TestSuite $suite)
+    public function endTestSuite(\PHPUnit\Framework\TestSuite $suite): void
     {
         State::setTestSuiteName('default');
     }
@@ -122,7 +122,7 @@ class StateListener implements \PHPUnit\Framework\TestListener
      * @param \PHPUnit\Framework\Test $test
      * @return void
      */
-    public function startTest(\PHPUnit\Framework\Test $test)
+    public function startTest(\PHPUnit\Framework\Test $test): void
     {
         State::setTestClassName(get_class($test));
         State::setTestMethodName($test->getName());
@@ -136,7 +136,7 @@ class StateListener implements \PHPUnit\Framework\TestListener
      * @return void
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function endTest(\PHPUnit\Framework\Test $test, $time)
+    public function endTest(\PHPUnit\Framework\Test $test, float $time): void
     {
         //
     }

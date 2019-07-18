@@ -102,7 +102,7 @@ class Composite extends AbstractConstraint
      * @param string $testCaseName
      * @return bool
      */
-    protected function matches($testCaseName)
+    protected function matches($testCaseName): bool
     {
         $result = true;
         foreach ($this->constraints as $constraint) {
@@ -117,7 +117,7 @@ class Composite extends AbstractConstraint
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return 'Composite Constraint (' . implode(', ', $this->constraints) . ')';
     }

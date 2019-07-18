@@ -8,6 +8,7 @@ namespace Magento\Mtf\System\Browser;
 
 use Magento\Mtf\Factory\Factory;
 use Magento\Mtf\Config\DataInterface;
+use PHPUnit\Framework\Test;
 
 /**
  * Class Listener.
@@ -53,7 +54,7 @@ class Listener implements \PHPUnit\Framework\TestListener
      * @SuppressWarnings(PHPMD.ShortVariable)
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function addError(\PHPUnit\Framework\Test $test, \Exception $e, $time)
+    public function addError(\PHPUnit\Framework\Test $test, \Throwable $t, float $time): void
     {
         //
     }
@@ -63,7 +64,7 @@ class Listener implements \PHPUnit\Framework\TestListener
      * @param \PHPUnit\Framework\Warning $e
      * @param float $time
      */
-    public function addWarning(\PHPUnit\Framework\Test $test, \PHPUnit\Framework\Warning $e, $time)
+    public function addWarning(\PHPUnit\Framework\Test $test, \PHPUnit\Framework\Warning $e, float $time): void
     {
         //
     }
@@ -78,7 +79,7 @@ class Listener implements \PHPUnit\Framework\TestListener
      * @SuppressWarnings(PHPMD.ShortVariable)
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function addFailure(\PHPUnit\Framework\Test $test, \PHPUnit\Framework\AssertionFailedError $e, $time)
+    public function addFailure(\PHPUnit\Framework\Test $test, \PHPUnit\Framework\AssertionFailedError $e, float $time): void
     {
         //
     }
@@ -93,7 +94,7 @@ class Listener implements \PHPUnit\Framework\TestListener
      * @SuppressWarnings(PHPMD.ShortVariable)
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function addIncompleteTest(\PHPUnit\Framework\Test $test, \Exception $e, $time)
+    public function addIncompleteTest(\PHPUnit\Framework\Test $test, \Throwable $e, float $time): void
     {
         //
     }
@@ -108,7 +109,7 @@ class Listener implements \PHPUnit\Framework\TestListener
      * @SuppressWarnings(PHPMD.ShortVariable)
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function addRiskyTest(\PHPUnit\Framework\Test $test, \Exception $e, $time)
+    public function addRiskyTest(\PHPUnit\Framework\Test $test, \Throwable $e, float $time): void
     {
         //
     }
@@ -123,7 +124,7 @@ class Listener implements \PHPUnit\Framework\TestListener
      * @SuppressWarnings(PHPMD.ShortVariable)
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function addSkippedTest(\PHPUnit\Framework\Test $test, \Exception $e, $time)
+    public function addSkippedTest(\PHPUnit\Framework\Test $test, \Throwable $e, float $time): void
     {
         //
     }
@@ -134,7 +135,7 @@ class Listener implements \PHPUnit\Framework\TestListener
      * @param \PHPUnit\Framework\TestSuite $suite
      * @return void
      */
-    public function startTestSuite(\PHPUnit\Framework\TestSuite $suite)
+    public function startTestSuite(\PHPUnit\Framework\TestSuite $suite): void
     {
         if (class_exists($suite->getName()) && is_subclass_of($suite->getName(), \PHPUnit\Framework\TestCase::class)) {
             $this->_run(static::SCOPE_TEST_CASE);
@@ -148,7 +149,7 @@ class Listener implements \PHPUnit\Framework\TestListener
      * @return void
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function endTestSuite(\PHPUnit\Framework\TestSuite $suite)
+    public function endTestSuite(\PHPUnit\Framework\TestSuite $suite): void
     {
         //
     }
@@ -160,7 +161,7 @@ class Listener implements \PHPUnit\Framework\TestListener
      * @return void
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function startTest(\PHPUnit\Framework\Test $test)
+    public function startTest(\PHPUnit\Framework\Test $test): void
     {
         if ($this->_isBrowserFailed()) {
             $this->_reopenBrowser();
@@ -177,7 +178,7 @@ class Listener implements \PHPUnit\Framework\TestListener
      * @return void
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function endTest(\PHPUnit\Framework\Test $test, $time)
+    public function endTest(\PHPUnit\Framework\Test $test, float $time): void
     {
         //
     }
