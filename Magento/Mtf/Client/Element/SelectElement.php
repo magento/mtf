@@ -91,7 +91,7 @@ class SelectElement extends SimpleElement
      */
     protected function escapeQuotes($toEscape)
     {
-        if (strpos($toEscape, '"') !== false && strpos($toEscape, "'" != false)) {
+        if (strpos($toEscape, '"') !== false && strpos($toEscape, "'") !== false) {
             $subStrings = explode('"', $toEscape);
             $escaped = "concat(";
             $first = true;
@@ -106,7 +106,7 @@ class SelectElement extends SimpleElement
             return $escaped;
         }
 
-        if (strpos($toEscape, '"' !== false)) {
+        if (strpos($toEscape, '"') !== false) {
             return sprintf("'%s'", $toEscape);
         }
 
