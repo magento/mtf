@@ -1,3 +1,24 @@
+1.0.0-rc.64
+===========
+* Update MTF to support PHP 7.3
+
+1.0.0-rc.63
+===========
+* Bump "symfony/console" version to be compatible with Magento dependencies
+* Remove "Readiness metrics"
+
+1.0.0-rc.62
+===========
+* Readiness metrics added to verify Magento is ready to be tested
+
+1.0.0-rc.61
+===========
+* Added item attribute name to idAttributes in config reader
+
+1.0.0-rc.60
+===========
+* Update MTF tests to support PHPUnit 6.5 and PHP 7.2
+
 1.0.0-rc.59
 ===========
 * Added possibility to press key without an element object]
