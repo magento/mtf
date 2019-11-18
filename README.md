@@ -1,5 +1,5 @@
 # DEPRECATED 
-The Magento Testing Framework (MTF) or The Functional Testing Framework (FTF) is superseded by the Magento Functional Testing Framework [MFTF](https://github.com/magento/magento2-functional-testing-framework). While the MTF is still functional, all MTF tests are being ported over to the MFTF. We recommend using the MFTF for testing.
+The Magento Testing Framework (MTF) or The Functional Testing Framework (FTF) is superseded by the Magento Functional Testing Framework ([MFTF](https://github.com/magento/magento2-functional-testing-framework)). While the MTF is still functional, all MTF tests are being ported over to the MFTF. We recommend using the MFTF for testing.
 
 # Functional Testing Framework
 
