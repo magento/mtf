@@ -38,7 +38,7 @@ class Driver implements DriverInterface
      *
      * @var RemoteDriver
      */
-    protected $driver;
+    public $driver;
 
     /**
      * Object manager instance.

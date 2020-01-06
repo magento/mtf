@@ -163,6 +163,20 @@ abstract class Injectable extends Functional
                     $this->currentVariation,
                     $this->localArguments
                 );
+
+                $testClass = str_replace("\\", "_", get_class($this));
+                /** @var \Magento\Mtf\Client\BrowserInterface $browser */
+                $browser = $this->getObjectManager()->get(\Magento\Mtf\Client\BrowserInterface::class);
+                $browser->open($_ENV['app_frontend_url']);
+                /** @var \Magento\Mtf\Client\Driver\Selenium\RemoteDriver $driver */
+                $driver = $browser->driver->driver;
+                $driver->execute(
+                    [
+                        'script' => "document.cookie = 'FUNCTIONAL_TEST_NAME={$testClass}::{$variation['variation_name_attr']};'",
+                        'args' => []
+                    ]
+                );
+
                 $this->executeTestVariation($result, $variation);
                 if ($this->rerunCount > 0 && $this->getStatus() != \PHPUnit\Runner\BaseTestRunner::STATUS_PASSED) {
                     $this->rerunCount -= 1;
@@ -294,7 +308,7 @@ abstract class Injectable extends Functional
         }
 
         $variation['arguments'] = $resolvedArguments;
-
+        $variation['variation_name_attr'] = $arguments['variation_name'];
         return $variation;
     }
 

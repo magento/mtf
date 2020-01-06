@@ -20,7 +20,7 @@ final class Browser implements BrowserInterface
      *
      * @var DriverInterface
      */
-    protected $driver;
+    public $driver;
 
     /**
      * Configuration for driver
